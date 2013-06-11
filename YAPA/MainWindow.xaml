@@ -60,7 +60,7 @@
                                Foreground="{Binding TextBrush}"
                                FontSize="12" 
                                Opacity="{Binding ClockOpacity}"
-                               FontFamily="Segoe UI Bold"
+                               FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
                 </ControlTemplate>
             </Button.Template>
@@ -85,7 +85,7 @@
                                Foreground="{Binding TextBrush}"
                                FontSize="12" 
                                Opacity="{Binding ClockOpacity}"
-                               FontFamily="Segoe UI Bold"
+                               FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
                 </ControlTemplate>
             </Button.Template>
