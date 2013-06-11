@@ -1,0 +1,109 @@
+﻿<Window x:Class="YAPA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="YAPA"
+        Height="80" 
+        Width="250" 
+        ShowInTaskbar="True" 
+        ResizeMode="NoResize" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStartupLocation="Manual"
+        WindowStyle="None" 
+        Top="0" 
+        Topmost="True" 
+        MouseRightButtonUp="Window_MouseRightButtonUp">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
+    </Window.TaskbarItemInfo>
+
+    <Window.Resources>
+        <Storyboard x:Key="FlashTimer">
+            <ColorAnimation
+                Storyboard.TargetName="CurrentTime" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                To="Tomato" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid>
+        <TextBlock x:Name="CurrentTime"
+               Cursor="Arrow"
+               FontFamily="Segoe UI Light"
+               FontSize="60"
+               Foreground="{Binding TextBrush}"
+               Opacity="{Binding ClockOpacity}"
+               Background="Transparent"    
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"
+               Margin="0,0,45,0" 
+               Text="00:00" 
+               FontStretch="UltraCondensed">
+        </TextBlock>
+
+        <Button x:Name="Start"
+                Command=""
+                HorizontalAlignment="Right" 
+                Margin="0,21,0,0" 
+                VerticalAlignment="Top" 
+                Cursor="Hand"
+                Content="START"
+                ToolTip="Start Pomodori"
+                Height="15"
+                Width="40" 
+                Click="Start_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <TextBlock Text="{TemplateBinding Content}"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               Foreground="{Binding TextBrush}"
+                               FontSize="12" 
+                               Opacity="{Binding ClockOpacity}"
+                               FontFamily="Segoe UI Bold"
+                               FontStretch="UltraCondensed"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button x:Name="Stop"
+                Command=""
+                HorizontalAlignment="Right" 
+                Margin="0,36,0,0" 
+                VerticalAlignment="Top" 
+                Cursor="Hand"
+                Content="STOP"
+                ToolTip="Stop Pomodori"
+                Height="15"
+                Width="40" 
+                Click="Stop_Click" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <TextBlock Text="{TemplateBinding Content}"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               Foreground="{Binding TextBrush}"
+                               FontSize="12" 
+                               Opacity="{Binding ClockOpacity}"
+                               FontFamily="Segoe UI Bold"
+                               FontStretch="UltraCondensed"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <TextBlock x:Name="CurrentPeriod"
+                   Cursor="Arrow"
+                   FontFamily="Segoe UI"
+                   FontStretch="UltraCondensed"
+                   FontSize="16"
+                   Foreground="{Binding TextBrush}"
+                   Opacity="{Binding ClockOpacity}"
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Center"
+                   Height="20" 
+                   Margin="10,35,5,00" 
+                   Text=""
+                   ToolTip="Current period"
+                   Width="20" />
+    </Grid>
+</Window>

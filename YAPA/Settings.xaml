@@ -1,0 +1,89 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d" 
+        x:Class="YAPA.Settings"
+        Title="YAPA Settings" 
+        Height="334" 
+        Width="450"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True">
+    <Grid Background="Transparent">
+        <Border Margin="10">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Direction="315" 
+                                        ShadowDepth="0" Opacity=".5" BlurRadius="20" />
+            </Border.Effect>
+            <Grid Background="White" Margin="0,0,0,0">
+                <TextBlock Text="YAPA, v1.0"
+            		FontFamily="Segoe UI Light"
+            		FontSize="18pt" Margin="10,0,10,245"
+                           />
+                <StackPanel Orientation="Vertical" Margin="42,60,42,43">
+                    <Label Content="Czas trwania etapów"/>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                        <Label Content="Praca"/>
+                        <xctk:IntegerUpDown 
+                        	Margin="0,0,0,0" 
+                        	ParsingNumberStyle="Number"
+                        	Value="{Binding WorkTime, Mode=TwoWay}" 
+                        	Minimum="1" BorderThickness="0"/>
+                        <Label Content="Krótka przerwa"/>
+                        <xctk:IntegerUpDown                            
+                            ParsingNumberStyle="Number"
+                            Value="{Binding BreakTime, Mode=TwoWay}"
+                            Minimum="1" BorderThickness="0"/>
+                        <Label Content="Długa przerwa"/>
+                        <xctk:IntegerUpDown                            
+                            ParsingNumberStyle="Number"
+                            Value="{Binding BreakLongTime, Mode=TwoWay}"
+                            Minimum="1" BorderThickness="0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                        <Label Content="Poziom przezroczystości"/>
+                        <Slider TickPlacement="BottomRight"
+                            Margin="5,0,5,0"
+                    		Minimum="0"
+                    		Maximum="1"
+                    		IsMoveToPointEnabled="False"
+                    		Value="{Binding ClockOpacity, Mode=TwoWay}"
+                    		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding SoundEfects, Mode=TwoWay}">
+                            <Label Content="Powiadomienia dźwiękowe"/>
+                        </CheckBox>
+                        <CheckBox VerticalAlignment="Center"
+                                  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" 
+                                  Margin="70,0,0,0">
+                            <Label Content="Jasny motyw"/>
+                        </CheckBox>
+                    </StackPanel>
+                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application dostarczony przez:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="mailto://lukasz@banasiak.me" TextDecorations=""><Run Text="Łukasz Banasiak"/></Hyperlink></TextBlock>
+                </StackPanel>
+                <Button x:Name="btnClose"
+            		Command="{Binding SaveSettings}"
+            		Content="Zapisz"
+            		Cursor="Hand"
+            		ToolTip="Zapisz ustawienia"
+            		Margin="351,271,10,10">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <TextBlock Text="{TemplateBinding Content}" 
+            					HorizontalAlignment="Stretch"
+            					VerticalAlignment="Center"
+            					TextAlignment="Center"
+            					FontSize="12pt"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
