@@ -18,6 +18,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Media;
+using System.Windows.Shell;
+using System.Reflection;
 
 
 namespace YAPA
@@ -89,6 +91,64 @@ namespace YAPA
             TickSound = new System.Media.SoundPlayer(@"tick.wav");
             RingSound = new System.Media.SoundPlayer(@"ding.wav");
 
+            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+        }
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            CreateJumpList();
+
+            //if you want to handle to command line args on the first instance you may want it to go here
+            //or in the app.xaml.cs
+            //ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs);
+        }
+
+        private void CreateJumpList()
+        {
+            JumpList jumpList = new JumpList();
+            JumpList.SetJumpList(Application.Current, jumpList);
+
+            JumpTask startTask = new JumpTask();
+            startTask.Title = "Start";
+            startTask.Description = "Start Pomodori session.";
+            startTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            startTask.Arguments = "/start";
+            startTask.IconResourceIndex = -1;
+            jumpList.JumpItems.Add(startTask);
+
+            JumpTask pauseTask = new JumpTask();
+            pauseTask.Title = "Pauza";
+            pauseTask.Description = "Pause Pomodori session.";
+            pauseTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            pauseTask.Arguments = "/pause";
+            pauseTask.IconResourceIndex = -1;
+            jumpList.JumpItems.Add(pauseTask);
+
+            JumpTask stopTask = new JumpTask();
+            stopTask.Title = "Restart";
+            stopTask.Description = "Restart current Pomodori session.";
+            stopTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            stopTask.Arguments = "/restart";
+            stopTask.IconResourceIndex = -1;
+            jumpList.JumpItems.Add(stopTask);
+
+            JumpTask resetTask = new JumpTask();
+            resetTask.Title = "Nowa sesja";
+            resetTask.Description = "Start new Pomodori session.";
+            resetTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            resetTask.Arguments = "/reset";
+            resetTask.IconResourceIndex = -1;
+            jumpList.JumpItems.Add(resetTask);
+
+            JumpTask settingsTask = new JumpTask();
+            settingsTask.Title = "Konfiguracja";
+            //settingsTask.CustomCategory = "Others";
+            settingsTask.Description = "Show YAPA settings.";
+            settingsTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            settingsTask.Arguments = "/settings";
+            jumpList.JumpItems.Add(settingsTask);
+
+            jumpList.Apply();
         }
 
         public ICommand ShowSettings
@@ -216,8 +276,10 @@ namespace YAPA
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             if (_soundEfects)
+            {
                 TickSound.Stop();
                 RingSound.Stop();
+            }
             if (stopWatch.IsRunning)
             {
                 Period--;
@@ -310,6 +372,64 @@ namespace YAPA
         private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             this.ShowSettings.Execute(this);
+        }
+
+        public bool ProcessCommandLineArgs(IList<string> args)
+        {
+            if (args == null || args.Count == 0)
+                return true;
+
+            if ((args.Count > 1))
+            {
+                //the first index always contains the location of the exe so we need to check the second index
+                if ((args[1].ToLowerInvariant() == "/start"))
+                {
+                    if (!stopWatch.IsRunning)
+                    {
+                        if (_soundEfects)
+                            TickSound.Play();
+                        TimerFlush.Stop(this);
+                        stopWatch.Start();
+                        dispacherTime.Start();
+                        if (IsWork)
+                            Period++;
+                    }  
+                }
+                else if ((args[1].ToLowerInvariant() == "/pause"))
+                {
+                    if (_soundEfects)
+                    {
+                        TickSound.Stop();
+                        RingSound.Stop();
+                    }
+                    if (stopWatch.IsRunning)
+                    {
+                        Period--;
+                        stopWatch.Stop();
+                        ProgressState = "Paused";
+                    }
+                }
+                else if ((args[1].ToLowerInvariant() == "/restart"))
+                {
+                    if (stopWatch.IsRunning)
+                    {
+                        if (_soundEfects)
+                            TickSound.Play();
+                        Ticks = 0;
+                        stopWatch.Restart();
+                    }
+                }
+                else if ((args[1].ToLowerInvariant() == "/reset"))
+                {
+                    ResetTicking();
+                }
+                else if ((args[1].ToLowerInvariant() == "/settings"))
+                {
+                    this.ShowSettings.Execute(this);
+                }
+            }
+
+            return true;
         }
     }
 }
