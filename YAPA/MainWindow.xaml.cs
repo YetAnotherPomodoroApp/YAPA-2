@@ -20,6 +20,7 @@ using System.Windows.Threading;
 using System.Media;
 using System.Windows.Shell;
 using System.Reflection;
+using System.IO;
 
 
 namespace YAPA
@@ -110,43 +111,51 @@ namespace YAPA
 
             JumpTask startTask = new JumpTask();
             startTask.Title = "Start";
-            startTask.Description = "Start Pomodori session.";
+            startTask.Description = "Start Pomodoro session";
             startTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             startTask.Arguments = "/start";
-            startTask.IconResourceIndex = -1;
+            startTask.IconResourceIndex = 7;
             jumpList.JumpItems.Add(startTask);
 
             JumpTask pauseTask = new JumpTask();
             pauseTask.Title = "Pauza";
-            pauseTask.Description = "Pause Pomodori session.";
+            pauseTask.Description = "Pause Pomodoro session";
             pauseTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             pauseTask.Arguments = "/pause";
-            pauseTask.IconResourceIndex = -1;
+            pauseTask.IconResourceIndex = 3;
             jumpList.JumpItems.Add(pauseTask);
 
             JumpTask stopTask = new JumpTask();
             stopTask.Title = "Restart";
-            stopTask.Description = "Restart current Pomodori session.";
+            stopTask.Description = "Restart current Pomodori session";
             stopTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             stopTask.Arguments = "/restart";
-            stopTask.IconResourceIndex = -1;
+            stopTask.IconResourceIndex = 4;
             jumpList.JumpItems.Add(stopTask);
 
             JumpTask resetTask = new JumpTask();
             resetTask.Title = "Nowa sesja";
-            resetTask.Description = "Start new Pomodori session.";
+            resetTask.Description = "Start new Pomodoro session";
             resetTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             resetTask.Arguments = "/reset";
-            resetTask.IconResourceIndex = -1;
+            resetTask.IconResourceIndex = 2;
             jumpList.JumpItems.Add(resetTask);
 
             JumpTask settingsTask = new JumpTask();
             settingsTask.Title = "Konfiguracja";
-            //settingsTask.CustomCategory = "Others";
-            settingsTask.Description = "Show YAPA settings.";
+            settingsTask.Description = "Show YAPA settings";
             settingsTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             settingsTask.Arguments = "/settings";
+            settingsTask.IconResourceIndex = 5;
             jumpList.JumpItems.Add(settingsTask);
+
+            JumpTask homepageTask = new JumpTask();
+            homepageTask.Title = "Przejdź do strony domowej";
+            homepageTask.Description = "Go to YAPA home page";
+            homepageTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
+            homepageTask.Arguments = "/homepage";
+            homepageTask.IconResourceIndex = 6;
+            jumpList.JumpItems.Add(homepageTask);
 
             jumpList.Apply();
         }
@@ -426,6 +435,10 @@ namespace YAPA
                 else if ((args[1].ToLowerInvariant() == "/settings"))
                 {
                     this.ShowSettings.Execute(this);
+                }
+                else if ((args[1].ToLowerInvariant() == "/homepage"))
+                {
+                    System.Diagnostics.Process.Start("http://www.webpage.com");
                 }
             }
 

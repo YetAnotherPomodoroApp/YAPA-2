@@ -33,15 +33,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>Resources\pomo.ico</ApplicationIcon>
+    <Win32Resource>C:\Users\lukaszba\Desktop\YAPA\YAPA\YAPA\IconSet.res</Win32Resource>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -120,7 +124,12 @@
     <Resource Include="Resources\pomo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\backward.ico" />
     <Content Include="Resources\ding.wav" />
+    <Resource Include="Resources\pause.ico" />
+    <Resource Include="Resources\preferences.ico" />
+    <Resource Include="Resources\start.ico" />
+    <Resource Include="Resources\stop.ico" />
     <Content Include="Resources\tick.wav" />
     <Content Include="Resources\Xceed.Wpf.Toolkit.dll" />
   </ItemGroup>

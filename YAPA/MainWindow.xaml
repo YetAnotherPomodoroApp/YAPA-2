@@ -48,7 +48,7 @@
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="START"
-                ToolTip="Start Pomodori"
+                ToolTip="Start Pomodoro"
                 Height="15"
                 Width="40" 
                 Click="Start_Click">
@@ -73,7 +73,7 @@
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="STOP"
-                ToolTip="Stop Pomodori"
+                ToolTip="Stop Pomodoro"
                 Height="15"
                 Width="40" 
                 Click="Stop_Click" >
