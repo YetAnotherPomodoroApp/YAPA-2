@@ -438,7 +438,7 @@ namespace YAPA
                 }
                 else if ((args[1].ToLowerInvariant() == "/homepage"))
                 {
-                    System.Diagnostics.Process.Start("http://bns-.github.io/YAPA/");
+                    System.Diagnostics.Process.Start("http://lukaszbanasiak.github.io/YAPA/");
                 }
             }
 
