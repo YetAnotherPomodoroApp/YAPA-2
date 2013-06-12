@@ -15,4 +15,4 @@ These are the current features:
 * Select opacity for timer
 * Select light or dark theme for timer
 
-Visit YAPA website for more info http://bns-.github.io/YAPA/
+Visit YAPA website for more info http://lukaszbanasiak.github.io/YAPA/
