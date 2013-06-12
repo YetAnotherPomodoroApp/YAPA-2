@@ -73,8 +73,8 @@ namespace YAPA
             IsBreak = false;
             IsBreakLong = false;
             IsWork = true;                        
-            BreakLabel = "przerwa";
-            WorkLabel = "praca";
+            BreakLabel = "break";
+            WorkLabel = "work";
 
             dispacherTime.Tick += new EventHandler(DoTick);
             dispacherTime.Interval = new TimeSpan(0, 0, 0, 1);
@@ -118,7 +118,7 @@ namespace YAPA
             jumpList.JumpItems.Add(startTask);
 
             JumpTask pauseTask = new JumpTask();
-            pauseTask.Title = "Pauza";
+            pauseTask.Title = "Pause";
             pauseTask.Description = "Pause Pomodoro session";
             pauseTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             pauseTask.Arguments = "/pause";
@@ -134,7 +134,7 @@ namespace YAPA
             jumpList.JumpItems.Add(stopTask);
 
             JumpTask resetTask = new JumpTask();
-            resetTask.Title = "Nowa sesja";
+            resetTask.Title = "Start from the beginning";
             resetTask.Description = "Start new Pomodoro session";
             resetTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             resetTask.Arguments = "/reset";
@@ -142,7 +142,7 @@ namespace YAPA
             jumpList.JumpItems.Add(resetTask);
 
             JumpTask settingsTask = new JumpTask();
-            settingsTask.Title = "Konfiguracja";
+            settingsTask.Title = "Settings";
             settingsTask.Description = "Show YAPA settings";
             settingsTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             settingsTask.Arguments = "/settings";
@@ -150,7 +150,7 @@ namespace YAPA
             jumpList.JumpItems.Add(settingsTask);
 
             JumpTask homepageTask = new JumpTask();
-            homepageTask.Title = "Przejdź do strony domowej";
+            homepageTask.Title = "Visit home page";
             homepageTask.Description = "Go to YAPA home page";
             homepageTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
             homepageTask.Arguments = "/homepage";

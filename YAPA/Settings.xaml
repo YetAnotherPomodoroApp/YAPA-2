@@ -26,27 +26,29 @@
             		FontSize="18pt" Margin="10,0,10,245"
                            />
                 <StackPanel Orientation="Vertical" Margin="42,60,42,43">
-                    <Label Content="Czas trwania etapów"/>
+                    <Label Content="Configure periods"/>
                     <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                        <Label Content="Praca"/>
+                        <Label Content="Work"/>
                         <xctk:IntegerUpDown 
-                        	Margin="0,0,0,0" 
+                        	Margin="0,0,12,0" 
                         	ParsingNumberStyle="Number"
                         	Value="{Binding WorkTime, Mode=TwoWay}" 
                         	Minimum="1" BorderThickness="0"/>
-                        <Label Content="Krótka przerwa"/>
-                        <xctk:IntegerUpDown                            
+                        <Label Content="Short breaks"/>
+                        <xctk:IntegerUpDown
+                            Margin="0,0,12,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
-                        <Label Content="Długa przerwa"/>
-                        <xctk:IntegerUpDown                            
+                        <Label Content="Long break"/>
+                        <xctk:IntegerUpDown
+                            Margin="0,0,0,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakLongTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,15">
-                        <Label Content="Poziom przezroczystości"/>
+                        <Label Content="Opacity level"/>
                         <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
@@ -57,21 +59,21 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
                         <CheckBox VerticalAlignment="Center" IsChecked="{Binding SoundEfects, Mode=TwoWay}">
-                            <Label Content="Powiadomienia dźwiękowe"/>
+                            <Label Content="Sound notifications"/>
                         </CheckBox>
                         <CheckBox VerticalAlignment="Center"
                                   IsChecked="{Binding UseWhiteText, Mode=TwoWay}" 
-                                  Margin="70,0,0,0">
-                            <Label Content="Jasny motyw"/>
+                                  Margin="100,0,0,0">
+                            <Label Content="Light theme"/>
                         </CheckBox>
                     </StackPanel>
-                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application znajdziesz na:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://bns-.github.io/YAPA/" TextDecorations=""><Run Text="http://bns-.github.io/YAPA/"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://bns-.github.io/YAPA/" TextDecorations=""><Run Text="http://bns-.github.io/YAPA/"/></Hyperlink></TextBlock>
                 </StackPanel>
                 <Button x:Name="btnClose"
             		Command="{Binding SaveSettings}"
-            		Content="Zapisz"
+            		Content="Save"
             		Cursor="Hand"
-            		ToolTip="Zapisz ustawienia"
+            		ToolTip="Save settings"
             		Margin="351,271,10,10">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
