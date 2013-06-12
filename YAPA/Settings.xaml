@@ -65,7 +65,7 @@
                             <Label Content="Jasny motyw"/>
                         </CheckBox>
                     </StackPanel>
-                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application dostarczony przez:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="mailto://lukasz@banasiak.me" TextDecorations=""><Run Text="Łukasz Banasiak"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application znajdziesz na:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://bns-.github.io/YAPA/" TextDecorations=""><Run Text="http://bns-.github.io/YAPA/"/></Hyperlink></TextBlock>
                 </StackPanel>
                 <Button x:Name="btnClose"
             		Command="{Binding SaveSettings}"
