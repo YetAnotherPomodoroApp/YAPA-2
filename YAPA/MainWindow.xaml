@@ -39,6 +39,14 @@
                Margin="0,0,45,0" 
                Text="00:00" 
                FontStretch="UltraCondensed">
+            <TextBlock.Effect>
+                <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+            </TextBlock.Effect>
         </TextBlock>
 
         <Button x:Name="Start"
@@ -64,6 +72,14 @@
                                FontStretch="UltraCondensed"/>
                 </ControlTemplate>
             </Button.Template>
+            <Button.Effect>
+                <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+            </Button.Effect>
         </Button>
 
         <Button x:Name="Stop"
@@ -89,6 +105,14 @@
                                FontStretch="UltraCondensed"/>
                 </ControlTemplate>
             </Button.Template>
+            <Button.Effect>
+                <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+            </Button.Effect>
         </Button>
 
         <TextBlock x:Name="CurrentPeriod"
@@ -104,6 +128,15 @@
                    Margin="10,35,5,00" 
                    Text=""
                    ToolTip="Current period"
-                   Width="20" />
+                   Width="20" >
+            <TextBlock.Effect>
+                <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+            </TextBlock.Effect>
+        </TextBlock>
     </Grid>
 </Window>

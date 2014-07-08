@@ -37,6 +37,7 @@ namespace YAPA
         private Storyboard TimerFlush;
         private Brush _textBrush;
         private double _clockOpacity;
+        private double _shadowOpacity;
         private int _workTime;
         private int _breakTime;
         private int _breakLongTime;
@@ -62,8 +63,9 @@ namespace YAPA
 
             this.DataContext = this;
             _showSettings = new ShowSettings(this);
-            _textBrush = Brushes.Black;
+            TextBrush = Brushes.Black;
             _clockOpacity = .6;
+            _shadowOpacity = 0.6;
             _workTime = 25;
             _breakTime = 5;
             _breakLongTime = 15;
@@ -72,7 +74,7 @@ namespace YAPA
             Period = 0;
             IsBreak = false;
             IsBreakLong = false;
-            IsWork = true;                        
+            IsWork = true;
             BreakLabel = "break";
             WorkLabel = "work";
 
@@ -172,6 +174,30 @@ namespace YAPA
             {
                 _textBrush = value;
                 RaisePropertyChanged("TextBrush");
+                RaisePropertyChanged("TextShadowColor");
+            }
+        }
+
+        public Color TextShadowColor
+        {
+            get
+            {
+                var shadowColor = Colors.White;
+
+                if (TextBrush == Brushes.White)
+                {
+                    shadowColor = Colors.Black;
+                }
+                else
+                {
+                    shadowColor = Colors.White;
+                }
+
+                return shadowColor;
+            }
+            set
+            {
+
             }
         }
 
@@ -192,6 +218,16 @@ namespace YAPA
             {
                 _clockOpacity = value;
                 RaisePropertyChanged("ClockOpacity");
+            }
+        }
+
+        public double ShadowOpacity
+        {
+            get { return _shadowOpacity; }
+            set
+            {
+                _shadowOpacity = value;
+                RaisePropertyChanged("ShadowOpacity");
             }
         }
 
@@ -278,8 +314,8 @@ namespace YAPA
                 stopWatch.Start();
                 dispacherTime.Start();
                 if (IsWork)
-                    Period ++;
-            }            
+                    Period++;
+            }
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
@@ -315,7 +351,7 @@ namespace YAPA
         {
             if (_soundEfects)
                 RingSound.Play();
-            TimerFlush.Begin(this, true);            
+            TimerFlush.Begin(this, true);
             stopWatch.Reset();
             dispacherTime.Stop();
             ProgressState = "Error";
@@ -347,7 +383,7 @@ namespace YAPA
 
         private void ResetTicking()
         {
-            TimerFlush.Stop(this);            
+            TimerFlush.Stop(this);
             stopWatch.Reset();
             dispacherTime.Stop();
             CurrentTime.Text = "00:00";
@@ -402,7 +438,7 @@ namespace YAPA
                         dispacherTime.Start();
                         if (IsWork)
                             Period++;
-                    }  
+                    }
                 }
                 else if ((args[1].ToLowerInvariant() == "/pause"))
                 {
@@ -444,5 +480,8 @@ namespace YAPA
 
             return true;
         }
+
+
+
     }
 }

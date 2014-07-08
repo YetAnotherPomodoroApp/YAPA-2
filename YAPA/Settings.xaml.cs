@@ -16,6 +16,7 @@ namespace YAPA
         private IMainViewModel _host;
         private ICommand _saveSettings;
         private double _clockOpacity;
+        private double _shadowOpacity;
         private bool _useWhiteText;
         private int _workTime;
         private int _breakTime;
@@ -28,11 +29,11 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity)
         {
             InitializeComponent();
             this.DataContext = this;
-            _host = host;            
+            _host = host;
             _useWhiteText = true;
             _soundEfects = soundEfects;
             _clockOpacity = currentOpacity;
@@ -41,6 +42,7 @@ namespace YAPA
             _breakTime = breakTime;
             _breakLongTime = breakLongTime;
             _workTime = workTime;
+            _shadowOpacity = shadowOpacity;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
         }
 
@@ -72,6 +74,20 @@ namespace YAPA
                 _clockOpacity = value;
                 _host.ClockOpacity = value;
                 RaisePropertyChanged("ClockOpacity");
+            }
+        }
+
+        /// <summary>
+        /// The desired opacity of the 
+        /// </summary>
+        public double ShadowOpacity
+        {
+            get { return _shadowOpacity; }
+            set
+            {
+                _shadowOpacity = value;
+                _host.ShadowOpacity = value;
+                RaisePropertyChanged("ShadowOpacity");
             }
         }
 
