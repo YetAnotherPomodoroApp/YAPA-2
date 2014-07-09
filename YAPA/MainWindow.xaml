@@ -64,12 +64,18 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
+                               x:Name="StarTextBlock"
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
                                FontSize="12" 
                                Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
             <Button.Effect>
@@ -98,11 +104,17 @@
                     <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                TextAlignment="Center"
+                               x:Name="StopTextBlock"
                                Foreground="{Binding TextBrush}"
                                FontSize="12" 
                                Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="StopTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
             <Button.Effect>

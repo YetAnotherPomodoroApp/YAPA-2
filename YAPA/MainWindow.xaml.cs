@@ -175,6 +175,7 @@ namespace YAPA
                 _textBrush = value;
                 RaisePropertyChanged("TextBrush");
                 RaisePropertyChanged("TextShadowColor");
+                RaisePropertyChanged("MouseOverBackgroundColor");
             }
         }
 
@@ -200,6 +201,29 @@ namespace YAPA
 
             }
         }
+
+        public Brush MouseOverBackgroundColor
+        {
+            get
+            {
+                var mouseOverBackgroundColor = Brushes.White;
+
+                if (TextBrush == Brushes.White)
+                {
+                    mouseOverBackgroundColor = Brushes.Black;
+                }
+                else
+                {
+                    mouseOverBackgroundColor = Brushes.White;
+                }
+
+                return mouseOverBackgroundColor;
+            }
+            set
+            {
+            }
+        }
+
 
         public bool SoundEfects
         {
