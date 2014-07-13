@@ -37,6 +37,7 @@ namespace YAPA
         /// </summary>
         public void Execute(object parameter)
         {
+            YAPA.Properties.Settings.Default.Save();
             _host.CloseSettings();
         }
     }

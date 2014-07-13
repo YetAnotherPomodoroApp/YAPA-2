@@ -1,6 +1,7 @@
 ﻿<Window x:Class="YAPA.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:YAPA.Properties"
         Title="YAPA"
         Height="80" 
         Width="250" 
@@ -10,7 +11,8 @@
         Background="Transparent"
         WindowStartupLocation="Manual"
         WindowStyle="None" 
-        Top="0" 
+        Top="{Binding Source={x:Static p:Settings.Default}, Path=WindowTop, Mode=TwoWay}" 
+        Left="{Binding Source={x:Static p:Settings.Default}, Path=WindowLeft, Mode=TwoWay}" 
         Topmost="True" 
         MouseRightButtonUp="Window_MouseRightButtonUp">
 

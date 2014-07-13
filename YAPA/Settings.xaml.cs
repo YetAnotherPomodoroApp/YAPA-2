@@ -38,7 +38,7 @@ namespace YAPA
             _soundEfects = soundEfects;
             _clockOpacity = currentOpacity;
             _saveSettings = new SaveSettings(this);
-            _useWhiteText = (currentTextColor == Brushes.White);
+            _useWhiteText = (currentTextColor.ToString() == Brushes.White.ToString());
             _breakTime = breakTime;
             _breakLongTime = breakLongTime;
             _workTime = workTime;
@@ -112,7 +112,7 @@ namespace YAPA
             set
             {
                 _soundEfects = value;
-                _host.SoundEfects = value;
+                _host.SoundEffects = value;
                 RaisePropertyChanged("SoundEfects");
             }
         }
