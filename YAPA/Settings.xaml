@@ -7,7 +7,7 @@
         mc:Ignorable="d" 
         x:Class="YAPA.Settings"
         Title="YAPA Settings" 
-        Height="334" 
+        Height="399" 
         Width="450"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -55,6 +55,16 @@
                     		Maximum="1"
                     		IsMoveToPointEnabled="False"
                     		Value="{Binding ClockOpacity, Mode=TwoWay}"
+                    		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                        <Label Content="Shadow opacity level"/>
+                        <Slider TickPlacement="BottomRight"
+                            Margin="5,0,5,0"
+                    		Minimum="0"
+                    		Maximum="1"
+                    		IsMoveToPointEnabled="False"
+                    		Value="{Binding ShadowOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,0,0,15">

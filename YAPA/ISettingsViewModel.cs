@@ -18,6 +18,11 @@ namespace YAPA
         double ClockOpacity { get; set; }
 
         /// <summary>
+        /// The desired opacity of the 
+        /// </summary>
+        double ShadowOpacity { get; set; }
+
+        /// <summary>
         /// True if we are to use white text to render;
         /// otherwise, false.
         /// </summary>

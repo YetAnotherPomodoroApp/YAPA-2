@@ -19,9 +19,24 @@ namespace YAPA
         double ClockOpacity { get; set;  }
 
         /// <summary>
+        /// The desired opacity of the shadow;
+        /// </summary>
+        double ShadowOpacity { get; set; }
+
+        /// <summary>
         /// The color used to render the clock.
         /// </summary>
         Brush TextBrush { get; set; }
+
+        /// <summary>
+        /// The color used to render the shadow.
+        /// </summary>
+        Color TextShadowColor { get; set; }
+
+        /// <summary>
+        /// The color used to render on mouse hover.
+        /// </summary>
+        Brush MouseOverBackgroundColor { get; set; }
 
         /// <summary>
         /// The font size used to render the clock.
