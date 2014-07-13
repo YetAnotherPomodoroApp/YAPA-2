@@ -22,6 +22,7 @@ using System.Windows.Shell;
 using System.Reflection;
 using System.IO;
 using YAPA.Properties;
+using WindowState = System.Windows.WindowState;
 
 namespace YAPA
 {
@@ -312,13 +313,22 @@ namespace YAPA
             }
         }
 
+        public string CurrentTimeValue 
+        {
+            set
+            {
+                CurrentTime.Text = value;
+                this.Title = String.Format("YAPA - {0}", value);
+            }
+        }
+
         void DoTick(object sender, EventArgs e)
         {
             if (stopWatch.IsRunning)
             {
                 TimeSpan ts = stopWatch.Elapsed;
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
-                CurrentTime.Text = currentTime;
+                CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = Period.ToString();
                 Ticks++;
                 if (IsWork)
@@ -388,7 +398,7 @@ namespace YAPA
             ProgressState = "Error";
             if (IsWork)
             {
-                CurrentTime.Text = BreakLabel;
+                CurrentTimeValue = BreakLabel;
                 IsWork = false;
                 if (Period == 4)
                 {
@@ -400,7 +410,7 @@ namespace YAPA
             }
             else
             {
-                CurrentTime.Text = WorkLabel;
+                CurrentTimeValue = WorkLabel;
                 IsBreak = false;
                 IsBreakLong = false;
                 IsWork = true;
@@ -417,7 +427,7 @@ namespace YAPA
             TimerFlush.Stop(this);
             stopWatch.Reset();
             dispacherTime.Stop();
-            CurrentTime.Text = "00:00";
+            CurrentTimeValue = "00:00";
             CurrentPeriod.Text = "";
             Period = 0;
             IsBreak = false;
@@ -512,7 +522,31 @@ namespace YAPA
             return true;
         }
 
+        private void Exit_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (stopWatch.IsRunning)
+            {
+                if (System.Windows.MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+            this.Close();
+        }
 
+        private void Minimize_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
 
+        private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            MinExitPanel.Visibility = Visibility.Visible;
+        }
+
+        private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            MinExitPanel.Visibility = Visibility.Hidden;
+        }
     }
 }
