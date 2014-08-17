@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:custom ="clr-namespace:YAPA"
         mc:Ignorable="d" 
         x:Class="YAPA.Settings"
         Title="YAPA Settings" 
-        Height="399" 
+        Height="499" 
         Width="450"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -20,71 +21,88 @@
                 <DropShadowEffect Color="Black" Direction="315" 
                                         ShadowDepth="0" Opacity=".5" BlurRadius="20" />
             </Border.Effect>
-            <Grid Background="White" Margin="0,0,0,0">
-                <TextBlock Text="YAPA, v1.0"
+            <Grid Background="White" Margin="0,0,0,29">
+
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock Text="YAPA, v1.0"
             		FontFamily="Segoe UI Light"
-            		FontSize="18pt" Margin="10,0,10,245"
+            		FontSize="18pt" Margin="10,0,10,0"
                            />
-                <StackPanel Orientation="Vertical" Margin="42,60,42,43">
-                    <Label Content="Configure periods"/>
-                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                        <Label Content="Work"/>
-                        <xctk:IntegerUpDown 
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Vertical" Margin="0,-1,0,0">
+                            <TextBlock Height="11" Width="13" Margin="0,-1,0,1" FontSize="10" VerticalAlignment="Top" Text="M"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="W"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="F"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel">
+                        
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="42,0,42,43">
+                        <Label Content="Configure periods"/>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                            <Label Content="Work"/>
+                            <xctk:IntegerUpDown 
                         	Margin="0,0,12,0" 
                         	ParsingNumberStyle="Number"
                         	Value="{Binding WorkTime, Mode=TwoWay}" 
                         	Minimum="1" BorderThickness="0"/>
-                        <Label Content="Short breaks"/>
-                        <xctk:IntegerUpDown
+                            <Label Content="Short breaks"/>
+                            <xctk:IntegerUpDown
                             Margin="0,0,12,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
-                        <Label Content="Long break"/>
-                        <xctk:IntegerUpDown
+                            <Label Content="Long break"/>
+                            <xctk:IntegerUpDown
                             Margin="0,0,0,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakLongTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
-                        <Label Content="Opacity level"/>
-                        <Slider TickPlacement="BottomRight"
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                            <Label Content="Opacity level"/>
+                            <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
                     		Maximum="1"
                     		IsMoveToPointEnabled="False"
                     		Value="{Binding ClockOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
-                        <Label Content="Shadow opacity level"/>
-                        <Slider TickPlacement="BottomRight"
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                            <Label/>
+                            <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
                     		Maximum="1"
                     		IsMoveToPointEnabled="False"
                     		Value="{Binding ShadowOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding SoundEfects, Mode=TwoWay}">
-                            <Label Content="Sound notifications"/>
-                        </CheckBox>
-                        <CheckBox VerticalAlignment="Center"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding SoundEfects, Mode=TwoWay}">
+                                <Label Content="Sound notifications"/>
+                            </CheckBox>
+                            <CheckBox VerticalAlignment="Center"
                                   IsChecked="{Binding UseWhiteText, Mode=TwoWay}" 
                                   Margin="100,0,0,0">
-                            <Label Content="Light theme"/>
-                        </CheckBox>
+                                <Label Content="Light theme"/>
+                            </CheckBox>
+                        </StackPanel>
+                        <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                     </StackPanel>
-                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                 </StackPanel>
                 <Button x:Name="btnClose"
             		Command="{Binding SaveSettings}"
             		Content="Save"
             		Cursor="Hand"
             		ToolTip="Save settings"
-            		Margin="351,271,10,10">
+            		Margin="351,362,10,10" RenderTransformOrigin="0.478,0.513">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <TextBlock Text="{TemplateBinding Content}" 

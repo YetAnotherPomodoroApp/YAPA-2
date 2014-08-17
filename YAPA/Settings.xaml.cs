@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,6 +24,7 @@ namespace YAPA
         private int _breakTime;
         private int _breakLongTime;
         private bool _soundEfects;
+        private ItemRepository _itemRepository;
 
         // INPC support
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,6 +47,47 @@ namespace YAPA
             _workTime = workTime;
             _shadowOpacity = shadowOpacity;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
+            _itemRepository = new ItemRepository();
+
+
+            DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+            Calendar cal = dfi.Calendar;
+
+            var pomodoros = _itemRepository.GetPomodoros().Select(x => new { week = cal.GetWeekOfYear(x.DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek), x });
+            int max = pomodoros.Max(x => x.x.Count);
+
+            foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
+            {
+                var week = pomodoro.Select(x => x.x.ToPomodoroViewModel(GetLevelFromCount(x.x.Count, max)));
+                WeekStackPanel.Children.Add(new PomodoroWeek(week));
+            }
+        }
+
+        private PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
+        {
+            if (count == 0)
+            {
+                return PomodoroLevelEnum.Level0;
+            }
+            if (maxCount <= 4)
+            {
+                return PomodoroLevelEnum.Level4;
+            }
+            var level = (double)count / maxCount;
+            if (level < 0.25)
+            {
+                return PomodoroLevelEnum.Level1;
+            }
+            else if (level < 0.50)
+            {
+                return PomodoroLevelEnum.Level2;
+            }
+            else if (level < 0.75)
+            {
+                return PomodoroLevelEnum.Level3;
+            }
+
+            return PomodoroLevelEnum.Level4;
         }
 
         /// <summary>
