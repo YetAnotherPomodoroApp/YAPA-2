@@ -21,7 +21,7 @@
                                         ShadowDepth="0" Opacity=".5" BlurRadius="20" />
             </Border.Effect>
             <Grid Background="White" Margin="0,0,0,0">
-                <TextBlock Text="YAPA, v1.0"
+                <TextBlock Text="YAPA, v1.0.1"
             		FontFamily="Segoe UI Light"
             		FontSize="18pt" Margin="10,0,10,245"
                            />
