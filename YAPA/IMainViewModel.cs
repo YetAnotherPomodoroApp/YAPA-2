@@ -56,6 +56,6 @@ namespace YAPA
         /// <summary>
         /// The font size used to render the clock.
         /// </summary>
-        bool SoundEfects { get; set; }
+        bool SoundEffects { get; set; }
     }
 }
