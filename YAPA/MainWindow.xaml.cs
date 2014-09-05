@@ -358,8 +358,9 @@ namespace YAPA
             {
                 stopWatch.Start();
                 dispacherTime.Start();
-                if (IsWork)
-                    Period++;
+                //Count when finished
+                //if (IsWork)
+                //    Period++;
             }
         }
 
@@ -411,6 +412,7 @@ namespace YAPA
                 }
                 else
                     IsBreak = true;
+                Period++;
             }
             else
             {
@@ -481,8 +483,9 @@ namespace YAPA
                         TimerFlush.Stop(this);
                         stopWatch.Start();
                         dispacherTime.Start();
-                        if (IsWork)
-                            Period++;
+                        //Count when finished
+                        //if (IsWork)
+                        //    Period++;
                     }
                 }
                 else if ((args[1].ToLowerInvariant() == "/pause"))
