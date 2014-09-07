@@ -29,7 +29,7 @@ namespace YAPA
         private double _progressValue;
         private string _progressState;
         private int Ticks;
-        private int _period;
+        private int Period;
         private bool IsBreak;
         private bool IsBreakLong;
         private bool IsWork;
@@ -80,23 +80,6 @@ namespace YAPA
             RingSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
-        }
-
-        private int Period
-        {
-            get
-            {
-                return _period;
-            }
-            set
-            {
-                //Pomodoro completed
-                if (value - _period == 1)
-                {
-                    itemRepository.CompletePomodoro();
-                }
-                _period = value;
-            }
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -358,9 +341,8 @@ namespace YAPA
             {
                 stopWatch.Start();
                 dispacherTime.Start();
-                //Count when finished
-                //if (IsWork)
-                //    Period++;
+                if (IsWork)
+                    Period++;
             }
         }
 
@@ -390,6 +372,7 @@ namespace YAPA
             {
                 Ticks = 0;
                 StopTicking();
+                itemRepository.CompletePomodoro();
             }
         }
 
@@ -483,9 +466,8 @@ namespace YAPA
                         TimerFlush.Stop(this);
                         stopWatch.Start();
                         dispacherTime.Start();
-                        //Count when finished
-                        //if (IsWork)
-                        //    Period++;
+                        if (IsWork)
+                            Period++;
                     }
                 }
                 else if ((args[1].ToLowerInvariant() == "/pause"))
