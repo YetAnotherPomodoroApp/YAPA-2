@@ -80,6 +80,7 @@ namespace YAPA
             RingSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
+
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -317,7 +318,7 @@ namespace YAPA
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
                 CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = Period.ToString();
-                Ticks++;
+                Ticks = (int)ts.TotalSeconds;
                 if (IsWork)
                     StartTicking(WorkTime, Ticks);
                 else if (IsBreak)
