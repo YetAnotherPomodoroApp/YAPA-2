@@ -372,8 +372,11 @@ namespace YAPA
             if (Increment >= _totalTime)
             {
                 Ticks = 0;
+                if (IsWork)
+                {
+                    itemRepository.CompletePomodoro();
+                }
                 StopTicking();
-                itemRepository.CompletePomodoro();
             }
         }
 

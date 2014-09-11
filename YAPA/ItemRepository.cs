@@ -34,7 +34,7 @@ namespace YAPA
 
         public IEnumerable<PomodoroEntity> GetPomodoros()
         {
-            var days = 200;
+            var days = 190;
             var today = DateTime.Now.Date.Date;
             var fromDate = today.AddDays(-days);
             var emptyPomodoros = Enumerable.Range(0, days + 1).Select(x => new PomodoroEntity() { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
@@ -44,7 +44,13 @@ namespace YAPA
                 .GroupBy(c => c.DateTime.Date, c => c.Count,
                     (time, ints) => new PomodoroEntity() { DateTime = time, Count = ints.Sum(x => x) });
             
-            return joinedPomodoros.OrderBy(x => x.DateTime);
+            return joinedPomodoros.OrderBy(x => x.DateTime.Date);
+        }
+
+        public void Add(PomodoroEntity pomodoroEntity)
+        {
+            context.Pomodoros.Add(pomodoroEntity);
+            context.SaveChanges();
         }
     }
 
