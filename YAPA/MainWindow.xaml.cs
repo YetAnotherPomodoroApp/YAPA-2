@@ -399,7 +399,6 @@ namespace YAPA
                 }
                 else
                     IsBreak = true;
-                Period++;
             }
             else
             {
