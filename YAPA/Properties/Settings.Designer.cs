@@ -154,5 +154,29 @@ namespace YAPA.Properties {
                 this["TextBrush"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double CurrentScreenWidth {
+            get {
+                return ((double)(this["CurrentScreenWidth"]));
+            }
+            set {
+                this["CurrentScreenWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double CurrentScreenHeight {
+            get {
+                return ((double)(this["CurrentScreenHeight"]));
+            }
+            set {
+                this["CurrentScreenHeight"] = value;
+            }
+        }
     }
 }
