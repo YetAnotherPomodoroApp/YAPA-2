@@ -23,6 +23,8 @@ using System.Reflection;
 using System.IO;
 using YAPA.Properties;
 using WindowState = System.Windows.WindowState;
+using GDIScreen = System.Windows.Forms.Screen;
+using System.Windows.Interop;
 
 namespace YAPA
 {
@@ -69,14 +71,6 @@ namespace YAPA
             dispacherTime.Tick += new EventHandler(DoTick);
             dispacherTime.Interval = new TimeSpan(0, 0, 0, 1);
 
-            // default position only for first run
-            // position the clock at top / right, primary screen
-            if (YAPA.Properties.Settings.Default.IsFirstRun)
-            {
-                this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 15.0;
-                this.Top = 0;
-            }
-
             // enable dragging
             this.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
 
@@ -112,6 +106,19 @@ namespace YAPA
             //if you want to handle to command line args on the first instance you may want it to go here
             //or in the app.xaml.cs
             //ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs);
+
+            GDIScreen currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
+
+            bool screenChanged = (currentScreen.WorkingArea.Height != YAPA.Properties.Settings.Default.CurrentScreenHeight ||
+                                currentScreen.WorkingArea.Width != YAPA.Properties.Settings.Default.CurrentScreenWidth);
+
+            // default position only for first run or when screen size changes
+            // position the clock at top / right, primary screen
+            if (YAPA.Properties.Settings.Default.IsFirstRun || screenChanged)
+            {
+                this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 15.0;
+                this.Top = 0;
+            }
         }
 
         private void CreateJumpList()
