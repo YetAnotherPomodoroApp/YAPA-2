@@ -96,6 +96,11 @@ namespace YAPA
                 YAPA.Properties.Settings.Default.IsFirstRun = false;
             }
 
+            GDIScreen currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
+
+            YAPA.Properties.Settings.Default.CurrentScreenHeight = currentScreen.WorkingArea.Height;
+            YAPA.Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
+
             YAPA.Properties.Settings.Default.Save();
         }
 
