@@ -1,27 +1,15 @@
-﻿using Xceed.Wpf.Toolkit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Media;
 using System.Windows.Shell;
 using System.Reflection;
-using System.IO;
-using YAPA.Properties;
 using WindowState = System.Windows.WindowState;
 
 namespace YAPA
@@ -33,6 +21,7 @@ namespace YAPA
     {
         DispatcherTimer dispacherTime = new DispatcherTimer();
         Stopwatch stopWatch = new Stopwatch();
+        ItemRepository itemRepository = new ItemRepository();
 
         private ICommand _showSettings;
         private Storyboard TimerFlush;
@@ -90,9 +79,8 @@ namespace YAPA
             TickSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
             RingSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
-            Debug.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
-
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
+
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -330,7 +318,7 @@ namespace YAPA
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
                 CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = Period.ToString();
-                Ticks++;
+                Ticks = (int)ts.TotalSeconds;
                 if (IsWork)
                     StartTicking(WorkTime, Ticks);
                 else if (IsBreak)
@@ -384,6 +372,10 @@ namespace YAPA
             if (Increment >= _totalTime)
             {
                 Ticks = 0;
+                if (IsWork)
+                {
+                    itemRepository.CompletePomodoro();
+                }
                 StopTicking();
             }
         }

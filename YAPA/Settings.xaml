@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:custom ="clr-namespace:YAPA"
         mc:Ignorable="d" 
         x:Class="YAPA.Settings"
         Title="YAPA Settings" 
-        Height="399" 
+        Height="499" 
         Width="450"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -20,12 +22,31 @@
                 <DropShadowEffect Color="Black" Direction="315" 
                                         ShadowDepth="0" Opacity=".5" BlurRadius="20" />
             </Border.Effect>
-            <Grid Background="White" Margin="0,0,0,0">
-                <TextBlock Text="YAPA, v1.1.0"
+            <Grid Background="White" Margin="0,0,0,29">
+
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock Text="YAPA, v1.1.0"
             		FontFamily="Segoe UI Light"
-            		FontSize="18pt" Margin="10,0,10,245"
+            		FontSize="18pt" Margin="10,0,10,0"
                            />
-                <StackPanel Orientation="Vertical" Margin="42,60,42,43">
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="LoadingPanel" Visibility="Visible">
+                        <Image gif:ImageBehavior.AnimatedSource="Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="DayPanel" Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical" Margin="0,5,0,0">
+                            <TextBlock Height="11" Width="13" Margin="0,-1,0,1" FontSize="10" VerticalAlignment="Top" Text="M"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="W"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="F"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,1"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel" Width="377">
+
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="42,0,42,43">
                     <Label Content="Configure periods"/>
                     <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
                         <Label Content="Work"/>
@@ -58,7 +79,7 @@
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,15">
-                        <Label Content="Shadow opacity level"/>
+                            <Label Content="Shadow opacity"/>
                         <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
@@ -79,12 +100,13 @@
                     </StackPanel>
                     <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                 </StackPanel>
+                </StackPanel>
                 <Button x:Name="btnClose"
             		Command="{Binding SaveSettings}"
             		Content="Save"
             		Cursor="Hand"
             		ToolTip="Save settings"
-            		Margin="351,271,10,10">
+            		Margin="351,362,10,10" RenderTransformOrigin="0.478,0.513">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <TextBlock Text="{TemplateBinding Content}" 
