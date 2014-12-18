@@ -291,6 +291,19 @@ namespace YAPA
             }
         }
 
+        public bool CountBackwards
+        {
+            get
+            {
+                return YAPA.Properties.Settings.Default.CountBackwards;
+            }
+            set
+            {
+                YAPA.Properties.Settings.Default.CountBackwards = value;
+                this.RaisePropertyChanged("CountBackwards");
+            }
+        }
+
         public string ProgressState
         {
             get { return _progressState; }
@@ -301,7 +314,7 @@ namespace YAPA
             }
         }
 
-        public string CurrentTimeValue 
+        public string CurrentTimeValue
         {
             set
             {
@@ -315,16 +328,36 @@ namespace YAPA
             if (stopWatch.IsRunning)
             {
                 TimeSpan ts = stopWatch.Elapsed;
+                Ticks = (int)ts.TotalSeconds;
+
+                if (IsWork)
+                {
+                    if (CountBackwards)
+                    {
+                        ts = TimeSpan.FromMinutes(WorkTime) - ts;
+                    }
+                    StartTicking(WorkTime, Ticks);
+                }
+                else if (IsBreak)
+                {
+                    if (CountBackwards)
+                    {
+                        ts = TimeSpan.FromMinutes(BreakTime) - ts;
+                    }
+                    StartTicking(BreakTime, Ticks);
+                }
+                else if (IsBreakLong)
+                {
+                    if (CountBackwards)
+                    {
+                        ts = TimeSpan.FromMinutes(BreakLongTime) - ts;
+                    }
+                    StartTicking(BreakLongTime, Ticks);
+                }
+
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
                 CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = Period.ToString();
-                Ticks = (int)ts.TotalSeconds;
-                if (IsWork)
-                    StartTicking(WorkTime, Ticks);
-                else if (IsBreak)
-                    StartTicking(BreakTime, Ticks);
-                else if (IsBreakLong)
-                    StartTicking(BreakLongTime, Ticks);
             }
         }
 

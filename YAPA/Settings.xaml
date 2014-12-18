@@ -47,59 +47,66 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="42,0,42,43">
-                    <Label Content="Configure periods"/>
-                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                        <Label Content="Work"/>
-                        <xctk:IntegerUpDown 
+                        <Label Content="Configure periods"/>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                            <Label Content="Work"/>
+                            <xctk:IntegerUpDown 
                         	Margin="0,0,12,0" 
                         	ParsingNumberStyle="Number"
                         	Value="{Binding WorkTime, Mode=TwoWay}" 
                         	Minimum="1" BorderThickness="0"/>
-                        <Label Content="Short breaks"/>
-                        <xctk:IntegerUpDown
+                            <Label Content="Short breaks"/>
+                            <xctk:IntegerUpDown
                             Margin="0,0,12,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
-                        <Label Content="Long break"/>
-                        <xctk:IntegerUpDown
+                            <Label Content="Long break"/>
+                            <xctk:IntegerUpDown
                             Margin="0,0,0,0"
                             ParsingNumberStyle="Number"
                             Value="{Binding BreakLongTime, Mode=TwoWay}"
                             Minimum="1" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
-                        <Label Content="Opacity level"/>
-                        <Slider TickPlacement="BottomRight"
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                            <Label Content="Opacity level"/>
+                            <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
                     		Maximum="1"
                     		IsMoveToPointEnabled="False"
                     		Value="{Binding ClockOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,15">
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,15">
                             <Label Content="Shadow opacity"/>
-                        <Slider TickPlacement="BottomRight"
+                            <Slider TickPlacement="BottomRight"
                             Margin="5,0,5,0"
                     		Minimum="0"
                     		Maximum="1"
                     		IsMoveToPointEnabled="False"
                     		Value="{Binding ShadowOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding SoundEfects, Mode=TwoWay}">
-                            <Label Content="Sound notifications"/>
-                        </CheckBox>
-                        <CheckBox VerticalAlignment="Center"
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                <CheckBox  IsChecked="{Binding SoundEfects, Mode=TwoWay}" HorizontalAlignment="Left">
+                                    <Label Margin="0,-5" Content="Sound notifications"/>
+                                </CheckBox>
+                                <CheckBox Margin="100,0,0,0"
                                   IsChecked="{Binding UseWhiteText, Mode=TwoWay}" 
-                                  Margin="100,0,0,0">
-                            <Label Content="Light theme"/>
-                        </CheckBox>
+                                  HorizontalAlignment="Right">
+                                    <Label Margin="0,-5" Content="Light theme"/>
+                                </CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding CountBackwards, Mode=TwoWay}">
+                                    <Label Margin="0,-5" Content="Count backwards"/>
+                                </CheckBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                     </StackPanel>
-                    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
-                </StackPanel>
                 </StackPanel>
                 <Button x:Name="btnClose"
             		Command="{Binding SaveSettings}"
