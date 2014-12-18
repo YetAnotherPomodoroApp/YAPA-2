@@ -25,6 +25,7 @@ namespace YAPA
         private int _breakTime;
         private int _breakLongTime;
         private bool _soundEfects;
+        private bool _countBackwards;
         private ItemRepository _itemRepository;
 
         // INPC support
@@ -33,7 +34,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public  Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity)
+        public  Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
         {
             InitializeComponent();
             this.DataContext = this;
@@ -47,6 +48,7 @@ namespace YAPA
             _breakLongTime = breakLongTime;
             _workTime = workTime;
             _shadowOpacity = shadowOpacity;
+            _countBackwards = countBackwards;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
             _itemRepository = new ItemRepository();
 
@@ -211,6 +213,20 @@ namespace YAPA
                 _breakLongTime = value;
                 _host.BreakLongTime = value;
                 RaisePropertyChanged("BreakLongTime");
+            }
+        }
+
+        public bool CountBackwards
+        {
+            get
+            {
+                return _countBackwards;
+            }
+            set
+            {
+                _countBackwards = value;
+                _host.CountBackwards = value;
+                this.RaisePropertyChanged("CountBackwards");
             }
         }
 

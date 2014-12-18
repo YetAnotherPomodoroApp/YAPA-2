@@ -49,6 +49,11 @@ namespace YAPA
         bool SoundEfects { get; set; }
 
         /// <summary>
+        /// Count time backwards
+        /// </summary>
+        bool CountBackwards { get; set; }
+
+        /// <summary>
         /// Command invoked when user clicks 'Done'
         /// </summary>
         ICommand SaveSettings { get; }

@@ -57,5 +57,10 @@ namespace YAPA
         /// The font size used to render the clock.
         /// </summary>
         bool SoundEffects { get; set; }
+
+        /// <summary>
+        /// Count time backwards
+        /// </summary>
+        bool CountBackwards { get; set; }
     }
 }
