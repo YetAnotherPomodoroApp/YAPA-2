@@ -9,7 +9,7 @@
         mc:Ignorable="d" 
         x:Class="YAPA.Settings"
         Title="YAPA Settings" 
-        Height="499" 
+        Height="530" 
         Width="450"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -25,7 +25,7 @@
             <Grid Background="White" Margin="0,0,0,29">
 
                 <StackPanel Orientation="Vertical" >
-                    <TextBlock Text="YAPA, v1.1.0"
+                    <TextBlock Text="YAPA, v1.2.0"
             		FontFamily="Segoe UI Light"
             		FontSize="18pt" Margin="10,0,10,0"
                            />
@@ -106,7 +106,7 @@
             		Content="Save"
             		Cursor="Hand"
             		ToolTip="Save settings"
-            		Margin="351,362,10,10" RenderTransformOrigin="0.478,0.513">
+            		Margin="351,421,10,10" RenderTransformOrigin="0.478,0.513">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <TextBlock Text="{TemplateBinding Content}" 
