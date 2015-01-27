@@ -340,6 +340,10 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td>{2D987D95-4FD5-4E46-AAE8-9C2E4EA56CA3}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Data.SqlServerCe.Entity.dll</td><td>{FB1B4769-1074-42A6-80A0-263566EFA271}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.data.sqlserverce.enti</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Data.SqlServerCe.dll</td><td>{9284255C-5BD1-49D4-8940-05CA6741CF02}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.data.sqlserverce.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{CC36B1D2-4C09-4CB3-BDF4-0EBD34D42C42}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>YAPA.Content_Files</td><td>{30DE21DE-3F59-4F1F-8448-FB4D5B16ADC6}</td><td>INSTALLDIR</td><td>2</td><td/><td>yapa.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>YAPA.Primary_output</td><td>{AF458545-A29B-4672-8D04-EAA3D3C2AD2F}</td><td>INSTALLDIR</td><td>2</td><td/><td>yapa.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
@@ -1865,6 +1869,10 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>AlwaysInstall</td><td>System.Data.SqlServerCe.Entity.dll</td></row>
+		<row><td>AlwaysInstall</td><td>System.Data.SqlServerCe.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Xceed.Wpf.Toolkit.dll</td></row>
 		<row><td>AlwaysInstall</td><td>YAPA.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>YAPA.Primary_output</td></row>
 	</table>
@@ -1881,7 +1889,11 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>system.data.sqlserverce.dll</td><td>System.Data.SqlServerCe.dll</td><td>SYSTEM~1.DLL|System.Data.SqlServerCe.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\lukaszba\Projekty\YAPA\YAPA\bin\Release\System.Data.SqlServerCe.dll</td><td>1</td><td/></row>
+		<row><td>system.data.sqlserverce.enti</td><td>System.Data.SqlServerCe.Entity.dll</td><td>SYSTEM~1.DLL|System.Data.SqlServerCe.Entity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\lukaszba\Projekty\YAPA\YAPA\bin\Release\System.Data.SqlServerCe.Entity.dll</td><td>1</td><td/></row>
+		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\lukaszba\Projekty\YAPA\YAPA\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 		<row><td>yapa.content_files</td><td>YAPA.Content_Files</td><td>YAPA.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;YAPA&gt;|ContentFiles</td><td>3</td><td/></row>
+		<row><td>yapa.databasecontext.sdf</td><td>ISX_DEFAULTCOMPONENT</td><td>YAPADA~1.SDF|YAPA.DatabaseContext.sdf</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\lukaszba\Projekty\YAPA\YAPA\bin\Release\YAPA.DatabaseContext.sdf</td><td>1</td><td/></row>
 		<row><td>yapa.primary_output</td><td>YAPA.Primary_output</td><td>YAPA.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;YAPA&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2026,6 +2038,10 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_2935FFF5_808C_4FC0_A29F_D0EA0FDC64C2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Data.SqlServerCe.Entity.dll</td><td/><td/><td>_73486BB3_34D2_4708_B82C_0968AD9ED18D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Data.SqlServerCe.dll</td><td/><td/><td>_E879B244_F82F_434F_A97D_74EAF8BC4384_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_415A66B2_D77F_41A1_95DB_D81FBF4D805C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>YAPA.Content_Files</td><td/><td/><td>_4EA829EE_C269_4EEA_AFA7_0D1D8E89B907_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>YAPA.Primary_output</td><td/><td/><td>_B76D37F8_6E7B_4FA4_81CD_00301F50129F_FILTER</td><td/><td/><td/><td/></row>
 	</table>
@@ -3993,7 +4009,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{1ABECBE4-24A0-40C0-824D-4C7580BE02F5}</td></row>
 		<row><td>ISUSSignature</td><td>{C17BBCB1-2358-48C0-8048-D6AC4C10CFC9}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewUpgradePaths,viewISToday</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewUpgradePaths,viewISToday,viewFeatureFiles,viewObjects,viewAppFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
