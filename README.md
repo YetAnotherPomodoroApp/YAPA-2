@@ -11,10 +11,12 @@ Features:
 * Configurable periods
 * Sound control
 * Pomodoro™ counter :)
+* Pomodoro counter history similar to github contributions
 * Shows period progress on taskbar
 * Control app using taskbar jumplist
 * Select opacity for timer
 * Select light or dark theme for timer
+* Counting time backwards
 
 Contributors:
 -------------
