@@ -23,7 +23,7 @@
     </Window.TaskbarItemInfo>
 
     <Window.Resources>
-        <Storyboard x:Key="FlashTimer">
+        <Storyboard x:Key="FlashTimer" Timeline.DesiredFrameRate="15">
             <ColorAnimation
                 Storyboard.TargetName="CurrentTime" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                 To="Tomato" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever"/>
