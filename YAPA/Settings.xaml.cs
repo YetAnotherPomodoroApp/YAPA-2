@@ -50,7 +50,6 @@ namespace YAPA
             _shadowOpacity = shadowOpacity;
             _countBackwards = countBackwards;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
-            _itemRepository = new ItemRepository();
 
             Loaded += Settings_Loaded;
         }
@@ -59,6 +58,8 @@ namespace YAPA
         {
             await Task.Run(() =>
             {
+                _itemRepository = new ItemRepository();
+
                 DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                 Calendar cal = dfi.Calendar;
 
