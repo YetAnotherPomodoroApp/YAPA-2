@@ -27,7 +27,7 @@ Contributors:
 
 Donations:
 ----------
-If you are interested in supporting YAPA by donations you can use [Bountysource](https://www.bountysource.com/trackers/2840281-lukaszbanasiak-yapa) - bounty program for bug fixes or make a small payment via paypal.
+If you are interested in supporting YAPA by donations you can use [Bountysource](https://www.bountysource.com/teams/yapa) - bounty program for bug fixes or make a small payment via paypal.
 
 
 Visit YAPA website for more info http://lukaszbanasiak.github.io/YAPA/
