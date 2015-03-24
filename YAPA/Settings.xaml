@@ -33,14 +33,10 @@
                         <Image gif:ImageBehavior.AnimatedSource="Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="DayPanel" Visibility="Collapsed">
-                        <StackPanel Orientation="Vertical" Margin="0,5,0,0">
-                            <TextBlock Height="11" Width="13" Margin="0,-1,0,1" FontSize="10" VerticalAlignment="Top" Text="M"></TextBlock>
-                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
-                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="W"></TextBlock>
-                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
+                        <StackPanel Orientation="Vertical" Margin="0,5,0,0" Width="13">
+                            <TextBlock x:Name="MondayTextBlock" Height="11" Width="13" Margin="0,-1,0,12" FontSize="10" VerticalAlignment="Top" Text="M"></TextBlock>
+                            <TextBlock Height="11" Width="13" Margin="0,0,0,12" FontSize="10" VerticalAlignment="Top" Text="W"></TextBlock>
                             <TextBlock Height="11" Width="13" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="F"></TextBlock>
-                            <TextBlock Height="11" Width="13" Margin="0,0,0,1" ></TextBlock>
-                            <TextBlock Height="11" Width="13" Margin="0,0,0,1"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel" Width="377">
 

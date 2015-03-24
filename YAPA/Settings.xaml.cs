@@ -79,6 +79,9 @@ namespace YAPA
 
                 Dispatcher.Invoke(() =>
                 {
+                    int weekShift = DayOfWeek.Monday - System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                    MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
+
                     DayPanel.Visibility = Visibility.Visible;
                     LoadingPanel.Visibility = Visibility.Collapsed;
                 });
