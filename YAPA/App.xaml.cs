@@ -31,7 +31,7 @@ namespace YAPA
 
         public void Init()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #region ISingleInstanceApp Members

@@ -21,24 +21,24 @@ namespace YAPA
     /// </summary>
     public partial class MainWindow : Window, IMainViewModel, INotifyPropertyChanged
     {
-        DispatcherTimer dispacherTime = new DispatcherTimer();
-        Stopwatch stopWatch = new Stopwatch();
-        ItemRepository itemRepository = new ItemRepository();
+        private DispatcherTimer _dispacherTime;
+        private Stopwatch _stopWatch;
+        private ItemRepository _itemRepository;
 
         private ICommand _showSettings;
         private Storyboard TimerFlush;
 
         private double _progressValue;
         private string _progressState;
-        private int Ticks;
-        private int Period;
-        private bool IsBreak;
-        private bool IsBreakLong;
-        private bool IsWork;
-        private string BreakLabel;
-        private string WorkLabel;
-        private SoundPlayer TickSound;
-        private SoundPlayer RingSound;
+        private int _ticks;
+        private int _period;
+        private bool _isBreak;
+        private bool _isBreakLong;
+        private bool _isWork;
+        private string _breakLabel;
+        private string _workLabel;
+        private SoundPlayer _tickSound;
+        private SoundPlayer _ringSound;
 
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
@@ -47,49 +47,53 @@ namespace YAPA
         {
             InitializeComponent();
 
-            this.DataContext = this;
-            _showSettings = new ShowSettings(this);
-            Ticks = 0;
-            Period = 0;
-            IsBreak = false;
-            IsBreakLong = false;
-            IsWork = true;
-            BreakLabel = "break";
-            WorkLabel = "work";
+            _dispacherTime = new DispatcherTimer();
+            _stopWatch = new Stopwatch();
+            _itemRepository = new ItemRepository();
 
-            dispacherTime.Tick += new EventHandler(DoTick);
-            dispacherTime.Interval = new TimeSpan(0, 0, 0, 1);
+            DataContext = this;
+            _showSettings = new ShowSettings(this);
+            _ticks = 0;
+            _period = 0;
+            _isBreak = false;
+            _isBreakLong = false;
+            _isWork = true;
+            _breakLabel = "break";
+            _workLabel = "work";
+
+            _dispacherTime.Tick += new EventHandler(DoTick);
+            _dispacherTime.Interval = new TimeSpan(0, 0, 0, 1);
 
             // enable dragging
-            this.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
+            MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
 
             // save window position on close
-            this.Closing += MainWindow_Closing;
+            Closing += MainWindow_Closing;
 
             // flash timer
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
             // play sounds
-            TickSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
-            RingSound = new System.Media.SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
+            _tickSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
+            _ringSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
-            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            Loaded += MainWindow_Loaded;
 
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (YAPA.Properties.Settings.Default.IsFirstRun)
+            if (Properties.Settings.Default.IsFirstRun)
             {
-                YAPA.Properties.Settings.Default.IsFirstRun = false;
+                Properties.Settings.Default.IsFirstRun = false;
             }
 
             GDIScreen currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
 
-            YAPA.Properties.Settings.Default.CurrentScreenHeight = currentScreen.WorkingArea.Height;
-            YAPA.Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
+            Properties.Settings.Default.CurrentScreenHeight = currentScreen.WorkingArea.Height;
+            Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
 
-            YAPA.Properties.Settings.Default.Save();
+            Properties.Settings.Default.Save();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -100,26 +104,26 @@ namespace YAPA
             //or in the app.xaml.cs
             //ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs);
 
-            GDIScreen currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
+            var currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
 
-            bool screenChanged = (currentScreen.WorkingArea.Height != YAPA.Properties.Settings.Default.CurrentScreenHeight ||
-                                currentScreen.WorkingArea.Width != YAPA.Properties.Settings.Default.CurrentScreenWidth);
+            var screenChanged = (currentScreen.WorkingArea.Height != Properties.Settings.Default.CurrentScreenHeight ||
+                                currentScreen.WorkingArea.Width != Properties.Settings.Default.CurrentScreenWidth);
 
             // default position only for first run or when screen size changes
             // position the clock at top / right, primary screen
-            if (YAPA.Properties.Settings.Default.IsFirstRun || screenChanged)
+            if (Properties.Settings.Default.IsFirstRun || screenChanged)
             {
-                this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 15.0;
-                this.Top = 0;
+                Left = SystemParameters.PrimaryScreenWidth - Width - 15.0;
+                Top = 0;
             }
         }
 
         private void CreateJumpList()
         {
-            JumpList jumpList = new JumpList();
+            var jumpList = new JumpList();
             JumpList.SetJumpList(Application.Current, jumpList);
 
-            JumpTask startTask = new JumpTask();
+            var startTask = new JumpTask();
             startTask.Title = "Start";
             startTask.Description = "Start Pomodoro session";
             startTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -127,7 +131,7 @@ namespace YAPA
             startTask.IconResourceIndex = 7;
             jumpList.JumpItems.Add(startTask);
 
-            JumpTask pauseTask = new JumpTask();
+            var pauseTask = new JumpTask();
             pauseTask.Title = "Pause";
             pauseTask.Description = "Pause Pomodoro session";
             pauseTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -135,7 +139,7 @@ namespace YAPA
             pauseTask.IconResourceIndex = 3;
             jumpList.JumpItems.Add(pauseTask);
 
-            JumpTask stopTask = new JumpTask();
+            var stopTask = new JumpTask();
             stopTask.Title = "Restart";
             stopTask.Description = "Restart current Pomodori session";
             stopTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -143,7 +147,7 @@ namespace YAPA
             stopTask.IconResourceIndex = 4;
             jumpList.JumpItems.Add(stopTask);
 
-            JumpTask resetTask = new JumpTask();
+            var resetTask = new JumpTask();
             resetTask.Title = "Start from the beginning";
             resetTask.Description = "Start new Pomodoro session";
             resetTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -151,7 +155,7 @@ namespace YAPA
             resetTask.IconResourceIndex = 2;
             jumpList.JumpItems.Add(resetTask);
 
-            JumpTask settingsTask = new JumpTask();
+            var settingsTask = new JumpTask();
             settingsTask.Title = "Settings";
             settingsTask.Description = "Show YAPA settings";
             settingsTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -159,7 +163,7 @@ namespace YAPA
             settingsTask.IconResourceIndex = 5;
             jumpList.JumpItems.Add(settingsTask);
 
-            JumpTask homepageTask = new JumpTask();
+            var homepageTask = new JumpTask();
             homepageTask.Title = "Visit home page";
             homepageTask.Description = "Go to YAPA home page";
             homepageTask.ApplicationPath = Assembly.GetEntryAssembly().Location;
@@ -177,10 +181,10 @@ namespace YAPA
 
         public Brush TextBrush
         {
-            get { return new BrushConverter().ConvertFromString(YAPA.Properties.Settings.Default.TextBrush) as SolidColorBrush; }
+            get { return new BrushConverter().ConvertFromString(Properties.Settings.Default.TextBrush) as SolidColorBrush; }
             set
             {
-                YAPA.Properties.Settings.Default.TextBrush = value.ToString();
+                Properties.Settings.Default.TextBrush = value.ToString();
                 RaisePropertyChanged("TextBrush");
                 RaisePropertyChanged("TextShadowColor");
                 RaisePropertyChanged("MouseOverBackgroundColor");
@@ -235,60 +239,60 @@ namespace YAPA
 
         public bool SoundEffects
         {
-            get { return YAPA.Properties.Settings.Default.SoundNotification; }
+            get { return Properties.Settings.Default.SoundNotification; }
             set
             {
-                YAPA.Properties.Settings.Default.SoundNotification = value;
+                Properties.Settings.Default.SoundNotification = value;
                 RaisePropertyChanged("UseSoundEfects");
             }
         }
 
         public double ClockOpacity
         {
-            get { return YAPA.Properties.Settings.Default.OpacityLevel; }
+            get { return Properties.Settings.Default.OpacityLevel; }
             set
             {
-                YAPA.Properties.Settings.Default.OpacityLevel = value;
+                Properties.Settings.Default.OpacityLevel = value;
                 RaisePropertyChanged("ClockOpacity");
             }
         }
 
         public double ShadowOpacity
         {
-            get { return YAPA.Properties.Settings.Default.ShadowOpacityLevel; }
+            get { return Properties.Settings.Default.ShadowOpacityLevel; }
             set
             {
-                YAPA.Properties.Settings.Default.ShadowOpacityLevel = value;
+                Properties.Settings.Default.ShadowOpacityLevel = value;
                 RaisePropertyChanged("ShadowOpacity");
             }
         }
 
         public int WorkTime
         {
-            get { return YAPA.Properties.Settings.Default.PeriodWork; }
+            get { return Properties.Settings.Default.PeriodWork; }
             set
             {
-                YAPA.Properties.Settings.Default.PeriodWork = value;
+                Properties.Settings.Default.PeriodWork = value;
                 RaisePropertyChanged("WorkTime");
             }
         }
 
         public int BreakTime
         {
-            get { return YAPA.Properties.Settings.Default.PeriodShortBreak; }
+            get { return Properties.Settings.Default.PeriodShortBreak; }
             set
             {
-                YAPA.Properties.Settings.Default.PeriodShortBreak = value;
+                Properties.Settings.Default.PeriodShortBreak = value;
                 RaisePropertyChanged("BreakTime");
             }
         }
 
         public int BreakLongTime
         {
-            get { return YAPA.Properties.Settings.Default.PeriodLongBreak; }
+            get { return Properties.Settings.Default.PeriodLongBreak; }
             set
             {
-                YAPA.Properties.Settings.Default.PeriodLongBreak = value;
+                Properties.Settings.Default.PeriodLongBreak = value;
                 RaisePropertyChanged("BreakLongTime");
             }
         }
@@ -307,12 +311,12 @@ namespace YAPA
         {
             get
             {
-                return YAPA.Properties.Settings.Default.CountBackwards;
+                return Properties.Settings.Default.CountBackwards;
             }
             set
             {
-                YAPA.Properties.Settings.Default.CountBackwards = value;
-                this.RaisePropertyChanged("CountBackwards");
+                Properties.Settings.Default.CountBackwards = value;
+                RaisePropertyChanged("CountBackwards");
             }
         }
 
@@ -331,64 +335,64 @@ namespace YAPA
             set
             {
                 CurrentTime.Text = value;
-                this.Title = String.Format("YAPA - {0}", value);
+                Title = String.Format("YAPA - {0}", value);
             }
         }
 
         void DoTick(object sender, EventArgs e)
         {
-            if (stopWatch.IsRunning)
+            if (_stopWatch.IsRunning)
             {
-                TimeSpan ts = stopWatch.Elapsed;
-                Ticks = (int)ts.TotalSeconds;
+                var ts = _stopWatch.Elapsed;
+                _ticks = (int)ts.TotalSeconds;
 
-                if (IsWork)
+                if (_isWork)
                 {
                     if (CountBackwards)
                     {
                         ts = TimeSpan.FromMinutes(WorkTime) - ts;
                     }
-                    StartTicking(WorkTime, Ticks);
+                    StartTicking(WorkTime, _ticks);
                 }
-                else if (IsBreak)
+                else if (_isBreak)
                 {
                     if (CountBackwards)
                     {
                         ts = TimeSpan.FromMinutes(BreakTime) - ts;
                     }
-                    StartTicking(BreakTime, Ticks);
+                    StartTicking(BreakTime, _ticks);
                 }
-                else if (IsBreakLong)
+                else if (_isBreakLong)
                 {
                     if (CountBackwards)
                     {
                         ts = TimeSpan.FromMinutes(BreakLongTime) - ts;
                     }
-                    StartTicking(BreakLongTime, Ticks);
+                    StartTicking(BreakLongTime, _ticks);
                 }
 
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
                 CurrentTimeValue = currentTime;
-                CurrentPeriod.Text = Period.ToString();
+                CurrentPeriod.Text = _period.ToString();
             }
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             if (SoundEffects)
-                TickSound.Play();
+                _tickSound.Play();
             TimerFlush.Stop(this);
-            if (stopWatch.IsRunning)
+            if (_stopWatch.IsRunning)
             {
-                Ticks = 0;
-                stopWatch.Restart();
+                _ticks = 0;
+                _stopWatch.Restart();
             }
             else
             {
-                stopWatch.Start();
-                dispacherTime.Start();
-                if (IsWork)
-                    Period++;
+                _stopWatch.Start();
+                _dispacherTime.Start();
+                if (_isWork)
+                    _period++;
             }
         }
 
@@ -396,13 +400,13 @@ namespace YAPA
         {
             if (SoundEffects)
             {
-                TickSound.Stop();
-                RingSound.Stop();
+                _tickSound.Stop();
+                _ringSound.Stop();
             }
-            if (stopWatch.IsRunning)
+            if (_stopWatch.IsRunning)
             {
-                Period--;
-                stopWatch.Stop();
+                _period--;
+                _stopWatch.Stop();
                 ProgressState = "Paused";
             }
             else
@@ -416,10 +420,10 @@ namespace YAPA
             ProgressValue = (double)Increment / _totalTime;
             if (Increment >= _totalTime)
             {
-                Ticks = 0;
-                if (IsWork)
+                _ticks = 0;
+                if (_isWork)
                 {
-                    itemRepository.CompletePomodoro();
+                    _itemRepository.CompletePomodoro();
                 }
                 StopTicking();
             }
@@ -428,33 +432,35 @@ namespace YAPA
         private void StopTicking()
         {
             if (SoundEffects)
-                RingSound.Play();
-            TimerFlush.Begin(this, true);
-            stopWatch.Reset();
-            dispacherTime.Stop();
-            ProgressState = "Error";
-            if (IsWork)
             {
-                CurrentTimeValue = BreakLabel;
-                IsWork = false;
-                if (Period == 4)
+                _ringSound.Play();
+            }
+            TimerFlush.Begin(this, true);
+            _stopWatch.Reset();
+            _dispacherTime.Stop();
+            ProgressState = "Error";
+            if (_isWork)
+            {
+                CurrentTimeValue = _breakLabel;
+                _isWork = false;
+                if (_period == 4)
                 {
-                    IsBreak = false;
-                    IsBreakLong = true;
+                    _isBreak = false;
+                    _isBreakLong = true;
                 }
                 else
-                    IsBreak = true;
+                    _isBreak = true;
             }
             else
             {
-                CurrentTimeValue = WorkLabel;
-                IsBreak = false;
-                IsBreakLong = false;
-                IsWork = true;
-                if (Period == 4)
+                CurrentTimeValue = _workLabel;
+                _isBreak = false;
+                _isBreakLong = false;
+                _isWork = true;
+                if (_period == 4)
                 {
                     CurrentPeriod.Text = "";
-                    Period = 0;
+                    _period = 0;
                 }
             }
         }
@@ -462,17 +468,17 @@ namespace YAPA
         private void ResetTicking()
         {
             TimerFlush.Stop(this);
-            stopWatch.Reset();
-            dispacherTime.Stop();
+            _stopWatch.Reset();
+            _dispacherTime.Stop();
             CurrentTimeValue = "00:00";
             CurrentPeriod.Text = "";
-            Period = 0;
-            IsBreak = false;
-            IsBreakLong = false;
-            IsWork = true;
+            _period = 0;
+            _isBreak = false;
+            _isBreakLong = false;
+            _isWork = true;
             ProgressValue = .0;
             ProgressState = "None";
-            Ticks = 0;
+            _ticks = 0;
         }
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -494,7 +500,7 @@ namespace YAPA
 
         private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            this.ShowSettings.Execute(this);
+            ShowSettings.Execute(this);
         }
 
         public bool ProcessCommandLineArgs(IList<string> args)
@@ -507,39 +513,39 @@ namespace YAPA
                 //the first index always contains the location of the exe so we need to check the second index
                 if ((args[1].ToLowerInvariant() == "/start"))
                 {
-                    if (!stopWatch.IsRunning)
+                    if (!_stopWatch.IsRunning)
                     {
                         if (SoundEffects)
-                            TickSound.Play();
+                            _tickSound.Play();
                         TimerFlush.Stop(this);
-                        stopWatch.Start();
-                        dispacherTime.Start();
-                        if (IsWork)
-                            Period++;
+                        _stopWatch.Start();
+                        _dispacherTime.Start();
+                        if (_isWork)
+                            _period++;
                     }
                 }
                 else if ((args[1].ToLowerInvariant() == "/pause"))
                 {
                     if (SoundEffects)
                     {
-                        TickSound.Stop();
-                        RingSound.Stop();
+                        _tickSound.Stop();
+                        _ringSound.Stop();
                     }
-                    if (stopWatch.IsRunning)
+                    if (_stopWatch.IsRunning)
                     {
-                        Period--;
-                        stopWatch.Stop();
+                        _period--;
+                        _stopWatch.Stop();
                         ProgressState = "Paused";
                     }
                 }
                 else if ((args[1].ToLowerInvariant() == "/restart"))
                 {
-                    if (stopWatch.IsRunning)
+                    if (_stopWatch.IsRunning)
                     {
                         if (SoundEffects)
-                            TickSound.Play();
-                        Ticks = 0;
-                        stopWatch.Restart();
+                            _tickSound.Play();
+                        _ticks = 0;
+                        _stopWatch.Restart();
                     }
                 }
                 else if ((args[1].ToLowerInvariant() == "/reset"))
@@ -548,11 +554,11 @@ namespace YAPA
                 }
                 else if ((args[1].ToLowerInvariant() == "/settings"))
                 {
-                    this.ShowSettings.Execute(this);
+                    ShowSettings.Execute(this);
                 }
                 else if ((args[1].ToLowerInvariant() == "/homepage"))
                 {
-                    System.Diagnostics.Process.Start("http://lukaszbanasiak.github.io/YAPA/");
+                    Process.Start("http://lukaszbanasiak.github.io/YAPA/");
                 }
             }
 
@@ -561,19 +567,19 @@ namespace YAPA
 
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
-            if (stopWatch.IsRunning)
+            if (_stopWatch.IsRunning)
             {
-                if (System.Windows.MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
                     return;
                 }
             }
-            this.Close();
+            Close();
         }
 
         private void Minimize_OnClick(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)

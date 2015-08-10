@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +17,7 @@ namespace YAPA
         {
             InitializeComponent();
 
-            var converter = new System.Windows.Media.BrushConverter();
+            var converter = new BrushConverter();
             var Level0 = (Brush)converter.ConvertFromString("#eee");
             var Level1 = (Brush)converter.ConvertFromString("#d6e685");
             var Level2 = (Brush)converter.ConvertFromString("#8cc665");
@@ -74,15 +73,13 @@ namespace YAPA
 
                 green.Margin = new Thickness(0, 0, 0, 1);
 
-                ToolTip toolTip = new ToolTip();
-                TextBlock pomodoros = new TextBlock();
-                pomodoros.Inlines.Add(
-                    new Bold(new Run(pomodoroViewModel.Count == 0 ? "No pomodoros" : string.Format("{0} pomodoros", pomodoroViewModel.Count))));
+                var toolTip = new ToolTip();
+                var pomodoros = new TextBlock();
+                pomodoros.Inlines.Add(new Bold(new Run(pomodoroViewModel.Count == 0 ? "No pomodoros" : string.Format("{0} pomodoros", pomodoroViewModel.Count))));
                 pomodoros.Inlines.Add(new Run(string.Format(" on {0}", pomodoroViewModel.DateTime.ToString("yyyy-MM-dd"))));
                 toolTip.Content = pomodoros;
 
                 green.ToolTip = toolTip;
-
 
                 PomodorPanel.Children.Add(green);
             }
