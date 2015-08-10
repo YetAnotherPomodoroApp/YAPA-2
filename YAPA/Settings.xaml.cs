@@ -34,10 +34,10 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public  Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
         {
             InitializeComponent();
-            this.DataContext = this;
+            DataContext = this;
             _host = host;
             _useWhiteText = true;
             _soundEfects = soundEfects;
@@ -60,14 +60,14 @@ namespace YAPA
             {
                 _itemRepository = new ItemRepository();
 
-                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
-                Calendar cal = dfi.Calendar;
+                var dfi = DateTimeFormatInfo.CurrentInfo;
+                var cal = dfi.Calendar;
 
                 var pomodoros =
                     _itemRepository.GetPomodoros()
                         .Select(
                             x => new { week = cal.GetWeekOfYear(x.DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek), x });
-                int max = pomodoros.Max(x => x.x.Count);
+                var max = pomodoros.Max(x => x.x.Count);
 
                 foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
                 {
@@ -86,7 +86,7 @@ namespace YAPA
             });
         }
 
-        private  PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
+        private PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
         {
             if (count == 0)
             {
@@ -127,7 +127,7 @@ namespace YAPA
         /// </summary>
         public void CloseSettings()
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace YAPA
             {
                 _countBackwards = value;
                 _host.CountBackwards = value;
-                this.RaisePropertyChanged("CountBackwards");
+                RaisePropertyChanged("CountBackwards");
             }
         }
 
