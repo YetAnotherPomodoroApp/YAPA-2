@@ -3,11 +3,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Threading.Tasks;
 
 namespace YAPA
 {
@@ -34,7 +34,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public  Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
         {
             InitializeComponent();
             DataContext = this;
@@ -65,7 +65,7 @@ namespace YAPA
                 var pomodoros =
                     _itemRepository.GetPomodoros()
                         .Select(
-                            x => new { week = cal.GetWeekOfYear(x.DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek), x });
+                            x => new { week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek), x });
                 var max = pomodoros.Max(x => x.x.Count);
 
                 foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
@@ -79,7 +79,7 @@ namespace YAPA
 
                 Dispatcher.Invoke(() =>
                 {
-                    var weekShift = DayOfWeek.Monday - System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                    var weekShift = DayOfWeek.Monday - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
                     MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
 
                     DayPanel.Visibility = Visibility.Visible;
@@ -88,7 +88,7 @@ namespace YAPA
             });
         }
 
-        private  PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
+        private PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
         {
             if (count == 0)
             {

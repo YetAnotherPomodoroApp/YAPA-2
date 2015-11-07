@@ -37,7 +37,7 @@ namespace YAPA
                     for (int i = 0; i < 7 - week.Count(); i++)
                     {
                         var green = new Rectangle();
-                        green.Width = 13;
+                        green.Width = 11;
                         green.Height = 11;
                         green.Fill = Brushes.White;
                         green.Margin = new Thickness(0, 0, 0, 1);
@@ -49,7 +49,7 @@ namespace YAPA
             foreach (var pomodoroViewModel in week)
             {
                 var green = new Rectangle();
-                green.Width = 13;
+                green.Width = 11;
                 green.Height = 11;
 
                 switch (pomodoroViewModel.Level)
