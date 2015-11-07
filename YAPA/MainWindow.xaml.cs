@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Media;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using System.Media;
 using System.Windows.Shell;
-using System.Reflection;
-using WindowState = System.Windows.WindowState;
+using System.Windows.Threading;
 using GDIScreen = System.Windows.Forms.Screen;
-using System.Windows.Interop;
+using WindowState = System.Windows.WindowState;
 
 namespace YAPA
 {
@@ -590,6 +590,11 @@ namespace YAPA
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
             MinExitPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TimerFlush.Stop(this);
         }
     }
 }

@@ -16,7 +16,8 @@
         Topmost="True" 
         MouseRightButtonUp="Window_MouseRightButtonUp"
         MouseEnter="MainWindow_OnMouseEnter"
-        MouseLeave="MainWindow_OnMouseLeave" >
+        MouseLeave="MainWindow_OnMouseLeave"
+        MouseDoubleClick="Window_MouseDoubleClick">
 
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
