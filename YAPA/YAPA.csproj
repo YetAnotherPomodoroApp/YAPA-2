@@ -185,6 +185,9 @@
     <Resource Include="Resources\loader.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\pomoTray.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\tick.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

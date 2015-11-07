@@ -39,6 +39,7 @@ namespace YAPA
         private string _workLabel;
         private SoundPlayer _tickSound;
         private SoundPlayer _ringSound;
+        private System.Windows.Forms.NotifyIcon sysTrayIcon;
 
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
@@ -78,7 +79,16 @@ namespace YAPA
             _ringSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
             Loaded += MainWindow_Loaded;
+            StateChanged += MainWindow_StateChanged;
+        }
 
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Hide();
+                sysTrayIcon.Visible = true;
+            }
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -116,6 +126,33 @@ namespace YAPA
                 Left = SystemParameters.PrimaryScreenWidth - Width - 15.0;
                 Top = 0;
             }
+
+            sysTrayIcon = new System.Windows.Forms.NotifyIcon();
+            sysTrayIcon.Text = "YAPA";
+            sysTrayIcon.Icon = new System.Drawing.Icon(@"Resources\pomoTray.ico", 40, 40);
+            sysTrayIcon.Visible = false;
+            sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
+        }
+
+        private void SysTrayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            this.WindowState = WindowState.Normal;
+            sysTrayIcon.Visible = false;
+        }
+
+        //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
+        public void ShowText(string text)
+        {
+            System.Drawing.Brush brush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
+            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
+            graphics.DrawString(text, new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold), brush, 0, 0);
+
+            IntPtr hIcon = bitmap.GetHicon();
+            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(hIcon);
+            sysTrayIcon.Icon = icon;
         }
 
         private void CreateJumpList()
@@ -372,6 +409,9 @@ namespace YAPA
                 }
 
                 string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+
+                ShowText(String.Format("{0:00}", ts.Minutes));
+
                 CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = _period.ToString();
             }
