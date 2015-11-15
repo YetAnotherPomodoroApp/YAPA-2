@@ -16,7 +16,7 @@ namespace YAPA
         /// <summary>
         /// The desired opacity of the clock;
         /// </summary>
-        double ClockOpacity { get; set;  }
+        double ClockOpacity { get; set; }
 
         /// <summary>
         /// The desired opacity of the shadow;
@@ -62,5 +62,10 @@ namespace YAPA
         /// Count time backwards
         /// </summary>
         bool CountBackwards { get; set; }
+
+        /// <summary>
+        /// Minimize to tray or to taskbar
+        /// </summary>
+        bool MinimizeToTray { get; set; }
     }
 }

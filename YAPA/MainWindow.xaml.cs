@@ -84,7 +84,7 @@ namespace YAPA
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Minimized)
+            if (this.WindowState == WindowState.Minimized && MinimizeToTray == true)
             {
                 Hide();
                 sysTrayIcon.Visible = true;
@@ -303,6 +303,18 @@ namespace YAPA
                 RaisePropertyChanged("ShadowOpacity");
             }
         }
+
+
+        public bool MinimizeToTray
+        {
+            get { return Properties.Settings.Default.MinimizeToTray; }
+            set
+            {
+                Properties.Settings.Default.MinimizeToTray = value;
+                RaisePropertyChanged("MinimizeToTray");
+            }
+        }
+
 
         public int WorkTime
         {

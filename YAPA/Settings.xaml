@@ -84,23 +84,30 @@
                     		Value="{Binding ShadowOpacity, Mode=TwoWay}"
                     		Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" BorderThickness="0"/>
                         </StackPanel>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
-                                <CheckBox  IsChecked="{Binding SoundEfects, Mode=TwoWay}" HorizontalAlignment="Left">
-                                    <Label Margin="0,-5" Content="Sound notifications"/>
-                                </CheckBox>
-                                <CheckBox Margin="100,0,0,0"
-                                  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" 
-                                  HorizontalAlignment="Right">
-                                    <Label Margin="0,-5" Content="Light theme"/>
-                                </CheckBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5,0,0,15">
-                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding CountBackwards, Mode=TwoWay}">
-                                    <Label Margin="0,-5" Content="Count backwards"/>
-                                </CheckBox>
-                            </StackPanel>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding SoundEfects, Mode=TwoWay}" >
+                                <Label Margin="0,-5" Content="Sound notifications"/>
+                            </CheckBox>
+                            <CheckBox  Grid.Column="0" Grid.Row="1" IsChecked="{Binding UseWhiteText, Mode=TwoWay}" >
+                                <Label Margin="0,-5" Content="Light theme"/>
+                            </CheckBox>
+
+                            <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding CountBackwards, Mode=TwoWay}">
+                                <Label Margin="0,-5" Content="Count backwards"/>
+                            </CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" >
+                                <Label Margin="0,-5" Content="Minimize to tray"/>
+                            </CheckBox>
+                        </Grid>
                         <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                     </StackPanel>
                 </StackPanel>

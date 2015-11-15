@@ -26,6 +26,7 @@ namespace YAPA
         private int _breakLongTime;
         private bool _soundEfects;
         private bool _countBackwards;
+        private bool _minimizeToTray;
         private ItemRepository _itemRepository;
 
         // INPC support
@@ -34,7 +35,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray)
         {
             InitializeComponent();
             DataContext = this;
@@ -49,6 +50,7 @@ namespace YAPA
             _workTime = workTime;
             _shadowOpacity = shadowOpacity;
             _countBackwards = countBackwards;
+            _minimizeToTray = minimizeToTray;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
             _itemRepository = new ItemRepository();
 
@@ -230,6 +232,21 @@ namespace YAPA
                 _countBackwards = value;
                 _host.CountBackwards = value;
                 RaisePropertyChanged("CountBackwards");
+            }
+        }
+
+
+        public bool MinimizeToTray
+        {
+            get
+            {
+                return _minimizeToTray;
+            }
+            set
+            {
+                _minimizeToTray = value;
+                _host.MinimizeToTray = value;
+                RaisePropertyChanged("MinimizeToTray");
             }
         }
 
