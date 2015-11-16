@@ -80,15 +80,30 @@ namespace YAPA
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
+
+            this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Minimized && MinimizeToTray == true)
+            if (this.WindowState == WindowState.Minimized && MinimizeToTray == true && Properties.Settings.Default.ShowInTaskbar)
             {
                 Hide();
                 sysTrayIcon.Visible = true;
             }
+
+            if (!Properties.Settings.Default.ShowInTaskbar)
+            {
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    sysTrayIcon.Visible = true;
+                }
+                else
+                {
+                    this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
+                }
+            }
+
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
