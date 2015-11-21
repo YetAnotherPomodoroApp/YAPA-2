@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Shell;
 
@@ -38,7 +35,11 @@ namespace YAPA
 
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            return ((MainWindow)MainWindow).ProcessCommandLineArgs(args);
+            if (args == null || args.Count == 0)
+            {
+                return true;
+            }
+            return ((MainWindow)MainWindow).ProcessCommandLineArgs(args.ToArray());
         }
 
         #endregion

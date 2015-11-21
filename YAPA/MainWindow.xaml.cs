@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Media;
@@ -147,6 +146,27 @@ namespace YAPA
             sysTrayIcon.Icon = new System.Drawing.Icon(@"Resources\pomoTray.ico", 40, 40);
             sysTrayIcon.Visible = false;
             sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
+
+            sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
+        }
+
+        private System.Windows.Forms.MenuItem[] CreateNotifyIconContextMenu()
+        {
+            var startTask = new System.Windows.Forms.MenuItem { Text = "Start" };
+            startTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/start"); };
+
+            var pauseTask = new System.Windows.Forms.MenuItem { Text = "Pause" };
+            pauseTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/pause"); };
+
+            var stopTask = new System.Windows.Forms.MenuItem { Text = "Restart" };
+            stopTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/restart"); };
+
+            var resetTask = new System.Windows.Forms.MenuItem { Text = "Reset session" };
+            resetTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/reset"); };
+
+            return new System.Windows.Forms.MenuItem[] {
+                startTask, pauseTask,stopTask, resetTask
+            };
         }
 
         private void SysTrayIcon_DoubleClick(object sender, EventArgs e)
@@ -159,7 +179,14 @@ namespace YAPA
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         public void ShowText(string text)
         {
-            System.Drawing.Brush brush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+            System.Drawing.Color textColor = System.Drawing.Color.Red;
+
+            if (_isWork)
+            {
+                textColor = System.Drawing.Color.Green;
+            }
+
+            System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
 
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
@@ -570,12 +597,12 @@ namespace YAPA
             ShowSettings.Execute(this);
         }
 
-        public bool ProcessCommandLineArgs(IList<string> args)
+        public bool ProcessCommandLineArgs(params string[] args)
         {
-            if (args == null || args.Count == 0)
+            if (args == null || args.Length == 0)
                 return true;
 
-            if ((args.Count > 1))
+            if ((args.Length > 1))
             {
                 //the first index always contains the location of the exe so we need to check the second index
                 if ((args[1].ToLowerInvariant() == "/start"))
