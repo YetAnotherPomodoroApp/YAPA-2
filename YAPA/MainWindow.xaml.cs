@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Media;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -20,6 +21,9 @@ namespace YAPA
     /// </summary>
     public partial class MainWindow : Window, IMainViewModel, INotifyPropertyChanged
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal extern static bool DestroyIcon(IntPtr handle);
+
         private DispatcherTimer _dispacherTime;
         private Stopwatch _stopWatch;
         private ItemRepository _itemRepository;
@@ -39,6 +43,7 @@ namespace YAPA
         private SoundPlayer _tickSound;
         private SoundPlayer _ringSound;
         private System.Windows.Forms.NotifyIcon sysTrayIcon;
+        private IntPtr _systemTrayIcon;
 
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
@@ -179,11 +184,16 @@ namespace YAPA
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         public void ShowText(string text)
         {
-            System.Drawing.Color textColor = System.Drawing.Color.Red;
+            System.Drawing.Color textColor = Properties.Settings.Default.BreakTrayIconColor;
 
             if (_isWork)
             {
-                textColor = System.Drawing.Color.Green;
+                textColor = Properties.Settings.Default.WorkTrayIconColor;
+            }
+
+            if (_systemTrayIcon != IntPtr.Zero)
+            {
+                DestroyIcon(_systemTrayIcon);
             }
 
             System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
@@ -192,8 +202,10 @@ namespace YAPA
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
             graphics.DrawString(text, new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold), brush, 0, 0);
 
-            IntPtr hIcon = bitmap.GetHicon();
-            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(hIcon);
+            _systemTrayIcon = bitmap.GetHicon();
+
+
+            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(_systemTrayIcon);
             sysTrayIcon.Icon = icon;
         }
 

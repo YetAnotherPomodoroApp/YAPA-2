@@ -214,5 +214,29 @@ namespace YAPA.Properties {
                 this["ShowInTaskbar"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color BreakTrayIconColor {
+            get {
+                return ((global::System.Drawing.Color)(this["BreakTrayIconColor"]));
+            }
+            set {
+                this["BreakTrayIconColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color WorkTrayIconColor {
+            get {
+                return ((global::System.Drawing.Color)(this["WorkTrayIconColor"]));
+            }
+            set {
+                this["WorkTrayIconColor"] = value;
+            }
+        }
     }
 }
