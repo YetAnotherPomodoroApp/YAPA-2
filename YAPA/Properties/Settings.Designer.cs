@@ -217,10 +217,10 @@ namespace YAPA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
-        public global::System.Drawing.Color BreakTrayIconColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("#cc3300")]
+        public string BreakTrayIconColor {
             get {
-                return ((global::System.Drawing.Color)(this["BreakTrayIconColor"]));
+                return ((string)(this["BreakTrayIconColor"]));
             }
             set {
                 this["BreakTrayIconColor"] = value;
@@ -229,10 +229,10 @@ namespace YAPA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
-        public global::System.Drawing.Color WorkTrayIconColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("#00802b")]
+        public string WorkTrayIconColor {
             get {
-                return ((global::System.Drawing.Color)(this["WorkTrayIconColor"]));
+                return ((string)(this["WorkTrayIconColor"]));
             }
             set {
                 this["WorkTrayIconColor"] = value;

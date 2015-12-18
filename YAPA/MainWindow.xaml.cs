@@ -45,6 +45,9 @@ namespace YAPA
         private System.Windows.Forms.NotifyIcon sysTrayIcon;
         private IntPtr _systemTrayIcon;
 
+        private System.Drawing.Color WorkTrayIconColor;
+        private System.Drawing.Color BreakTrayIconColor;
+
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,6 +89,9 @@ namespace YAPA
             StateChanged += MainWindow_StateChanged;
 
             this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
+
+            WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
+            BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -184,11 +190,15 @@ namespace YAPA
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         public void ShowText(string text)
         {
-            System.Drawing.Color textColor = Properties.Settings.Default.BreakTrayIconColor;
+            System.Drawing.Color textColor;
 
             if (_isWork)
             {
-                textColor = Properties.Settings.Default.WorkTrayIconColor;
+                textColor = WorkTrayIconColor;
+            }
+            else
+            {
+                textColor = BreakTrayIconColor;
             }
 
             if (_systemTrayIcon != IntPtr.Zero)
