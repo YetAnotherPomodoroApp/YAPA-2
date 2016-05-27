@@ -600,7 +600,7 @@ namespace YAPA
             var lastDay = _itemRepository.GetPomodoros().Last();
             if (lastDay.DateTime == DateTime.Now.Date)
             {
-                _period = lastDay.Count;
+                _period = lastDay.Count % 4;
             }
 
             CurrentPeriod.Text = _period != 0 ? _period.ToString() : "";
