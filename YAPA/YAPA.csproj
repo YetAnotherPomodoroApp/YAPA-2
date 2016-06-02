@@ -73,7 +73,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -241,7 +241,7 @@
     if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
  start   xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-   start"' xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+   start xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
