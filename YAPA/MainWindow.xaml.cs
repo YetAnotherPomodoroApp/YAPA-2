@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -134,6 +135,7 @@ namespace YAPA
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CreateJumpList();
+            ResetTicking();
 
             //if you want to handle to command line args on the first instance you may want it to go here
             //or in the app.xaml.cs
@@ -587,7 +589,6 @@ namespace YAPA
             _stopWatch.Reset();
             _dispacherTime.Stop();
             CurrentTimeValue = "00:00";
-            CurrentPeriod.Text = "";
             _period = 0;
             _isBreak = false;
             _isBreakLong = false;
@@ -595,6 +596,14 @@ namespace YAPA
             ProgressValue = .0;
             ProgressState = "None";
             _ticks = 0;
+
+            var lastDay = _itemRepository.GetPomodoros().Last();
+            if (lastDay.DateTime == DateTime.Now.Date)
+            {
+                _period = lastDay.Count % 4;
+            }
+
+            CurrentPeriod.Text = _period != 0 ? _period.ToString() : "";
         }
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
