@@ -44,5 +44,17 @@
     <Setting Name="CountBackwards" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="MinimizeToTray" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowInTaskbar" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="BreakTrayIconColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#cc3300</Value>
+    </Setting>
+    <Setting Name="WorkTrayIconColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#00802b</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
