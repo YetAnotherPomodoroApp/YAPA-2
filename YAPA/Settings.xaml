@@ -25,7 +25,7 @@
             <Grid Background="White" Margin="0,0,0,29">
 
                 <StackPanel Orientation="Vertical" >
-                    <TextBlock Text="YAPA, v1.2.0"
+                    <TextBlock x:Name="YapaVersion"  Text="YAPA, v1.2.0"
             		FontFamily="Segoe UI Light"
             		FontSize="18pt" Margin="10,0,10,0"
                            />

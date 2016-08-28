@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
@@ -55,6 +56,9 @@ namespace YAPA
             _itemRepository = new ItemRepository();
 
             Loaded += Settings_Loaded;
+
+
+            YapaVersion.Text = $"YAPA, v{Assembly.GetEntryAssembly().GetName().Version}";
         }
 
         private async void Settings_Loaded(object sender, RoutedEventArgs e)
