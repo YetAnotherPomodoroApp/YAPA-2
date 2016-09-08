@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -49,6 +50,7 @@ namespace YAPA
         private System.Drawing.Color WorkTrayIconColor;
         private System.Drawing.Color BreakTrayIconColor;
 
+        private MediaPlayer _musicPlayer;
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,6 +88,9 @@ namespace YAPA
             _tickSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
             _ringSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
 
+            _musicPlayer = new MediaPlayer();
+            _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
+
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
 
@@ -93,6 +98,43 @@ namespace YAPA
 
             WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
             BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
+        }
+
+        private void _musicPlayer_MediaEnded1(object sender, EventArgs e)
+        {
+            if (_musicPlayer.Source != null && File.Exists(_musicPlayer.Source.AbsolutePath))
+            {
+                _musicPlayer.Play();
+            }
+        }
+
+        private void PlayMusic()
+        {
+            if (_isWork)
+            {
+                if (File.Exists(WorkMusic))
+                {
+                    _musicPlayer.Open(new Uri(WorkMusic));
+                    _musicPlayer.Play();
+                }
+            }
+            else
+            {
+                if (File.Exists(BreakMusic))
+                {
+                    _musicPlayer.Open(new Uri(BreakMusic));
+                    _musicPlayer.Play();
+                }
+            }
+
+        }
+
+        private void PauseMusic()
+        {
+            if (_musicPlayer.CanPause)
+            {
+                _musicPlayer.Pause();
+            }
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -130,6 +172,8 @@ namespace YAPA
             Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
 
             Properties.Settings.Default.Save();
+
+            PauseMusic();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -381,6 +425,26 @@ namespace YAPA
             }
         }
 
+        public string WorkMusic
+        {
+            get { return Properties.Settings.Default.WorkMusic; }
+            set
+            {
+                Properties.Settings.Default.WorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
+        public string BreakMusic
+        {
+            get { return Properties.Settings.Default.BreakMusic; }
+            set
+            {
+                Properties.Settings.Default.BreakMusic = value;
+                RaisePropertyChanged("BreakMusic");
+            }
+        }
+
 
         public int WorkTime
         {
@@ -499,6 +563,8 @@ namespace YAPA
         {
             if (SoundEffects)
                 _tickSound.Play();
+            PlayMusic();
+
             TimerFlush.Stop(this);
             if (_stopWatch.IsRunning)
             {
@@ -521,14 +587,19 @@ namespace YAPA
                 _tickSound.Stop();
                 _ringSound.Stop();
             }
+
             if (_stopWatch.IsRunning)
             {
                 _period--;
                 _stopWatch.Stop();
                 ProgressState = "Paused";
+                PauseMusic();
             }
             else
+            {
                 ResetTicking();
+                PlayMusic();
+            }
         }
 
         private void StartTicking(int TotalTime, int Increment)
@@ -544,6 +615,7 @@ namespace YAPA
                     _itemRepository.CompletePomodoro();
                 }
                 StopTicking();
+                PauseMusic();
             }
         }
 
@@ -553,6 +625,7 @@ namespace YAPA
             {
                 _ringSound.Play();
             }
+            PauseMusic();
             TimerFlush.Begin(this, true);
             _stopWatch.Reset();
             _dispacherTime.Stop();
@@ -586,6 +659,7 @@ namespace YAPA
         private void ResetTicking()
         {
             TimerFlush.Stop(this);
+            PauseMusic();
             _stopWatch.Reset();
             _dispacherTime.Stop();
             CurrentTimeValue = "00:00";

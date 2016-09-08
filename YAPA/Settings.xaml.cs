@@ -29,6 +29,8 @@ namespace YAPA
         private bool _countBackwards;
         private bool _minimizeToTray;
         private ItemRepository _itemRepository;
+        private string _workMusic;
+        private string _breakMusic;
 
         // INPC support
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,7 +38,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray, string workMusic, string breakMusic)
         {
             InitializeComponent();
             DataContext = this;
@@ -54,6 +56,8 @@ namespace YAPA
             _minimizeToTray = minimizeToTray;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
             _itemRepository = new ItemRepository();
+            _workMusic = workMusic;
+            _breakMusic = breakMusic;
 
             Loaded += Settings_Loaded;
 
@@ -214,6 +218,29 @@ namespace YAPA
             }
         }
 
+        public string BreakMusic
+        {
+            get { return _breakMusic; }
+            set
+            {
+                _breakMusic = value;
+                _host.BreakMusic = value;
+                RaisePropertyChanged("BreakMusic");
+            }
+        }
+
+
+        public string WorkMusic
+        {
+            get { return _workMusic; }
+            set
+            {
+                _workMusic = value;
+                _host.WorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
         public int BreakLongTime
         {
             get { return _breakLongTime; }
@@ -280,5 +307,46 @@ namespace YAPA
         {
             Process.Start(((Hyperlink)sender).NavigateUri.ToString());
         }
+
+        private void BrowseWorkMusic_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileName = BrowseForFile();
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                WorkMusic = fileName;
+            }
+        }
+
+
+        private string BrowseForFile()
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".mp3",
+                Filter = "Mp3 (*.mp3)|*.mp3"
+            };
+
+            var result = dlg.ShowDialog();
+
+
+            if (result.HasValue && result == true)
+            {
+                return dlg.FileName;
+            }
+
+            return null;
+        }
+
+
+        private void BrowseBreakMusic_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileName = BrowseForFile();
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                BreakMusic = fileName;
+            }
+        }
     }
+
+
 }
