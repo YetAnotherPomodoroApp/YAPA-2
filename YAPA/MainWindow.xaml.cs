@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -83,8 +84,8 @@ namespace YAPA
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
             // play sounds
-            _tickSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
-            _ringSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
+            _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\Resources\tick.wav"));
+            _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\Resources\ding.wav"));
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
@@ -156,7 +157,7 @@ namespace YAPA
 
             sysTrayIcon = new System.Windows.Forms.NotifyIcon();
             sysTrayIcon.Text = "YAPA";
-            sysTrayIcon.Icon = new System.Drawing.Icon(@"Resources\pomoTray.ico", 40, 40);
+            sysTrayIcon.Icon = new System.Drawing.Icon(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40);
             sysTrayIcon.Visible = false;
             sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
 
