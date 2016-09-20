@@ -238,5 +238,29 @@ namespace YAPA.Properties {
                 this["WorkTrayIconColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WorkMusic {
+            get {
+                return ((string)(this["WorkMusic"]));
+            }
+            set {
+                this["WorkMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BreakMusic {
+            get {
+                return ((string)(this["BreakMusic"]));
+            }
+            set {
+                this["BreakMusic"] = value;
+            }
+        }
     }
 }
