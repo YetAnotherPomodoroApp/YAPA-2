@@ -50,7 +50,7 @@ namespace YAPA
         private System.Drawing.Color WorkTrayIconColor;
         private System.Drawing.Color BreakTrayIconColor;
 
-        private MediaPlayer _musicPlayer;
+        private SoundPlayer _musicPlayer;
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -85,11 +85,10 @@ namespace YAPA
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
             // play sounds
-            _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\Resources\tick.wav"));
-            _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\Resources\ding.wav"));
+            _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
+            _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
 
-            _musicPlayer = new MediaPlayer();
-            _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
+            _musicPlayer = new SoundPlayer();
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
@@ -100,29 +99,21 @@ namespace YAPA
             BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
         }
 
-        private void _musicPlayer_MediaEnded1(object sender, EventArgs e)
-        {
-            if (_musicPlayer.Source != null && File.Exists(_musicPlayer.Source.AbsolutePath))
-            {
-                _musicPlayer.Play();
-            }
-        }
-
         private void PlayMusic()
         {
             if (_isWork)
             {
                 if (File.Exists(WorkMusic))
                 {
-                    _musicPlayer.Open(new Uri(WorkMusic));
-                    _musicPlayer.Play();
+                    _musicPlayer.SoundLocation = WorkMusic;
+                    _musicPlayer.PlayLooping();
                 }
             }
             else
             {
                 if (File.Exists(BreakMusic))
                 {
-                    _musicPlayer.Open(new Uri(BreakMusic));
+                    _musicPlayer.SoundLocation = BreakMusic;
                     _musicPlayer.Play();
                 }
             }
@@ -131,10 +122,7 @@ namespace YAPA
 
         private void PauseMusic()
         {
-            if (_musicPlayer.CanPause)
-            {
-                _musicPlayer.Pause();
-            }
+            _musicPlayer.Stop();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -598,7 +586,9 @@ namespace YAPA
             else
             {
                 ResetTicking();
+                _isWork = false;
                 PlayMusic();
+                _isWork = true;
             }
         }
 
@@ -682,8 +672,15 @@ namespace YAPA
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            DragMove();
+            try
+            {
+                base.OnMouseLeftButtonDown(e);
+                DragMove();
+                e.Handled = true;
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>

@@ -322,8 +322,9 @@ namespace YAPA
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
-                DefaultExt = ".mp3",
-                Filter = "Mp3 (*.mp3)|*.mp3"
+                DefaultExt = ".wav",
+                Filter = "WAVE (*.wav)|*.wav|All Files(*.*)|*.*",
+                InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\sounds")
             };
 
             var result = dlg.ShowDialog();
