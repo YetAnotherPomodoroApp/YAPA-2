@@ -262,5 +262,29 @@ namespace YAPA.Properties {
                 this["BreakMusic"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RepeatWorkMusic {
+            get {
+                return ((bool)(this["RepeatWorkMusic"]));
+            }
+            set {
+                this["RepeatWorkMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RepeatBreakMusic {
+            get {
+                return ((bool)(this["RepeatBreakMusic"]));
+            }
+            set {
+                this["RepeatBreakMusic"] = value;
+            }
+        }
     }
 }

@@ -119,11 +119,20 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">Work music:</Label>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Label >Work music (repeat</Label>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding RepeatWorkMusic, Mode=TwoWay}"></CheckBox>
+                                <Label>):</Label>
+                            </StackPanel>
+
                             <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding WorkMusic, Mode=TwoWay}"  Margin="5,0,0,15" ></TextBox>
                             <Button Grid.Row="1" Grid.Column="1" Content="Browse" Margin="5,0,0,15" x:Name="BrowseWorkMusic" Click="BrowseWorkMusic_OnClick"></Button>
 
-                            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Break music:</Label>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Label >Break music (repeat</Label>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding RepeatBreakMusic,Mode=TwoWay}"></CheckBox>
+                                <Label>):</Label>
+                            </StackPanel>
                             <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding BreakMusic, Mode=TwoWay}" Margin="5,0,0,15" ></TextBox>
                             <Button Grid.Row="3" Grid.Column="1" Content="Browse" Margin="5,0,0,15" x:Name="BrowseBreakMusic" Click="BrowseBreakMusic_OnClick"></Button>
                         </Grid>

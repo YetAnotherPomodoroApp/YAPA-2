@@ -50,7 +50,7 @@ namespace YAPA
         private System.Drawing.Color WorkTrayIconColor;
         private System.Drawing.Color BreakTrayIconColor;
 
-        private SoundPlayer _musicPlayer;
+        private MediaPlayer _musicPlayer;
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,11 +84,12 @@ namespace YAPA
             // flash timer
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
-            // play sounds
+            //// play sounds
             _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
             _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
 
-            _musicPlayer = new SoundPlayer();
+            _musicPlayer = new MediaPlayer();
+            _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
@@ -99,30 +100,50 @@ namespace YAPA
             BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
         }
 
-        private void PlayMusic()
+        private void _musicPlayer_MediaEnded1(object sender, EventArgs e)
         {
-            if (_isWork)
+            var repeat = _isWork ? RepeatWorkMusic : RepeatBreakMusic;
+            if (repeat && _musicPlayer.Source != null && File.Exists(_musicPlayer.Source.AbsolutePath))
             {
-                if (File.Exists(WorkMusic))
-                {
-                    _musicPlayer.SoundLocation = WorkMusic;
-                    _musicPlayer.PlayLooping();
-                }
+                _musicPlayer.Play();
             }
-            else
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playWork">true - work, false - break, null - use _isWork</param>
+        private void PlayMusic(bool? playWork = null)
+        {
+            if (SoundEffects == false)
             {
-                if (File.Exists(BreakMusic))
-                {
-                    _musicPlayer.SoundLocation = BreakMusic;
-                    _musicPlayer.Play();
-                }
+                return;
+            }
+            var workMusic = playWork ?? _isWork;
+            var musicPath = workMusic ? WorkMusic : BreakMusic;
+
+
+            if (!File.Exists(musicPath))
+            {
+                musicPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, musicPath);
             }
 
+            if (!File.Exists(musicPath))
+            {
+                return;
+            }
+
+            _musicPlayer.Open(new Uri(musicPath));
+
+            _musicPlayer.Play();
         }
 
         private void PauseMusic()
         {
-            _musicPlayer.Stop();
+            if (_musicPlayer.CanPause)
+            {
+                _musicPlayer.Pause();
+            }
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -423,6 +444,16 @@ namespace YAPA
             }
         }
 
+        public bool RepeatWorkMusic
+        {
+            get { return Properties.Settings.Default.RepeatWorkMusic; }
+            set
+            {
+                Properties.Settings.Default.RepeatWorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
         public string BreakMusic
         {
             get { return Properties.Settings.Default.BreakMusic; }
@@ -430,6 +461,16 @@ namespace YAPA
             {
                 Properties.Settings.Default.BreakMusic = value;
                 RaisePropertyChanged("BreakMusic");
+            }
+        }
+
+        public bool RepeatBreakMusic
+        {
+            get { return Properties.Settings.Default.RepeatBreakMusic; }
+            set
+            {
+                Properties.Settings.Default.RepeatBreakMusic = value;
+                RaisePropertyChanged("WorkMusic");
             }
         }
 
@@ -586,9 +627,7 @@ namespace YAPA
             else
             {
                 ResetTicking();
-                _isWork = false;
-                PlayMusic();
-                _isWork = true;
+                PlayMusic(false);
             }
         }
 

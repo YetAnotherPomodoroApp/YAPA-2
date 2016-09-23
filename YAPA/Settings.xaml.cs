@@ -30,7 +30,9 @@ namespace YAPA
         private bool _minimizeToTray;
         private ItemRepository _itemRepository;
         private string _workMusic;
+        private bool _repeatWorkMusic;
         private string _breakMusic;
+        private bool _repeatBreakMusic;
 
         // INPC support
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,7 +40,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray, string workMusic, string breakMusic)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray, string workMusic, string breakMusic, bool repeatWorkMusic, bool repeatBreakMusic)
         {
             InitializeComponent();
             DataContext = this;
@@ -58,6 +60,8 @@ namespace YAPA
             _itemRepository = new ItemRepository();
             _workMusic = workMusic;
             _breakMusic = breakMusic;
+            _repeatBreakMusic = repeatBreakMusic;
+            _repeatWorkMusic = repeatWorkMusic;
 
             Loaded += Settings_Loaded;
 
@@ -229,6 +233,17 @@ namespace YAPA
             }
         }
 
+        public bool RepeatBreakMusic
+        {
+            get { return _repeatBreakMusic; }
+            set
+            {
+                _repeatBreakMusic = value;
+                _host.RepeatBreakMusic = value;
+                RaisePropertyChanged("RepeatBreakMusic");
+            }
+        }
+
 
         public string WorkMusic
         {
@@ -238,6 +253,17 @@ namespace YAPA
                 _workMusic = value;
                 _host.WorkMusic = value;
                 RaisePropertyChanged("WorkMusic");
+            }
+        }
+
+        public bool RepeatWorkMusic
+        {
+            get { return _repeatWorkMusic; }
+            set
+            {
+                _repeatWorkMusic = value;
+                _host.RepeatWorkMusic = value;
+                RaisePropertyChanged("RepeatWorkMusic");
             }
         }
 
@@ -323,7 +349,7 @@ namespace YAPA
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = ".wav",
-                Filter = "WAVE (*.wav)|*.wav|All Files(*.*)|*.*",
+                Filter = "MP3 (*.mp3)|*.mp3|WAVE (*.wav)|*.wav|All Files(*.*)|*.*",
                 InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\sounds")
             };
 
