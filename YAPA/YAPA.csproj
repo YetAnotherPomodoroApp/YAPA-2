@@ -75,7 +75,7 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
-   <PropertyGroup>
+  <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
@@ -123,14 +123,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IPlugin.cs" />
+    <Compile Include="Contracts\IPluginSettings.cs" />
+    <Compile Include="Contracts\IPomodoroEngine.cs" />
+    <Compile Include="Contracts\ITimer.cs" />
+    <Compile Include="Shared\PomodoroEngine.cs" />
+    <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
+    <Compile Include="WPF\Timer.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Contracts\IApplication.cs" />
+    <Compile Include="Contracts\ISettings.cs" />
+    <Compile Include="Shared\SoundNotifications.cs" />
+    <Compile Include="Contracts\IMusicPlayer.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="IMainViewModel.cs" />
     <Compile Include="ISettingsViewModel.cs" />
     <Compile Include="ItemRepository.cs" />
+    <Compile Include="WPF\MinimizeToTray.cs" />
+    <Compile Include="WPF\MusicPlayer.cs" />
     <Compile Include="PomodoroWeek.xaml.cs">
       <DependentUpon>PomodoroWeek.xaml</DependentUpon>
     </Compile>

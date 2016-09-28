@@ -5,15 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shell;
 using System.Windows.Threading;
-using GDIScreen = System.Windows.Forms.Screen;
+using YAPA.Contracts;
 using WindowState = System.Windows.WindowState;
 
 namespace YAPA
@@ -21,11 +19,8 @@ namespace YAPA
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IMainViewModel, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged, IApplication
     {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal extern static bool DestroyIcon(IntPtr handle);
-
         private DispatcherTimer _dispacherTime;
         private Stopwatch _stopWatch;
         private ItemRepository _itemRepository;
@@ -44,8 +39,7 @@ namespace YAPA
         private string _workLabel;
         private SoundPlayer _tickSound;
         private SoundPlayer _ringSound;
-        private System.Windows.Forms.NotifyIcon sysTrayIcon;
-        private IntPtr _systemTrayIcon;
+
 
         private System.Drawing.Color WorkTrayIconColor;
         private System.Drawing.Color BreakTrayIconColor;
@@ -79,7 +73,7 @@ namespace YAPA
             MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
 
             // save window position on close
-            Closing += MainWindow_Closing;
+            base.Closing += MainWindow_Closing;
 
             // flash timer
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
@@ -91,10 +85,10 @@ namespace YAPA
             _musicPlayer = new MediaPlayer();
             _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
 
-            Loaded += MainWindow_Loaded;
-            StateChanged += MainWindow_StateChanged;
+            base.Loaded += MainWindow_Loaded;
+            base.StateChanged += MainWindow_StateChanged;
 
-            this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
+            base.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
 
             WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
             BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
@@ -148,39 +142,29 @@ namespace YAPA
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Minimized && MinimizeToTray == true && Properties.Settings.Default.ShowInTaskbar)
+            ApplicationState state;
+
+            switch (WindowState)
             {
-                Hide();
-                sysTrayIcon.Visible = true;
+                case WindowState.Minimized:
+                    state = ApplicationState.Minimized;
+                    break;
+                case WindowState.Maximized:
+                    state = ApplicationState.Maximized;
+                    break;
+                case WindowState.Normal:
+                    state = ApplicationState.Normal;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            if (!Properties.Settings.Default.ShowInTaskbar)
-            {
-                if (this.WindowState == WindowState.Minimized)
-                {
-                    sysTrayIcon.Visible = true;
-                }
-                else
-                {
-                    this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
-                }
-            }
-
+            StateChanged?.Invoke(state);
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (Properties.Settings.Default.IsFirstRun)
-            {
-                Properties.Settings.Default.IsFirstRun = false;
-            }
-
-            GDIScreen currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
-
-            Properties.Settings.Default.CurrentScreenHeight = currentScreen.WorkingArea.Height;
-            Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
-
-            Properties.Settings.Default.Save();
+            Closing?.Invoke();
 
             PauseMusic();
         }
@@ -194,26 +178,7 @@ namespace YAPA
             //or in the app.xaml.cs
             //ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs);
 
-            var currentScreen = GDIScreen.FromHandle(new WindowInteropHelper(this).Handle);
-
-            var screenChanged = (currentScreen.WorkingArea.Height != Properties.Settings.Default.CurrentScreenHeight ||
-                                currentScreen.WorkingArea.Width != Properties.Settings.Default.CurrentScreenWidth);
-
-            // default position only for first run or when screen size changes
-            // position the clock at top / right, primary screen
-            if (Properties.Settings.Default.IsFirstRun || screenChanged)
-            {
-                Left = SystemParameters.PrimaryScreenWidth - Width - 15.0;
-                Top = 0;
-            }
-
-            sysTrayIcon = new System.Windows.Forms.NotifyIcon();
-            sysTrayIcon.Text = "YAPA";
-            sysTrayIcon.Icon = new System.Drawing.Icon(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40);
-            sysTrayIcon.Visible = false;
-            sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
-
-            sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
+            Loaded?.Invoke();
         }
 
         private System.Windows.Forms.MenuItem[] CreateNotifyIconContextMenu()
@@ -230,49 +195,12 @@ namespace YAPA
             var resetTask = new System.Windows.Forms.MenuItem { Text = "Reset session" };
             resetTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/reset"); };
 
-            return new System.Windows.Forms.MenuItem[] {
-                startTask, pauseTask,stopTask, resetTask
+            return new System.Windows.Forms.MenuItem[]
+            {
+                startTask, pauseTask, stopTask, resetTask
             };
         }
 
-        private void SysTrayIcon_DoubleClick(object sender, EventArgs e)
-        {
-            Show();
-            this.WindowState = WindowState.Normal;
-            sysTrayIcon.Visible = false;
-        }
-
-        //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
-        public void ShowText(string text)
-        {
-            System.Drawing.Color textColor;
-
-            if (_isWork)
-            {
-                textColor = WorkTrayIconColor;
-            }
-            else
-            {
-                textColor = BreakTrayIconColor;
-            }
-
-            if (_systemTrayIcon != IntPtr.Zero)
-            {
-                DestroyIcon(_systemTrayIcon);
-            }
-
-            System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
-
-            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
-            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
-            graphics.DrawString(text, new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold), brush, 0, 0);
-
-            _systemTrayIcon = bitmap.GetHicon();
-
-
-            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(_systemTrayIcon);
-            sysTrayIcon.Icon = icon;
-        }
 
         private void CreateJumpList()
         {
@@ -364,10 +292,7 @@ namespace YAPA
 
                 return shadowColor;
             }
-            set
-            {
-
-            }
+            set { }
         }
 
         public Brush MouseOverBackgroundColor
@@ -387,9 +312,7 @@ namespace YAPA
 
                 return mouseOverBackgroundColor;
             }
-            set
-            {
-            }
+            set { }
         }
 
 
@@ -517,10 +440,7 @@ namespace YAPA
 
         public bool CountBackwards
         {
-            get
-            {
-                return Properties.Settings.Default.CountBackwards;
-            }
+            get { return Properties.Settings.Default.CountBackwards; }
             set
             {
                 Properties.Settings.Default.CountBackwards = value;
@@ -831,5 +751,14 @@ namespace YAPA
         {
             TimerFlush.Stop(this);
         }
+
+        public void ShowInTaskbar(bool show)
+        {
+            base.ShowInTaskbar = show;
+        }
+
+        public event Action<ApplicationState> StateChanged;
+        public event Action Closing;
+        public event Action Loaded;
     }
 }
