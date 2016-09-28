@@ -67,5 +67,18 @@ namespace YAPA
         /// Minimize to tray or to taskbar
         /// </summary>
         bool MinimizeToTray { get; set; }
+
+        /// <summary>
+        /// Music to play when working
+        /// </summary>
+        string WorkMusic { get; set; }
+        bool RepeatWorkMusic { get; set; }
+
+        /// <summary>
+        /// Music to play on break
+        /// </summary>
+        string BreakMusic { get; set; }
+
+        bool RepeatBreakMusic { get; set; }
     }
 }

@@ -9,7 +9,7 @@
         mc:Ignorable="d" 
         x:Class="YAPA.Settings"
         Title="YAPA Settings" 
-        Height="530" 
+        Height="630" 
         Width="450"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -25,7 +25,7 @@
             <Grid Background="White" Margin="0,0,0,29">
 
                 <StackPanel Orientation="Vertical" >
-                    <TextBlock Text="YAPA, v1.2.0"
+                    <TextBlock x:Name="YapaVersion"  Text="YAPA, v1.2.0"
             		FontFamily="Segoe UI Light"
             		FontSize="18pt" Margin="10,0,10,0"
                            />
@@ -108,6 +108,34 @@
                                 <Label Margin="0,-5" Content="Minimize to tray"/>
                             </CheckBox>
                         </Grid>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Label >Work music (repeat</Label>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding RepeatWorkMusic, Mode=TwoWay}"></CheckBox>
+                                <Label>):</Label>
+                            </StackPanel>
+
+                            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding WorkMusic, Mode=TwoWay}"  Margin="5,0,0,15" ></TextBox>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Browse" Margin="5,0,0,15" x:Name="BrowseWorkMusic" Click="BrowseWorkMusic_OnClick"></Button>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Label >Break music (repeat</Label>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding RepeatBreakMusic,Mode=TwoWay}"></CheckBox>
+                                <Label>):</Label>
+                            </StackPanel>
+                            <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding BreakMusic, Mode=TwoWay}" Margin="5,0,0,15" ></TextBox>
+                            <Button Grid.Row="3" Grid.Column="1" Content="Browse" Margin="5,0,0,15" x:Name="BrowseBreakMusic" Click="BrowseBreakMusic_OnClick"></Button>
+                        </Grid>
                         <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application follow at:"/><LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="http://lukaszbanasiak.github.io/YAPA/" TextDecorations=""><Run Text="http://lukaszbanasiak.github.io/YAPA/"/></Hyperlink></TextBlock>
                     </StackPanel>
                 </StackPanel>
@@ -116,7 +144,7 @@
             		Content="Save"
             		Cursor="Hand"
             		ToolTip="Save settings"
-            		Margin="351,421,10,10" RenderTransformOrigin="0.478,0.513">
+            		Margin="351,508,10,10" RenderTransformOrigin="0.478,0.513">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <TextBlock Text="{TemplateBinding Content}" 

@@ -238,5 +238,53 @@ namespace YAPA.Properties {
                 this["WorkTrayIconColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WorkMusic {
+            get {
+                return ((string)(this["WorkMusic"]));
+            }
+            set {
+                this["WorkMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BreakMusic {
+            get {
+                return ((string)(this["BreakMusic"]));
+            }
+            set {
+                this["BreakMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RepeatWorkMusic {
+            get {
+                return ((bool)(this["RepeatWorkMusic"]));
+            }
+            set {
+                this["RepeatWorkMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RepeatBreakMusic {
+            get {
+                return ((bool)(this["RepeatBreakMusic"]));
+            }
+            set {
+                this["RepeatBreakMusic"] = value;
+            }
+        }
     }
 }

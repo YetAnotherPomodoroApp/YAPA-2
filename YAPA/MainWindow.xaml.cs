@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using System.Media;
 using System.Windows.Shell;
-using System.Reflection;
-using WindowState = System.Windows.WindowState;
+using System.Windows.Threading;
 using GDIScreen = System.Windows.Forms.Screen;
-using System.Windows.Interop;
-using System.Runtime.CompilerServices;
+using WindowState = System.Windows.WindowState;
 
 namespace YAPA
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
     public partial class MainWindow : Window, IMainViewModel, INotifyPropertyChanged
     {
-        private DispatcherTimer _dispacherTime = new DispatcherTimer();
-        private Stopwatch _stopWatch = new Stopwatch();
-        private ItemRepository _itemRepository = new ItemRepository();
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal extern static bool DestroyIcon(IntPtr handle);
+
+        private DispatcherTimer _dispacherTime;
+        private Stopwatch _stopWatch;
+        private ItemRepository _itemRepository;
 
         private ICommand _showSettings;
-        private Storyboard _timerFlush;
+        private Storyboard TimerFlush;
 
         private double _progressValue;
         private string _progressState;
@@ -37,13 +44,23 @@ namespace YAPA
         private string _workLabel;
         private SoundPlayer _tickSound;
         private SoundPlayer _ringSound;
+        private System.Windows.Forms.NotifyIcon sysTrayIcon;
+        private IntPtr _systemTrayIcon;
 
+        private System.Drawing.Color WorkTrayIconColor;
+        private System.Drawing.Color BreakTrayIconColor;
+
+        private MediaPlayer _musicPlayer;
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _dispacherTime = new DispatcherTimer();
+            _stopWatch = new Stopwatch();
+            _itemRepository = new ItemRepository();
 
             DataContext = this;
             _showSettings = new ShowSettings(this);
@@ -65,13 +82,90 @@ namespace YAPA
             Closing += MainWindow_Closing;
 
             // flash timer
-            _timerFlush = (Storyboard)TryFindResource("FlashTimer");
+            TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
-            // play sounds
-            _tickSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\tick.wav");
-            _ringSound = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\ding.wav");
+            //// play sounds
+            _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
+            _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
+
+            _musicPlayer = new MediaPlayer();
+            _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
 
             Loaded += MainWindow_Loaded;
+            StateChanged += MainWindow_StateChanged;
+
+            this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
+
+            WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
+            BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
+        }
+
+        private void _musicPlayer_MediaEnded1(object sender, EventArgs e)
+        {
+            var repeat = _isWork ? RepeatWorkMusic : RepeatBreakMusic;
+            if (repeat && _musicPlayer.Source != null && File.Exists(_musicPlayer.Source.AbsolutePath))
+            {
+                _musicPlayer.Play();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playWork">true - work, false - break, null - use _isWork</param>
+        private void PlayMusic(bool? playWork = null)
+        {
+            if (SoundEffects == false)
+            {
+                return;
+            }
+            var workMusic = playWork ?? _isWork;
+            var musicPath = workMusic ? WorkMusic : BreakMusic;
+
+
+            if (!File.Exists(musicPath))
+            {
+                musicPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, musicPath);
+            }
+
+            if (!File.Exists(musicPath))
+            {
+                return;
+            }
+
+            _musicPlayer.Open(new Uri(musicPath));
+
+            _musicPlayer.Play();
+        }
+
+        private void PauseMusic()
+        {
+            if (_musicPlayer.CanPause)
+            {
+                _musicPlayer.Pause();
+            }
+        }
+
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized && MinimizeToTray == true && Properties.Settings.Default.ShowInTaskbar)
+            {
+                Hide();
+                sysTrayIcon.Visible = true;
+            }
+
+            if (!Properties.Settings.Default.ShowInTaskbar)
+            {
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    sysTrayIcon.Visible = true;
+                }
+                else
+                {
+                    this.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
+                }
+            }
+
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -87,11 +181,14 @@ namespace YAPA
             Properties.Settings.Default.CurrentScreenWidth = currentScreen.WorkingArea.Width;
 
             Properties.Settings.Default.Save();
+
+            PauseMusic();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CreateJumpList();
+            ResetTicking();
 
             //if you want to handle to command line args on the first instance you may want it to go here
             //or in the app.xaml.cs
@@ -109,6 +206,72 @@ namespace YAPA
                 Left = SystemParameters.PrimaryScreenWidth - Width - 15.0;
                 Top = 0;
             }
+
+            sysTrayIcon = new System.Windows.Forms.NotifyIcon();
+            sysTrayIcon.Text = "YAPA";
+            sysTrayIcon.Icon = new System.Drawing.Icon(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40);
+            sysTrayIcon.Visible = false;
+            sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
+
+            sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
+        }
+
+        private System.Windows.Forms.MenuItem[] CreateNotifyIconContextMenu()
+        {
+            var startTask = new System.Windows.Forms.MenuItem { Text = "Start" };
+            startTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/start"); };
+
+            var pauseTask = new System.Windows.Forms.MenuItem { Text = "Pause" };
+            pauseTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/pause"); };
+
+            var stopTask = new System.Windows.Forms.MenuItem { Text = "Restart" };
+            stopTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/restart"); };
+
+            var resetTask = new System.Windows.Forms.MenuItem { Text = "Reset session" };
+            resetTask.Click += (o, s) => { ProcessCommandLineArgs(string.Empty, "/reset"); };
+
+            return new System.Windows.Forms.MenuItem[] {
+                startTask, pauseTask,stopTask, resetTask
+            };
+        }
+
+        private void SysTrayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            this.WindowState = WindowState.Normal;
+            sysTrayIcon.Visible = false;
+        }
+
+        //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
+        public void ShowText(string text)
+        {
+            System.Drawing.Color textColor;
+
+            if (_isWork)
+            {
+                textColor = WorkTrayIconColor;
+            }
+            else
+            {
+                textColor = BreakTrayIconColor;
+            }
+
+            if (_systemTrayIcon != IntPtr.Zero)
+            {
+                DestroyIcon(_systemTrayIcon);
+            }
+
+            System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
+
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
+            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
+            graphics.DrawString(text, new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold), brush, 0, 0);
+
+            _systemTrayIcon = bitmap.GetHicon();
+
+
+            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(_systemTrayIcon);
+            sysTrayIcon.Icon = icon;
         }
 
         private void CreateJumpList()
@@ -229,6 +392,7 @@ namespace YAPA
             }
         }
 
+
         public bool SoundEffects
         {
             get { return Properties.Settings.Default.SoundNotification; }
@@ -258,6 +422,58 @@ namespace YAPA
                 RaisePropertyChanged("ShadowOpacity");
             }
         }
+
+
+        public bool MinimizeToTray
+        {
+            get { return Properties.Settings.Default.MinimizeToTray; }
+            set
+            {
+                Properties.Settings.Default.MinimizeToTray = value;
+                RaisePropertyChanged("MinimizeToTray");
+            }
+        }
+
+        public string WorkMusic
+        {
+            get { return Properties.Settings.Default.WorkMusic; }
+            set
+            {
+                Properties.Settings.Default.WorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
+        public bool RepeatWorkMusic
+        {
+            get { return Properties.Settings.Default.RepeatWorkMusic; }
+            set
+            {
+                Properties.Settings.Default.RepeatWorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
+        public string BreakMusic
+        {
+            get { return Properties.Settings.Default.BreakMusic; }
+            set
+            {
+                Properties.Settings.Default.BreakMusic = value;
+                RaisePropertyChanged("BreakMusic");
+            }
+        }
+
+        public bool RepeatBreakMusic
+        {
+            get { return Properties.Settings.Default.RepeatBreakMusic; }
+            set
+            {
+                Properties.Settings.Default.RepeatBreakMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
 
         public int WorkTime
         {
@@ -327,7 +543,7 @@ namespace YAPA
             set
             {
                 CurrentTime.Text = value;
-                Title = string.Format("YAPA - {0}", value);
+                Title = String.Format("YAPA - {0}", value);
             }
         }
 
@@ -363,7 +579,10 @@ namespace YAPA
                     StartTicking(BreakLongTime, _ticks);
                 }
 
-                var currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+                string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+
+                ShowText(String.Format("{0:00}", ts.Minutes));
+
                 CurrentTimeValue = currentTime;
                 CurrentPeriod.Text = _period.ToString();
             }
@@ -373,7 +592,9 @@ namespace YAPA
         {
             if (SoundEffects)
                 _tickSound.Play();
-            _timerFlush.Stop(this);
+            PlayMusic();
+
+            TimerFlush.Stop(this);
             if (_stopWatch.IsRunning)
             {
                 _ticks = 0;
@@ -395,19 +616,24 @@ namespace YAPA
                 _tickSound.Stop();
                 _ringSound.Stop();
             }
+
             if (_stopWatch.IsRunning)
             {
                 _period--;
                 _stopWatch.Stop();
                 ProgressState = "Paused";
+                PauseMusic();
             }
             else
+            {
                 ResetTicking();
+                PlayMusic(false);
+            }
         }
 
         private void StartTicking(int TotalTime, int Increment)
         {
-            var _totalTime = TotalTime * 60;
+            int _totalTime = TotalTime * 60;
             ProgressState = "Normal";
             ProgressValue = (double)Increment / _totalTime;
             if (Increment >= _totalTime)
@@ -418,14 +644,18 @@ namespace YAPA
                     _itemRepository.CompletePomodoro();
                 }
                 StopTicking();
+                PauseMusic();
             }
         }
 
         private void StopTicking()
         {
             if (SoundEffects)
+            {
                 _ringSound.Play();
-            _timerFlush.Begin(this, true);
+            }
+            PauseMusic();
+            TimerFlush.Begin(this, true);
             _stopWatch.Reset();
             _dispacherTime.Stop();
             ProgressState = "Error";
@@ -457,11 +687,11 @@ namespace YAPA
 
         private void ResetTicking()
         {
-            _timerFlush.Stop(this);
+            TimerFlush.Stop(this);
+            PauseMusic();
             _stopWatch.Reset();
             _dispacherTime.Stop();
             CurrentTimeValue = "00:00";
-            CurrentPeriod.Text = "";
             _period = 0;
             _isBreak = false;
             _isBreakLong = false;
@@ -469,18 +699,33 @@ namespace YAPA
             ProgressValue = .0;
             ProgressState = "None";
             _ticks = 0;
+
+            var lastDay = _itemRepository.GetPomodoros().Last();
+            if (lastDay.DateTime == DateTime.Now.Date)
+            {
+                _period = lastDay.Count % 4;
+            }
+
+            CurrentPeriod.Text = _period != 0 ? _period.ToString() : "";
         }
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            DragMove();
+            try
+            {
+                base.OnMouseLeftButtonDown(e);
+                DragMove();
+                e.Handled = true;
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>
         /// Used to raise change notifications to other consumers.
         /// </summary>
-        private void RaisePropertyChanged([CallerMemberName]string propName = null)
+        private void RaisePropertyChanged(string propName)
         {
             if (PropertyChanged != null)
             {
@@ -493,12 +738,12 @@ namespace YAPA
             ShowSettings.Execute(this);
         }
 
-        public bool ProcessCommandLineArgs(IList<string> args)
+        public bool ProcessCommandLineArgs(params string[] args)
         {
-            if (args == null || args.Count == 0)
+            if (args == null || args.Length == 0)
                 return true;
 
-            if ((args.Count > 1))
+            if ((args.Length > 1))
             {
                 //the first index always contains the location of the exe so we need to check the second index
                 if ((args[1].ToLowerInvariant() == "/start"))
@@ -507,7 +752,7 @@ namespace YAPA
                     {
                         if (SoundEffects)
                             _tickSound.Play();
-                        _timerFlush.Stop(this);
+                        TimerFlush.Stop(this);
                         _stopWatch.Start();
                         _dispacherTime.Start();
                         if (_isWork)
@@ -580,6 +825,11 @@ namespace YAPA
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
             MinExitPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TimerFlush.Stop(this);
         }
     }
 }

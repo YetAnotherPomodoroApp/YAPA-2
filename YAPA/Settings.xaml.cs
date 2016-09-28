@@ -3,11 +3,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Threading.Tasks;
 
 namespace YAPA
 {
@@ -26,7 +27,12 @@ namespace YAPA
         private int _breakLongTime;
         private bool _soundEfects;
         private bool _countBackwards;
+        private bool _minimizeToTray;
         private ItemRepository _itemRepository;
+        private string _workMusic;
+        private bool _repeatWorkMusic;
+        private string _breakMusic;
+        private bool _repeatBreakMusic;
 
         // INPC support
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,7 +40,7 @@ namespace YAPA
         /// <summary>
         /// Window constructor.
         /// </summary>
-        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards)
+        public Settings(IMainViewModel host, double currentOpacity, Brush currentTextColor, int workTime, int breakTime, int breakLongTime, bool soundEfects, double shadowOpacity, bool countBackwards, bool minimizeToTray, string workMusic, string breakMusic, bool repeatWorkMusic, bool repeatBreakMusic)
         {
             InitializeComponent();
             DataContext = this;
@@ -49,24 +55,31 @@ namespace YAPA
             _workTime = workTime;
             _shadowOpacity = shadowOpacity;
             _countBackwards = countBackwards;
+            _minimizeToTray = minimizeToTray;
             MouseLeftButtonDown += Settings_MouseLeftButtonDown;
+            _itemRepository = new ItemRepository();
+            _workMusic = workMusic;
+            _breakMusic = breakMusic;
+            _repeatBreakMusic = repeatBreakMusic;
+            _repeatWorkMusic = repeatWorkMusic;
 
             Loaded += Settings_Loaded;
+
+
+            YapaVersion.Text = $"YAPA, v{Assembly.GetEntryAssembly().GetName().Version}";
         }
 
         private async void Settings_Loaded(object sender, RoutedEventArgs e)
         {
             await Task.Run(() =>
             {
-                _itemRepository = new ItemRepository();
-
                 var dfi = DateTimeFormatInfo.CurrentInfo;
                 var cal = dfi.Calendar;
 
                 var pomodoros =
                     _itemRepository.GetPomodoros()
                         .Select(
-                            x => new { week = cal.GetWeekOfYear(x.DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek), x });
+                            x => new { week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek), x });
                 var max = pomodoros.Max(x => x.x.Count);
 
                 foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
@@ -80,6 +93,9 @@ namespace YAPA
 
                 Dispatcher.Invoke(() =>
                 {
+                    var weekShift = DayOfWeek.Monday - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                    MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
+
                     DayPanel.Visibility = Visibility.Visible;
                     LoadingPanel.Visibility = Visibility.Collapsed;
                 });
@@ -206,6 +222,51 @@ namespace YAPA
             }
         }
 
+        public string BreakMusic
+        {
+            get { return _breakMusic; }
+            set
+            {
+                _breakMusic = value;
+                _host.BreakMusic = value;
+                RaisePropertyChanged("BreakMusic");
+            }
+        }
+
+        public bool RepeatBreakMusic
+        {
+            get { return _repeatBreakMusic; }
+            set
+            {
+                _repeatBreakMusic = value;
+                _host.RepeatBreakMusic = value;
+                RaisePropertyChanged("RepeatBreakMusic");
+            }
+        }
+
+
+        public string WorkMusic
+        {
+            get { return _workMusic; }
+            set
+            {
+                _workMusic = value;
+                _host.WorkMusic = value;
+                RaisePropertyChanged("WorkMusic");
+            }
+        }
+
+        public bool RepeatWorkMusic
+        {
+            get { return _repeatWorkMusic; }
+            set
+            {
+                _repeatWorkMusic = value;
+                _host.RepeatWorkMusic = value;
+                RaisePropertyChanged("RepeatWorkMusic");
+            }
+        }
+
         public int BreakLongTime
         {
             get { return _breakLongTime; }
@@ -228,6 +289,21 @@ namespace YAPA
                 _countBackwards = value;
                 _host.CountBackwards = value;
                 RaisePropertyChanged("CountBackwards");
+            }
+        }
+
+
+        public bool MinimizeToTray
+        {
+            get
+            {
+                return _minimizeToTray;
+            }
+            set
+            {
+                _minimizeToTray = value;
+                _host.MinimizeToTray = value;
+                RaisePropertyChanged("MinimizeToTray");
             }
         }
 
@@ -257,5 +333,47 @@ namespace YAPA
         {
             Process.Start(((Hyperlink)sender).NavigateUri.ToString());
         }
+
+        private void BrowseWorkMusic_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileName = BrowseForFile();
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                WorkMusic = fileName;
+            }
+        }
+
+
+        private string BrowseForFile()
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".wav",
+                Filter = "MP3 (*.mp3)|*.mp3|WAVE (*.wav)|*.wav|All Files(*.*)|*.*",
+                InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\sounds")
+            };
+
+            var result = dlg.ShowDialog();
+
+
+            if (result.HasValue && result == true)
+            {
+                return dlg.FileName;
+            }
+
+            return null;
+        }
+
+
+        private void BrowseBreakMusic_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileName = BrowseForFile();
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                BreakMusic = fileName;
+            }
+        }
     }
+
+
 }

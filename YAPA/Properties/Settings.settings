@@ -56,5 +56,17 @@
     <Setting Name="WorkTrayIconColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#00802b</Value>
     </Setting>
+    <Setting Name="WorkMusic" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BreakMusic" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RepeatWorkMusic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RepeatBreakMusic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

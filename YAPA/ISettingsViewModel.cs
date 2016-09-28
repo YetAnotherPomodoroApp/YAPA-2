@@ -54,6 +54,16 @@ namespace YAPA
         bool CountBackwards { get; set; }
 
         /// <summary>
+        /// Music to play when working
+        /// </summary>
+        string WorkMusic { get; set; }
+
+        /// <summary>
+        /// Music to play on break
+        /// </summary>
+        string BreakMusic { get; set; }
+
+        /// <summary>
         /// Command invoked when user clicks 'Done'
         /// </summary>
         ICommand SaveSettings { get; }
