@@ -128,6 +128,9 @@
     <Compile Include="Contracts\IPomodoroEngine.cs" />
     <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
+    <Compile Include="Shared\StartCommand.cs" />
+    <Compile Include="Shared\StopCommand.cs" />
+    <Compile Include="WPF\JsonYapaSettings.cs" />
     <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
     <Compile Include="WPF\Timer.cs" />
     <Page Include="App.xaml">

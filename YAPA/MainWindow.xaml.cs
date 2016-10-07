@@ -1,17 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Media;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shell;
-using System.Windows.Threading;
 using YAPA.Contracts;
+using YAPA.Shared;
+using YAPA.WPF;
 using WindowState = System.Windows.WindowState;
 
 namespace YAPA
@@ -21,7 +19,6 @@ namespace YAPA
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged, IApplication
     {
-        private DispatcherTimer _dispacherTime;
         private Stopwatch _stopWatch;
         private ItemRepository _itemRepository;
 
@@ -30,21 +27,11 @@ namespace YAPA
 
         private double _progressValue;
         private string _progressState;
-        private int _ticks;
-        private int _period;
-        private bool _isBreak;
-        private bool _isBreakLong;
-        private bool _isWork;
-        private string _breakLabel;
-        private string _workLabel;
-        private SoundPlayer _tickSound;
-        private SoundPlayer _ringSound;
 
+        private IPomodoroEngine _engine;
+        private ITimer _timer;
+        private ISettings _settings;
 
-        private System.Drawing.Color WorkTrayIconColor;
-        private System.Drawing.Color BreakTrayIconColor;
-
-        private MediaPlayer _musicPlayer;
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -52,22 +39,14 @@ namespace YAPA
         {
             InitializeComponent();
 
-            _dispacherTime = new DispatcherTimer();
+            _timer = new Timer();
+            _settings = new JsonYapaSettings();
+            _engine = new PomodoroEngine(new PomodoroEngineSettings(_settings), _timer);
+
             _stopWatch = new Stopwatch();
             _itemRepository = new ItemRepository();
 
             DataContext = this;
-            _showSettings = new ShowSettings(this);
-            _ticks = 0;
-            _period = 0;
-            _isBreak = false;
-            _isBreakLong = false;
-            _isWork = true;
-            _breakLabel = "break";
-            _workLabel = "work";
-
-            _dispacherTime.Tick += new EventHandler(DoTick);
-            _dispacherTime.Interval = new TimeSpan(0, 0, 0, 1);
 
             // enable dragging
             MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
@@ -79,65 +58,16 @@ namespace YAPA
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
             //// play sounds
-            _tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
-            _ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
-
-            _musicPlayer = new MediaPlayer();
-            _musicPlayer.MediaEnded += _musicPlayer_MediaEnded1;
+            //_tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
+            //_ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
 
             base.Loaded += MainWindow_Loaded;
             base.StateChanged += MainWindow_StateChanged;
 
             base.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
 
-            WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
-            BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
-        }
-
-        private void _musicPlayer_MediaEnded1(object sender, EventArgs e)
-        {
-            var repeat = _isWork ? RepeatWorkMusic : RepeatBreakMusic;
-            if (repeat && _musicPlayer.Source != null && File.Exists(_musicPlayer.Source.AbsolutePath))
-            {
-                _musicPlayer.Play();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="playWork">true - work, false - break, null - use _isWork</param>
-        private void PlayMusic(bool? playWork = null)
-        {
-            if (SoundEffects == false)
-            {
-                return;
-            }
-            var workMusic = playWork ?? _isWork;
-            var musicPath = workMusic ? WorkMusic : BreakMusic;
-
-
-            if (!File.Exists(musicPath))
-            {
-                musicPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, musicPath);
-            }
-
-            if (!File.Exists(musicPath))
-            {
-                return;
-            }
-
-            _musicPlayer.Open(new Uri(musicPath));
-
-            _musicPlayer.Play();
-        }
-
-        private void PauseMusic()
-        {
-            if (_musicPlayer.CanPause)
-            {
-                _musicPlayer.Pause();
-            }
+            //WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
+            //BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -165,14 +95,11 @@ namespace YAPA
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             Closing?.Invoke();
-
-            PauseMusic();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CreateJumpList();
-            ResetTicking();
 
             //if you want to handle to command line args on the first instance you may want it to go here
             //or in the app.xaml.cs
@@ -315,17 +242,6 @@ namespace YAPA
             set { }
         }
 
-
-        public bool SoundEffects
-        {
-            get { return Properties.Settings.Default.SoundNotification; }
-            set
-            {
-                Properties.Settings.Default.SoundNotification = value;
-                RaisePropertyChanged("UseSoundEfects");
-            }
-        }
-
         public double ClockOpacity
         {
             get { return Properties.Settings.Default.OpacityLevel; }
@@ -343,88 +259,6 @@ namespace YAPA
             {
                 Properties.Settings.Default.ShadowOpacityLevel = value;
                 RaisePropertyChanged("ShadowOpacity");
-            }
-        }
-
-
-        public bool MinimizeToTray
-        {
-            get { return Properties.Settings.Default.MinimizeToTray; }
-            set
-            {
-                Properties.Settings.Default.MinimizeToTray = value;
-                RaisePropertyChanged("MinimizeToTray");
-            }
-        }
-
-        public string WorkMusic
-        {
-            get { return Properties.Settings.Default.WorkMusic; }
-            set
-            {
-                Properties.Settings.Default.WorkMusic = value;
-                RaisePropertyChanged("WorkMusic");
-            }
-        }
-
-        public bool RepeatWorkMusic
-        {
-            get { return Properties.Settings.Default.RepeatWorkMusic; }
-            set
-            {
-                Properties.Settings.Default.RepeatWorkMusic = value;
-                RaisePropertyChanged("WorkMusic");
-            }
-        }
-
-        public string BreakMusic
-        {
-            get { return Properties.Settings.Default.BreakMusic; }
-            set
-            {
-                Properties.Settings.Default.BreakMusic = value;
-                RaisePropertyChanged("BreakMusic");
-            }
-        }
-
-        public bool RepeatBreakMusic
-        {
-            get { return Properties.Settings.Default.RepeatBreakMusic; }
-            set
-            {
-                Properties.Settings.Default.RepeatBreakMusic = value;
-                RaisePropertyChanged("WorkMusic");
-            }
-        }
-
-
-        public int WorkTime
-        {
-            get { return Properties.Settings.Default.PeriodWork; }
-            set
-            {
-                Properties.Settings.Default.PeriodWork = value;
-                RaisePropertyChanged("WorkTime");
-            }
-        }
-
-        public int BreakTime
-        {
-            get { return Properties.Settings.Default.PeriodShortBreak; }
-            set
-            {
-                Properties.Settings.Default.PeriodShortBreak = value;
-                RaisePropertyChanged("BreakTime");
-            }
-        }
-
-        public int BreakLongTime
-        {
-            get { return Properties.Settings.Default.PeriodLongBreak; }
-            set
-            {
-                Properties.Settings.Default.PeriodLongBreak = value;
-                RaisePropertyChanged("BreakLongTime");
             }
         }
 
@@ -467,168 +301,6 @@ namespace YAPA
             }
         }
 
-        void DoTick(object sender, EventArgs e)
-        {
-            if (_stopWatch.IsRunning)
-            {
-                var ts = _stopWatch.Elapsed;
-                _ticks = (int)ts.TotalSeconds;
-
-                if (_isWork)
-                {
-                    if (CountBackwards)
-                    {
-                        ts = TimeSpan.FromMinutes(WorkTime) - ts;
-                    }
-                    StartTicking(WorkTime, _ticks);
-                }
-                else if (_isBreak)
-                {
-                    if (CountBackwards)
-                    {
-                        ts = TimeSpan.FromMinutes(BreakTime) - ts;
-                    }
-                    StartTicking(BreakTime, _ticks);
-                }
-                else if (_isBreakLong)
-                {
-                    if (CountBackwards)
-                    {
-                        ts = TimeSpan.FromMinutes(BreakLongTime) - ts;
-                    }
-                    StartTicking(BreakLongTime, _ticks);
-                }
-
-                string currentTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
-
-                ShowText(String.Format("{0:00}", ts.Minutes));
-
-                CurrentTimeValue = currentTime;
-                CurrentPeriod.Text = _period.ToString();
-            }
-        }
-
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            if (SoundEffects)
-                _tickSound.Play();
-            PlayMusic();
-
-            TimerFlush.Stop(this);
-            if (_stopWatch.IsRunning)
-            {
-                _ticks = 0;
-                _stopWatch.Restart();
-            }
-            else
-            {
-                _stopWatch.Start();
-                _dispacherTime.Start();
-                if (_isWork)
-                    _period++;
-            }
-        }
-
-        private void Stop_Click(object sender, RoutedEventArgs e)
-        {
-            if (SoundEffects)
-            {
-                _tickSound.Stop();
-                _ringSound.Stop();
-            }
-
-            if (_stopWatch.IsRunning)
-            {
-                _period--;
-                _stopWatch.Stop();
-                ProgressState = "Paused";
-                PauseMusic();
-            }
-            else
-            {
-                ResetTicking();
-                PlayMusic(false);
-            }
-        }
-
-        private void StartTicking(int TotalTime, int Increment)
-        {
-            int _totalTime = TotalTime * 60;
-            ProgressState = "Normal";
-            ProgressValue = (double)Increment / _totalTime;
-            if (Increment >= _totalTime)
-            {
-                _ticks = 0;
-                if (_isWork)
-                {
-                    _itemRepository.CompletePomodoro();
-                }
-                StopTicking();
-                PauseMusic();
-            }
-        }
-
-        private void StopTicking()
-        {
-            if (SoundEffects)
-            {
-                _ringSound.Play();
-            }
-            PauseMusic();
-            TimerFlush.Begin(this, true);
-            _stopWatch.Reset();
-            _dispacherTime.Stop();
-            ProgressState = "Error";
-            if (_isWork)
-            {
-                CurrentTimeValue = _breakLabel;
-                _isWork = false;
-                if (_period == 4)
-                {
-                    _isBreak = false;
-                    _isBreakLong = true;
-                }
-                else
-                    _isBreak = true;
-            }
-            else
-            {
-                CurrentTimeValue = _workLabel;
-                _isBreak = false;
-                _isBreakLong = false;
-                _isWork = true;
-                if (_period == 4)
-                {
-                    CurrentPeriod.Text = "";
-                    _period = 0;
-                }
-            }
-        }
-
-        private void ResetTicking()
-        {
-            TimerFlush.Stop(this);
-            PauseMusic();
-            _stopWatch.Reset();
-            _dispacherTime.Stop();
-            CurrentTimeValue = "00:00";
-            _period = 0;
-            _isBreak = false;
-            _isBreakLong = false;
-            _isWork = true;
-            ProgressValue = .0;
-            ProgressState = "None";
-            _ticks = 0;
-
-            var lastDay = _itemRepository.GetPomodoros().Last();
-            if (lastDay.DateTime == DateTime.Now.Date)
-            {
-                _period = lastDay.Count % 4;
-            }
-
-            CurrentPeriod.Text = _period != 0 ? _period.ToString() : "";
-        }
-
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -668,44 +340,18 @@ namespace YAPA
                 //the first index always contains the location of the exe so we need to check the second index
                 if ((args[1].ToLowerInvariant() == "/start"))
                 {
-                    if (!_stopWatch.IsRunning)
-                    {
-                        if (SoundEffects)
-                            _tickSound.Play();
-                        TimerFlush.Stop(this);
-                        _stopWatch.Start();
-                        _dispacherTime.Start();
-                        if (_isWork)
-                            _period++;
-                    }
+
                 }
                 else if ((args[1].ToLowerInvariant() == "/pause"))
                 {
-                    if (SoundEffects)
-                    {
-                        _tickSound.Stop();
-                        _ringSound.Stop();
-                    }
-                    if (_stopWatch.IsRunning)
-                    {
-                        _period--;
-                        _stopWatch.Stop();
-                        ProgressState = "Paused";
-                    }
+
                 }
                 else if ((args[1].ToLowerInvariant() == "/restart"))
                 {
-                    if (_stopWatch.IsRunning)
-                    {
-                        if (SoundEffects)
-                            _tickSound.Play();
-                        _ticks = 0;
-                        _stopWatch.Restart();
-                    }
+
                 }
                 else if ((args[1].ToLowerInvariant() == "/reset"))
                 {
-                    ResetTicking();
                 }
                 else if ((args[1].ToLowerInvariant() == "/settings"))
                 {
@@ -760,5 +406,16 @@ namespace YAPA
         public event Action<ApplicationState> StateChanged;
         public event Action Closing;
         public event Action Loaded;
+
+        public IntPtr WindowHandle
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public ApplicationState AppState
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 }

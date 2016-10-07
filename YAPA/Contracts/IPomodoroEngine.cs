@@ -15,6 +15,10 @@ namespace YAPA.Contracts
         event Action OnStarted;
         event Action OnStopped;
 
+        void Start();
+        void Stop();
+        void Reset();
+
         bool IsRunning { get; }
     }
 

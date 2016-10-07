@@ -17,7 +17,24 @@ namespace YAPA.Shared
 
         public int BreakTime => Current.BreakTime;
 
-        public PomodoroPhase Phase { get; private set; }
+
+        private PomodoroPhase _phase;
+        public PomodoroPhase Phase
+        {
+            get
+            {
+                return _phase;
+            }
+            private set
+            {
+                if (_phase == value)
+                {
+                    return;
+                }
+                _phase = value;
+                NotifyPropertyChanged(nameof(Phase));
+            }
+        }
 
         public event Func<bool> OnStarting;
         public event Action OnStarted;
@@ -30,8 +47,8 @@ namespace YAPA.Shared
 
         public void Start()
         {
-            var result = OnStarting?.Invoke();
-            if (result.HasValue && result.Value)
+            var cancelStart = OnStarting?.Invoke();
+            if (cancelStart.HasValue && cancelStart.Value)
             {
                 return;
             }
@@ -57,28 +74,17 @@ namespace YAPA.Shared
 
         public void Stop()
         {
-            switch (Phase)
-            {
-                case PomodoroPhase.Work:
-                    //Reset current pomodoro
-                    Phase = PomodoroPhase.WorkEnded; //Raise event that work ended
-                    Phase = PomodoroPhase.NotStarted;
-                    break;
-                case PomodoroPhase.Break:
-                    //go to next pomodoro
-                    Phase = PomodoroPhase.BreakEnded; //Raise event that break ended
-                    Phase = PomodoroPhase.NotStarted;
-                    break;
-                default:
-                    throw new InvalidOperationException($"Can't stop pomodoro from phase: {Phase}");
-            }
-
-            _timer.Stop();
+            ResetTo(Current);
 
             OnStopped?.Invoke();
         }
 
         public void Reset()
+        {
+            ResetTo(_pom1);
+        }
+
+        private void ResetTo(Pomodoro pom)
         {
             _timer.Stop();
 
@@ -94,18 +100,24 @@ namespace YAPA.Shared
 
             Phase = PomodoroPhase.NotStarted;
             _startDate = _endDate = DateTime.UtcNow;
-            Current = pom1;
+            if (Current.Index != pom.Index)
+            {
+                Current = pom;
+            }
         }
 
-        Pomodoro pom1, pom2, pom3, pom4;
+        private readonly Pomodoro _pom1, _pom2, _pom3, _pom4;
 
         private Pomodoro _current;
-
         private Pomodoro Current
         {
             get { return _current; }
             set
             {
+                if (_current.Index == value.Index)
+                {
+                    return;
+                }
                 _current = value;
                 NotifyPropertyChanged("Index");
                 NotifyPropertyChanged("WorkTime");
@@ -119,13 +131,13 @@ namespace YAPA.Shared
             _timer = timer;
             _timer.Tick += _timer_Tick;
 
-            pom4 = new Pomodoro(_settings) { Index = 4 };
-            pom3 = new Pomodoro(_settings) { Index = 3, NextPomodoro = pom4 };
-            pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = pom3 };
-            pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = pom2 };
-            pom4.NextPomodoro = pom1;
+            _pom4 = new Pomodoro(_settings) { Index = 4 };
+            _pom3 = new Pomodoro(_settings) { Index = 3, NextPomodoro = _pom4 };
+            _pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = _pom3 };
+            _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = _pom2 };
+            _pom4.NextPomodoro = _pom1;
 
-            Current = pom1;
+            Current = _pom1;
         }
 
         private void _timer_Tick()
@@ -136,13 +148,14 @@ namespace YAPA.Shared
             if (Phase == PomodoroPhase.Work && Elapsed / 60 >= WorkTime)
             {
                 _timer.Stop();
+                Phase = PomodoroPhase.WorkEnded;
             }
 
             if (Phase == PomodoroPhase.Break && Elapsed / 60 >= BreakTime)
             {
                 _timer.Stop();
+                Phase = PomodoroPhase.BreakEnded;
             }
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
