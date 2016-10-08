@@ -11,12 +11,11 @@ namespace YAPA.Shared
 
         public int Index => Current.Index;
 
-        public int Elapsed => (int)(_startDate - _endDate).TotalSeconds;
+        public int Elapsed => (int)(_endDate - _startDate).TotalSeconds;
 
         public int WorkTime => Current.WorkTime;
 
         public int BreakTime => Current.BreakTime;
-
 
         private PomodoroPhase _phase;
         public PomodoroPhase Phase
@@ -114,7 +113,7 @@ namespace YAPA.Shared
             get { return _current; }
             set
             {
-                if (_current.Index == value.Index)
+                if (_current?.Index == value.Index)
                 {
                     return;
                 }
@@ -143,7 +142,7 @@ namespace YAPA.Shared
         private void _timer_Tick()
         {
             _endDate = DateTime.UtcNow;
-            NotifyPropertyChanged("Elapsed");
+            NotifyPropertyChanged(nameof(Elapsed));
 
             if (Phase == PomodoroPhase.Work && Elapsed / 60 >= WorkTime)
             {
@@ -172,20 +171,20 @@ namespace YAPA.Shared
 
         public int WorkTime
         {
-            get { return _settings.Get("WorkTime", 25); }
-            set { _settings.Update("WorkTime", value); }
+            get { return _settings.Get(nameof(WorkTime), 25); }
+            set { _settings.Update(nameof(WorkTime), value); }
         }
 
         public int BreakTime
         {
-            get { return _settings.Get("BreakTime", 5); }
-            set { _settings.Update("BreakTime", value); }
+            get { return _settings.Get(nameof(BreakTime), 5); }
+            set { _settings.Update(nameof(BreakTime), value); }
         }
 
         public int LongBreakTime
         {
-            get { return _settings.Get("LongBreakTime", 15); }
-            set { _settings.Update("LongBreakTime", value); }
+            get { return _settings.Get(nameof(LongBreakTime), 15); }
+            set { _settings.Update(nameof(LongBreakTime), value); }
         }
 
         public PomodoroEngineSettings(ISettings settings)

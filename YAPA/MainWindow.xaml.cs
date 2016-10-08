@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shell;
 using YAPA.Contracts;
 using YAPA.Shared;
@@ -19,31 +18,35 @@ namespace YAPA
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged, IApplication
     {
-        private Stopwatch _stopWatch;
         private ItemRepository _itemRepository;
 
         private ICommand _showSettings;
-        private Storyboard TimerFlush;
+        //private Storyboard TimerFlush;
 
         private double _progressValue;
         private string _progressState;
 
-        private IPomodoroEngine _engine;
+        public IPomodoroEngine Engine { get; set; }
         private ITimer _timer;
         private ISettings _settings;
+
+        public ICommand StopCommand { get; set; }
+        public ICommand StartCommand { get; set; }
+        public ICommand ResetCommand { get; set; }
 
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
-            InitializeComponent();
-
             _timer = new Timer();
             _settings = new JsonYapaSettings();
-            _engine = new PomodoroEngine(new PomodoroEngineSettings(_settings), _timer);
+            Engine = new PomodoroEngine(new PomodoroEngineSettings(_settings), _timer);
 
-            _stopWatch = new Stopwatch();
+            StopCommand = new StopCommand(Engine);
+            StartCommand = new StartCommand(Engine);
+            ResetCommand = new ResetCommand(Engine);
+
             _itemRepository = new ItemRepository();
 
             DataContext = this;
@@ -55,7 +58,7 @@ namespace YAPA
             base.Closing += MainWindow_Closing;
 
             // flash timer
-            TimerFlush = (Storyboard)TryFindResource("FlashTimer");
+            //TimerFlush = (Storyboard)TryFindResource("FlashTimer");
 
             //// play sounds
             //_tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
@@ -68,6 +71,8 @@ namespace YAPA
 
             //WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
             //BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
+
+            InitializeComponent();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -296,7 +301,7 @@ namespace YAPA
         {
             set
             {
-                CurrentTime.Text = value;
+                //CurrentTime.Text = value;
                 Title = String.Format("YAPA - {0}", value);
             }
         }
@@ -327,7 +332,7 @@ namespace YAPA
 
         private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ShowSettings.Execute(this);
+            //ShowSettings.Execute(this);
         }
 
         public bool ProcessCommandLineArgs(params string[] args)
@@ -368,7 +373,7 @@ namespace YAPA
 
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_stopWatch.IsRunning)
+            //if (_stopWatch.IsRunning)
             {
                 if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
@@ -385,17 +390,17 @@ namespace YAPA
 
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            MinExitPanel.Visibility = Visibility.Visible;
+            //MinExitPanel.Visibility = Visibility.Visible;
         }
 
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            MinExitPanel.Visibility = Visibility.Hidden;
+            //MinExitPanel.Visibility = Visibility.Hidden;
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TimerFlush.Stop(this);
+            //TimerFlush.Stop(this);
         }
 
         public void ShowInTaskbar(bool show)

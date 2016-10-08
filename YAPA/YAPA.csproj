@@ -127,7 +127,9 @@
     <Compile Include="Contracts\IPluginSettings.cs" />
     <Compile Include="Contracts\IPomodoroEngine.cs" />
     <Compile Include="Contracts\ITimer.cs" />
+    <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
+    <Compile Include="Shared\ResetCommand.cs" />
     <Compile Include="Shared\StartCommand.cs" />
     <Compile Include="Shared\StopCommand.cs" />
     <Compile Include="WPF\JsonYapaSettings.cs" />

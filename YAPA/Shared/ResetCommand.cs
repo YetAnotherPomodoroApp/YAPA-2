@@ -4,10 +4,10 @@ using YAPA.Contracts;
 
 namespace YAPA.Shared
 {
-    public class StopCommand : ICommand
+    public class ResetCommand : ICommand
     {
         private readonly IPomodoroEngine _engine;
-        public StopCommand(IPomodoroEngine engine)
+        public ResetCommand(IPomodoroEngine engine)
         {
             _engine = engine;
             _engine.PropertyChanged += _engine_PropertyChanged;
@@ -23,12 +23,13 @@ namespace YAPA.Shared
 
         public bool CanExecute(object parameter)
         {
-            return _engine.Phase == PomodoroPhase.Work || _engine.Phase == PomodoroPhase.Break;
+            //Can't reset if we haven't started any pomodoro
+            return !(_engine.Index == 1 && _engine.Phase == PomodoroPhase.NotStarted);
         }
 
         public void Execute(object parameter)
         {
-            _engine.Stop();
+            _engine.Reset();
         }
 
         public event EventHandler CanExecuteChanged;

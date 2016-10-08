@@ -26,11 +26,12 @@ namespace YAPA.Shared
             return _engine.Phase != PomodoroPhase.Work && _engine.Phase != PomodoroPhase.Break;
         }
 
+        public event EventHandler CanExecuteChanged;
+
         public void Execute(object parameter)
         {
             _engine.Start();
         }
 
-        public event EventHandler CanExecuteChanged;
     }
 }
