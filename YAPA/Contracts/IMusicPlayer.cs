@@ -5,5 +5,6 @@
         void Load(string path);
         void Play(bool repeat = false);
         void Stop();
+        bool IsPlaying { get; }
     }
 }

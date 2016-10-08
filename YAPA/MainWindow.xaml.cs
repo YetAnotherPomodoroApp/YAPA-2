@@ -30,6 +30,9 @@ namespace YAPA
         private ITimer _timer;
         private ISettings _settings;
 
+        private IPlugin _soundNotifications;
+        private IMusicPlayer _musicPlayer;
+
         public ICommand StopCommand { get; set; }
         public ICommand StartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
@@ -47,7 +50,11 @@ namespace YAPA
             StartCommand = new StartCommand(Engine);
             ResetCommand = new ResetCommand(Engine);
 
+            _musicPlayer = new MusicPlayer();
+            _soundNotifications = new SoundNotifications(Engine, new SoundNotificationsSettings(_settings), _musicPlayer);
+
             _itemRepository = new ItemRepository();
+
 
             DataContext = this;
 

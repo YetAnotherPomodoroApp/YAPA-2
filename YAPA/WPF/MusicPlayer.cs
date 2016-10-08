@@ -27,7 +27,7 @@ namespace YAPA.WPF
 
         public void Load(string path)
         {
-            if (!File.Exists(path))
+            if (!File.Exists(path) || IsPlaying)
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace YAPA.WPF
 
         public void Play(bool repeat = false)
         {
-            if (_musicPlayer.Source == null || File.Exists(_musicPlayer.Source.AbsolutePath))
+            if (_musicPlayer.Source == null || !File.Exists(_musicPlayer.Source.AbsolutePath) || IsPlaying)
             {
                 return;
             }
@@ -46,11 +46,15 @@ namespace YAPA.WPF
             _repeat = repeat;
 
             _musicPlayer.Play();
+            IsPlaying = true;
         }
 
         public void Stop()
         {
             _musicPlayer.Stop();
+            IsPlaying = false;
         }
+
+        public bool IsPlaying { get; private set; }
     }
 }
