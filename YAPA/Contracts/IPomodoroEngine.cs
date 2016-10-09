@@ -14,6 +14,7 @@ namespace YAPA.Contracts
         event Func<bool> OnStarting;
         event Action OnStarted;
         event Action OnStopped;
+        event Action OnPomodoroCompleted;
 
         void Start();
         void Stop();

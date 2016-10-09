@@ -6,7 +6,6 @@
         Height="150" 
         Width="250" 
         ShowInTaskbar="True" 
-        ResizeMode="NoResize" 
         WindowStartupLocation="Manual"
         Topmost="True" 
         MouseRightButtonUp="Window_MouseRightButtonUp"

@@ -38,6 +38,7 @@ namespace YAPA.Shared
         public event Func<bool> OnStarting;
         public event Action OnStarted;
         public event Action OnStopped;
+        public event Action OnPomodoroCompleted;
 
         public bool IsRunning => Phase == PomodoroPhase.Break || Phase == PomodoroPhase.Work;
 
@@ -148,6 +149,7 @@ namespace YAPA.Shared
             {
                 _timer.Stop();
                 Phase = PomodoroPhase.WorkEnded;
+                OnPomodoroCompleted?.Invoke();
             }
 
             if (Phase == PomodoroPhase.Break && Elapsed / 60 >= BreakTime)

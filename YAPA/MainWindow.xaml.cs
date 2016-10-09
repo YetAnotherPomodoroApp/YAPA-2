@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shell;
 using YAPA.Contracts;
@@ -31,6 +32,7 @@ namespace YAPA
         private ISettings _settings;
 
         private IPlugin _soundNotifications;
+        private IPlugin _minimizeToTray;
         private IMusicPlayer _musicPlayer;
 
         public ICommand StopCommand { get; set; }
@@ -52,7 +54,7 @@ namespace YAPA
 
             _musicPlayer = new MusicPlayer();
             _soundNotifications = new SoundNotifications(Engine, new SoundNotificationsSettings(_settings), _musicPlayer);
-
+            _minimizeToTray = new MinimizeToTray(this, Engine, new MinimizeToTraySettings(_settings));
             _itemRepository = new ItemRepository();
 
 
@@ -84,24 +86,7 @@ namespace YAPA
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            ApplicationState state;
-
-            switch (WindowState)
-            {
-                case WindowState.Minimized:
-                    state = ApplicationState.Minimized;
-                    break;
-                case WindowState.Maximized:
-                    state = ApplicationState.Maximized;
-                    break;
-                case WindowState.Normal:
-                    state = ApplicationState.Normal;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            StateChanged?.Invoke(state);
+            StateChanged?.Invoke(GetAppState());
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -419,15 +404,53 @@ namespace YAPA
         public event Action Closing;
         public event Action Loaded;
 
-        public IntPtr WindowHandle
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public IntPtr WindowHandle => new WindowInteropHelper(this).Handle;
 
         public ApplicationState AppState
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return GetAppState(); }
+            set { SetAppState(value); }
         }
+
+        private ApplicationState GetAppState()
+        {
+            ApplicationState state;
+
+            switch (WindowState)
+            {
+                case WindowState.Minimized:
+                    state = ApplicationState.Minimized;
+                    break;
+                case WindowState.Maximized:
+                    state = ApplicationState.Maximized;
+                    break;
+                case WindowState.Normal:
+                    state = ApplicationState.Normal;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return state;
+        }
+
+        private void SetAppState(ApplicationState state)
+        {
+
+            switch (state)
+            {
+                case ApplicationState.Minimized:
+                    WindowState = WindowState.Minimized;
+                    break;
+                case ApplicationState.Maximized:
+                    WindowState = WindowState.Maximized;
+                    break;
+                case ApplicationState.Normal:
+                    WindowState = WindowState.Normal;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
     }
 }
