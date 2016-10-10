@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Shell;
 using YAPA.Contracts;
 using YAPA.Shared;
@@ -20,12 +19,6 @@ namespace YAPA
     public partial class MainWindow : Window, INotifyPropertyChanged, IApplication
     {
         private ItemRepository _itemRepository;
-
-        private ICommand _showSettings;
-        //private Storyboard TimerFlush;
-
-        private double _progressValue;
-        private string _progressState;
 
         public IPomodoroEngine Engine { get; set; }
         private ITimer _timer;
@@ -66,20 +59,10 @@ namespace YAPA
             // save window position on close
             base.Closing += MainWindow_Closing;
 
-            // flash timer
-            //TimerFlush = (Storyboard)TryFindResource("FlashTimer");
-
-            //// play sounds
-            //_tickSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
-            //_ringSound = new SoundPlayer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
-
             base.Loaded += MainWindow_Loaded;
             base.StateChanged += MainWindow_StateChanged;
 
             base.ShowInTaskbar = Properties.Settings.Default.ShowInTaskbar;
-
-            //WorkTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.WorkTrayIconColor);
-            //BreakTrayIconColor = (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml(Properties.Settings.Default.BreakTrayIconColor);
 
             InitializeComponent();
         }
@@ -182,122 +165,6 @@ namespace YAPA
             jumpList.Apply();
         }
 
-        public ICommand ShowSettings
-        {
-            get { return _showSettings; }
-        }
-
-        public Brush TextBrush
-        {
-            get { return new BrushConverter().ConvertFromString(Properties.Settings.Default.TextBrush) as SolidColorBrush; }
-            set
-            {
-                Properties.Settings.Default.TextBrush = value.ToString();
-                RaisePropertyChanged("TextBrush");
-                RaisePropertyChanged("TextShadowColor");
-                RaisePropertyChanged("MouseOverBackgroundColor");
-            }
-        }
-
-        public Color TextShadowColor
-        {
-            get
-            {
-                var shadowColor = Colors.White;
-
-                if (TextBrush.ToString() == Brushes.White.ToString())
-                {
-                    shadowColor = Colors.Black;
-                }
-                else
-                {
-                    shadowColor = Colors.White;
-                }
-
-                return shadowColor;
-            }
-            set { }
-        }
-
-        public Brush MouseOverBackgroundColor
-        {
-            get
-            {
-                var mouseOverBackgroundColor = Brushes.White;
-
-                if (TextBrush.ToString() == Brushes.White.ToString())
-                {
-                    mouseOverBackgroundColor = Brushes.Black;
-                }
-                else
-                {
-                    mouseOverBackgroundColor = Brushes.White;
-                }
-
-                return mouseOverBackgroundColor;
-            }
-            set { }
-        }
-
-        public double ClockOpacity
-        {
-            get { return Properties.Settings.Default.OpacityLevel; }
-            set
-            {
-                Properties.Settings.Default.OpacityLevel = value;
-                RaisePropertyChanged("ClockOpacity");
-            }
-        }
-
-        public double ShadowOpacity
-        {
-            get { return Properties.Settings.Default.ShadowOpacityLevel; }
-            set
-            {
-                Properties.Settings.Default.ShadowOpacityLevel = value;
-                RaisePropertyChanged("ShadowOpacity");
-            }
-        }
-
-        public double ProgressValue
-        {
-            get { return _progressValue; }
-            set
-            {
-                _progressValue = value;
-                RaisePropertyChanged("ProgressValue");
-            }
-        }
-
-        public bool CountBackwards
-        {
-            get { return Properties.Settings.Default.CountBackwards; }
-            set
-            {
-                Properties.Settings.Default.CountBackwards = value;
-                RaisePropertyChanged("CountBackwards");
-            }
-        }
-
-        public string ProgressState
-        {
-            get { return _progressState; }
-            set
-            {
-                _progressState = value;
-                RaisePropertyChanged("ProgressState");
-            }
-        }
-
-        public string CurrentTimeValue
-        {
-            set
-            {
-                //CurrentTime.Text = value;
-                Title = String.Format("YAPA - {0}", value);
-            }
-        }
-
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -308,23 +175,16 @@ namespace YAPA
             }
             catch
             {
+                // ignored
             }
         }
 
-        /// <summary>
-        /// Used to raise change notifications to other consumers.
-        /// </summary>
         private void RaisePropertyChanged(string propName)
         {
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
-        }
-
-        private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //ShowSettings.Execute(this);
         }
 
         public bool ProcessCommandLineArgs(params string[] args)
@@ -352,7 +212,7 @@ namespace YAPA
                 }
                 else if ((args[1].ToLowerInvariant() == "/settings"))
                 {
-                    ShowSettings.Execute(this);
+
                 }
                 else if ((args[1].ToLowerInvariant() == "/homepage"))
                 {
@@ -388,11 +248,6 @@ namespace YAPA
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
             //MinExitPanel.Visibility = Visibility.Hidden;
-        }
-
-        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //TimerFlush.Stop(this);
         }
 
         public void ShowInTaskbar(bool show)

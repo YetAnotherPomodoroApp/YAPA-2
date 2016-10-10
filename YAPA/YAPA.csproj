@@ -127,6 +127,7 @@
     <Compile Include="Contracts\IPluginSettings.cs" />
     <Compile Include="Contracts\IPomodoroEngine.cs" />
     <Compile Include="Contracts\ITimer.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />
