@@ -35,10 +35,10 @@ namespace YAPA
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainWindow()
+        public MainWindow(ISettings settings)
         {
             _timer = new Timer();
-            _settings = new JsonYapaSettings();
+            _settings = settings;
             Engine = new PomodoroEngine(new PomodoroEngineSettings(_settings), _timer);
 
             StopCommand = new StopCommand(Engine);
