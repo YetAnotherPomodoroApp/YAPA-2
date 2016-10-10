@@ -17,7 +17,6 @@ namespace YAPA.Contracts
 
         event Action<ApplicationState> StateChanged;
         event Action Closing;
-        event Action Loaded;
 
         IntPtr WindowHandle { get; }
         double Left { get; set; }

@@ -11,6 +11,7 @@ namespace YAPA.Contracts
         bool HasUnsavedChanges { get; }
 
         void Update(string name, object value);
+        void Update(string name, object value, bool imidiate);
 
         void Save();
         void Load();

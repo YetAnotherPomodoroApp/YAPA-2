@@ -14,8 +14,8 @@ namespace YAPA.WPF
         {
             _app = app;
             _settings = settings;
-            _app.Loaded += App_Loaded;
             _app.Closing += App_Closing;
+            App_Loaded();
         }
 
         private void App_Closing()
@@ -51,19 +51,19 @@ namespace YAPA.WPF
         public bool IsFirstRun
         {
             get { return _settings.Get("IsFirstRun", true); }
-            set { _settings.Update("IsFirstRun", value); }
+            set { _settings.Update("IsFirstRun", value, true); }
         }
 
         public int CurrentScreenHeight
         {
             get { return _settings.Get("CurrentScreenHeight", -1); }
-            set { _settings.Update("CurrentScreenHeight", value); }
+            set { _settings.Update("CurrentScreenHeight", value, true); }
         }
 
         public int CurrentScreenWidth
         {
             get { return _settings.Get("CurrentScreenWidth", -1); }
-            set { _settings.Update("CurrentScreenWidth", value); }
+            set { _settings.Update("CurrentScreenWidth", value, true); }
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)

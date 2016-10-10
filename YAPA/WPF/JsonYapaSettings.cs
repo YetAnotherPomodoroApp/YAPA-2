@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -41,27 +40,44 @@ namespace YAPA.WPF
 
         public void Update(string name, object value)
         {
-            _modifiedSettings[name] = value;
+            Update(name, value, false);
+        }
 
-            if (_modifiedSettings[name] == _settings[name])
+        public void Update(string name, object value, bool imidiate)
+        {
+            if (imidiate)
             {
-                _modifiedSettings.Remove(name);
+                _settings[name] = value;
+                Save();
             }
+            else
+            {
+                _modifiedSettings[name] = value;
 
-            HasUnsavedChanges = _modifiedSettings.Any();
+                if (_modifiedSettings[name] == _settings[name])
+                {
+                    _modifiedSettings.Remove(name);
+                }
+
+                HasUnsavedChanges = _modifiedSettings.Any();
+            }
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
-
+            SaveImidiate();
             _modifiedSettings.Clear();
+        }
+
+        private void SaveImidiate()
+        {
+            //TODO
         }
 
         public void Load()
         {
             _modifiedSettings.Clear();
-            throw new NotImplementedException();
+            //TODO
         }
 
         private bool _hasUnsavedChanges;

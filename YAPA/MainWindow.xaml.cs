@@ -8,7 +8,6 @@ using System.Windows.Interop;
 using System.Windows.Shell;
 using YAPA.Contracts;
 using YAPA.Shared;
-using YAPA.WPF;
 using WindowState = System.Windows.WindowState;
 
 namespace YAPA
@@ -21,12 +20,6 @@ namespace YAPA
         private ItemRepository _itemRepository;
 
         public IPomodoroEngine Engine { get; set; }
-        private ITimer _timer;
-        private ISettings _settings;
-
-        private IPlugin _soundNotifications;
-        private IPlugin _minimizeToTray;
-        private IMusicPlayer _musicPlayer;
 
         public ICommand StopCommand { get; set; }
         public ICommand StartCommand { get; set; }
@@ -35,19 +28,14 @@ namespace YAPA
         // For INCP
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainWindow(ISettings settings)
+        public MainWindow(IPomodoroEngine engine)
         {
-            _timer = new Timer();
-            _settings = settings;
-            Engine = new PomodoroEngine(new PomodoroEngineSettings(_settings), _timer);
+            Engine = engine;
 
             StopCommand = new StopCommand(Engine);
             StartCommand = new StartCommand(Engine);
             ResetCommand = new ResetCommand(Engine);
 
-            _musicPlayer = new MusicPlayer();
-            _soundNotifications = new SoundNotifications(Engine, new SoundNotificationsSettings(_settings), _musicPlayer);
-            _minimizeToTray = new MinimizeToTray(this, Engine, new MinimizeToTraySettings(_settings));
             _itemRepository = new ItemRepository();
 
 
