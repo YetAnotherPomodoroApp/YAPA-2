@@ -14,6 +14,7 @@ namespace YAPA.Contracts
         bool ShowInTaskbar { get; set; }
         void Show();
         void Hide();
+        void CloseApp();
 
         event Action<ApplicationState> StateChanged;
         event Action Closing;

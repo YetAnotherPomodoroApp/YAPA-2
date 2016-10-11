@@ -1,4 +1,4 @@
-﻿<Window x:Class="YAPA.MainWindow"
+﻿<app:AbstractWindow x:Class="YAPA.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:app="clr-namespace:YAPA.Shared"
@@ -7,8 +7,7 @@
         Width="250" 
         ShowInTaskbar="True" 
         WindowStartupLocation="Manual"
-        Topmost="True" 
-        MouseEnter="MainWindow_OnMouseEnter">
+        Topmost="True">
 
     <Window.Resources>
         <app:SecToTimeConverter x:Key="SecToTimeConverter" />
@@ -29,4 +28,4 @@
             <Button Command="{Binding ResetCommand}" Content="Reset"></Button>
         </StackPanel>
     </Grid>
-</Window>
+</app:AbstractWindow>

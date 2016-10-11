@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 using YAPA.Contracts;
+using YAPA.Shared;
 
 namespace YAPA.WPF
 {
@@ -12,6 +14,11 @@ namespace YAPA.WPF
 
         private readonly System.Windows.Forms.NotifyIcon _sysTrayIcon;
         private IntPtr _systemTrayIcon;
+
+        public ICommand StopCommand { get; set; }
+        public ICommand StartCommand { get; set; }
+        public ICommand ResetCommand { get; set; }
+
 
         private readonly IApplication _app;
         private readonly IPomodoroEngine _engine;
@@ -25,6 +32,10 @@ namespace YAPA.WPF
 
             _app.StateChanged += _app_StateChanged;
 
+            StopCommand = new StopCommand(_engine);
+            StartCommand = new StartCommand(_engine);
+            ResetCommand = new ResetCommand(_engine);
+
             _sysTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Text = @"YAPA 2",
@@ -36,7 +47,7 @@ namespace YAPA.WPF
 
             _engine.PropertyChanged += _engine_PropertyChanged;
 
-            //sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
+            _sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
         }
 
         private void _engine_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -45,6 +56,53 @@ namespace YAPA.WPF
             {
                 UpdateIcon();
             }
+        }
+
+        private System.Windows.Forms.MenuItem[] CreateNotifyIconContextMenu()
+        {
+            var startTask = new System.Windows.Forms.MenuItem { Text = @"Start" };
+            startTask.Click += (o, s) =>
+            {
+                if (StartCommand.CanExecute(null))
+                {
+                    StartCommand.Execute(null);
+                }
+            };
+
+            var stopTask = new System.Windows.Forms.MenuItem { Text = @"Stop" };
+            stopTask.Click += (o, s) =>
+            {
+                if (ResetCommand.CanExecute(null))
+                {
+                    ResetCommand.Execute(null);
+                }
+            };
+
+            var resetTask = new System.Windows.Forms.MenuItem { Text = @"Reset session" };
+            resetTask.Click += (o, s) =>
+            {
+                if (ResetCommand.CanExecute(null))
+                {
+                    ResetCommand.Execute(null);
+                }
+            };
+
+            var settings = new System.Windows.Forms.MenuItem { Text = @"Settings" };
+            settings.Click += (o, s) =>
+            {
+                throw new NotImplementedException();
+            };
+
+            var close = new System.Windows.Forms.MenuItem { Text = @"Exit" };
+            close.Click += (o, s) =>
+            {
+                _app.CloseApp();
+            };
+
+            return new[]
+            {
+                startTask,stopTask, resetTask, settings,close
+            };
         }
 
         private void _app_StateChanged(ApplicationState state)
