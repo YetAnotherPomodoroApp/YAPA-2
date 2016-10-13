@@ -26,6 +26,9 @@ namespace YAPA.WPF
 
             _settings.CurrentScreenHeight = currentScreen.WorkingArea.Height;
             _settings.CurrentScreenWidth = currentScreen.WorkingArea.Width;
+
+            _settings.WindowTop = (int)_app.Top;
+            _settings.WindowLeft = (int)_app.Left;
         }
 
         private void App_Loaded()
@@ -40,6 +43,11 @@ namespace YAPA.WPF
             {
                 _app.Left = SystemParameters.PrimaryScreenWidth - _app.Width - 15.0;
                 _app.Top = 0;
+            }
+            else if (_settings.WindowLeft != -1 && _settings.WindowTop != -1)
+            {
+                _app.Left = _settings.WindowLeft;
+                _app.Top = _settings.WindowTop;
             }
         }
     }
@@ -64,6 +72,18 @@ namespace YAPA.WPF
         {
             get { return _settings.Get("CurrentScreenWidth", -1); }
             set { _settings.Update("CurrentScreenWidth", value, true); }
+        }
+
+        public int WindowLeft
+        {
+            get { return _settings.Get("WindowLeft", -1); }
+            set { _settings.Update("WindowLeft", value, true); }
+        }
+
+        public int WindowTop
+        {
+            get { return _settings.Get("WindowTop", -1); }
+            set { _settings.Update("WindowTop", value, true); }
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)

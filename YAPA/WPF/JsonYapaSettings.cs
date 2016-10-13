@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using YAPA.Contracts;
@@ -15,10 +18,17 @@ namespace YAPA.WPF
         {
             _settings = new DictionaryDefaultNull<string>();
             _modifiedSettings = new DictionaryDefaultNull<string>();
+            Load();
         }
 
         public T Get<T>(string name)
         {
+            var isClass = typeof(T).IsClass;
+            if (!isClass)
+            {
+                return (T)Convert.ChangeType(_settings[name], typeof(T));
+            }
+
             return (T)_settings[name];
         }
 
@@ -67,17 +77,40 @@ namespace YAPA.WPF
         {
             SaveImidiate();
             _modifiedSettings.Clear();
+            HasUnsavedChanges = false;
         }
 
         private void SaveImidiate()
         {
-            //TODO
+            var settingDir = Path.GetDirectoryName(SettingsFilePath());
+            if (!Directory.Exists(settingDir))
+            {
+                Directory.CreateDirectory(settingDir);
+            }
+            var serialized = JsonConvert.SerializeObject(_settings);
+            using (var file = new StreamWriter(SettingsFilePath()))
+            {
+                file.Write(serialized);
+            }
         }
 
         public void Load()
         {
+            if (!File.Exists(SettingsFilePath()))
+            {
+                return;
+            }
             _modifiedSettings.Clear();
-            //TODO
+            HasUnsavedChanges = false;
+            using (var file = new StreamReader(SettingsFilePath()))
+            {
+                _settings = JsonConvert.DeserializeObject<DictionaryDefaultNull<string>>(file.ReadToEnd());
+            }
+        }
+
+        private static string SettingsFilePath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2", @"settings.json");
         }
 
         private bool _hasUnsavedChanges;
