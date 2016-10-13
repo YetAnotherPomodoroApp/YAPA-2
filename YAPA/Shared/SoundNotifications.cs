@@ -67,32 +67,32 @@ namespace YAPA.Shared
 
         public string WorkSong
         {
-            get { return _settings.Get<string>("WorkSong", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
-            set { _settings.Update("WorkSong", value); }
+            get { return _settings.Get<string>(nameof(WorkSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            set { _settings.Update(nameof(WorkSong), value); }
         }
 
         public bool RepeatWorkSong
         {
-            get { return _settings.Get("RepeatWorkSong", false); }
-            set { _settings.Update("RepeatWorkSong", value); }
+            get { return _settings.Get(nameof(RepeatWorkSong), false); }
+            set { _settings.Update(nameof(RepeatWorkSong), value); }
         }
 
         public string BreakSong
         {
-            get { return _settings.Get<string>("BreakSong", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav")); }
-            set { _settings.Update("BreakSong", value); }
+            get { return _settings.Get<string>(nameof(BreakSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav")); }
+            set { _settings.Update(nameof(BreakSong), value); }
         }
 
         public bool RepeatBreakSong
         {
-            get { return _settings.Get("RepeatBreakSong", false); }
-            set { _settings.Update("RepeatBreakSong", value); }
+            get { return _settings.Get(nameof(RepeatBreakSong), false); }
+            set { _settings.Update(nameof(RepeatBreakSong), value); }
         }
 
         public bool DisabelSoundNotifications
         {
-            get { return _settings.Get("DisabelSoundNotifications", false); }
-            set { _settings.Update("DisabelSoundNotifications", value); }
+            get { return _settings.Get(nameof(DisabelSoundNotifications), false); }
+            set { _settings.Update(nameof(DisabelSoundNotifications), value); }
         }
 
         public SoundNotificationsSettings(ISettings settings)

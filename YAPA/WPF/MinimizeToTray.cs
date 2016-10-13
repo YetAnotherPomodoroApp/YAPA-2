@@ -174,26 +174,26 @@ namespace YAPA.WPF
 
         public System.Drawing.Color WorkTrayIconColor
         {
-            get { return _settings.Get("WorkTrayIconColor", System.Drawing.Color.DarkGreen); }
-            set { _settings.Update("WorkTrayIconColor", value); }
+            get { return _settings.Get(nameof(WorkTrayIconColor), System.Drawing.Color.DarkGreen); }
+            set { _settings.Update(nameof(WorkTrayIconColor), value); }
         }
 
         public System.Drawing.Color BreakTrayIconColor
         {
-            get { return _settings.Get("BreakTrayIconColor", System.Drawing.Color.DarkRed); }
-            set { _settings.Update("BreakTrayIconColor", value); }
+            get { return _settings.Get(nameof(BreakTrayIconColor), System.Drawing.Color.DarkRed); }
+            set { _settings.Update(nameof(BreakTrayIconColor), value); }
         }
 
         public bool ShowInTaskbar
         {
-            get { return _settings.Get("ShowInTaskbar", true); }
-            set { _settings.Update("ShowInTaskbar", value); }
+            get { return _settings.Get(nameof(ShowInTaskbar), true); }
+            set { _settings.Update(nameof(ShowInTaskbar), value); }
         }
 
         public bool MinimizeToTray
         {
-            get { return _settings.Get("MinimizeToTray", true); }
-            set { _settings.Update("MinimizeToTray", value); }
+            get { return _settings.Get(nameof(MinimizeToTray), true); }
+            set { _settings.Update(nameof(MinimizeToTray), value); }
         }
 
         public MinimizeToTraySettings(ISettings settings)

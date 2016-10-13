@@ -58,32 +58,32 @@ namespace YAPA.WPF
 
         public bool IsFirstRun
         {
-            get { return _settings.Get("IsFirstRun", true); }
-            set { _settings.Update("IsFirstRun", value, true); }
+            get { return _settings.Get(nameof(IsFirstRun), true); }
+            set { _settings.Update(nameof(IsFirstRun), value, true); }
         }
 
         public int CurrentScreenHeight
         {
-            get { return _settings.Get("CurrentScreenHeight", -1); }
-            set { _settings.Update("CurrentScreenHeight", value, true); }
+            get { return _settings.Get(nameof(CurrentScreenHeight), -1); }
+            set { _settings.Update(nameof(CurrentScreenHeight), value, true); }
         }
 
         public int CurrentScreenWidth
         {
-            get { return _settings.Get("CurrentScreenWidth", -1); }
-            set { _settings.Update("CurrentScreenWidth", value, true); }
+            get { return _settings.Get(nameof(CurrentScreenWidth), -1); }
+            set { _settings.Update(nameof(CurrentScreenWidth), value, true); }
         }
 
         public int WindowLeft
         {
-            get { return _settings.Get("WindowLeft", -1); }
-            set { _settings.Update("WindowLeft", value, true); }
+            get { return _settings.Get(nameof(WindowLeft), -1); }
+            set { _settings.Update(nameof(WindowLeft), value, true); }
         }
 
         public int WindowTop
         {
-            get { return _settings.Get("WindowTop", -1); }
-            set { _settings.Update("WindowTop", value, true); }
+            get { return _settings.Get(nameof(WindowTop), -1); }
+            set { _settings.Update(nameof(WindowTop), value, true); }
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
