@@ -8,7 +8,11 @@
         ShowInTaskbar="True" 
         WindowStartupLocation="Manual"
         Topmost="True">
+    <Window.InputBindings>
+        <MouseBinding Gesture="RightClick" Command="{Binding ShowSettingsCommand}">
 
+        </MouseBinding>
+    </Window.InputBindings>
     <Window.Resources>
         <app:SecToTimeConverter x:Key="SecToTimeConverter" />
     </Window.Resources>

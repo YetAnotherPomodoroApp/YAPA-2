@@ -131,17 +131,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CancelSettingsCommand.cs" />
     <Compile Include="Contracts\IPlugin.cs" />
     <Compile Include="Contracts\IPluginMeta.cs" />
     <Compile Include="Contracts\IPluginSettings.cs" />
     <Compile Include="Contracts\IPomodoroEngine.cs" />
     <Compile Include="Contracts\ITimer.cs" />
+    <Compile Include="SaveSettingsCommand.cs" />
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared\AbstractWindow.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />
     <Compile Include="Shared\StartCommand.cs" />
     <Compile Include="Shared\StopCommand.cs" />
+    <Compile Include="ShowSettingsCommand.cs" />
     <Compile Include="WPF\JsonYapaSettings.cs" />
     <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
     <Compile Include="WPF\Timer.cs" />
@@ -174,6 +180,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PomodoroWeek.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

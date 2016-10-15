@@ -13,7 +13,7 @@ namespace YAPA.Shared
 {
     public abstract class AbstractWindow : Window, IApplication
     {
-        private readonly IPomodoroEngine _engine;
+        public readonly IPomodoroEngine Engine;
 
         public new event Action<ApplicationState> StateChanged;
         public new event Action Closing;
@@ -22,19 +22,21 @@ namespace YAPA.Shared
         public ICommand StopCommand { get; set; }
         public ICommand StartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
+        public ICommand ShowSettingsCommand { get; set; }
 
         protected AbstractWindow()
         {
 
         }
 
-        protected AbstractWindow(IPomodoroEngine engine)
+        protected AbstractWindow(IPomodoroEngine engine, ISettings settings)
         {
-            _engine = engine;
+            Engine = engine;
 
-            StopCommand = new StopCommand(_engine);
-            StartCommand = new StartCommand(_engine);
-            ResetCommand = new ResetCommand(_engine);
+            StopCommand = new StopCommand(Engine);
+            StartCommand = new StartCommand(Engine);
+            ResetCommand = new ResetCommand(Engine);
+            ShowSettingsCommand = new ShowSettingsCommand(settings);
 
             base.StateChanged += AbstractWindow_StateChanged;
             base.Closing += AbstractWindow_Closing;
@@ -60,7 +62,7 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_engine?.Phase == PomodoroPhase.Work)
+            if (Engine?.Phase == PomodoroPhase.Work)
             {
                 if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
