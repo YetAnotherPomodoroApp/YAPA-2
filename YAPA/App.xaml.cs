@@ -55,6 +55,7 @@ namespace YAPA
             builder.RegisterType(typeof(Timer)).As<ITimer>();
             builder.RegisterType(typeof(MusicPlayer)).As<IMusicPlayer>();
 
+
             RegisterPluginSettings(builder);
             RegisterPlugins(builder);
             return builder.Build();

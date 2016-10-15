@@ -4,6 +4,20 @@ using YAPA.Contracts;
 
 namespace YAPA.Shared
 {
+    public class SoundNotificationsPlugin : IPluginMeta
+    {
+        public string Title => "Sound notifications";
+
+        public Type Plugin => typeof(SoundNotifications);
+
+        public Type Settings => typeof(SoundNotificationsSettings);
+
+        public Type SettingEditWindow
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
+
     public class SoundNotifications : IPlugin
     {
         private readonly IPomodoroEngine _engine;
@@ -100,4 +114,5 @@ namespace YAPA.Shared
             _settings = settings;
         }
     }
+
 }
