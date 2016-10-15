@@ -7,6 +7,7 @@ namespace YAPA
     public class ShowSettingsCommand : ICommand
     {
         private readonly ISettings _settings;
+
         public ShowSettingsCommand(ISettings settings)
         {
             _settings = settings;

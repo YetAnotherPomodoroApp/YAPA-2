@@ -17,7 +17,7 @@ namespace YAPA
     public partial class App : Application, ISingleInstanceApp
     {
         private static IContainer Container { get; set; }
-        private static IEnumerable<IPlugin> Plugins;
+        private static IPluginManager PluginManager { get; set; }
 
         [STAThread]
         public static void Main()
@@ -28,21 +28,23 @@ namespace YAPA
 
                 Container = ConfigureContainer();
 
+                PluginManager = new PluginManager(Container, GetPluginMetas());
+                var updater = new ContainerBuilder();
+                updater.RegisterInstance(PluginManager).As<IPluginManager>().SingleInstance();
+                updater.Update(Container);
+
+                PluginManager.InitPlugins();
+
                 Current.MainWindow = (Window)Container.Resolve<IApplication>();
-                Plugins = StartPlugins(Container);
 
                 Current.MainWindow.Show();
 
                 application.Init();
                 application.Run();
 
-                //Load plugins
-
                 SingleInstance<App>.Cleanup();
             }
         }
-
-
 
         private static IContainer ConfigureContainer()
         {
@@ -55,44 +57,24 @@ namespace YAPA
             builder.RegisterType(typeof(Timer)).As<ITimer>();
             builder.RegisterType(typeof(MusicPlayer)).As<IMusicPlayer>();
 
+            builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 
-            RegisterPluginSettings(builder);
-            RegisterPlugins(builder);
-            return builder.Build();
+            builder.RegisterType(typeof(PomodoroEngineSettings)).SingleInstance();
+
+            var container = builder.Build();
+
+            var updater = new ContainerBuilder();
+            updater.RegisterInstance(container).As<IContainer>();
+            updater.Update(container);
+
+            return container;
         }
 
-        private static void RegisterPluginSettings(ContainerBuilder builder)
-        {
-            var plugins = GetType(typeof(IPluginSettings));
-
-            foreach (var plugin in plugins)
-            {
-                builder.RegisterType(plugin).SingleInstance();
-            }
-        }
-
-        private static void RegisterPlugins(ContainerBuilder builder)
-        {
-            var plugins = GetType(typeof(IPlugin));
-
-            foreach (var plugin in plugins)
-            {
-                builder.RegisterType(plugin).SingleInstance();
-            }
-        }
-
-        private static IEnumerable<IPlugin> StartPlugins(IContainer container)
-        {
-            var plugins = GetType(typeof(IPlugin));
-
-            return plugins.Select(plugin => (IPlugin)container.Resolve(plugin)).ToList();
-        }
-
-        private static IEnumerable<Type> GetType(Type t)
+        private static IEnumerable<IPluginMeta> GetPluginMetas()
         {
             return from plugin in Assembly.GetExecutingAssembly().GetTypes()
-                   where plugin.GetInterfaces().Contains(t)
-                   select plugin;
+                   where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
+                   select (IPluginMeta)Activator.CreateInstance(plugin);
         }
 
         public void Init()

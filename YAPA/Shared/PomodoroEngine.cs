@@ -4,7 +4,7 @@ using YAPA.Contracts;
 
 namespace YAPA.Shared
 {
-    public class PomodoroEngine : IPomodoroEngine
+    public class PomodoroEngine : IPomodoroEngine, IPlugin
     {
         private readonly PomodoroEngineSettings _settings;
         private readonly ITimer _timer;

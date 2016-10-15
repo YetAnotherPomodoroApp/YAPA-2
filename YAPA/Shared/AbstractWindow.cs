@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Shell;
 using YAPA.Contracts;
@@ -13,31 +12,20 @@ namespace YAPA.Shared
 {
     public abstract class AbstractWindow : Window, IApplication
     {
-        public readonly IPomodoroEngine Engine;
-
         public new event Action<ApplicationState> StateChanged;
         public new event Action Closing;
         public new event Action Loaded;
 
-        public ICommand StopCommand { get; set; }
-        public ICommand StartCommand { get; set; }
-        public ICommand ResetCommand { get; set; }
-        public ICommand ShowSettingsCommand { get; set; }
+        public IMainViewModel ViewModel { get; set; }
 
         protected AbstractWindow()
         {
 
         }
 
-        protected AbstractWindow(IPomodoroEngine engine, ISettings settings)
+        protected AbstractWindow(IMainViewModel viewModel)
         {
-            Engine = engine;
-
-            StopCommand = new StopCommand(Engine);
-            StartCommand = new StartCommand(Engine);
-            ResetCommand = new ResetCommand(Engine);
-            ShowSettingsCommand = new ShowSettingsCommand(settings);
-
+            ViewModel = viewModel;
             base.StateChanged += AbstractWindow_StateChanged;
             base.Closing += AbstractWindow_Closing;
             base.Loaded += AbstractWindow_Loaded;
@@ -62,7 +50,7 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (Engine?.Phase == PomodoroPhase.Work)
+            if (ViewModel.Engine?.Phase == PomodoroPhase.Work)
             {
                 if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
@@ -132,25 +120,28 @@ namespace YAPA.Shared
             switch (command)
             {
                 case "/start":
-                    if (StartCommand.CanExecute(null))
+                    if (ViewModel.StartCommand.CanExecute(null))
                     {
-                        StartCommand.Execute(null);
+                        ViewModel.StartCommand.Execute(null);
                     }
                     break;
                 case "/reset":
-                    if (ResetCommand.CanExecute(null))
+                    if (ViewModel.ResetCommand.CanExecute(null))
                     {
-                        ResetCommand.Execute(null);
+                        ViewModel.ResetCommand.Execute(null);
                     }
                     break;
                 case "/stop":
-                    if (StopCommand.CanExecute(null))
+                    if (ViewModel.StopCommand.CanExecute(null))
                     {
-                        StopCommand.Execute(null);
+                        ViewModel.StopCommand.Execute(null);
                     }
                     break;
                 case "/settings":
-                    throw new NotImplementedException();
+                    if (ViewModel.ShowSettingsCommand.CanExecute(null))
+                    {
+                        ViewModel.ShowSettingsCommand.Execute(null);
+                    }
                     break;
                 case "/homepage":
                     Process.Start("http://lukaszbanasiak.github.io/YAPA/");

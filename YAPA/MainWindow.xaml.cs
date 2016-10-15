@@ -5,9 +5,9 @@ namespace YAPA
 {
     public partial class MainWindow
     {
-        public MainWindow(IPomodoroEngine engine, ISettings settings) : base(engine, settings)
+        public MainWindow(IMainViewModel viewModel) : base(viewModel)
         {
-            DataContext = this;
+            DataContext = ViewModel;
 
             // enable dragging
             MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;

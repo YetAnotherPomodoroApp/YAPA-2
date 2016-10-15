@@ -133,6 +133,7 @@
   <ItemGroup>
     <Compile Include="CancelSettingsCommand.cs" />
     <Compile Include="Contracts\IPlugin.cs" />
+    <Compile Include="Contracts\IPluginManager.cs" />
     <Compile Include="Contracts\IPluginMeta.cs" />
     <Compile Include="Contracts\IPluginSettings.cs" />
     <Compile Include="Contracts\IPomodoroEngine.cs" />
@@ -142,6 +143,9 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shared\AbstractWindow.cs" />
+    <Compile Include="Contracts\IMainViewModel.cs" />
+    <Compile Include="Shared\MainViewModel.cs" />
+    <Compile Include="Shared\PluginManager.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />
@@ -150,6 +154,9 @@
     <Compile Include="ShowSettingsCommand.cs" />
     <Compile Include="WPF\JsonYapaSettings.cs" />
     <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
+    <Compile Include="WPF\SoundNotificationSettingWindow.xaml.cs">
+      <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Timer.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\SoundNotificationSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

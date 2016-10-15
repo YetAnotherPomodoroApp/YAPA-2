@@ -7,6 +7,21 @@ using YAPA.Shared;
 
 namespace YAPA.WPF
 {
+
+    public class MinimizeToTrayPlugin : IPluginMeta
+    {
+        public string Title => "Minimize to tray";
+
+        public Type Plugin => typeof(MinimizeToTray);
+
+        public Type Settings => typeof(MinimizeToTraySettings);
+
+        public Type SettingEditWindow
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
+
     public class MinimizeToTray : IPlugin
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
