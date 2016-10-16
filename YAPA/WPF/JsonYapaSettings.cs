@@ -64,7 +64,7 @@ namespace YAPA.WPF
             {
                 _modifiedSettings[name] = value;
 
-                if (_modifiedSettings[name] == _settings[name])
+                if (_modifiedSettings[name].Equals(_settings[name]))
                 {
                     _modifiedSettings.Remove(name);
                 }
