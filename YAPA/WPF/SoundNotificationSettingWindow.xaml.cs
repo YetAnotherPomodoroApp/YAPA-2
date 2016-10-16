@@ -6,7 +6,7 @@ namespace YAPA.WPF
     /// <summary>
     /// Interaction logic for SoundNotificationSettingWindow.xaml
     /// </summary>
-    public partial class SoundNotificationSettingWindow : Page
+    public partial class SoundNotificationSettingWindow : UserControl
     {
         public SoundNotificationSettingWindow(SoundNotificationsSettings settings)
         {

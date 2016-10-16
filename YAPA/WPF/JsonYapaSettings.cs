@@ -75,18 +75,27 @@ namespace YAPA.WPF
 
         public void Save()
         {
-            SaveImidiate();
+            SaveSettings();
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
         }
 
-        private void SaveImidiate()
+        private void SaveSettings()
         {
             var settingDir = Path.GetDirectoryName(SettingsFilePath());
             if (!Directory.Exists(settingDir))
             {
                 Directory.CreateDirectory(settingDir);
             }
+
+            if (HasUnsavedChanges)
+            {
+                foreach (var modified in _modifiedSettings)
+                {
+                    _settings[modified.Key] = modified.Value;
+                }
+            }
+
             var serialized = JsonConvert.SerializeObject(_settings);
             using (var file = new StreamWriter(SettingsFilePath()))
             {

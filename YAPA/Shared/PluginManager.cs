@@ -34,6 +34,7 @@ namespace YAPA.Shared
                 return;
             }
             RegisterPluginSettings(_container);
+            RegisterPluginSettingsWindows(_container);
             _pluginInstances = RegisterPlugins(_container);
             _initialised = true;
         }
@@ -58,6 +59,18 @@ namespace YAPA.Shared
             foreach (var plugin in Plugins)
             {
                 updater.RegisterType(plugin.Settings).SingleInstance();
+            }
+
+            updater.Update(container);
+        }
+
+        private void RegisterPluginSettingsWindows(IContainer container)
+        {
+            var updater = new ContainerBuilder();
+
+            foreach (var plugin in Plugins.Where(x => x.SettingEditWindow != null))
+            {
+                updater.RegisterType(plugin.SettingEditWindow);
             }
 
             updater.Update(container);

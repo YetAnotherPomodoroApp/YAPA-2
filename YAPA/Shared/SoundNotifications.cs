@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using YAPA.Contracts;
+using YAPA.WPF;
 
 namespace YAPA.Shared
 {
@@ -12,10 +13,7 @@ namespace YAPA.Shared
 
         public Type Settings => typeof(SoundNotificationsSettings);
 
-        public Type SettingEditWindow
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public Type SettingEditWindow => typeof(SoundNotificationSettingWindow);
     }
 
     public class SoundNotifications : IPlugin

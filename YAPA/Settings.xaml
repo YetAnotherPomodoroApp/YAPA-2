@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YAPA"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300">
+        Title="Settings" Height="300" Width="300"
+        Topmost="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -15,9 +16,11 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
-            
+        <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="SettingsTree">
+
         </TreeView>
+        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage">
+        </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Command="{Binding CancelCommand}">Cancel</Button>

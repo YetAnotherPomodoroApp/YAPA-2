@@ -16,10 +16,7 @@ namespace YAPA.WPF
 
         public Type Settings => typeof(MinimizeToTraySettings);
 
-        public Type SettingEditWindow
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public Type SettingEditWindow => null;
     }
 
     public class MinimizeToTray : IPlugin
