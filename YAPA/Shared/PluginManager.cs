@@ -58,7 +58,7 @@ namespace YAPA.Shared
 
             foreach (var plugin in Plugins)
             {
-                updater.RegisterType(plugin.Settings).SingleInstance();
+                updater.RegisterType(plugin.Settings);
             }
 
             updater.Update(container);

@@ -2,5 +2,6 @@
 {
     public interface IPluginSettings
     {
+        void DefereChanges();
     }
 }

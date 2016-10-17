@@ -45,7 +45,7 @@ namespace YAPA.Shared
 
         private void Play()
         {
-            if (_settings.DisabelSoundNotifications)
+            if (_settings.DisableSoundNotifications)
             {
                 return;
             }
@@ -75,7 +75,7 @@ namespace YAPA.Shared
 
     public class SoundNotificationsSettings : IPluginSettings
     {
-        private readonly ISettings _settings;
+        private readonly ISettingsForPlugin _settings;
 
         public string WorkSong
         {
@@ -101,15 +101,20 @@ namespace YAPA.Shared
             set { _settings.Update(nameof(RepeatBreakSong), value); }
         }
 
-        public bool DisabelSoundNotifications
+        public bool DisableSoundNotifications
         {
-            get { return _settings.Get(nameof(DisabelSoundNotifications), false); }
-            set { _settings.Update(nameof(DisabelSoundNotifications), value); }
+            get { return _settings.Get(nameof(DisableSoundNotifications), false); }
+            set { _settings.Update(nameof(DisableSoundNotifications), value); }
         }
 
         public SoundNotificationsSettings(ISettings settings)
         {
-            _settings = settings;
+            _settings = settings.GetSettingsForPlugin(nameof(SoundNotifications));
+        }
+
+        public void DefereChanges()
+        {
+            _settings.DeferChanges();
         }
     }
 

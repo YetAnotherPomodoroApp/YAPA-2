@@ -169,7 +169,7 @@ namespace YAPA.Shared
 
     public class PomodoroEngineSettings : IPluginSettings
     {
-        private readonly ISettings _settings;
+        private readonly ISettingsForPlugin _settings;
 
         public int WorkTime
         {
@@ -191,7 +191,12 @@ namespace YAPA.Shared
 
         public PomodoroEngineSettings(ISettings settings)
         {
-            _settings = settings;
+            _settings = settings.GetSettingsForPlugin(nameof(PomodoroEngine));
+        }
+
+        public void DefereChanges()
+        {
+            _settings.DeferChanges();
         }
     }
 

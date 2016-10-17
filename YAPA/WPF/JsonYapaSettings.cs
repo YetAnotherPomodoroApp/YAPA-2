@@ -11,76 +11,73 @@ namespace YAPA.WPF
 {
     public class JsonYapaSettings : ISettings
     {
-        private DictionaryDefaultNull<string> _settings;
-        private DictionaryDefaultNull<string> _modifiedSettings;
+        private SettingsDictionary _settings;
+        private SettingsDictionary _modifiedSettings;
 
         public JsonYapaSettings()
         {
-            _settings = new DictionaryDefaultNull<string>();
-            _modifiedSettings = new DictionaryDefaultNull<string>();
+            _settings = new SettingsDictionary();
+            _modifiedSettings = new SettingsDictionary();
             Load();
         }
 
-        public T Get<T>(string name)
+        public T Get<T>(string name, T defaultValue, string plugin, bool defer)
         {
-            var isClass = typeof(T).IsClass;
-            if (!isClass)
+            object value = defaultValue;
+            var modValue = _modifiedSettings.GetValue(name, plugin, null);
+            var settingValue = _settings.GetValue(name, plugin, null);
+
+            if (defer)
             {
-                return (T)Convert.ChangeType(_settings[name], typeof(T));
-            }
-
-            return (T)_settings[name];
-        }
-
-        public T Get<T>(string name, T defaultValue)
-        {
-            var value = defaultValue;
-            if (_settings.ContainsKey(name))
-            {
-                value = Get<T>(name);
-            }
-
-            return value;
-        }
-
-        public object Get(string name)
-        {
-            return Get<object>(name);
-        }
-
-        public void Update(string name, object value)
-        {
-            Update(name, value, false);
-        }
-
-        public void Update(string name, object value, bool imidiate)
-        {
-            if (imidiate)
-            {
-                _settings[name] = value;
-                Save();
+                value = modValue ?? settingValue ?? defaultValue;
             }
             else
             {
-                _modifiedSettings[name] = value;
+                value = settingValue ?? defaultValue;
+            }
 
-                if (_modifiedSettings[name].Equals(_settings[name]))
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+
+        public void Update(string name, object value, string plugin, bool defer)
+        {
+            if (defer)
+            {
+                //if value is changed back to original value, just remove modification
+                if (value == null || value.Equals(_settings.GetValue(name, plugin, null)))
                 {
-                    _modifiedSettings.Remove(name);
+                    _modifiedSettings.RemoveKey(name, plugin);
+                }
+                else
+                {
+                    _modifiedSettings.SetValue(name, plugin, value);
                 }
 
                 HasUnsavedChanges = _modifiedSettings.Any();
             }
+            else
+            {
+                _settings.SetValue(name, plugin, value);
+                SaveToFile();
+            }
+
+            OnPropertyChanged(name);
+        }
+
+        public ISettingsForPlugin GetSettingsForPlugin(string plugin)
+        {
+            return new SettingForPlugin(this, plugin);
         }
 
         public void Save()
         {
-            SaveSettings();
+            SaveToFile();
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
         }
 
-        private void SaveSettings()
+        private void SaveToFile()
         {
             var settingDir = Path.GetDirectoryName(SettingsFilePath());
             if (!Directory.Exists(settingDir))
@@ -113,7 +110,7 @@ namespace YAPA.WPF
             HasUnsavedChanges = false;
             using (var file = new StreamReader(SettingsFilePath()))
             {
-                _settings = JsonConvert.DeserializeObject<DictionaryDefaultNull<string>>(file.ReadToEnd());
+                _settings = JsonConvert.DeserializeObject<SettingsDictionary>(file.ReadToEnd());
             }
         }
 
@@ -144,17 +141,92 @@ namespace YAPA.WPF
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected class DictionaryDefaultNull<TKey> : Dictionary<TKey, object>
+        public class SettingForPlugin : ISettingsForPlugin
         {
-            public new object this[TKey key]
+            private readonly ISettings _settings;
+            private readonly string _plugin;
+            private bool defer;
+
+            public SettingForPlugin(ISettings settings, string plugin)
             {
-                get
+                _settings = settings;
+                _plugin = plugin;
+                defer = false;
+            }
+
+            public T Get<T>(string name, T defaultValue)
+            {
+                return _settings.Get(name, defaultValue, _plugin, defer);
+            }
+
+            public void Update(string name, object value)
+            {
+                _settings.Update(name, value, _plugin, defer);
+
+            }
+
+            public void DeferChanges()
+            {
+                defer = true;
+            }
+        }
+
+        protected class SettingsDictionary : Dictionary<string, Dictionary<string, object>>
+        {
+            public Dictionary<string, object> GetSettingsFor(string plugin)
+            {
+                Dictionary<string, object> settings;
+                if (ContainsKey(plugin) == false)
                 {
-                    return ContainsKey(key) ? base[key] : null;
+                    settings = new Dictionary<string, object>();
+                    this[plugin] = settings;
+                }
+                else
+                {
+                    settings = this[plugin];
                 }
 
-                set { base[key] = value; }
+                return settings;
             }
+
+            public object GetValue(string name, string plugin, object defaultValue)
+            {
+                if (ContainsKey(plugin) == false)
+                {
+                    return defaultValue;
+                }
+
+                var settings = GetSettingsFor(plugin);
+                var val = defaultValue;
+
+                if (settings.ContainsKey(name))
+                {
+                    val = settings[name];
+                }
+
+                return val;
+            }
+
+            public void SetValue(string name, string plugin, object value)
+            {
+                var settings = GetSettingsFor(plugin);
+                settings[name] = value;
+            }
+
+            public void RemoveKey(string name, string plugin)
+            {
+                var settings = GetSettingsFor(plugin);
+                if (settings.ContainsKey(name))
+                {
+                    settings.Remove(name);
+                }
+
+                if (settings.Count == 0)
+                {
+                    Remove(plugin);
+                }
+            }
+
         }
     }
 }

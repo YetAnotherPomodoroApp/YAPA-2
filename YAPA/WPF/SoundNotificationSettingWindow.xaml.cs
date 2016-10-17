@@ -7,9 +7,8 @@ namespace YAPA.WPF
     {
         public SoundNotificationSettingWindow(SoundNotificationsSettings settings)
         {
+            settings.DefereChanges();
             InitializeComponent();
-
-            DisableSoundNotifications.IsChecked = settings.DisabelSoundNotifications;
 
             DataContext = settings;
         }

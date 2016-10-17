@@ -18,6 +18,6 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Disable sound notifications" Grid.Column="0" Grid.Row="0"></TextBlock>
-        <CheckBox IsChecked="{Binding DisabelSoundNotifications, Mode=OneWayToSource}" x:Name="DisableSoundNotifications" Grid.Column="1" Grid.Row="0"></CheckBox>
+        <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" x:Name="DisableSoundNotifications" Grid.Column="1" Grid.Row="0"></CheckBox>
     </Grid>
 </UserControl>

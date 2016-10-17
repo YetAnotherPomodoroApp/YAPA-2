@@ -59,7 +59,7 @@ namespace YAPA
 
             builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 
-            builder.RegisterType(typeof(PomodoroEngineSettings)).SingleInstance();
+            builder.RegisterType(typeof(PomodoroEngineSettings));
 
             var container = builder.Build();
 

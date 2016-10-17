@@ -54,41 +54,46 @@ namespace YAPA.WPF
 
     public class SaveApplicationPositionOnScreenSettings : IPluginSettings
     {
-        private readonly ISettings _settings;
+        private readonly ISettingsForPlugin _settings;
 
         public bool IsFirstRun
         {
             get { return _settings.Get(nameof(IsFirstRun), true); }
-            set { _settings.Update(nameof(IsFirstRun), value, true); }
+            set { _settings.Update(nameof(IsFirstRun), value); }
         }
 
         public int CurrentScreenHeight
         {
             get { return _settings.Get(nameof(CurrentScreenHeight), -1); }
-            set { _settings.Update(nameof(CurrentScreenHeight), value, true); }
+            set { _settings.Update(nameof(CurrentScreenHeight), value); }
         }
 
         public int CurrentScreenWidth
         {
             get { return _settings.Get(nameof(CurrentScreenWidth), -1); }
-            set { _settings.Update(nameof(CurrentScreenWidth), value, true); }
+            set { _settings.Update(nameof(CurrentScreenWidth), value); }
         }
 
         public int WindowLeft
         {
             get { return _settings.Get(nameof(WindowLeft), -1); }
-            set { _settings.Update(nameof(WindowLeft), value, true); }
+            set { _settings.Update(nameof(WindowLeft), value); }
         }
 
         public int WindowTop
         {
             get { return _settings.Get(nameof(WindowTop), -1); }
-            set { _settings.Update(nameof(WindowTop), value, true); }
+            set { _settings.Update(nameof(WindowTop), value); }
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
         {
-            _settings = settings;
+            _settings = settings.GetSettingsForPlugin(nameof(SaveApplicationPositionOnScreen));
+        }
+
+        public void DefereChanges()
+        {
+            _settings.DeferChanges();
         }
     }
 }
