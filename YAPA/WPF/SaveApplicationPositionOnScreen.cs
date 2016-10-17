@@ -1,10 +1,22 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Forms;
 using YAPA.Contracts;
 using GDIScreen = System.Windows.Forms.Screen;
 
 namespace YAPA.WPF
 {
+    public class SaveApplicationPositionOnScreenPlugin : IPluginMeta
+    {
+        public string Title => "Save application position on screen";
+
+        public Type Plugin => typeof(SaveApplicationPositionOnScreen);
+
+        public Type Settings => typeof(SaveApplicationPositionOnScreenSettings);
+
+        public Type SettingEditWindow => null;
+    }
+
     public class SaveApplicationPositionOnScreen : IPlugin
     {
         private readonly IApplication _app;
