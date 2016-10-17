@@ -21,12 +21,14 @@ namespace YAPA.Shared
         private readonly IPomodoroEngine _engine;
         private readonly SoundNotificationsSettings _settings;
         private readonly IMusicPlayer _musicPlayer;
+        private readonly IMusicPlayer _musicPlayer2;
 
-        public SoundNotifications(IPomodoroEngine engine, SoundNotificationsSettings settings, IMusicPlayer musicPlayer)
+        public SoundNotifications(IPomodoroEngine engine, SoundNotificationsSettings settings, IMusicPlayer musicPlayer, IMusicPlayer musicPlayer2)
         {
             _engine = engine;
             _settings = settings;
             _musicPlayer = musicPlayer;
+            _musicPlayer2 = musicPlayer2;
 
             _engine.PropertyChanged += _engine_PropertyChanged;
         }
@@ -36,11 +38,21 @@ namespace YAPA.Shared
             if (e.PropertyName == nameof(_engine.Phase))
             {
                 _musicPlayer.Stop();
-                if (_engine.Phase == PomodoroPhase.Work || _engine.Phase == PomodoroPhase.Break)
-                {
-                    Play();
-                }
+                Play();
             }
+        }
+
+        private void PlayPeriodStart()
+        {
+            _musicPlayer.Load(_settings.PeriodStartSound);
+            _musicPlayer.Play();
+        }
+
+
+        private void PlayPeriodEnd()
+        {
+            _musicPlayer.Load(_settings.PeriodEndSound);
+            _musicPlayer.Play();
         }
 
         private void Play()
@@ -58,10 +70,16 @@ namespace YAPA.Shared
                 case PomodoroPhase.Work:
                     songToPlay = _settings.WorkSong;
                     repeat = _settings.RepeatWorkSong;
+                    PlayPeriodStart();
                     break;
                 case PomodoroPhase.Break:
                     songToPlay = _settings.BreakSong;
                     repeat = _settings.RepeatBreakSong;
+                    PlayPeriodStart();
+                    break;
+                case PomodoroPhase.BreakEnded:
+                case PomodoroPhase.WorkEnded:
+                    PlayPeriodEnd();
                     break;
             }
 
@@ -77,9 +95,21 @@ namespace YAPA.Shared
     {
         private readonly ISettingsForPlugin _settings;
 
-        public string WorkSong
+        public string PeriodStartSound
         {
             get { return _settings.Get<string>(nameof(WorkSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            set { _settings.Update(nameof(WorkSong), value); }
+        }
+
+        public string PeriodEndSound
+        {
+            get { return _settings.Get<string>(nameof(WorkSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            set { _settings.Update(nameof(WorkSong), value); }
+        }
+
+        public string WorkSong
+        {
+            get { return _settings.Get<string>(nameof(WorkSong), null); }
             set { _settings.Update(nameof(WorkSong), value); }
         }
 
@@ -91,7 +121,7 @@ namespace YAPA.Shared
 
         public string BreakSong
         {
-            get { return _settings.Get<string>(nameof(BreakSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav")); }
+            get { return _settings.Get<string>(nameof(BreakSong), null); }
             set { _settings.Update(nameof(BreakSong), value); }
         }
 
