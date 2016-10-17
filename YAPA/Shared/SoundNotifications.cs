@@ -38,21 +38,22 @@ namespace YAPA.Shared
             if (e.PropertyName == nameof(_engine.Phase))
             {
                 _musicPlayer.Stop();
+                _musicPlayer2.Stop();
                 Play();
             }
         }
 
         private void PlayPeriodStart()
         {
-            _musicPlayer.Load(_settings.PeriodStartSound);
-            _musicPlayer.Play();
+            _musicPlayer2.Load(_settings.PeriodStartSound);
+            _musicPlayer2.Play();
         }
 
 
         private void PlayPeriodEnd()
         {
-            _musicPlayer.Load(_settings.PeriodEndSound);
-            _musicPlayer.Play();
+            _musicPlayer2.Load(_settings.PeriodEndSound);
+            _musicPlayer2.Play();
         }
 
         private void Play()
