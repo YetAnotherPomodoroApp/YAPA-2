@@ -71,16 +71,16 @@ namespace YAPA.Shared
                 case PomodoroPhase.Work:
                     songToPlay = _settings.WorkSong;
                     repeat = _settings.RepeatWorkSong;
-                    PlayPeriodStart();
+                    if (_settings.PlayPeriodStartEndSounds) PlayPeriodStart();
                     break;
                 case PomodoroPhase.Break:
                     songToPlay = _settings.BreakSong;
                     repeat = _settings.RepeatBreakSong;
-                    PlayPeriodStart();
+                    if (_settings.PlayPeriodStartEndSounds) PlayPeriodStart();
                     break;
                 case PomodoroPhase.BreakEnded:
                 case PomodoroPhase.WorkEnded:
-                    PlayPeriodEnd();
+                    if (_settings.PlayPeriodStartEndSounds) PlayPeriodEnd();
                     break;
             }
 
@@ -98,15 +98,22 @@ namespace YAPA.Shared
 
         public string PeriodStartSound
         {
-            get { return _settings.Get<string>(nameof(WorkSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
-            set { _settings.Update(nameof(WorkSong), value); }
+            get { return _settings.Get<string>(nameof(PeriodStartSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            set { _settings.Update(nameof(PeriodStartSound), value); }
         }
 
         public string PeriodEndSound
         {
-            get { return _settings.Get<string>(nameof(WorkSong), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
-            set { _settings.Update(nameof(WorkSong), value); }
+            get { return _settings.Get<string>(nameof(PeriodEndSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            set { _settings.Update(nameof(PeriodEndSound), value); }
         }
+
+        public bool PlayPeriodStartEndSounds
+        {
+            get { return _settings.Get<bool>(nameof(PlayPeriodStartEndSounds), true); }
+            set { _settings.Update(nameof(PlayPeriodStartEndSounds), value); }
+        }
+
 
         public string WorkSong
         {

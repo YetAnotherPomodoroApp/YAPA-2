@@ -11,13 +11,39 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Disable sound notifications" Grid.Column="0" Grid.Row="0"></TextBlock>
-        <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" x:Name="DisableSoundNotifications" Grid.Column="1" Grid.Row="0"></CheckBox>
+        <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"></CheckBox>
+
+        <TextBlock Text="Play period start\end sounds" Grid.Column="0" Grid.Row="1"></TextBlock>
+        <CheckBox IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"></CheckBox>
+
+        <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2"></TextBlock>
+        <Button Content="Browse" HorizontalAlignment="Right" x:Name="BrowseWorkSong" Grid.Column="0" Grid.Row="2"></Button>
+        <TextBox Text="{Binding WorkSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WorkSong" HorizontalContentAlignment="Stretch" 
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2"></TextBox>
+
+        <TextBlock Text="Repeat work song" Grid.Column="0" Grid.Row="3"></TextBlock>
+        <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"></CheckBox>
+
+        <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4"></TextBlock>
+        <Button Content="Browse" HorizontalAlignment="Right" x:Name="BrowseBreakSong"  Grid.Column="0" Grid.Row="4"></Button>
+        <TextBox Text="{Binding BreakSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="BreakSong" HorizontalContentAlignment="Stretch" 
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4"></TextBox>
+
+
+        <TextBlock Text="Repeat break song" Grid.Column="0" Grid.Row="5"></TextBlock>
+        <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="5"></CheckBox>
+
     </Grid>
 </UserControl>

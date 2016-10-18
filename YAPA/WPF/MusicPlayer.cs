@@ -38,7 +38,7 @@ namespace YAPA.WPF
 
         public void Play(bool repeat = false)
         {
-            if (_musicPlayer.Source == null || !File.Exists(_musicPlayer.Source.AbsolutePath) || IsPlaying)
+            if (_musicPlayer.Source == null || !File.Exists(_musicPlayer.Source.OriginalString) || IsPlaying)
             {
                 return;
             }
