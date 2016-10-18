@@ -59,10 +59,10 @@ namespace YAPA.WPF
             else
             {
                 _settings.SetValue(name, plugin, value);
+                OnPropertyChanged(name);
+
                 SaveToFile();
             }
-
-            OnPropertyChanged(name);
         }
 
         public ISettingsForPlugin GetSettingsForPlugin(string plugin)
@@ -87,9 +87,13 @@ namespace YAPA.WPF
 
             if (HasUnsavedChanges)
             {
-                foreach (var modified in _modifiedSettings)
+                foreach (var setting in _modifiedSettings)
                 {
-                    _settings[modified.Key] = modified.Value;
+                    foreach (var value in setting.Value)
+                    {
+                        _settings.SetValue(value.Key, setting.Key, value.Value);
+                        OnPropertyChanged(value.Key);
+                    }
                 }
             }
 
@@ -98,6 +102,7 @@ namespace YAPA.WPF
             {
                 file.Write(serialized);
             }
+
         }
 
         public void Load()

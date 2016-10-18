@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
 using YAPA.Contracts;
-using YAPA.Shared;
 
 namespace YAPA.WPF
 {
@@ -16,7 +14,7 @@ namespace YAPA.WPF
 
         public Type Settings => typeof(MinimizeToTraySettings);
 
-        public Type SettingEditWindow => null;
+        public Type SettingEditWindow => typeof(MinimizeToTraySettingWindow);
     }
 
     public class MinimizeToTray : IPlugin
@@ -27,26 +25,22 @@ namespace YAPA.WPF
         private readonly System.Windows.Forms.NotifyIcon _sysTrayIcon;
         private IntPtr _systemTrayIcon;
 
-        public ICommand StopCommand { get; set; }
-        public ICommand StartCommand { get; set; }
-        public ICommand ResetCommand { get; set; }
-
 
         private readonly IApplication _app;
-        private readonly IPomodoroEngine _engine;
+        private readonly IMainViewModel _viewModel;
         private readonly MinimizeToTraySettings _settings;
+        private readonly ISettings _globalSettings;
 
-        public MinimizeToTray(IApplication app, IPomodoroEngine engine, MinimizeToTraySettings settings)
+        public MinimizeToTray(IApplication app, IMainViewModel viewModel, MinimizeToTraySettings settings, ISettings globalSettings)
         {
             _app = app;
-            _engine = engine;
+            _viewModel = viewModel;
             _settings = settings;
+            _globalSettings = globalSettings;
+
+            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             _app.StateChanged += _app_StateChanged;
-
-            StopCommand = new StopCommand(_engine);
-            StartCommand = new StartCommand(_engine);
-            ResetCommand = new ResetCommand(_engine);
 
             _sysTrayIcon = new System.Windows.Forms.NotifyIcon
             {
@@ -57,14 +51,22 @@ namespace YAPA.WPF
             };
             _sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
 
-            _engine.PropertyChanged += _engine_PropertyChanged;
+            _viewModel.Engine.PropertyChanged += _engine_PropertyChanged;
 
             _sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
         }
 
+        private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_settings.ShowInTaskbar))
+            {
+                _app.ShowInTaskbar = _settings.ShowInTaskbar;
+            }
+        }
+
         private void _engine_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_engine.Elapsed))
+            if (e.PropertyName == nameof(_viewModel.Engine.Elapsed))
             {
                 UpdateIcon();
             }
@@ -75,34 +77,37 @@ namespace YAPA.WPF
             var startTask = new System.Windows.Forms.MenuItem { Text = @"Start" };
             startTask.Click += (o, s) =>
             {
-                if (StartCommand.CanExecute(null))
+                if (_viewModel.StartCommand.CanExecute(null))
                 {
-                    StartCommand.Execute(null);
+                    _viewModel.StartCommand.Execute(null);
                 }
             };
 
             var stopTask = new System.Windows.Forms.MenuItem { Text = @"Stop" };
             stopTask.Click += (o, s) =>
             {
-                if (ResetCommand.CanExecute(null))
+                if (_viewModel.ResetCommand.CanExecute(null))
                 {
-                    ResetCommand.Execute(null);
+                    _viewModel.ResetCommand.Execute(null);
                 }
             };
 
             var resetTask = new System.Windows.Forms.MenuItem { Text = @"Reset session" };
             resetTask.Click += (o, s) =>
             {
-                if (ResetCommand.CanExecute(null))
+                if (_viewModel.ResetCommand.CanExecute(null))
                 {
-                    ResetCommand.Execute(null);
+                    _viewModel.ResetCommand.Execute(null);
                 }
             };
 
             var settings = new System.Windows.Forms.MenuItem { Text = @"Settings" };
             settings.Click += (o, s) =>
             {
-                throw new NotImplementedException();
+                if (_viewModel.ShowSettingsCommand.CanExecute(null))
+                {
+                    _viewModel.ShowSettingsCommand.Execute(null);
+                }
             };
 
             var close = new System.Windows.Forms.MenuItem { Text = @"Exit" };
@@ -120,22 +125,15 @@ namespace YAPA.WPF
         private void _app_StateChanged(ApplicationState state)
         {
 
-            if (state == ApplicationState.Minimized && _settings.MinimizeToTray && _settings.ShowInTaskbar)
+            if (state == ApplicationState.Minimized && (_settings.MinimizeToTray || _settings.ShowInTaskbar == false))
             {
                 _app.Hide();
                 _sysTrayIcon.Visible = true;
             }
 
-            if (!_settings.ShowInTaskbar)
+            if (state != ApplicationState.Minimized)
             {
-                if (state == ApplicationState.Minimized)
-                {
-                    _sysTrayIcon.Visible = true;
-                }
-                else
-                {
-                    _app.ShowInTaskbar = _settings.ShowInTaskbar;
-                }
+                _app.ShowInTaskbar = _settings.ShowInTaskbar;
             }
         }
 
@@ -151,7 +149,7 @@ namespace YAPA.WPF
         {
             System.Drawing.Color textColor;
 
-            if (_engine.Phase == PomodoroPhase.Break || _engine.Phase == PomodoroPhase.BreakEnded)
+            if (_viewModel.Engine.Phase == PomodoroPhase.Break || _viewModel.Engine.Phase == PomodoroPhase.BreakEnded)
             {
                 textColor = _settings.BreakTrayIconColor;
             }
@@ -165,7 +163,7 @@ namespace YAPA.WPF
                 DestroyIcon(_systemTrayIcon);
             }
 
-            var displayText = _engine.Elapsed / 60;
+            var displayText = _viewModel.Engine.Elapsed / 60;
 
             System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
 
@@ -204,7 +202,7 @@ namespace YAPA.WPF
 
         public bool MinimizeToTray
         {
-            get { return _settings.Get(nameof(MinimizeToTray), true); }
+            get { return _settings.Get(nameof(MinimizeToTray), false); }
             set { _settings.Update(nameof(MinimizeToTray), value); }
         }
 

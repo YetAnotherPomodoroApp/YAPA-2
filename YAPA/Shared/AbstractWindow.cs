@@ -41,6 +41,7 @@ namespace YAPA.Shared
             Loaded?.Invoke();
             CreateJumpList();
             ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs.ToArray());
+            AbstractWindow_StateChanged(this, EventArgs.Empty);
         }
 
         public void CloseApp()
