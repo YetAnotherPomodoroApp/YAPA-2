@@ -43,13 +43,13 @@ namespace YAPA.Shared
         {
             var updater = new ContainerBuilder();
 
-            foreach (var plugin in Plugins)
+            foreach (var plugin in Plugins.Where(x => x.Plugin != null))
             {
                 updater.RegisterType(plugin.Plugin).SingleInstance();
             }
             updater.Update(container);
 
-            return Plugins.Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
+            return Plugins.Where(x => x.Plugin != null).Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
         }
 
         private void RegisterPluginSettings(IContainer container)

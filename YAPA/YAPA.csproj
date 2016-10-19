@@ -156,6 +156,9 @@
     <Compile Include="WPF\MinimizeToTraySettingWindow.xaml.cs">
       <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\PomodoroEngineSettingWindow.xaml.cs">
+      <DependentUpon>PomodoroEngineSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
     <Compile Include="WPF\SoundNotificationSettingWindow.xaml.cs">
       <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
@@ -198,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\MinimizeToTraySettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\PomodoroEngineSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,9 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
 using YAPA.Contracts;
+using YAPA.WPF;
 
 namespace YAPA.Shared
 {
+
+    public class PomodoroEnginePlugin : IPluginMeta
+    {
+        public string Title => "General";
+
+        public Type Plugin => null;
+
+        public Type Settings => typeof(PomodoroEngineSettings);
+
+        public Type SettingEditWindow => typeof(PomodoroEngineSettingWindow);
+    }
+
     public class PomodoroEngine : IPomodoroEngine, IPlugin
     {
         private readonly PomodoroEngineSettings _settings;

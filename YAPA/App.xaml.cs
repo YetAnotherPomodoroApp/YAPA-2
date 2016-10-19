@@ -59,8 +59,6 @@ namespace YAPA
 
             builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 
-            builder.RegisterType(typeof(PomodoroEngineSettings));
-
             var container = builder.Build();
 
             var updater = new ContainerBuilder();
