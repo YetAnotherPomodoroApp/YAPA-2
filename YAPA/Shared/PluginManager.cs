@@ -8,11 +8,13 @@ namespace YAPA.Shared
     public class PluginManager : IPluginManager
     {
         private readonly IContainer _container;
+        private readonly PluginManagerSettings _settings;
         private IEnumerable<IPlugin> _pluginInstances;
         private bool _initialised = false;
-        public PluginManager(IContainer container, IEnumerable<IPluginMeta> metas)
+        public PluginManager(IContainer container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
         {
             _container = container;
+            _settings = settings;
             Plugins = metas;
         }
 
@@ -74,6 +76,22 @@ namespace YAPA.Shared
             }
 
             updater.Update(container);
+        }
+    }
+
+
+    public class PluginManagerSettings : IPluginSettings
+    {
+        private readonly ISettingsForComponent _settings;
+
+        public PluginManagerSettings(ISettings settings)
+        {
+            _settings = settings.GetSettingsForComponent(nameof(PluginManager));
+        }
+
+        public void DeferChanges()
+        {
+            _settings.DeferChanges();
         }
     }
 }

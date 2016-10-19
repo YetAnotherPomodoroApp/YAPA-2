@@ -66,7 +66,7 @@ namespace YAPA.WPF
 
     public class SaveApplicationPositionOnScreenSettings : IPluginSettings
     {
-        private readonly ISettingsForPlugin _settings;
+        private readonly ISettingsForComponent _settings;
 
         public bool IsFirstRun
         {
@@ -100,10 +100,10 @@ namespace YAPA.WPF
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForPlugin(nameof(SaveApplicationPositionOnScreen));
+            _settings = settings.GetSettingsForComponent(nameof(SaveApplicationPositionOnScreen));
         }
 
-        public void DefereChanges()
+        public void DeferChanges()
         {
             _settings.DeferChanges();
         }

@@ -9,7 +9,7 @@ namespace YAPA.WPF
     {
         public SoundNotificationSettingWindow(SoundNotificationsSettings settings)
         {
-            settings.DefereChanges();
+            settings.DeferChanges();
             InitializeComponent();
 
             DataContext = settings;

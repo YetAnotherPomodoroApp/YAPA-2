@@ -6,7 +6,7 @@ namespace YAPA.Shared
     public class MainViewModel : IMainViewModel
     {
         private readonly ISettings _settings;
-        private readonly IPluginManager _plugins;
+        private readonly ISettingManager _manager;
         public IPomodoroEngine Engine { get; set; }
 
         public ICommand StopCommand { get; set; }
@@ -17,16 +17,16 @@ namespace YAPA.Shared
 
         public ICommand ShowSettingsCommand { get; set; }
 
-        public MainViewModel(IPomodoroEngine engine, ISettings settings, IPluginManager plugins)
+        public MainViewModel(IPomodoroEngine engine, ISettings settings, ISettingManager manager)
         {
             _settings = settings;
-            _plugins = plugins;
+            _manager = manager;
             Engine = engine;
             StopCommand = new StopCommand(Engine);
             StartCommand = new StartCommand(Engine);
             ResetCommand = new ResetCommand(Engine);
 
-            ShowSettingsCommand = new ShowSettingsCommand(_settings, plugins);
+            ShowSettingsCommand = new ShowSettingsCommand(_settings, _manager);
 
         }
     }

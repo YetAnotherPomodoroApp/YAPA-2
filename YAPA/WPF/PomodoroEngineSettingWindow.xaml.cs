@@ -10,7 +10,7 @@ namespace YAPA.WPF
     {
         public PomodoroEngineSettingWindow(PomodoroEngineSettings settings)
         {
-            settings.DefereChanges();
+            settings.DeferChanges();
             InitializeComponent();
             DataContext = settings;
         }

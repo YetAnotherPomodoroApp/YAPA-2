@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using YAPA.Contracts;
@@ -10,14 +9,14 @@ namespace YAPA
     public partial class Settings : Window
     {
         private readonly ISettings _settings;
-        private readonly IPluginManager _plugins;
+        private readonly ISettingManager _mananger;
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public Settings(ISettings settings, IPluginManager plugins)
+        public Settings(ISettings settings, ISettingManager mananger)
         {
             _settings = settings;
-            _plugins = plugins;
+            _mananger = mananger;
 
             SaveCommand = new SaveSettingsCommand(this, settings);
             CancelCommand = new CancelSettingsCommand(this, settings);
@@ -28,13 +27,21 @@ namespace YAPA
 
             SettingsTree.SelectedItemChanged += SettingsTree_SelectedItemChanged;
 
-            var pluginsTree = new TreeViewItem { Header = "Plugins" };
-            foreach (var plugin in _plugins.Plugins)
+            foreach (var rootSetting in _mananger.GetRootSettings())
             {
-                pluginsTree.Items.Add(new TreeViewItem() { Header = plugin.Title });
+                var pluginsTree = new TreeViewItem { Header = rootSetting };
+
+                if (rootSetting == "Plugins")
+                {
+                    foreach (var plugin in _mananger.GetPlugins())
+                    {
+                        pluginsTree.Items.Add(new TreeViewItem() { Header = plugin });
+                    }
+                }
+
+                SettingsTree.Items.Add(pluginsTree);
             }
 
-            SettingsTree.Items.Add(pluginsTree);
 
         }
 
@@ -48,15 +55,7 @@ namespace YAPA
                 return;
             }
 
-            var plugin = _plugins.Plugins.FirstOrDefault(x => Equals(x.Title, (string)treeItem.Header));
-            if (plugin?.SettingEditWindow == null)
-            {
-                return;
-            }
-
-            var editPage = _plugins.ResolveSettingWindow(plugin);
-
-            SettingPage.Children.Add((UserControl)editPage);
+            SettingPage.Children.Add(_mananger.GetPageFor((string)treeItem.Header));
         }
     }
 }

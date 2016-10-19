@@ -65,7 +65,7 @@ namespace YAPA.WPF
             }
         }
 
-        public ISettingsForPlugin GetSettingsForPlugin(string plugin)
+        public ISettingsForComponent GetSettingsForComponent(string plugin)
         {
             return new SettingForPlugin(this, plugin);
         }
@@ -146,7 +146,7 @@ namespace YAPA.WPF
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public class SettingForPlugin : ISettingsForPlugin
+        public class SettingForPlugin : ISettingsForComponent
         {
             private readonly ISettings _settings;
             private readonly string _plugin;

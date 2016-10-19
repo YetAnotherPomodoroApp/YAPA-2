@@ -10,13 +10,13 @@ namespace YAPA.Contracts
 
         void Update(string name, object value, string plugin, bool defer);
 
-        ISettingsForPlugin GetSettingsForPlugin(string plugin);
+        ISettingsForComponent GetSettingsForComponent(string plugin);
 
         void Save();
         void Load();
     }
 
-    public interface ISettingsForPlugin
+    public interface ISettingsForComponent
     {
         T Get<T>(string name, T defaultValue);
 

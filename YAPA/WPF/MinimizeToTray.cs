@@ -180,7 +180,7 @@ namespace YAPA.WPF
 
     public class MinimizeToTraySettings : IPluginSettings
     {
-        private readonly ISettingsForPlugin _settings;
+        private readonly ISettingsForComponent _settings;
 
         public System.Drawing.Color WorkTrayIconColor
         {
@@ -208,10 +208,10 @@ namespace YAPA.WPF
 
         public MinimizeToTraySettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForPlugin(nameof(MinimizeToTray));
+            _settings = settings.GetSettingsForComponent(nameof(MinimizeToTray));
         }
 
-        public void DefereChanges()
+        public void DeferChanges()
         {
             _settings.DeferChanges();
         }

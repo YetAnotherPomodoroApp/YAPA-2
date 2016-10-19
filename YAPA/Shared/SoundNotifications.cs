@@ -94,7 +94,7 @@ namespace YAPA.Shared
 
     public class SoundNotificationsSettings : IPluginSettings
     {
-        private readonly ISettingsForPlugin _settings;
+        private readonly ISettingsForComponent _settings;
 
         public string PeriodStartSound
         {
@@ -147,10 +147,10 @@ namespace YAPA.Shared
 
         public SoundNotificationsSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForPlugin(nameof(SoundNotifications));
+            _settings = settings.GetSettingsForComponent(nameof(SoundNotifications));
         }
 
-        public void DefereChanges()
+        public void DeferChanges()
         {
             _settings.DeferChanges();
         }

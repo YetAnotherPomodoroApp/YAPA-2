@@ -6,7 +6,7 @@ namespace YAPA.WPF
     {
         public MinimizeToTraySettingWindow(MinimizeToTraySettings settings)
         {
-            settings.DefereChanges();
+            settings.DeferChanges();
             InitializeComponent();
             DataContext = settings;
         }
