@@ -59,7 +59,7 @@ namespace YAPA.WPF
             else
             {
                 _settings.SetValue(name, plugin, value);
-                OnPropertyChanged(name);
+                OnPropertyChanged($"{plugin}.{name}");
 
                 SaveToFile();
             }
@@ -92,7 +92,7 @@ namespace YAPA.WPF
                     foreach (var value in setting.Value)
                     {
                         _settings.SetValue(value.Key, setting.Key, value.Value);
-                        OnPropertyChanged(value.Key);
+                        OnPropertyChanged($"{setting.Key}.{value.Key}");
                     }
                 }
             }

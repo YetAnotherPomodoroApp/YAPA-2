@@ -58,7 +58,7 @@ namespace YAPA.WPF
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_settings.ShowInTaskbar))
+            if (e.PropertyName == $"{nameof(MinimizeToTray)}.{nameof(_settings.ShowInTaskbar)}")
             {
                 _app.ShowInTaskbar = _settings.ShowInTaskbar;
             }
