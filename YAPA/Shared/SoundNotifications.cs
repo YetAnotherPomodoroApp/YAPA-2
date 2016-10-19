@@ -104,7 +104,7 @@ namespace YAPA.Shared
 
         public string PeriodEndSound
         {
-            get { return _settings.Get<string>(nameof(PeriodEndSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
+            get { return _settings.Get<string>(nameof(PeriodEndSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav")); }
             set { _settings.Update(nameof(PeriodEndSound), value); }
         }
 
