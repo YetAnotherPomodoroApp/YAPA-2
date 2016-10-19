@@ -16,6 +16,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Work time" Grid.Column="0" Grid.Row="0"></TextBlock>
@@ -26,6 +27,9 @@
 
             <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="2"></TextBlock>
             <TextBox Text="{Binding LongBreakTime, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"></TextBox>
+
+            <TextBlock Text="Auto start break" Grid.Column="0" Grid.Row="3"></TextBlock>
+            <CheckBox IsChecked="{Binding AutoStartBreak, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"></CheckBox>
 
         </Grid>
     </Grid>

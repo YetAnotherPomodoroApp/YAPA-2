@@ -51,6 +51,10 @@ namespace YAPA.Shared
         public event Func<bool> OnStarting;
         public event Action OnStarted;
         public event Action OnStopped;
+
+        /// <summary>
+        /// Invoked when pomodoro work is completed
+        /// </summary>
         public event Action OnPomodoroCompleted;
 
         public bool IsRunning => Phase == PomodoroPhase.Break || Phase == PomodoroPhase.Work;
@@ -150,7 +154,17 @@ namespace YAPA.Shared
             _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = _pom2 };
             _pom4.NextPomodoro = _pom1;
 
+            OnPomodoroCompleted += PomodoroEngine_OnPomodoroCompleted;
+
             Current = _pom1;
+        }
+
+        private void PomodoroEngine_OnPomodoroCompleted()
+        {
+            if (_settings.AutoStartBreak)
+            {
+                Start();
+            }
         }
 
         private void _timer_Tick()
@@ -200,6 +214,12 @@ namespace YAPA.Shared
         {
             get { return _settings.Get(nameof(LongBreakTime), 15); }
             set { _settings.Update(nameof(LongBreakTime), value); }
+        }
+
+        public bool AutoStartBreak
+        {
+            get { return _settings.Get(nameof(AutoStartBreak), false); }
+            set { _settings.Update(nameof(AutoStartBreak), value); }
         }
 
         public PomodoroEngineSettings(ISettings settings)
