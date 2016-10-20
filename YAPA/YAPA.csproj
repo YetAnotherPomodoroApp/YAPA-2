@@ -131,7 +131,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CancelSettingsCommand.cs" />
+    <Compile Include="WPF\Commands\CancelSettingsCommand.cs" />
     <Compile Include="Contracts\IPlugin.cs" />
     <Compile Include="Contracts\IPluginManager.cs" />
     <Compile Include="Contracts\IPluginMeta.cs" />
@@ -141,11 +141,11 @@
     <Compile Include="Contracts\IThemeManager.cs" />
     <Compile Include="Contracts\IThemeMeta.cs" />
     <Compile Include="Contracts\ITimer.cs" />
-    <Compile Include="MainWindow2.xaml.cs">
+    <Compile Include="WPF\Themes\DefaultTheme2\MainWindow2.xaml.cs">
       <DependentUpon>MainWindow2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SaveSettingsCommand.cs" />
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="WPF\Commands\SaveSettingsCommand.cs" />
+    <Compile Include="WPF\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shared\AbstractWindow.cs" />
@@ -159,18 +159,18 @@
     <Compile Include="Shared\StartCommand.cs" />
     <Compile Include="Shared\StopCommand.cs" />
     <Compile Include="Shared\ThemeManager.cs" />
-    <Compile Include="ShowSettingsCommand.cs" />
-    <Compile Include="WPF\DefaultTheme.cs" />
-    <Compile Include="WPF\DefaultTheme2.cs" />
+    <Compile Include="WPF\Commands\ShowSettingsCommand.cs" />
+    <Compile Include="WPF\Themes\DefaultTheme\DefaultTheme.cs" />
+    <Compile Include="WPF\Themes\DefaultTheme2\DefaultTheme2.cs" />
     <Compile Include="WPF\JsonYapaSettings.cs" />
-    <Compile Include="WPF\MinimizeToTraySettingWindow.xaml.cs">
+    <Compile Include="WPF\Plugins\MinimizeToTraySettingWindow.xaml.cs">
       <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\PomodoroEngineSettingWindow.xaml.cs">
+    <Compile Include="WPF\Plugins\PomodoroEngineSettingWindow.xaml.cs">
       <DependentUpon>PomodoroEngineSettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\SaveApplicationPositionOnScreen.cs" />
-    <Compile Include="WPF\SoundNotificationSettingWindow.xaml.cs">
+    <Compile Include="WPF\Plugins\SaveApplicationPositionOnScreen.cs" />
+    <Compile Include="WPF\Plugins\SoundNotificationSettingWindow.xaml.cs">
       <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ThemeManagerSettingWindow.xaml.cs">
@@ -187,17 +187,17 @@
     <Compile Include="Contracts\IMusicPlayer.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="ItemRepository.cs" />
-    <Compile Include="WPF\MinimizeToTray.cs" />
+    <Compile Include="WPF\Plugins\MinimizeToTray.cs" />
     <Compile Include="WPF\MusicPlayer.cs" />
     <Compile Include="PomodoroWeek.xaml.cs">
       <DependentUpon>PomodoroWeek.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
-    <Page Include="MainWindow2.xaml">
+    <Page Include="WPF\Themes\DefaultTheme2\MainWindow2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="WPF\Themes\DefaultTheme\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -205,7 +205,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="WPF\Themes\DefaultTheme\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -213,19 +213,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings.xaml">
+    <Page Include="WPF\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\MinimizeToTraySettingWindow.xaml">
+    <Page Include="WPF\Plugins\MinimizeToTraySettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\PomodoroEngineSettingWindow.xaml">
+    <Page Include="WPF\Plugins\PomodoroEngineSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\SoundNotificationSettingWindow.xaml">
+    <Page Include="WPF\Plugins\SoundNotificationSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
