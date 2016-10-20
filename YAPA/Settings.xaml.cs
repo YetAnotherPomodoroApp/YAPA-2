@@ -42,7 +42,7 @@ namespace YAPA
                 SettingsTree.Items.Add(pluginsTree);
             }
 
-
+            RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

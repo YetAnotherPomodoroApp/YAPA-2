@@ -150,29 +150,28 @@ namespace YAPA.WPF
         {
             private readonly ISettings _settings;
             private readonly string _plugin;
-            private bool defer;
+            private bool _defer;
 
             public SettingForPlugin(ISettings settings, string plugin)
             {
                 _settings = settings;
                 _plugin = plugin;
-                defer = false;
+                _defer = false;
             }
 
             public T Get<T>(string name, T defaultValue)
             {
-                return _settings.Get(name, defaultValue, _plugin, defer);
+                return _settings.Get(name, defaultValue, _plugin, _defer);
             }
 
             public void Update(string name, object value)
             {
-                _settings.Update(name, value, _plugin, defer);
-
+                _settings.Update(name, value, _plugin, _defer);
             }
 
             public void DeferChanges()
             {
-                defer = true;
+                _defer = true;
             }
         }
 

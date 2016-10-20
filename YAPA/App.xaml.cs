@@ -75,7 +75,7 @@ namespace YAPA
 
             builder.RegisterType(typeof(PluginManagerSettings));
 
-            builder.RegisterType(typeof(SettingManager)).As<ISettingManager>();
+            builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
 
             var container = builder.Build();
 

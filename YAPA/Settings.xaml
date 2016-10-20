@@ -16,6 +16,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+    
         <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="SettingsTree">
 
         </TreeView>
@@ -26,5 +27,11 @@
             <Button Command="{Binding CancelCommand}">Cancel</Button>
             <Button Command="{Binding SaveCommand}">Save</Button>
         </StackPanel>
+
+
+        <StackPanel Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Yellow">
+            <TextBlock Text="Restart application to apply changes"></TextBlock>
+        </StackPanel>
+
     </Grid>
 </Window>

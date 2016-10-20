@@ -47,5 +47,7 @@ namespace YAPA.Shared
         {
             return _rootSettings.Select(x => x.Key);
         }
+
+        public bool RestartNeeded { get; set; }
     }
 }

@@ -8,5 +8,7 @@ namespace YAPA.Contracts
         UserControl GetPageFor(string name);
         IEnumerable<string> GetPlugins();
         IEnumerable<string> GetRootSettings();
+
+        bool RestartNeeded { get; set; }
     }
 }
