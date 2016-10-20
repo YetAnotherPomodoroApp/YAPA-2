@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Input;
 using YAPA.Contracts;
 
@@ -7,12 +6,10 @@ namespace YAPA
 {
     public class SaveSettingsCommand : ICommand
     {
-        private readonly Window _settingWindow;
         private readonly ISettings _settings;
 
-        public SaveSettingsCommand(Window settingWindow, ISettings settings)
+        public SaveSettingsCommand(ISettings settings)
         {
-            _settingWindow = settingWindow;
             _settings = settings;
             _settings.PropertyChanged += _settings_PropertyChanged;
         }
@@ -33,7 +30,7 @@ namespace YAPA
         public void Execute(object parameter)
         {
             _settings.Save();
-            _settingWindow.Close();
+
         }
 
         public event EventHandler CanExecuteChanged;

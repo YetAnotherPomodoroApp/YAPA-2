@@ -1,10 +1,13 @@
 ﻿using Autofac;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using YAPA.Contracts;
 using YAPA.WPF;
+using IContainer = Autofac.IContainer;
 
 namespace YAPA.Shared
 {
@@ -48,6 +51,23 @@ namespace YAPA.Shared
             return _rootSettings.Select(x => x.Key);
         }
 
-        public bool RestartNeeded { get; set; }
+        private bool _restartNeeded;
+
+        public bool RestartNeeded
+        {
+            get { return _restartNeeded; }
+            set
+            {
+                _restartNeeded = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

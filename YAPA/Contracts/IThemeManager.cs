@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace YAPA.Contracts
 {
@@ -7,6 +6,6 @@ namespace YAPA.Contracts
     {
         IEnumerable<IThemeMeta> Themes { get; }
         object ResolveSettingWindow(IThemeMeta theme);
-        Type GetActiveTheme();
+        IThemeMeta ActiveTheme { get; }
     }
 }

@@ -13,7 +13,6 @@ namespace YAPA.WPF
 
         public ThemeManagerSettingWindow(IThemeManager themes, ThemeManagerSettings settings, ISettingManager manager, ISettings globalSettings)
         {
-
             _themes = themes;
             _settings = settings;
             _manager = manager;
@@ -26,13 +25,22 @@ namespace YAPA.WPF
             InitializeComponent();
             foreach (var themeMeta in _themes.Themes)
             {
+                var selectedTheme = settings.SelectedTheme == themeMeta.Title;
                 var cb = new ComboBoxItem
                 {
-                    IsSelected = settings.SelectedTheme == themeMeta.Title,
+                    IsSelected = selectedTheme,
                     Content = themeMeta.Title
                 };
+
                 ThemeList.Items.Add(cb);
             }
+
+            if (_themes.ActiveTheme.SettingEditWindow != null)
+            {
+                SettingPage.Children.Clear();
+                SettingPage.Children.Add((UserControl)_themes.ResolveSettingWindow(_themes.ActiveTheme));
+            }
+
             ThemeList.SelectionChanged += ThemeList_SelectionChanged;
         }
 

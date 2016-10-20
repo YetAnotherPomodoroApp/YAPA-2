@@ -30,7 +30,7 @@ namespace YAPA
                 ThemeManager = new ThemeManager(Container, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
                 var themeUpdater = new ContainerBuilder();
                 themeUpdater.RegisterInstance(ThemeManager).As<IThemeManager>().SingleInstance();
-                themeUpdater.RegisterType(ThemeManager.GetActiveTheme()).As<IApplication>().SingleInstance();
+                themeUpdater.RegisterType(ThemeManager.ActiveTheme.Theme).As<IApplication>().SingleInstance();
                 themeUpdater.Update(Container);
 
                 //Plugins

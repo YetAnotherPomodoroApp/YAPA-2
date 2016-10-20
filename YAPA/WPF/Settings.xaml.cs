@@ -17,9 +17,10 @@ namespace YAPA
         {
             _settings = settings;
             _mananger = mananger;
+            _mananger.PropertyChanged += _mananger_PropertyChanged;
 
-            SaveCommand = new SaveSettingsCommand(this, settings);
-            CancelCommand = new CancelSettingsCommand(this, settings);
+            SaveCommand = new SaveSettingsCommand(_settings);
+            CancelCommand = new CancelSettingsCommand(this, _settings);
 
 
             DataContext = this;
@@ -43,6 +44,14 @@ namespace YAPA
             }
 
             RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void _mananger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_mananger.RestartNeeded))
+            {
+                RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
 
         private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

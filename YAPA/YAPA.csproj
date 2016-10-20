@@ -176,6 +176,9 @@
     <Compile Include="WPF\ThemeManagerSettingWindow.xaml.cs">
       <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Themes\DefaultTheme\MainWindowSettinWindow.xaml.cs">
+      <DependentUpon>MainWindowSettinWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Timer.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\ThemeManagerSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Themes\DefaultTheme\MainWindowSettinWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

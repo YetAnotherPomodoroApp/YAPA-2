@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using YAPA.Contracts;
@@ -11,15 +10,13 @@ namespace YAPA.Shared
     {
         public IEnumerable<IThemeMeta> Themes { get; private set; }
 
-        public Type GetActiveTheme()
-        {
-            var theme = Themes.FirstOrDefault(x => x.Title == _settings.SelectedTheme);
-            if (theme == null)
-            {
-                theme = Themes.First();
-            }
+        public IThemeMeta ActiveTheme { get; private set; }
 
-            return theme.Theme;
+        private IThemeMeta GetActiveTheme()
+        {
+            var theme = Themes.FirstOrDefault(x => x.Title == _settings.SelectedTheme) ?? Themes.First();
+
+            return theme;
         }
 
         private readonly IContainer _container;
@@ -33,6 +30,7 @@ namespace YAPA.Shared
             RegisterThemes(container);
             RegisterThemeSettings(container);
             RegisterThemeSettingsWindows(container);
+            ActiveTheme = GetActiveTheme();
         }
 
         public object ResolveSettingWindow(IThemeMeta theme)
