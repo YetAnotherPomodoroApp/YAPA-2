@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,7 +37,14 @@ namespace YAPA.WPF
                 value = settingValue ?? defaultValue;
             }
 
-            return (T)Convert.ChangeType(value, typeof(T));
+            if (typeof(T).IsValueType || value is string)
+            {
+                return (T)Convert.ChangeType(value, typeof(T));
+            }
+            else
+            {
+                return ((JArray)value).ToObject<T>();
+            }
         }
 
 

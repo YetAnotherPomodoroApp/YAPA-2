@@ -84,6 +84,12 @@ namespace YAPA.Shared
     {
         private readonly ISettingsForComponent _settings;
 
+        public List<string> DisabledPlugins
+        {
+            get { return _settings.Get(nameof(DisabledPlugins), new List<string>()); }
+            set { _settings.Update(nameof(DisabledPlugins), value); }
+        }
+
         public PluginManagerSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(PluginManager));

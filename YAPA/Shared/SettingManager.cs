@@ -25,7 +25,7 @@ namespace YAPA.Shared
             _rootSettings = new Dictionary<string, Type>
             {
                 ["Themes"] = typeof(ThemeManagerSettingWindow),
-                ["Plugins"] = null //TODO
+                ["Plugins"] = typeof(PluginManagerSettingWindow)
             };
         }
 
