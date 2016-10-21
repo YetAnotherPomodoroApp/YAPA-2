@@ -26,5 +26,5 @@ Features:
   - [ ] Select opacity for timer
   - [ ] Select light or dark theme for timer
   - [ ] Counting time backwards
-
+  - [ ] Option to change application size
 
