@@ -6,6 +6,10 @@ namespace YAPA
 {
     public class DatabaseContext : DbContext
     {
+        public DatabaseContext(string connString) : base(connString)
+        {
+
+        }
         public DbSet<PomodoroEntity> Pomodoros { get; set; }
     }
 

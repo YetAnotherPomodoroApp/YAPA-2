@@ -12,6 +12,8 @@ namespace YAPA.Shared
         private IEnumerable<IPlugin> _pluginInstances;
         private IEnumerable<string> _disabledPlugins;
         private bool _initialised = false;
+
+        private List<string> RootPlugins => new List<string>() { "General", "Dashboard" };
         public PluginManager(IContainer container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
         {
             _container = container;
@@ -25,7 +27,7 @@ namespace YAPA.Shared
 
         public IEnumerable<IPluginMeta> ActivePlugins
         {
-            get { return Plugins.Where(x => x.Title != "General").Where(x => !_disabledPlugins.Contains(x.Title)); }
+            get { return Plugins.Where(x => !RootPlugins.Contains(x.Title)).Where(x => !_disabledPlugins.Contains(x.Title)); }
         }
 
         public object ResolveSettingWindow(IPluginMeta plugin)

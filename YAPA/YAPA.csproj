@@ -152,6 +152,10 @@
     <Compile Include="WPF\PluginManagerSettingWindow.xaml.cs">
       <DependentUpon>PluginManagerSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Plugins\DashboardPlugin.cs" />
+    <Compile Include="WPF\Plugins\GithubDashboard.xaml.cs">
+      <DependentUpon>GithubDashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Themes\DefaultTheme2\MainWindow2.xaml.cs">
       <DependentUpon>MainWindow2.xaml</DependentUpon>
     </Compile>
@@ -208,6 +212,10 @@
     </Compile>
     <Compile Include="SingleInstance.cs" />
     <Page Include="WPF\PluginManagerSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Plugins\GithubDashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

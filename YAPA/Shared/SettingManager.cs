@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using YAPA.Contracts;
 using YAPA.WPF;
+using YAPA.WPF.Plugins;
 using IContainer = Autofac.IContainer;
 
 namespace YAPA.Shared
@@ -24,9 +25,10 @@ namespace YAPA.Shared
 
             _rootSettings = new Dictionary<string, Type>
             {
+                ["Dashboard"] = typeof(GithubDashboard),
                 ["General"] = typeof(PomodoroEngineSettingWindow),
                 ["Themes"] = typeof(ThemeManagerSettingWindow),
-                ["Plugins"] = typeof(PluginManagerSettingWindow)
+                ["Plugins"] = typeof(PluginManagerSettingWindow),
             };
         }
 

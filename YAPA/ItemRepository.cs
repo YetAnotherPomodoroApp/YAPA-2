@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace YAPA
@@ -10,7 +11,7 @@ namespace YAPA
 
         public ItemRepository()
         {
-            context = new DatabaseContext();
+            context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2", "Dashboard"));
         }
 
         public void CompletePomodoro()
@@ -40,7 +41,7 @@ namespace YAPA
             var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
                 .GroupBy(c => c.DateTime.Date, c => c.Count,
                     (time, ints) => new PomodoroEntity() { DateTime = time, Count = ints.Sum(x => x) });
-            
+
             return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
 

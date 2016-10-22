@@ -8,6 +8,7 @@ using System.Windows;
 using YAPA.Contracts;
 using YAPA.Shared;
 using YAPA.WPF;
+using YAPA.WPF.Plugins;
 
 namespace YAPA
 {
@@ -16,6 +17,7 @@ namespace YAPA
         private static IContainer Container { get; set; }
         private static IPluginManager PluginManager { get; set; }
         private static IThemeManager ThemeManager { get; set; }
+        private static Dashboard Dashboard { get; set; }
 
         [STAThread]
         public static void Main()
@@ -38,7 +40,9 @@ namespace YAPA
                 var updater = new ContainerBuilder();
                 updater.RegisterInstance(PluginManager).As<IPluginManager>().SingleInstance();
                 updater.Update(Container);
+
                 PluginManager.InitPlugins();
+                Dashboard = Container.Resolve<Dashboard>();
 
                 //Load theme
                 Current.MainWindow = (Window)Container.Resolve<IApplication>();
@@ -77,6 +81,10 @@ namespace YAPA
 
             builder.RegisterType(typeof(PluginManagerSettings));
             builder.RegisterType(typeof(PluginManagerSettingWindow));
+
+            builder.RegisterType(typeof(GithubDashboard));
+            builder.RegisterType(typeof(Dashboard)).SingleInstance();
+
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
 
