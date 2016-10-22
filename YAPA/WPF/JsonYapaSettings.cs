@@ -38,7 +38,7 @@ namespace YAPA.WPF
                 value = settingValue ?? defaultValue;
             }
 
-            if (value.Equals(defaultValue))
+            if (value != null && value.Equals(defaultValue))
             {
                 return (T)value;
             }

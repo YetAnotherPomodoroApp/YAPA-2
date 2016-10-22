@@ -35,6 +35,11 @@ namespace YAPA.WPF.Plugins
             return _itemRepository.GetPomodoros();
         }
 
+        public int CompletedToday()
+        {
+            return _itemRepository.CompletedToday();
+        }
+
         private void _engine_OnPomodoroCompleted()
         {
             _itemRepository.CompletePomodoro();

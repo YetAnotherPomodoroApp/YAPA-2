@@ -30,6 +30,20 @@ namespace YAPA
             context.SaveChanges();
         }
 
+        public int CompletedToday()
+        {
+            var date = DateTime.Now.Date;
+            var todays = context.Pomodoros.SingleOrDefault(p => p.DateTime == date);
+            if (todays == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return todays.Count;
+            }
+        }
+
         public IEnumerable<PomodoroEntity> GetPomodoros()
         {
             var days = 190;
