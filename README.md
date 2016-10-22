@@ -15,11 +15,11 @@ Features:
 - [x] Remember applications position
 - [x] Control app using taskbar jumplist
 - [ ] Discover and load plugins
-- [ ] Disable individual plugins
+- [x] Disable individual plugins
 - [ ] Discover and load themes
 
-- [ ] Dashboard
-  - [ ] Pomodoro counter history similar to github contributions
+- [x] Dashboard
+  - [x] Pomodoro counter history similar to github contributions
 
 - [ ] Move exising YAPA theme
   - [ ] Shows period progress on taskbar
