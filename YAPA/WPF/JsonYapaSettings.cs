@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -53,7 +54,7 @@ namespace YAPA.WPF
             if (defer)
             {
                 //if value is changed back to original value, just remove modification
-                if (value == null || value.Equals(_settings.GetValue(name, plugin, null)))
+                if (value == null || AreEqual(value, _settings.GetValue(name, plugin, null)))
                 {
                     _modifiedSettings.RemoveKey(name, plugin);
                 }
@@ -71,6 +72,37 @@ namespace YAPA.WPF
 
                 SaveToFile();
             }
+        }
+
+        private bool AreEqual(object valA, object valB)
+        {
+            if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
+            {
+                var listA = (IEnumerable)valA;
+                var listB = (JArray)valB;
+                foreach (var b in listB)
+                {
+                    var contains = false;
+                    foreach (var a in listA)
+                    {
+                        contains |= b.ToString().Equals(a);
+                    }
+
+                    if (contains == false)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+
+            }
+            else if (valA.GetType().IsValueType)
+            {
+                return valA.Equals(valB);
+            }
+
+
+            return false;
         }
 
         public ISettingsForComponent GetSettingsForComponent(string plugin)
