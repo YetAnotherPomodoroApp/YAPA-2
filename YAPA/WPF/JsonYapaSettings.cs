@@ -86,7 +86,12 @@ namespace YAPA.WPF
             {
                 return false;
             }
-            if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
+
+            if (valA.GetType().IsValueType || valA is string)
+            {
+                return valA.Equals(valB);
+            }
+            else if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
             {
                 var listA = (IEnumerable)valA;
                 var listB = (JArray)valB;
@@ -113,10 +118,7 @@ namespace YAPA.WPF
                 return true;
 
             }
-            else if (valA.GetType().IsValueType)
-            {
-                return valA.Equals(valB);
-            }
+
 
 
             return false;
