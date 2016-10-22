@@ -38,6 +38,11 @@ namespace YAPA.WPF
                 value = settingValue ?? defaultValue;
             }
 
+            if (value.Equals(defaultValue))
+            {
+                return (T)value;
+            }
+
             if (typeof(T).IsValueType || value is string)
             {
                 return (T)Convert.ChangeType(value, typeof(T));
@@ -54,7 +59,7 @@ namespace YAPA.WPF
             if (defer)
             {
                 //if value is changed back to original value, just remove modification
-                if (value == null || AreEqual(value, _settings.GetValue(name, plugin, null)))
+                if (AreEqual(value, _settings.GetValue(name, plugin, null)))
                 {
                     _modifiedSettings.RemoveKey(name, plugin);
                 }
@@ -76,10 +81,22 @@ namespace YAPA.WPF
 
         private bool AreEqual(object valA, object valB)
         {
+            if (valA == null && valB != null
+                || valA != null && valB == null)
+            {
+                return false;
+            }
             if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
             {
                 var listA = (IEnumerable)valA;
                 var listB = (JArray)valB;
+
+
+                if (Count(listA) != listB.Count)
+                {
+                    return false;
+                }
+
                 foreach (var b in listB)
                 {
                     var contains = false;
@@ -104,6 +121,16 @@ namespace YAPA.WPF
 
             return false;
         }
+
+        public int Count(IEnumerable source)
+        {
+            int c = 0;
+            var e = source.GetEnumerator();
+            while (e.MoveNext())
+                c++;
+            return c;
+        }
+
 
         public ISettingsForComponent GetSettingsForComponent(string plugin)
         {

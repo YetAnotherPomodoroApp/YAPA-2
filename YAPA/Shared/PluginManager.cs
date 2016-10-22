@@ -10,15 +10,23 @@ namespace YAPA.Shared
         private readonly IContainer _container;
         private readonly PluginManagerSettings _settings;
         private IEnumerable<IPlugin> _pluginInstances;
+        private IEnumerable<string> _disabledPlugins;
         private bool _initialised = false;
         public PluginManager(IContainer container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
         {
             _container = container;
             _settings = settings;
+
+            _disabledPlugins = _settings.DisabledPlugins;
             Plugins = metas;
         }
 
         public IEnumerable<IPluginMeta> Plugins { get; }
+
+        public IEnumerable<IPluginMeta> ActivePlugins
+        {
+            get { return Plugins.Where(x => x.Title != "General").Where(x => !_disabledPlugins.Contains(x.Title)); }
+        }
 
         public object ResolveSettingWindow(IPluginMeta plugin)
         {
@@ -51,7 +59,7 @@ namespace YAPA.Shared
             }
             updater.Update(container);
 
-            return Plugins.Where(x => x.Plugin != null).Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
+            return ActivePlugins.Where(x => x.Plugin != null).Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
         }
 
         private void RegisterPluginSettings(IContainer container)

@@ -24,6 +24,7 @@ namespace YAPA.Shared
 
             _rootSettings = new Dictionary<string, Type>
             {
+                ["General"] = typeof(PomodoroEngineSettingWindow),
                 ["Themes"] = typeof(ThemeManagerSettingWindow),
                 ["Plugins"] = typeof(PluginManagerSettingWindow)
             };
@@ -43,7 +44,7 @@ namespace YAPA.Shared
 
         public IEnumerable<string> GetPlugins()
         {
-            return _plugins.Plugins.Where(x => x.SettingEditWindow != null).Select(x => x.Title);
+            return _plugins.ActivePlugins.Where(x => x.SettingEditWindow != null).Select(x => x.Title);
         }
 
         public IEnumerable<string> GetRootSettings()
