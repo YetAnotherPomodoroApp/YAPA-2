@@ -47,9 +47,13 @@ namespace YAPA.WPF
             {
                 return (T)Convert.ChangeType(value, typeof(T));
             }
-            else
+            else if (value is JArray)
             {
                 return ((JArray)value).ToObject<T>();
+            }
+            else
+            {
+                return (T)value;
             }
         }
 
@@ -81,6 +85,11 @@ namespace YAPA.WPF
 
         private bool AreEqual(object valA, object valB)
         {
+            if (valA == null && valB == null)
+            {
+                return true;
+            }
+
             if (valA == null && valB != null
                 || valA != null && valB == null)
             {

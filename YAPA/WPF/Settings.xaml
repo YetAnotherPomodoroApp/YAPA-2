@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YAPA"
+        WindowStyle="None"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    Background="{DynamicResource MaterialDesignPaper}"
-    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        MouseLeftButtonDown="Settings_OnMouseLeftButtonDown"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300"
+        Title="Settings" Height="300" Width="700"
         Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
@@ -37,7 +39,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding CancelCommand}">Cancel</Button>
+            <Button Command="{Binding CancelCommand}">Close</Button>
             <Button Command="{Binding SaveCommand}">Save</Button>
         </StackPanel>
 
