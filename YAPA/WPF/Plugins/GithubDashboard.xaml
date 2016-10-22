@@ -4,10 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAPA.WPF.Plugins"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="DayPanel">
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="LoadingPanel" Visibility="Visible">
+            <Image gif:ImageBehavior.AnimatedSource="../../Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" Height="110" x:Name="DayPanel" Visibility="Collapsed">
             <StackPanel Orientation="Vertical" Margin="0,5,0,0" Width="13">
                 <TextBlock x:Name="MondayTextBlock" Height="11" Width="13" Margin="0,-1,0,12" FontSize="10" VerticalAlignment="Top" Text="M"></TextBlock>
                 <TextBlock Height="11" Width="13" Margin="0,0,0,12" FontSize="10" VerticalAlignment="Top" Text="W"></TextBlock>

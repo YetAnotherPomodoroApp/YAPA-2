@@ -32,8 +32,13 @@ namespace YAPA
             {
                 var pluginsTree = new TreeViewItem { Header = rootSetting };
 
+                if (rootSetting == "Dashboard")
+                {
+                    pluginsTree.IsSelected = true;
+                }
                 if (rootSetting == "Plugins")
                 {
+                    pluginsTree.IsExpanded = true;
                     foreach (var plugin in _mananger.GetPlugins())
                     {
                         pluginsTree.Items.Add(new TreeViewItem() { Header = plugin });

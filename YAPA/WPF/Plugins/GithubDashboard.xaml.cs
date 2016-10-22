@@ -1,5 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace YAPA.WPF.Plugins
@@ -20,26 +23,49 @@ namespace YAPA.WPF.Plugins
             InitializeComponent();
         }
 
-        private void Dashboard_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void Dashboard_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            var dfi = DateTimeFormatInfo.CurrentInfo;
-            var cal = dfi.Calendar;
-
-
-            var pomodoros =
-                _dashboard.GetPomodoros()
-                    .Select(x => new { week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek), x })
-                    .ToList();
-            var max = pomodoros.Max(x => x.x.Count);
-
-            foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
+            await Task.Run(() =>
             {
-                var week = pomodoro.Select(x => x.x.ToPomodoroViewModel(GetLevelFromCount(x.x.Count, max)));
+
+                var dfi = DateTimeFormatInfo.CurrentInfo;
+                var cal = dfi.Calendar;
+
+
+                var pomodoros =
+                    _dashboard.GetPomodoros()
+                        .Select(
+                            x =>
+                                new
+                                {
+                                    week =
+                                        cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
+                                    x
+                                })
+                        .ToList();
+                var max = pomodoros.Max(x => x.x.Count);
+
+                foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
+                {
+                    var week = pomodoro.Select(x => x.x.ToPomodoroViewModel(GetLevelFromCount(x.x.Count, max)));
+                    Dispatcher.Invoke(() =>
+                    {
+                        WeekStackPanel.Children.Add(new PomodoroWeek(week));
+                    });
+                }
+
+
+
                 Dispatcher.Invoke(() =>
                 {
-                    WeekStackPanel.Children.Add(new PomodoroWeek(week));
+                    var weekShift = DayOfWeek.Monday - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                    MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
+
+                    DayPanel.Visibility = Visibility.Visible;
+                    LoadingPanel.Visibility = Visibility.Collapsed;
                 });
-            }
+
+            });
         }
 
         private PomodoroLevelEnum GetLevelFromCount(int count, int maxCount)
