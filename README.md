@@ -21,10 +21,10 @@ Features:
 - [x] Dashboard
   - [x] Pomodoro counter history similar to github contributions
 
-- [ ] Move exising YAPA theme
-  - [ ] Shows period progress on taskbar
-  - [ ] Select opacity for timer
-  - [ ] Select light or dark theme for timer
-  - [ ] Counting time backwards
-  - [ ] Option to change application size
+- [x] Move exising YAPA theme
+  - [x] Shows period progress on taskbar
+  - [x] Select opacity for timer
+  - [x] Select light or dark theme for timer
+  - [x] Counting time backwards
+  - [x] Option to change application size
 
