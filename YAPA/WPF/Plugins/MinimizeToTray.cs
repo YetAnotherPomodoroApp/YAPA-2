@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using YAPA.Contracts;
+using YAPA.Shared;
 
 namespace YAPA.WPF
 {
@@ -30,13 +31,15 @@ namespace YAPA.WPF
         private readonly IMainViewModel _viewModel;
         private readonly MinimizeToTraySettings _settings;
         private readonly ISettings _globalSettings;
+        private readonly PomodoroEngineSettings _engineSettings;
 
-        public MinimizeToTray(IApplication app, IMainViewModel viewModel, MinimizeToTraySettings settings, ISettings globalSettings)
+        public MinimizeToTray(IApplication app, IMainViewModel viewModel, MinimizeToTraySettings settings, ISettings globalSettings, PomodoroEngineSettings engineSettings)
         {
             _app = app;
             _viewModel = viewModel;
             _settings = settings;
             _globalSettings = globalSettings;
+            _engineSettings = engineSettings;
 
             _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
@@ -164,6 +167,27 @@ namespace YAPA.WPF
             }
 
             var displayText = _viewModel.Engine.Elapsed / 60;
+
+            if (_engineSettings.CountBackwards)
+            {
+
+                var total = 0;
+                switch (_viewModel.Engine.Phase)
+                {
+                    case PomodoroPhase.NotStarted:
+                        break;
+                    case PomodoroPhase.Work:
+                    case PomodoroPhase.WorkEnded:
+                        total = _viewModel.Engine.WorkTime;
+                        break;
+                    case PomodoroPhase.Break:
+                    case PomodoroPhase.BreakEnded:
+                        total = _viewModel.Engine.WorkTime;
+                        break;
+                }
+
+                displayText = total - _viewModel.Engine.Elapsed / 60;
+            }
 
             System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
 

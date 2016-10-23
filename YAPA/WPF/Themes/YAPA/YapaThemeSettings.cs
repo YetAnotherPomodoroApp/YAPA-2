@@ -49,12 +49,6 @@ namespace YAPA.WPF.Themes.YAPA
             set { _settings.Update(nameof(TextBrush), value); }
         }
 
-        public bool CountBackwards
-        {
-            get { return _settings.Get(nameof(CountBackwards), false); }
-            set { _settings.Update(nameof(CountBackwards), value); }
-        }
-
         public YapaThemeSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(YapaTheme));

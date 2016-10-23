@@ -22,18 +22,20 @@ namespace YAPA
         private readonly IPomodoroEngine _engine;
         private readonly ISettings _globalSettings;
         private readonly Dashboard _dashboard;
+        private readonly PomodoroEngineSettings _engineSettings;
 
         public int PomodorosCompleted { get; set; }
 
         private Storyboard TimerFlush;
 
-        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, Dashboard dashboard) : base(viewModel)
+        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, Dashboard dashboard, PomodoroEngineSettings engineSettings) : base(viewModel)
         {
             ViewModel = viewModel;
             Settings = settings;
             _engine = engine;
             _globalSettings = globalSettings;
             _dashboard = dashboard;
+            _engineSettings = engineSettings;
 
             InitializeComponent();
 
@@ -228,7 +230,7 @@ namespace YAPA
         {
             get
             {
-                if (Settings.CountBackwards)
+                if (_engineSettings.CountBackwards)
                 {
                     var total = 0;
                     switch (ViewModel.Engine.Phase)

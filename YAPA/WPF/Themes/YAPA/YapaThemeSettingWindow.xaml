@@ -17,23 +17,19 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Use white text" Grid.Column="0" Grid.Row="0"></TextBlock>
             <CheckBox IsChecked="{Binding UseWhiteText, Mode=TwoWay}"  Grid.Column="1" Grid.Row="0"></CheckBox>
 
-            <TextBlock Text="Count backwards" Grid.Column="0" Grid.Row="1"></TextBlock>
-            <CheckBox IsChecked="{Binding CountBackwards, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"></CheckBox>
+            <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
+            <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
 
-            <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
-            <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
+            <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
 
-            <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="3"></TextBlock>
-            <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
-
-            <TextBlock Text="Application size" Grid.Column="0" Grid.Row="4"></TextBlock>
-            <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="4"  Minimum="150" Maximum="400" Interval="1" />
+            <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3"></TextBlock>
+            <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"  Minimum="150" Maximum="400" Interval="1" />
 
         </Grid>
     </Grid>

@@ -210,6 +210,12 @@ namespace YAPA.Shared
             set { _settings.Update(nameof(AutoStartBreak), value); }
         }
 
+        public bool CountBackwards
+        {
+            get { return _settings.Get(nameof(CountBackwards), false); }
+            set { _settings.Update(nameof(CountBackwards), value); }
+        }
+
         public PomodoroEngineSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(PomodoroEngine));
