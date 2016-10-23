@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="YAPA"
         Height="80" 
-        Width="250" 
+        Width="200" 
         ShowInTaskbar="True" 
         ResizeMode="NoResize" 
         AllowsTransparency="True" 
@@ -24,9 +24,7 @@
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
     </Window.TaskbarItemInfo>
     <Window.InputBindings>
-        <MouseBinding Gesture="RightClick" Command="{Binding ViewModel.ShowSettingsCommand}">
-
-        </MouseBinding>
+        <MouseBinding Gesture="RightClick" Command="{Binding ViewModel.ShowSettingsCommand}"></MouseBinding>
     </Window.InputBindings>
     <Window.Resources>
         <app:SecToTimeConverter x:Key="SecToTimeConverter" />
@@ -40,201 +38,211 @@
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="CurrentTime"
+        <Viewbox Grid.Column="0">
+            <TextBlock x:Name="CurrentTime"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
                Foreground="{Binding TextBrush}"
-               Opacity="{Binding Settings.ClockOpacity}"
+               Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
                HorizontalAlignment="Right" 
                VerticalAlignment="Center"
                Text="{Binding CurrentTimeValue, Converter={StaticResource SecToTimeConverter}}"
                FontStretch="UltraCondensed"
-               Grid.Column="0">
-            <TextBlock.Effect>
-                <DropShadowEffect
+               >
+                <TextBlock.Effect>
+                    <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-            </TextBlock.Effect>
-        </TextBlock>
-        <StackPanel VerticalAlignment="Top" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden">
-            <Button x:Name="Minimize"
+                </TextBlock.Effect>
+            </TextBlock>
+        </Viewbox>
+
+        <Viewbox Grid.Column="1">
+            <StackPanel Orientation="Vertical">
+                <StackPanel VerticalAlignment="Top"  Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
+                            Margin="0,0,0,2">
+                    <Button x:Name="Minimize"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="_"
                 ToolTip="Minimize"
-                Height="15"
-                Width="15"
+                Height="10"
+                Width="10"
                 Click="Minimize_OnClick">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <TextBlock Text="{TemplateBinding Content}"
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                x:Name="MinimizeTextBlock"
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
-                               FontSize="12" 
-                               Opacity="{Binding Settings.ClockOpacity}"
+                               FontSize="10" 
+                               Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="MinimizeTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Effect>
-                    <DropShadowEffect
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="MinimizeTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </Button.Effect>
-            </Button>
-            <Button x:Name="Exit"
+                        </Button.Effect>
+                    </Button>
+                    <Button x:Name="Exit"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="x"
                 ToolTip="Close"
-                Height="15"
-                Width="15"
+                Height="10"
+                Width="10"
                     Click="Exit_OnClick">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <TextBlock Text="{TemplateBinding Content}"
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                x:Name="ExitTextBlock"
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
-                               FontSize="12" 
-                               Opacity="{Binding Settings.ClockOpacity}"
+                               FontSize="10" 
+                               Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="ExitTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Effect>
-                    <DropShadowEffect
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="ExitTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </Button.Effect>
-            </Button>
-        </StackPanel>
-        <StackPanel VerticalAlignment="Center" Grid.Column="1">
-            <Button x:Name="Start"
+                        </Button.Effect>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center">
+                    <Button x:Name="Start"
                 Command="{Binding ViewModel.StartCommand}"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="START"
                 ToolTip="Start Pomodoro"
-                Height="15"
-                Width="40">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <TextBlock Text="{TemplateBinding Content}"
+                Height="8"
+                Width="30">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                x:Name="StarTextBlock"
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
-                               FontSize="12" 
-                               Opacity="{Binding Settings.ClockOpacity}"
+                               FontSize="8" 
+                               Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Effect>
-                    <DropShadowEffect
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </Button.Effect>
-            </Button>
+                        </Button.Effect>
+                    </Button>
 
-            <Button x:Name="Stop"
+                    <Button x:Name="Stop"
                 Command="{Binding ViewModel.StopCommand}"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="STOP"
                 ToolTip="Stop Pomodoro"
-                Height="15"
-                Width="40"  >
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <TextBlock Text="{TemplateBinding Content}"
+                Height="8"
+                Width="30"  >
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                TextAlignment="Center"
                                x:Name="StopTextBlock"
                                Foreground="{Binding TextBrush}"
-                               FontSize="12" 
-                               Opacity="{Binding Settings.ClockOpacity}"
+                               FontSize="8" 
+                               Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="StopTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Effect>
-                    <DropShadowEffect
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="StopTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </Button.Effect>
-            </Button>
+                        </Button.Effect>
+                    </Button>
 
-            <TextBlock x:Name="CurrentPeriod"
+                    <TextBlock x:Name="CurrentPeriod"
                    Cursor="Arrow"
                    FontFamily="Segoe UI"
                    FontStretch="UltraCondensed"
-                   FontSize="16"
+                   FontSize="8"
                    Foreground="{Binding TextBrush}"
-                   Opacity="{Binding Settings.ClockOpacity}"
-                   HorizontalAlignment="Right" 
+                   Opacity="{Binding ClockOpacity}"
+                   HorizontalAlignment="Center" 
                    VerticalAlignment="Center"
-                   Height="20" 
+                   Height="10" 
                    Text="{Binding PomodorosCompleted}"
                    ToolTip="Current period"
-                   Width="20" >
-                <TextBlock.Effect>
-                    <DropShadowEffect
+                   Width="10" >
+                        <TextBlock.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding Settings.ShadowOpacity}"
+				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </TextBlock.Effect>
-            </TextBlock>
-        </StackPanel>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+        </Viewbox>
     </Grid>
 </app:AbstractWindow>
 

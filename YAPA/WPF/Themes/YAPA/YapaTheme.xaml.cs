@@ -14,13 +14,16 @@ namespace YAPA
 {
     public partial class YapaTheme : AbstractWindow, INotifyPropertyChanged
     {
+
+        private readonly double _sizeRatio = 80 / 200.0;
+
         private IMainViewModel ViewModel { get; set; }
         private YapaThemeSettings Settings { get; set; }
         private readonly IPomodoroEngine _engine;
         private readonly ISettings _globalSettings;
         private readonly Dashboard _dashboard;
 
-        private int PomodorosCompleted { get; set; }
+        public int PomodorosCompleted { get; set; }
 
         private Storyboard TimerFlush;
 
@@ -31,7 +34,9 @@ namespace YAPA
             _engine = engine;
             _globalSettings = globalSettings;
             _dashboard = dashboard;
+
             InitializeComponent();
+
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
             PomodorosCompleted = 0;
 
@@ -43,8 +48,14 @@ namespace YAPA
 
             DataContext = this;
 
+            UpdateAppSize();
+            HideButtons();
+
             UpdateCompletedPomodoroCount();
         }
+
+        public double ClockOpacity => Settings.ClockOpacity;
+        public double ShadowOpacity => Settings.ShadowOpacity;
 
 
         private async void UpdateCompletedPomodoroCount()
@@ -53,11 +64,6 @@ namespace YAPA
             {
                 PomodorosCompleted = _dashboard.CompletedToday();
                 RaisePropertyChanged(nameof(PomodorosCompleted));
-                //Dispatcher.Invoke(() =>
-                //{
-                //    RaisePropertyChanged(nameof(PomodorosCompleted));
-                //});
-
             });
         }
 
@@ -85,7 +91,20 @@ namespace YAPA
                 RaisePropertyChanged(nameof(TextBrush));
                 RaisePropertyChanged(nameof(TextShadowColor));
                 RaisePropertyChanged(nameof(MouseOverBackgroundColor));
+                RaisePropertyChanged(nameof(Settings.ClockOpacity));
+                RaisePropertyChanged(nameof(Settings.ShadowOpacity));
+
+                if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.Width)}"))
+                {
+                    UpdateAppSize();
+                }
             }
+        }
+
+        private void UpdateAppSize()
+        {
+            this.Width = Settings.Width;
+            this.Height = Settings.Width * _sizeRatio;
         }
 
         private void Engine_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -97,7 +116,26 @@ namespace YAPA
             }
             else if (e.PropertyName == nameof(ViewModel.Engine.Phase))
             {
+                HideButtons();
                 RaisePropertyChanged(nameof(ProgressState));
+            }
+        }
+
+        private void HideButtons()
+        {
+            switch (ViewModel.Engine.Phase)
+            {
+                case PomodoroPhase.NotStarted:
+                case PomodoroPhase.WorkEnded:
+                case PomodoroPhase.BreakEnded:
+                    Start.Visibility = Visibility.Visible;
+                    Stop.Visibility = Visibility.Collapsed;
+                    break;
+                case PomodoroPhase.Work:
+                case PomodoroPhase.Break:
+                    Start.Visibility = Visibility.Collapsed;
+                    Stop.Visibility = Visibility.Visible;
+                    break;
             }
         }
 
@@ -172,12 +210,14 @@ namespace YAPA
                     case PomodoroPhase.NotStarted:
                         break;
                     case PomodoroPhase.Work:
-                    case PomodoroPhase.Break:
                         progressState = "Normal";
+                        break;
+                    case PomodoroPhase.Break:
+                        progressState = "Paused";
                         break;
                     case PomodoroPhase.WorkEnded:
                     case PomodoroPhase.BreakEnded:
-                        progressState = "Paused";
+                        progressState = "Error";
                         break;
                 }
                 return progressState;

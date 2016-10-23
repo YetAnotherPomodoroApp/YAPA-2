@@ -10,13 +10,13 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="ThemeList"></ComboBox>
+            <ComboBox Grid.Column="0"  Grid.Row="0" x:Name="ThemeList"></ComboBox>
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="SettingPage">
                 
             </StackPanel>

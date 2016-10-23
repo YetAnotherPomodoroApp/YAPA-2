@@ -21,7 +21,7 @@ namespace YAPA.WPF.Themes.YAPA
 
         public int Width
         {
-            get { return _settings.Get(nameof(Width), 250); }
+            get { return _settings.Get(nameof(Width), 200); }
             set { _settings.Update(nameof(Width), value); }
         }
 
