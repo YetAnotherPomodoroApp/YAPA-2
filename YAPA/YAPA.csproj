@@ -140,15 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WPF\Commands\CancelSettingsCommand.cs" />
-    <Compile Include="Contracts\IPlugin.cs" />
-    <Compile Include="Contracts\IPluginManager.cs" />
-    <Compile Include="Contracts\IPluginMeta.cs" />
-    <Compile Include="Contracts\IPluginSettings.cs" />
-    <Compile Include="Contracts\IPomodoroEngine.cs" />
-    <Compile Include="Contracts\ISettingManager.cs" />
-    <Compile Include="Contracts\IThemeManager.cs" />
-    <Compile Include="Contracts\IThemeMeta.cs" />
-    <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="WPF\PluginManagerSettingWindow.xaml.cs">
       <DependentUpon>PluginManagerSettingWindow.xaml</DependentUpon>
     </Compile>
@@ -163,17 +154,16 @@
     <Compile Include="WPF\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shared\AbstractWindow.cs" />
-    <Compile Include="Contracts\IMainViewModel.cs" />
+    <Compile Include="WPF\AbstractWindow.cs" />
     <Compile Include="Shared\MainViewModel.cs" />
-    <Compile Include="Shared\PluginManager.cs" />
+    <Compile Include="WPF\PluginManager.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />
     <Compile Include="Shared\SettingManager.cs" />
     <Compile Include="Shared\StartCommand.cs" />
     <Compile Include="Shared\StopCommand.cs" />
-    <Compile Include="Shared\ThemeManager.cs" />
+    <Compile Include="WPF\ThemeManager.cs" />
     <Compile Include="WPF\Commands\ShowSettingsCommand.cs" />
     <Compile Include="WPF\Themes\DefaultTheme\DefaultTheme.cs" />
     <Compile Include="WPF\Themes\DefaultTheme2\DefaultTheme2.cs" />
@@ -206,10 +196,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Contracts\IApplication.cs" />
-    <Compile Include="Contracts\ISettings.cs" />
     <Compile Include="Shared\SoundNotifications.cs" />
-    <Compile Include="Contracts\IMusicPlayer.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="ItemRepository.cs" />
     <Compile Include="WPF\Plugins\MinimizeToTray.cs" />
@@ -356,7 +343,15 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
+      <Project>{893850db-2b45-4942-b513-73f1d58a8026}</Project>
+      <Name>YAPA.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

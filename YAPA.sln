@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
 EndProject
@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A521D
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared", "YAPA.Shared\YAPA.Shared.csproj", "{893850DB-2B45-4942-B513-73F1D58A8026}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,16 @@ Global
 		{50DE5D9A-0734-4025-AD3C-9451C0DB396C}.Release|Any CPU.Build.0 = SingleImage
 		{50DE5D9A-0734-4025-AD3C-9451C0DB396C}.SingleImage|Any CPU.ActiveCfg = SingleImage
 		{50DE5D9A-0734-4025-AD3C-9451C0DB396C}.SingleImage|Any CPU.Build.0 = SingleImage
+		{893850DB-2B45-4942-B513-73F1D58A8026}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

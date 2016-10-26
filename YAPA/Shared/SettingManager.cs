@@ -32,7 +32,7 @@ namespace YAPA.Shared
             };
         }
 
-        public UserControl GetPageFor(string name)
+        public object GetPageFor(string name)
         {
             Type type = _plugins.Plugins.Where(x => x.SettingEditWindow != null && x.Title == name).Select(x => x.SettingEditWindow).FirstOrDefault();
 

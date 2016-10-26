@@ -69,7 +69,7 @@ namespace YAPA
                 return;
             }
 
-            SettingPage.Children.Add(_mananger.GetPageFor((string)treeItem.Header));
+            SettingPage.Children.Add((UserControl)_mananger.GetPageFor((string)treeItem.Header));
         }
 
         private void Settings_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
