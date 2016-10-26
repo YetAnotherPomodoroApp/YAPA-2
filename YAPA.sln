@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared", "YAPA.Shared\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared.WPF", "YAPA.Shared.WPF\YAPA.Shared.WPF.csproj", "{3C26FD01-08D3-4192-BBB3-778D9D7692D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.StarterTheme", "YAPA.WPF.StarterTheme\YAPA.WPF.StarterTheme.csproj", "{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -70,6 +72,16 @@ Global
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

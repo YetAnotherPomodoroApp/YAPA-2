@@ -149,13 +149,6 @@
     <Compile Include="Themes\DefaultTheme2\MainWindow2.xaml.cs">
       <DependentUpon>MainWindow2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Themes\DefaultTheme\DefaultTheme.cs" />
-    <Compile Include="Themes\DefaultTheme\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Themes\DefaultTheme\MainWindowSettinWindow.xaml.cs">
-      <DependentUpon>MainWindowSettinWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Themes\YAPA\YapaTheme.xaml.cs">
       <DependentUpon>YapaTheme.xaml</DependentUpon>
     </Compile>
@@ -204,14 +197,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\DefaultTheme2\MainWindow2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\DefaultTheme\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\DefaultTheme\MainWindowSettinWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

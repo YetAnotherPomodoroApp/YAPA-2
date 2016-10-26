@@ -16,12 +16,12 @@ namespace YAPA.Shared
 
         public IMainViewModel ViewModel { get; set; }
 
-        protected AbstractWindow()
+        public AbstractWindow()
         {
 
         }
 
-        protected AbstractWindow(IMainViewModel viewModel)
+        public AbstractWindow(IMainViewModel viewModel)
         {
             ViewModel = viewModel;
             base.StateChanged += AbstractWindow_StateChanged;
