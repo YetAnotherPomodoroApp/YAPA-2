@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using YAPA.Contracts;
 using YAPA.Shared;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
 using YAPA.WPF.Plugins;
 
@@ -28,15 +29,18 @@ namespace YAPA
 
                 Container = ConfigureContainer();
 
+                var di = new DependencyInjector(Container);
+                di.RegisterInstance(di, typeof(IDependencyInjector));
+
                 //Themes
-                ThemeManager = new ThemeManager(Container, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
+                ThemeManager = new ThemeManager(di, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
                 var themeUpdater = new ContainerBuilder();
                 themeUpdater.RegisterInstance(ThemeManager).As<IThemeManager>().SingleInstance();
                 themeUpdater.RegisterType(ThemeManager.ActiveTheme.Theme).As<IApplication>().SingleInstance();
                 themeUpdater.Update(Container);
 
                 //Plugins
-                PluginManager = new PluginManager(Container, GetPluginMetas(), (PluginManagerSettings)Container.Resolve(typeof(PluginManagerSettings)));
+                PluginManager = new PluginManager(di, GetPluginMetas(), (PluginManagerSettings)Container.Resolve(typeof(PluginManagerSettings)));
                 var updater = new ContainerBuilder();
                 updater.RegisterInstance(PluginManager).As<IPluginManager>().SingleInstance();
                 updater.Update(Container);
@@ -85,6 +89,8 @@ namespace YAPA
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
 
+            builder.RegisterType(typeof(ShowSettingsCommand)).As<IShowSettingsCommand>();
+
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
 
@@ -99,16 +105,36 @@ namespace YAPA
 
         private static IEnumerable<IPluginMeta> GetPluginMetas()
         {
-            return from plugin in Assembly.GetExecutingAssembly().GetTypes()
-                   where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
-                   select (IPluginMeta)Activator.CreateInstance(plugin);
+            foreach (IPluginMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
+                                         where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
+                                         select (IPluginMeta)Activator.CreateInstance(plugin))
+            {
+                yield return meta;
+            }
+
+            foreach (IPluginMeta meta in from plugin in Assembly.LoadFrom("YAPA.Shared.WPF.dll").GetTypes()
+                                         where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
+                                         select (IPluginMeta)Activator.CreateInstance(plugin))
+            {
+                yield return meta;
+            }
         }
 
         private static IEnumerable<IThemeMeta> GetThemeMetas()
         {
-            return from plugin in Assembly.GetExecutingAssembly().GetTypes()
-                   where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
-                   select (IThemeMeta)Activator.CreateInstance(plugin);
+            foreach (IThemeMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
+                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
+                                        select (IThemeMeta)Activator.CreateInstance(plugin))
+            {
+                yield return meta;
+            }
+
+            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.Shared.WPF.dll").GetTypes()
+                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
+                                        select (IThemeMeta)Activator.CreateInstance(plugin))
+            {
+                yield return meta;
+            }
         }
 
         public void Init()
@@ -124,7 +150,7 @@ namespace YAPA
             {
                 return true;
             }
-            return ((MainWindow)MainWindow).ProcessCommandLineArgs(args.ToArray());
+            return true;//MainWindow.ProcessCommandLineArgs(args.ToArray());
         }
 
         #endregion

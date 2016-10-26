@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A521D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared", "YAPA.Shared\YAPA.Shared.csproj", "{893850DB-2B45-4942-B513-73F1D58A8026}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared.WPF", "YAPA.Shared.WPF\YAPA.Shared.WPF.csproj", "{3C26FD01-08D3-4192-BBB3-778D9D7692D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -58,6 +60,16 @@ Global
 		{893850DB-2B45-4942-B513-73F1D58A8026}.Release|Any CPU.Build.0 = Release|Any CPU
 		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

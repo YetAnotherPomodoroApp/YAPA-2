@@ -6,5 +6,6 @@ namespace YAPA.Contracts
     {
         object Resolve(Type type);
         void Register(Type type, bool singleInsntace = false);
+        void RegisterInstance(object instance, Type asType = null);
     }
 }
