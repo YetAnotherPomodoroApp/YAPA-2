@@ -112,7 +112,7 @@ namespace YAPA
                 yield return meta;
             }
 
-            foreach (IPluginMeta meta in from plugin in Assembly.LoadFrom("YAPA.Shared.WPF.dll").GetTypes()
+            foreach (IPluginMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Shared.dll").GetTypes()
                                          where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
                                          select (IPluginMeta)Activator.CreateInstance(plugin))
             {
@@ -129,7 +129,14 @@ namespace YAPA
                 yield return meta;
             }
 
-            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.Shared.WPF.dll").GetTypes()
+            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Shared.dll").GetTypes()
+                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
+                                        select (IThemeMeta)Activator.CreateInstance(plugin))
+            {
+                yield return meta;
+            }
+
+            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Themes.dll").GetTypes()
                                         where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
                                         select (IThemeMeta)Activator.CreateInstance(plugin))
             {

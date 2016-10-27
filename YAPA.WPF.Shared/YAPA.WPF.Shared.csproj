@@ -7,8 +7,8 @@
     <ProjectGuid>{3C26FD01-08D3-4192-BBB3-778D9D7692D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YAPA.Shared.WPF</RootNamespace>
-    <AssemblyName>YAPA.Shared.WPF</AssemblyName>
+    <RootNamespace>YAPA.WPF.Shared</RootNamespace>
+    <AssemblyName>YAPA.WPF.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -145,17 +145,6 @@
       <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shared\WPF\Timer.cs" />
-    <Compile Include="Themes\DefaultTheme2\DefaultTheme2.cs" />
-    <Compile Include="Themes\DefaultTheme2\MainWindow2.xaml.cs">
-      <DependentUpon>MainWindow2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Themes\YAPA\YapaTheme.xaml.cs">
-      <DependentUpon>YapaTheme.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Themes\YAPA\YapaThemeSettings.cs" />
-    <Compile Include="Themes\YAPA\YapaThemeSettingWindow.xaml.cs">
-      <DependentUpon>YapaThemeSettingWindow.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
@@ -193,18 +182,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Shared\WPF\ThemeManagerSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\DefaultTheme2\MainWindow2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\YAPA\YapaTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\YAPA\YapaThemeSettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

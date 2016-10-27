@@ -1,10 +1,9 @@
-﻿<app:AbstractWindow x:Class="YAPA.YapaTheme"
+﻿<shared:AbstractWindow x:Class="YAPA.YapaTheme"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:app="clr-namespace:YAPA.Shared"
-        xmlns:local="clr-namespace:YAPA.WPF.Themes.YAPA"
+        xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
         mc:Ignorable="d"
         Title="YAPA"
         Height="80" 
@@ -27,7 +26,7 @@
         <MouseBinding Gesture="RightClick" Command="{Binding ViewModel.ShowSettingsCommand}"></MouseBinding>
     </Window.InputBindings>
     <Window.Resources>
-        <app:SecToTimeConverter x:Key="SecToTimeConverter" />
+        <shared:SecToTimeConverter x:Key="SecToTimeConverter" />
         <Storyboard x:Key="FlashTimer" Timeline.DesiredFrameRate="15">
             <ColorAnimation
                 Storyboard.TargetName="CurrentTime" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
@@ -244,7 +243,19 @@
 
         </Viewbox>
     </Grid>
-</app:AbstractWindow>
+</shared:AbstractWindow>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
