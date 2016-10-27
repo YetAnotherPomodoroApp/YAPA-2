@@ -104,8 +104,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CancelSettingsCommand.cs" />
-    <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\AbstractWindow.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />

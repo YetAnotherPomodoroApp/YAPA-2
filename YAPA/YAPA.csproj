@@ -140,6 +140,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CancelSettingsCommand.cs" />
+    <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Plugins\Dashboard\DashboardPlugin.cs" />
     <Compile Include="Plugins\Dashboard\GithubDashboard.xaml.cs">
       <DependentUpon>GithubDashboard.xaml</DependentUpon>
