@@ -140,8 +140,44 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugins\Dashboard\DashboardPlugin.cs" />
+    <Compile Include="Plugins\Dashboard\GithubDashboard.xaml.cs">
+      <DependentUpon>GithubDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Dashboard\ItemRepository.cs" />
+    <Compile Include="Plugins\Dashboard\PomodoroWeek.xaml.cs">
+      <DependentUpon>PomodoroWeek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\MinimizeToTray.cs" />
+    <Compile Include="Plugins\MinimizeToTraySettingWindow.xaml.cs">
+      <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\PomodoroEngineSettingWindow.xaml.cs">
+      <DependentUpon>PomodoroEngineSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\SaveApplicationPositionOnScreen.cs" />
+    <Compile Include="Plugins\SoundNotificationSettingWindow.xaml.cs">
+      <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared\DependencyInjector.cs" />
     <Compile Include="Shared\SettingManager.cs" />
+    <Compile Include="WPF\DatabaseContext.cs" />
+    <Compile Include="WPF\JsonYapaSettings.cs" />
+    <Compile Include="WPF\MusicPlayer.cs" />
+    <Compile Include="WPF\PluginManager.cs" />
+    <Compile Include="WPF\PluginManagerSettingWindow.xaml.cs">
+      <DependentUpon>PluginManagerSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\ShowSettingsCommand.cs" />
+    <Compile Include="WPF\SoundNotifications.cs" />
+    <Compile Include="WPF\ThemeManager.cs" />
+    <Compile Include="WPF\ThemeManagerSettingWindow.xaml.cs">
+      <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Timer.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -151,6 +187,38 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Plugins\Dashboard\GithubDashboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\Dashboard\PomodoroWeek.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\MinimizeToTraySettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\PomodoroEngineSettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\SoundNotificationSettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\PluginManagerSettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\ThemeManagerSettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -242,9 +310,6 @@
       <Project>{3cb19c81-cf0d-466b-9cd6-13fa90ce1329}</Project>
       <Name>YAPA.WPF.Themes</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

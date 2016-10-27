@@ -106,85 +106,15 @@
   <ItemGroup>
     <Compile Include="Commands\CancelSettingsCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
-    <Compile Include="Commands\ShowSettingsCommand.cs" />
-    <Compile Include="Plugins\DashboardPlugin.cs" />
-    <Compile Include="Plugins\GithubDashboard.xaml.cs">
-      <DependentUpon>GithubDashboard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\ItemRepository.cs" />
-    <Compile Include="Plugins\MinimizeToTray.cs" />
-    <Compile Include="Plugins\MinimizeToTraySettingWindow.xaml.cs">
-      <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\PomodoroEngineSettingWindow.xaml.cs">
-      <DependentUpon>PomodoroEngineSettingWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\PomodoroWeek.xaml.cs">
-      <DependentUpon>PomodoroWeek.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\SaveApplicationPositionOnScreen.cs" />
-    <Compile Include="Plugins\SoundNotificationSettingWindow.xaml.cs">
-      <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\AbstractWindow.cs" />
-    <Compile Include="Shared\DatabaseContext.cs" />
-    <Compile Include="Shared\JsonYapaSettings.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
-    <Compile Include="Shared\SoundNotifications.cs" />
-    <Compile Include="Shared\WPF\MusicPlayer.cs" />
-    <Compile Include="Shared\WPF\PluginManager.cs" />
-    <Compile Include="Shared\WPF\PluginManagerSettingWindow.xaml.cs">
-      <DependentUpon>PluginManagerSettingWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shared\WPF\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shared\WPF\ThemeManager.cs" />
-    <Compile Include="Shared\WPF\ThemeManagerSettingWindow.xaml.cs">
-      <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shared\WPF\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
       <Project>{893850db-2b45-4942-b513-73f1d58a8026}</Project>
       <Name>YAPA.Shared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Plugins\GithubDashboard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugins\MinimizeToTraySettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugins\PomodoroEngineSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugins\PomodoroWeek.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugins\SoundNotificationSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Shared\WPF\PluginManagerSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Shared\WPF\Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Shared\WPF\ThemeManagerSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
