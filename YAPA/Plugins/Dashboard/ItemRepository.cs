@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using YAPA.Shared.Contracts;
 
 namespace YAPA
 {
-    public class ItemRepository
+    public class ItemRepository : IPomodoroRepository
     {
         private DatabaseContext context;
 
@@ -14,49 +14,16 @@ namespace YAPA
             context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2", "Dashboard"));
         }
 
-        public void CompletePomodoro()
+        public IQueryable<PomodoroEntity> Pomodoros => context.Pomodoros;
+
+        public void Delete(int id)
         {
-            var date = DateTime.Now.Date;
-            var pomodoro = context.Pomodoros.SingleOrDefault(p => p.DateTime == date);
-            if (pomodoro == null)
-            {
-                pomodoro = new PomodoroEntity() { Count = 1, DateTime = date };
-                context.Pomodoros.Add(pomodoro);
-            }
-            else
-            {
-                pomodoro.Count = pomodoro.Count + 1;
-            }
-            context.SaveChanges();
-        }
+            var existing = Pomodoros.FirstOrDefault(x => x.Id == id);
 
-        public int CompletedToday()
-        {
-            var date = DateTime.Now.Date;
-            var todays = context.Pomodoros.SingleOrDefault(p => p.DateTime == date);
-            if (todays == null)
+            if (existing != null)
             {
-                return 0;
             }
-            else
-            {
-                return todays.Count;
-            }
-        }
 
-        public IEnumerable<PomodoroEntity> GetPomodoros()
-        {
-            var days = 190;
-            var today = DateTime.Now.Date.Date;
-            var fromDate = today.AddDays(-days);
-            var emptyPomodoros = Enumerable.Range(0, days + 1).Select(x => new PomodoroEntity() { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
-            var capturedPomodoros = context.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
-
-            var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
-                .GroupBy(c => c.DateTime.Date, c => c.Count,
-                    (time, ints) => new PomodoroEntity() { DateTime = time, Count = ints.Sum(x => x) });
-
-            return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
 
         public void Add(PomodoroEntity pomodoroEntity)

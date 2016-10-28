@@ -89,6 +89,8 @@ namespace YAPA
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
 
+            builder.RegisterType(typeof(ItemRepository)).As<IPomodoroRepository>().SingleInstance();
+
             builder.RegisterType(typeof(ShowSettingsCommand)).As<IShowSettingsCommand>();
 
 

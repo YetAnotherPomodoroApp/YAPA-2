@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using YAPA.Shared.Contracts;
 
 namespace YAPA
 {
@@ -13,21 +13,15 @@ namespace YAPA
         public DbSet<PomodoroEntity> Pomodoros { get; set; }
     }
 
-    public class PomodoroEntity
+    public static class PomodoroExtensions
     {
-        [Key]
-        public int Id { get; set; }
 
-        public DateTime DateTime { get; set; }
-
-        public int Count { get; set; }
-
-        public PomodoroViewModel ToPomodoroViewModel(PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
+        public static PomodoroViewModel ToPomodoroViewModel(this PomodoroEntity pomo, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
         {
             return new PomodoroViewModel()
             {
-                Count = Count,
-                DateTime = DateTime,
+                Count = pomo.Count,
+                DateTime = pomo.DateTime,
                 Level = level
             };
         }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -7,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using YAPA.Contracts;
 using YAPA.Shared;
-using YAPA.WPF.Plugins;
+using YAPA.Shared.Contracts;
 using YAPA.WPF.Themes.YAPA;
 
 namespace YAPA
@@ -17,24 +19,19 @@ namespace YAPA
 
         private readonly double _sizeRatio = 80 / 200.0;
 
-        private IMainViewModel ViewModel { get; set; }
-        private YapaThemeSettings Settings { get; set; }
-        private readonly IPomodoroEngine _engine;
-        private readonly ISettings _globalSettings;
-        private readonly Dashboard _dashboard;
+        private YapaThemeSettings Settings { get; }
+        private readonly IPomodoroRepository _pomodoroRepository;
         private readonly PomodoroEngineSettings _engineSettings;
 
         public int PomodorosCompleted { get; set; }
 
-        private Storyboard TimerFlush;
+        private readonly Storyboard TimerFlush;
 
-        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, Dashboard dashboard, PomodoroEngineSettings engineSettings) : base(viewModel)
+        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, IPomodoroRepository pomodoroRepository, PomodoroEngineSettings engineSettings) : base(viewModel)
         {
             ViewModel = viewModel;
             Settings = settings;
-            _engine = engine;
-            _globalSettings = globalSettings;
-            _dashboard = dashboard;
+            _pomodoroRepository = pomodoroRepository;
             _engineSettings = engineSettings;
 
             InitializeComponent();
@@ -46,7 +43,7 @@ namespace YAPA
             ViewModel.Engine.OnPomodoroCompleted += Engine_OnPomodoroCompleted;
             ViewModel.Engine.OnStarted += Engine_OnStarted;
             ViewModel.Engine.OnStopped += Engine_OnStopped;
-            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             DataContext = this;
 
@@ -62,9 +59,11 @@ namespace YAPA
 
         private async void UpdateCompletedPomodoroCount()
         {
+
             await Task.Run(() =>
             {
-                PomodorosCompleted = _dashboard.CompletedToday();
+                var today = DateTime.Today.Date;
+                PomodorosCompleted = _pomodoroRepository.Pomodoros.Where(x => x.DateTime == today).Select(a => a.Count).DefaultIfEmpty(0).Sum();
                 RaisePropertyChanged(nameof(PomodorosCompleted));
             });
         }
