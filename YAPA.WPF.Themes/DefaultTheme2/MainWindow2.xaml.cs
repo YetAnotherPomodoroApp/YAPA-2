@@ -19,13 +19,17 @@ namespace YAPA
             InitializeComponent();
 
             Loaded += MainWindow2_Loaded;
+            viewModel.Engine.OnStarted += Engine_OnStarted;
+
+        }
+
+        private void Engine_OnStarted()
+        {
+            startDate = DateTime.Now;
         }
 
         private void MainWindow2_Loaded()
         {
-            dateTime = DateTime.Now;
-
-
             this.dispatchTimer = new DispatcherTimer();
             this.dispatchTimer.Interval = new TimeSpan(0, 0, 1);
             this.dispatchTimer.Tick += dispatchTimer_Tick;
@@ -33,12 +37,13 @@ namespace YAPA
         }
 
         const float PI = 3.141592654F;
-        DateTime dateTime;
+        DateTime startDate;
+        DateTime clockTime;
         DispatcherTimer dispatchTimer;
 
         private void DrawClock()
         {
-            dateTime = DateTime.Now;
+            clockTime = DateTime.Now;
             var canvas = Math.Min(InkCanvas.ActualHeight, InkCanvas.ActualWidth);
 
             float clockHeight = (int)canvas;
@@ -63,10 +68,10 @@ namespace YAPA
 
             InkCanvas.Children.Clear();
 
-            int minute = dateTime.Minute;
-            int sec = dateTime.Second;
+            int minute = clockTime.Minute;
+            int sec = clockTime.Second;
 
-            float hour = dateTime.Hour % 12 + (float)dateTime.Minute / 60;
+            float hour = clockTime.Hour % 12 + (float)clockTime.Minute / 60;
 
             float hourRadian = hour * 360 / 12 * PI / 180;
             float minRadian = minute * 360 / 60 * PI / 180;
@@ -78,7 +83,7 @@ namespace YAPA
 
             if (ViewModel.Engine.IsRunning)
             {
-                var currMin = dateTime.Minute;
+                var currMin = startDate.Minute;
                 var duration = ViewModel.Engine.WorkTime;
                 var periodColor = Colors.Green;
 
@@ -88,7 +93,7 @@ namespace YAPA
                     duration = ViewModel.Engine.BreakTime;
                 }
 
-                for (int i = currMin; i < currMin + duration - ViewModel.Engine.Elapsed / 60; i++)
+                for (int i = currMin; i < currMin + duration; i++)
                 {
                     DrawLine(
                         centerX + (float)(clockRadius / 1.50F * System.Math.Sin(i * 6 * PI / 180)),
