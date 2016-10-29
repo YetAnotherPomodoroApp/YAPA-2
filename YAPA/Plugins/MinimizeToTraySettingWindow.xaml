@@ -17,11 +17,11 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Minimize to tray" Grid.Column="0" Grid.Row="0"></TextBlock>
-            <CheckBox IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"  Grid.Column="1" Grid.Row="0"></CheckBox>
+            <CheckBox IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"  Grid.Column="0" Grid.Row="0" Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Minimize to tray" Grid.Column="1" Grid.Row="0" Margin="0,5"></TextBlock>
 
-            <TextBlock Text="Show in taskbar" Grid.Column="0" Grid.Row="1"></TextBlock>
-            <CheckBox IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"></CheckBox>
+            <CheckBox IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Show in taskbar" Grid.Column="1" Grid.Row="1"  Margin="0,5"></TextBlock>
 
         </Grid>
     </Grid>

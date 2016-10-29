@@ -6,8 +6,8 @@
         xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
         mc:Ignorable="d"
         Title="YAPA"
-        Height="80" 
-        Width="200" 
+        Height="60" 
+        Width="130" 
         ShowInTaskbar="True" 
         ResizeMode="NoResize" 
         AllowsTransparency="True" 
@@ -35,12 +35,14 @@
     </Window.Resources>
 
     <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
-        </Grid.ColumnDefinitions>
-        <Viewbox Grid.Column="0">
-            <TextBlock x:Name="CurrentTime"
+
+        <Viewbox >
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="CurrentTime" Grid.Column="0"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
@@ -48,33 +50,31 @@
                Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
                HorizontalAlignment="Right" 
-               VerticalAlignment="Center"
+               VerticalAlignment="Center"                       
                Text="{Binding CurrentTimeValue, Converter={StaticResource SecToTimeConverter}}"
                FontStretch="UltraCondensed"
                >
-                <TextBlock.Effect>
-                    <DropShadowEffect
+                    <TextBlock.Effect>
+                        <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
 				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                </TextBlock.Effect>
-            </TextBlock>
-        </Viewbox>
+                    </TextBlock.Effect>
+                </TextBlock>
 
-        <Viewbox Grid.Column="1">
-            <StackPanel Orientation="Vertical">
-                <StackPanel VerticalAlignment="Top"  Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
-                            Margin="0,0,0,2">
+                <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
+                <StackPanel VerticalAlignment="Top"   Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
+                            Margin="0,10,0,2">
                     <Button x:Name="Minimize"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="_"
                 ToolTip="Minimize"
-                Height="10"
-                Width="10"
+                Height="15"
+                Width="15"
                 Click="Minimize_OnClick">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -141,7 +141,7 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel VerticalAlignment="Center">
+                <StackPanel VerticalAlignment="Center" Grid.Column="1">
                     <Button x:Name="Start"
                 Command="{Binding ViewModel.StartCommand}"
                 HorizontalAlignment="Right" 
@@ -149,8 +149,8 @@
                 Cursor="Hand"
                 Content="START"
                 ToolTip="Start Pomodoro"
-                Height="8"
-                Width="30">
+                Height="10"
+                Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <TextBlock Text="{TemplateBinding Content}"
@@ -158,7 +158,7 @@
                                x:Name="StarTextBlock"
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
-                               FontSize="8" 
+                               FontSize="11" 
                                Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
@@ -186,8 +186,8 @@
                 Cursor="Hand"
                 Content="STOP"
                 ToolTip="Stop Pomodoro"
-                Height="8"
-                Width="30"  >
+                Height="9"
+                Width="38"  >
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <TextBlock Text="{TemplateBinding Content}"
@@ -195,7 +195,7 @@
                                TextAlignment="Center"
                                x:Name="StopTextBlock"
                                Foreground="{Binding TextBrush}"
-                               FontSize="8" 
+                               FontSize="11" 
                                Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
@@ -239,8 +239,8 @@
                         </TextBlock.Effect>
                     </TextBlock>
                 </StackPanel>
-            </StackPanel>
-
+                <!--</StackPanel>-->
+            </Grid>
         </Viewbox>
     </Grid>
 </shared:AbstractWindow>

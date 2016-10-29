@@ -4,14 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:YAPA.WPF"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      >
+      d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,28 +23,40 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Disable sound notifications" Grid.Column="0" Grid.Row="0"></TextBlock>
-        <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"></CheckBox>
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Disable sound notifications" Margin="0,5"></TextBlock>
+        </StackPanel>
 
-        <TextBlock Text="Play period start\end sounds" Grid.Column="0" Grid.Row="1"></TextBlock>
-        <CheckBox IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"></CheckBox>
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Play period start\end sounds" Margin="0,5"></TextBlock>
+        </StackPanel>
 
-        <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2"></TextBlock>
-        <Button Content="Browse" HorizontalAlignment="Right" x:Name="BrowseWorkSong" Grid.Column="0" Grid.Row="2"></Button>
+        <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding WorkSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WorkSong" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2"></TextBox>
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2" Margin="2"></TextBox>
+        <Button HorizontalAlignment="Right" x:Name="BrowseWorkSong" Grid.Column="2" Grid.Row="2">
+            <materialDesign:PackIcon Kind="Folder" />
+        </Button>
 
-        <TextBlock Text="Repeat work song" Grid.Column="0" Grid.Row="3"></TextBlock>
-        <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"></CheckBox>
+        <StackPanel Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Repeat work song" Margin="0,5"></TextBlock>
+        </StackPanel>
 
-        <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4"></TextBlock>
-        <Button Content="Browse" HorizontalAlignment="Right" x:Name="BrowseBreakSong"  Grid.Column="0" Grid.Row="4"></Button>
+        <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding BreakSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="BreakSong" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4"></TextBox>
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4" Margin="2"></TextBox>
 
+        <Button HorizontalAlignment="Right" x:Name="BrowseBreakSong"  Grid.Column="2" Grid.Row="4">
+            <materialDesign:PackIcon Kind="Folder" />
+        </Button>
 
-        <TextBlock Text="Repeat break song" Grid.Column="0" Grid.Row="5"></TextBlock>
-        <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="5"></CheckBox>
+        <StackPanel Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
+            <TextBlock Text="Repeat break song" Margin="0,5"></TextBlock>
+        </StackPanel>
 
     </Grid>
 </UserControl>

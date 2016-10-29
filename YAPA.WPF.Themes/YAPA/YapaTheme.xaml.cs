@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using YAPA.Contracts;
 using YAPA.Shared;
-using YAPA.Shared.Contracts;
 using YAPA.WPF.Themes.YAPA;
 
 namespace YAPA
@@ -17,7 +16,7 @@ namespace YAPA
     public partial class YapaTheme : AbstractWindow, INotifyPropertyChanged
     {
 
-        private readonly double _sizeRatio = 80 / 200.0;
+        private readonly double _sizeRatio = 60 / 130.0;
 
         private YapaThemeSettings Settings { get; }
         private readonly IPomodoroRepository _pomodoroRepository;

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace YAPA.Shared.Contracts
+namespace YAPA.Contracts
 {
     public interface IPomodoroRepository
     {

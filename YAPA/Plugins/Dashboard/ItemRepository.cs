@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using YAPA.Shared.Contracts;
+using YAPA.Contracts;
 
 namespace YAPA
 {

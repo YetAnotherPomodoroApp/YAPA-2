@@ -1,6 +1,5 @@
 ﻿using System.Windows.Input;
 using YAPA.Contracts;
-using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared
 {

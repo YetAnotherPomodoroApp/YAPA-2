@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
-using YAPA.Shared.Contracts;
+using YAPA.Contracts;
 
 namespace YAPA
 {

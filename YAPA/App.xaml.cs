@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Windows;
 using YAPA.Contracts;
 using YAPA.Shared;
-using YAPA.Shared.Contracts;
 using YAPA.WPF;
 using YAPA.WPF.Plugins;
 

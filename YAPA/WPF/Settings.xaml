@@ -35,12 +35,12 @@
         <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="SettingsTree">
 
         </TreeView>
-        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage">
+        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage" Margin="10">
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding CancelCommand}">Close</Button>
-            <Button Command="{Binding SaveCommand}">Save</Button>
+            <Button Command="{Binding CancelCommand}" Margin="5">Close</Button>
+            <Button Command="{Binding SaveCommand}" Margin="5">Save</Button>
         </StackPanel>
 
 

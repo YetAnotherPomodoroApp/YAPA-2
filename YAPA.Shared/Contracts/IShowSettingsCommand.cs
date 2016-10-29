@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace YAPA.Shared.Contracts
+namespace YAPA.Contracts
 {
     public interface IShowSettingsCommand : ICommand
     {
