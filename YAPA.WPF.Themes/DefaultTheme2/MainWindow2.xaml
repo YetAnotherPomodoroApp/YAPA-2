@@ -4,7 +4,7 @@
         xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
         Title="YAPA 2"
         Height="150" 
-        Width="250" 
+        Width="200" 
         ShowInTaskbar="True" 
         WindowStartupLocation="Manual"
         Topmost="True"
@@ -22,16 +22,16 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <TextBlock Text="{Binding Engine.Elapsed, Converter={StaticResource SecToTimeConverter}}">
-            </TextBlock>
-        </StackPanel>
+        <Canvas x:Name="InkCanvas" Background="Yellow"  Grid.Column="0"></Canvas>
+
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Button Command="{Binding StartCommand}" Content="Start"></Button>
             <TextBlock Text="{Binding Engine.Index}" ></TextBlock>
             <Button Command="{Binding StopCommand}" Content="Stop"></Button>
             <Button Command="{Binding ResetCommand}" Content="Reset"></Button>
         </StackPanel>
+
+
     </Grid>
 </shared:AbstractWindow>
 
