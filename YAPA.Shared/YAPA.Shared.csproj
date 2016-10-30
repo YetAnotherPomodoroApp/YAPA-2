@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IApplication.cs" />
     <Compile Include="Contracts\IDependencyInjector.cs" />
+    <Compile Include="Contracts\IEnviroment.cs" />
     <Compile Include="Contracts\IMainViewModel.cs" />
     <Compile Include="Contracts\IMusicPlayer.cs" />
     <Compile Include="Contracts\IPlugin.cs" />

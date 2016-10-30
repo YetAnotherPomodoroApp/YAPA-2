@@ -4,20 +4,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF
 {
     public class JsonYapaSettings : ISettings
     {
+        private readonly IEnviroment _enviroment;
         private SettingsDictionary _settings;
         private SettingsDictionary _modifiedSettings;
 
-        public JsonYapaSettings()
+        public JsonYapaSettings(IEnviroment enviroment)
         {
+            _enviroment = enviroment;
             _settings = new SettingsDictionary();
             _modifiedSettings = new SettingsDictionary();
             Load();
@@ -157,12 +159,6 @@ namespace YAPA.WPF
 
         private void SaveToFile()
         {
-            var settingDir = Path.GetDirectoryName(SettingsFilePath());
-            if (!Directory.Exists(settingDir))
-            {
-                Directory.CreateDirectory(settingDir);
-            }
-
             if (HasUnsavedChanges)
             {
                 foreach (var setting in _modifiedSettings)
@@ -176,30 +172,15 @@ namespace YAPA.WPF
             }
 
             var serialized = JsonConvert.SerializeObject(_settings);
-            using (var file = new StreamWriter(SettingsFilePath()))
-            {
-                file.Write(serialized);
-            }
-
+            _enviroment.SaveSettings(serialized);
         }
 
         public void Load()
         {
-            if (!File.Exists(SettingsFilePath()))
-            {
-                return;
-            }
+
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
-            using (var file = new StreamReader(SettingsFilePath()))
-            {
-                _settings = JsonConvert.DeserializeObject<SettingsDictionary>(file.ReadToEnd());
-            }
-        }
-
-        private static string SettingsFilePath()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2", @"settings.json");
+            _settings = JsonConvert.DeserializeObject<SettingsDictionary>(_enviroment.GetSettings() ?? "[]");
         }
 
         private bool _hasUnsavedChanges;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YAPA.Contracts;
 
-namespace YAPA.WPF.Plugins
+namespace YAPA.Shared
 {
 
     public class DashboardPlugin : IPluginMeta

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using YAPA.Contracts;
 using YAPA.Shared;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
 using YAPA.WPF.Plugins;
 
@@ -68,7 +69,7 @@ namespace YAPA
         private static IContainer ConfigureContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterInstance(new JsonYapaSettings()).As<ISettings>().SingleInstance();
+            builder.RegisterType<JsonYapaSettings>().As<ISettings>().AutoActivate().SingleInstance();
 
             builder.RegisterType(typeof(PomodoroEngine)).As<IPomodoroEngine>().SingleInstance();
             builder.RegisterType(typeof(PomodoroEngineSettings)).As<PomodoroEngineSettings>();
@@ -87,6 +88,8 @@ namespace YAPA
 
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
+
+            builder.RegisterType(typeof(WpfEnviroment)).As<IEnviroment>().SingleInstance();
 
             builder.RegisterType(typeof(ItemRepository)).As<IPomodoroRepository>().SingleInstance();
 

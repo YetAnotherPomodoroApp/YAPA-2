@@ -179,6 +179,7 @@
       <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\Timer.cs" />
+    <Compile Include="WPF\WpfEnviroment.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
