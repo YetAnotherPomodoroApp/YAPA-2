@@ -1,25 +1,23 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using YAPA.Contracts;
 using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.Shared
 {
     public class JsonYapaSettings : ISettings
     {
         private readonly IEnviroment _enviroment;
+        private readonly IJson _json;
         private SettingsDictionary _settings;
         private SettingsDictionary _modifiedSettings;
 
-        public JsonYapaSettings(IEnviroment enviroment)
+        public JsonYapaSettings(IEnviroment enviroment, IJson json)
         {
             _enviroment = enviroment;
+            _json = json;
             _settings = new SettingsDictionary();
             _modifiedSettings = new SettingsDictionary();
             Load();
@@ -45,18 +43,8 @@ namespace YAPA.WPF
                 return (T)value;
             }
 
-            if (typeof(T).IsValueType || value is string)
-            {
-                return (T)Convert.ChangeType(value, typeof(T));
-            }
-            else if (value is JArray)
-            {
-                return ((JArray)value).ToObject<T>();
-            }
-            else
-            {
-                return (T)value;
-            }
+            return _json.ConvertToType<T>(value);
+
         }
 
 
@@ -65,7 +53,7 @@ namespace YAPA.WPF
             if (defer)
             {
                 //if value is changed back to original value, just remove modification
-                if (AreEqual(value, _settings.GetValue(name, plugin, null)))
+                if (_json.AreEqual(value, _settings.GetValue(name, plugin, null)))
                 {
                     _modifiedSettings.RemoveKey(name, plugin);
                 }
@@ -84,66 +72,6 @@ namespace YAPA.WPF
                 SaveToFile();
             }
         }
-
-        private bool AreEqual(object valA, object valB)
-        {
-            if (valA == null && valB == null)
-            {
-                return true;
-            }
-
-            if (valA == null && valB != null
-                || valA != null && valB == null)
-            {
-                return false;
-            }
-
-            if (valA.GetType().IsValueType || valA is string)
-            {
-                return valA.Equals(valB);
-            }
-            else if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
-            {
-                var listA = (IEnumerable)valA;
-                var listB = (JArray)valB;
-
-
-                if (Count(listA) != listB.Count)
-                {
-                    return false;
-                }
-
-                foreach (var b in listB)
-                {
-                    var contains = false;
-                    foreach (var a in listA)
-                    {
-                        contains |= b.ToString().Equals(a);
-                    }
-
-                    if (contains == false)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-
-            }
-
-
-
-            return false;
-        }
-
-        public int Count(IEnumerable source)
-        {
-            int c = 0;
-            var e = source.GetEnumerator();
-            while (e.MoveNext())
-                c++;
-            return c;
-        }
-
 
         public ISettingsForComponent GetSettingsForComponent(string plugin)
         {
@@ -171,7 +99,7 @@ namespace YAPA.WPF
                 }
             }
 
-            var serialized = JsonConvert.SerializeObject(_settings);
+            var serialized = _json.Serialize(_settings);
             _enviroment.SaveSettings(serialized);
         }
 
@@ -180,7 +108,7 @@ namespace YAPA.WPF
 
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
-            _settings = JsonConvert.DeserializeObject<SettingsDictionary>(_enviroment.GetSettings() ?? "[]");
+            _settings = _json.Deserialize<SettingsDictionary>(_enviroment.GetSettings() ?? "[]");
         }
 
         private bool _hasUnsavedChanges;

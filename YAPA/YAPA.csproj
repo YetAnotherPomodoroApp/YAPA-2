@@ -161,9 +161,9 @@
       <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\DependencyInjector.cs" />
+    <Compile Include="WPF\NewftonsJson.cs" />
     <Compile Include="WPF\SettingManager.cs" />
     <Compile Include="WPF\DatabaseContext.cs" />
-    <Compile Include="WPF\JsonYapaSettings.cs" />
     <Compile Include="WPF\MusicPlayer.cs" />
     <Compile Include="WPF\PluginManager.cs" />
     <Compile Include="WPF\PluginManagerSettingWindow.xaml.cs">

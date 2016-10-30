@@ -37,6 +37,7 @@
     <Compile Include="Contracts\IApplication.cs" />
     <Compile Include="Contracts\IDependencyInjector.cs" />
     <Compile Include="Contracts\IEnviroment.cs" />
+    <Compile Include="Contracts\IJson.cs" />
     <Compile Include="Contracts\IMainViewModel.cs" />
     <Compile Include="Contracts\IMusicPlayer.cs" />
     <Compile Include="Contracts\IPlugin.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\DashboardPlugin.cs" />
+    <Compile Include="Shared\JsonYapaSettings.cs" />
     <Compile Include="Shared\MainViewModel.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />

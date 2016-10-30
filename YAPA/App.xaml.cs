@@ -70,6 +70,7 @@ namespace YAPA
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<JsonYapaSettings>().As<ISettings>().AutoActivate().SingleInstance();
+            builder.RegisterType<NewftonsJson>().As<IJson>().SingleInstance();
 
             builder.RegisterType(typeof(PomodoroEngine)).As<IPomodoroEngine>().SingleInstance();
             builder.RegisterType(typeof(PomodoroEngineSettings)).As<PomodoroEngineSettings>();
