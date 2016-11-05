@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Work time" Grid.Column="0" Grid.Row="0"></TextBlock>
@@ -36,6 +37,12 @@
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding CountBackwards, Mode=TwoWay}" Margin="5,5,5,0"></CheckBox>
                 <TextBlock Text="Count backwards" Margin="0,5" ></TextBlock>
+            </StackPanel>
+
+
+            <StackPanel Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
+                <TextBlock Text="Disable sound notifications" Margin="0,5"></TextBlock>
             </StackPanel>
 
         </Grid>

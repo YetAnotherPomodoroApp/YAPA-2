@@ -5,12 +5,12 @@ using YAPA.Contracts;
 
 namespace YAPA.WPF
 {
-    public class MusicPlayer : IMusicPlayer
+    public class SoundPlayer : IMusicPlayer
     {
         private readonly MediaPlayer _musicPlayer;
         private bool _repeat;
 
-        public MusicPlayer()
+        public SoundPlayer()
         {
             _musicPlayer = new MediaPlayer();
             _musicPlayer.MediaEnded += _musicPlayer_MediaEnded;

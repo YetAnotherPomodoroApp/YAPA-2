@@ -3,13 +3,17 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using YAPA.Shared;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins
 {
-    public partial class SoundNotificationSettingWindow : UserControl
+    /// <summary>
+    /// Interaction logic for MusicPlayerSettingWindow.xaml
+    /// </summary>
+    public partial class MusicPlayerPluginSettingWindow : UserControl
     {
-        public SoundNotificationSettingWindow(SoundNotificationsSettings settings)
+        public MusicPlayerPluginSettingWindow(MusicPlayerPluginSettings settings)
         {
             settings.DeferChanges();
+
             InitializeComponent();
 
             DataContext = settings;
@@ -17,6 +21,7 @@ namespace YAPA.WPF
             BrowseBreakSong.Command = new BrowseSong(BreakSong);
             BrowseWorkSong.Command = new BrowseSong(WorkSong);
         }
+
 
         public class BrowseSong : ICommand
         {

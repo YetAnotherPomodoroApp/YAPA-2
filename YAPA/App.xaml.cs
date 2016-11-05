@@ -77,7 +77,7 @@ namespace YAPA
             builder.RegisterType(typeof(PomodoroEngineSettingWindow)).As<PomodoroEngineSettingWindow>();
 
             builder.RegisterType(typeof(Timer)).As<ITimer>();
-            builder.RegisterType(typeof(MusicPlayer)).As<IMusicPlayer>();
+            builder.RegisterType(typeof(SoundPlayer)).As<IMusicPlayer>();
 
             builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 

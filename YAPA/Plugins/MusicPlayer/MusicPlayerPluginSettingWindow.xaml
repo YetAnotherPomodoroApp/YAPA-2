@@ -1,13 +1,12 @@
-﻿<UserControl x:Class="YAPA.WPF.SoundNotificationSettingWindow"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:YAPA.WPF"
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300">
-
+﻿<UserControl x:Class="YAPA.Plugins.MusicPlayerPluginSettingWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YAPA.Plugins"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -22,16 +21,6 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-
-        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Disable sound notifications" Margin="0,5"></TextBlock>
-        </StackPanel>
-
-        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Play period start\end sounds" Margin="0,5"></TextBlock>
-        </StackPanel>
 
         <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding WorkSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WorkSong" HorizontalContentAlignment="Stretch" 
