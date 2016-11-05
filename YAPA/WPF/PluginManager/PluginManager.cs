@@ -28,7 +28,7 @@ namespace YAPA.Shared
         {
             get
             {
-                return ActivePlugins
+                return Plugins
                 .Where(x => x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).Any())
                 .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
             }
@@ -38,13 +38,13 @@ namespace YAPA.Shared
         {
             get
             {
-                return ActivePlugins.Where(_ => _.GetType().GetCustomAttributes(false).FirstOrDefault(y => y.GetType() == typeof(BuiltInPluginAttribute)) == null);
+                return Plugins.Where(_ => _.GetType().GetCustomAttributes(false).FirstOrDefault(y => y.GetType() == typeof(BuiltInPluginAttribute)) == null);
             }
         }
 
         public IEnumerable<IPluginMeta> ActivePlugins
         {
-            get { return Plugins.Where(x => !_disabledPlugins.Contains(x.Title)); }
+            get { return CustomPlugins.Where(x => !_disabledPlugins.Contains(x.Title)); }
         }
 
         public object ResolveSettingWindow(IPluginMeta plugin)

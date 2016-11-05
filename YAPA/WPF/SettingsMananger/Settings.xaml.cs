@@ -48,7 +48,7 @@ namespace YAPA
 
             var pluginsTree = new TreeViewItem { Header = "Plugins" };
 
-            foreach (var customSettings in _pluginManager.CustomPlugins.Where(x => x.SettingEditWindow != null))
+            foreach (var customSettings in _pluginManager.ActivePlugins.Where(x => x.SettingEditWindow != null))
             {
                 pluginsTree.Items.Add(new TreeViewItem() { Header = customSettings.Title });
             }
