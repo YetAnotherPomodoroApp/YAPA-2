@@ -6,18 +6,6 @@ using YAPA.Contracts;
 namespace YAPA.Shared
 {
 
-    public class DashboardPlugin : IPluginMeta
-    {
-        public string Title => "Dashboard";
-
-        public Type Plugin => typeof(Dashboard);
-
-        public Type Settings => typeof(DashboardSettings);
-
-        public Type SettingEditWindow => null;
-    }
-
-
     public class Dashboard : IPlugin
     {
         private readonly IPomodoroRepository _itemRepository;

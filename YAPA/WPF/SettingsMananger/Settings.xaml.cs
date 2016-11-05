@@ -1,22 +1,27 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using YAPA.Contracts;
+using YAPA.WPF;
 
 namespace YAPA
 {
-
     public partial class Settings : Window
     {
         private readonly ISettings _settings;
         private readonly ISettingManager _mananger;
+        private readonly IPluginManager _pluginManager;
+        private readonly IDependencyInjector _container;
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public Settings(ISettings settings, ISettingManager mananger)
+        public Settings(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container)
         {
             _settings = settings;
             _mananger = mananger;
+            _pluginManager = pluginManager;
+            _container = container;
             _mananger.PropertyChanged += _mananger_PropertyChanged;
 
             SaveCommand = new SaveSettingsCommand(_settings);
@@ -28,25 +33,27 @@ namespace YAPA
 
             SettingsTree.SelectedItemChanged += SettingsTree_SelectedItemChanged;
 
-            foreach (var rootSetting in _mananger.GetRootSettings())
+
+            foreach (var rootSetting in _pluginManager.BuiltInPlugins.Where(x => x.SettingEditWindow != null))
             {
-                var pluginsTree = new TreeViewItem { Header = rootSetting };
-
-                if (rootSetting == "Dashboard")
+                var builtinPlugin = new TreeViewItem
                 {
-                    pluginsTree.IsSelected = true;
-                }
-                if (rootSetting == "Plugins")
-                {
-                    pluginsTree.IsExpanded = true;
-                    foreach (var plugin in _mananger.GetPlugins())
-                    {
-                        pluginsTree.Items.Add(new TreeViewItem() { Header = plugin });
-                    }
-                }
+                    Header = rootSetting.Title,
+                    IsSelected = SettingsTree.Items.IsEmpty
+                };
 
-                SettingsTree.Items.Add(pluginsTree);
+                SettingsTree.Items.Add(builtinPlugin);
             }
+
+
+            var pluginsTree = new TreeViewItem { Header = "Plugins" };
+
+            foreach (var customSettings in _pluginManager.CustomPlugins.Where(x => x.SettingEditWindow != null))
+            {
+                pluginsTree.Items.Add(new TreeViewItem() { Header = customSettings.Title });
+            }
+
+            SettingsTree.Items.Add(pluginsTree);
 
             RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -68,8 +75,18 @@ namespace YAPA
             {
                 return;
             }
+            UserControl child = null;
 
-            SettingPage.Children.Add((UserControl)_mananger.GetPageFor((string)treeItem.Header));
+            if (treeItem.Header.ToString() == "Plugins")
+            {
+                child = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
+            }
+            else
+            {
+                child = (UserControl)_container.Resolve(_pluginManager.Plugins.First(x => x.Title == treeItem.Header.ToString()).SettingEditWindow);
+            }
+
+            SettingPage.Children.Add(child);
         }
 
         private void Settings_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

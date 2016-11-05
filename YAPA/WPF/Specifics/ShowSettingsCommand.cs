@@ -7,11 +7,15 @@ namespace YAPA
     {
         private readonly ISettings _settings;
         private readonly ISettingManager _mananger;
+        private readonly IPluginManager _pluginManager;
+        private readonly IDependencyInjector _container;
 
-        public ShowSettingsCommand(ISettings settings, ISettingManager mananger)
+        public ShowSettingsCommand(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container)
         {
             _settings = settings;
             _mananger = mananger;
+            _pluginManager = pluginManager;
+            _container = container;
         }
 
         public bool CanExecute(object parameter)
@@ -21,7 +25,7 @@ namespace YAPA
 
         public void Execute(object parameter)
         {
-            var settingWindow = new Settings(_settings, _mananger);
+            var settingWindow = new Settings(_settings, _mananger, _pluginManager, _container);
 
             settingWindow.ShowDialog();
         }

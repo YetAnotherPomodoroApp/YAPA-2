@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAPA.Contracts;
+using YAPA.WPF;
 
 namespace YAPA.Shared
 {
@@ -12,7 +13,6 @@ namespace YAPA.Shared
         private IEnumerable<string> _disabledPlugins;
         private bool _initialised = false;
 
-        private List<string> RootPlugins => new List<string>() { "General", "Dashboard" };
         public PluginManager(IDependencyInjector container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
         {
             _container = container;
@@ -24,9 +24,27 @@ namespace YAPA.Shared
 
         public IEnumerable<IPluginMeta> Plugins { get; }
 
+        public IEnumerable<IPluginMeta> BuiltInPlugins
+        {
+            get
+            {
+                return ActivePlugins
+                .Where(x => x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).Any())
+                .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
+            }
+        }
+
+        public IEnumerable<IPluginMeta> CustomPlugins
+        {
+            get
+            {
+                return ActivePlugins.Where(_ => _.GetType().GetCustomAttributes(false).FirstOrDefault(y => y.GetType() == typeof(BuiltInPluginAttribute)) == null);
+            }
+        }
+
         public IEnumerable<IPluginMeta> ActivePlugins
         {
-            get { return Plugins.Where(x => !RootPlugins.Contains(x.Title)).Where(x => !_disabledPlugins.Contains(x.Title)); }
+            get { return Plugins.Where(x => !_disabledPlugins.Contains(x.Title)); }
         }
 
         public object ResolveSettingWindow(IPluginMeta plugin)
@@ -62,7 +80,7 @@ namespace YAPA.Shared
 
         private void RegisterPluginSettings(IDependencyInjector container)
         {
-            foreach (var plugin in Plugins)
+            foreach (var plugin in Plugins.Where(x => x.Settings != null))
             {
                 container.Register(plugin.Settings);
             }

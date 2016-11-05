@@ -2,9 +2,11 @@
 using System.IO;
 using YAPA.Contracts;
 using YAPA.Plugins;
+using YAPA.WPF;
 
 namespace YAPA.Shared
 {
+    [BuiltInPlugin]
     public class MusicPlayerPluginMetas : IPluginMeta
     {
         public string Title => "Music player";

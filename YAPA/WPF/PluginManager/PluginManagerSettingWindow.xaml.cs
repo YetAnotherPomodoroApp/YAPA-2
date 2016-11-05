@@ -31,7 +31,7 @@ namespace YAPA.WPF
             _disabledPlugins = _settings.DisabledPlugins;
 
             Plugins = new List<PluginViewModel>();
-            foreach (var pluginMeta in _plugins.Plugins)
+            foreach (var pluginMeta in _plugins.CustomPlugins)
             {
                 Plugins.Add(new PluginViewModel
                 {

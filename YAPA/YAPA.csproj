@@ -142,6 +142,7 @@
   <ItemGroup>
     <Compile Include="Commands\CancelSettingsCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
+    <Compile Include="Plugins\Dashboard\DashboardPluginMeta.cs" />
     <Compile Include="Plugins\Dashboard\GithubDashboard.xaml.cs">
       <DependentUpon>GithubDashboard.xaml</DependentUpon>
     </Compile>
@@ -156,13 +157,15 @@
     <Compile Include="Plugins\MusicPlayer\MusicPlayerPluginSettingWindow.xaml.cs">
       <DependentUpon>MusicPlayerPluginSettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\PomodoroEngineSettingWindow.xaml.cs">
+    <Compile Include="Plugins\PomodoroEngine\PomodoroEnginePluginMeta.cs" />
+    <Compile Include="Plugins\PomodoroEngine\PomodoroEngineSettingWindow.xaml.cs">
       <DependentUpon>PomodoroEngineSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\SaveApplicationPossitionOnScreen\SaveApplicationPositionOnScreen.cs" />
     <Compile Include="Plugins\SoundNotifications\SoundNotificationSettingWindow.xaml.cs">
       <DependentUpon>SoundNotificationSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\InternalPluginAttribute.cs" />
     <Compile Include="WPF\Specifics\DependencyInjector.cs" />
     <Compile Include="Plugins\MusicPlayer\MusicPlayer.cs" />
     <Compile Include="WPF\Specifics\NewftonsJson.cs" />
@@ -209,7 +212,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plugins\PomodoroEngineSettingWindow.xaml">
+    <Page Include="Plugins\PomodoroEngine\PomodoroEngineSettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
