@@ -5,7 +5,7 @@ using YAPA.WPF;
 
 namespace YAPA.Shared
 {
-    [BuiltInPlugin]
+    [BuiltInPlugin(Hide = true)]
     public class SoundNotificationsPlugin : IPluginMeta
     {
         public string Title => "Sound notifications";

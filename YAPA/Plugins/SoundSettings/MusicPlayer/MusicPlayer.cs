@@ -6,7 +6,7 @@ using YAPA.WPF;
 
 namespace YAPA.Shared
 {
-    [BuiltInPlugin]
+    [BuiltInPlugin(Hide = true)]
     public class MusicPlayerPluginMetas : IPluginMeta
     {
         public string Title => "Music player";

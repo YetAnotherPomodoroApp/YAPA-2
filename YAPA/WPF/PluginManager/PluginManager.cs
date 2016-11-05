@@ -29,7 +29,11 @@ namespace YAPA.Shared
             get
             {
                 return Plugins
-                .Where(x => x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).Any())
+                .Where(x =>
+                {
+                    var attribute = x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
+                    return attribute != null && !((BuiltInPluginAttribute)attribute).Hide;
+                })
                 .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
             }
         }

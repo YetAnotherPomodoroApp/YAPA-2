@@ -6,7 +6,7 @@ using GDIScreen = System.Windows.Forms.Screen;
 
 namespace YAPA.WPF
 {
-    [BuiltInPlugin]
+    [BuiltInPlugin(Hide = true)]
     public class SaveApplicationPositionOnScreenPlugin : IPluginMeta
     {
         public string Title => "Save application position on screen";
