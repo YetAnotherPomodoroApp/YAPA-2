@@ -81,7 +81,7 @@ namespace YAPA
             builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 
             builder.RegisterType(typeof(ThemeManagerSettings));
-            builder.RegisterType(typeof(ThemeManagerSettingWindow));
+            //builder.RegisterType(typeof(ThemeManagerSettingWindow));
 
             builder.RegisterType(typeof(PluginManagerSettings));
             builder.RegisterType(typeof(PluginManagerSettingWindow));

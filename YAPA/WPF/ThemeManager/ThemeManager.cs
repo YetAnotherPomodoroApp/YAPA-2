@@ -1,9 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAPA.Contracts;
+using YAPA.WPF;
 
 namespace YAPA.Shared
 {
+    [BuiltInPlugin(Order = 4)]
+    public class DashboardPlugin : IPluginMeta
+    {
+        public string Title => "Themes";
+
+        public Type Plugin => null;
+
+        public Type Settings => null;
+
+        public Type SettingEditWindow => typeof(ThemeManagerSettingWindow);
+    }
 
     public class ThemeManager : IThemeManager
     {
