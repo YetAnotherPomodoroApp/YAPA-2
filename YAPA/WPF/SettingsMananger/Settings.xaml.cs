@@ -55,6 +55,9 @@ namespace YAPA
 
             SettingsTree.Items.Add(pluginsTree);
 
+            var aboutPage = new TreeViewItem { Header = "About" };
+            SettingsTree.Items.Add(aboutPage);
+
             RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -80,6 +83,10 @@ namespace YAPA
             if (treeItem.Header.ToString() == "Plugins")
             {
                 child = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
+            }
+            if (treeItem.Header.ToString() == "About")
+            {
+                child = new AboutPage();
             }
             else
             {

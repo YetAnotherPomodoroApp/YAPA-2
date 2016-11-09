@@ -169,6 +169,9 @@
     <Compile Include="Plugins\SoundSettings\SoundSettingWindow.xaml.cs">
       <DependentUpon>SoundSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\InternalPluginAttribute.cs" />
     <Compile Include="WPF\Specifics\DependencyInjector.cs" />
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayer.cs" />
@@ -225,6 +228,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\SoundSettings\SoundSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\AboutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
