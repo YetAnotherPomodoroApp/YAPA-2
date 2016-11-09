@@ -84,6 +84,7 @@ namespace YAPA
             {
                 child = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
             }
+            else
             if (treeItem.Header.ToString() == "About")
             {
                 child = new AboutPage();
