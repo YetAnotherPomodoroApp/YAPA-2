@@ -6,9 +6,17 @@ namespace YAPA.WPF
 {
     public class WpfEnviroment : IEnviroment
     {
-        static readonly string BaseDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        readonly string _settingsFileLocation = Path.Combine(BaseDir, @"YAPA2", @"settings.json");
-        readonly string _themeLocation = Path.Combine(BaseDir, @"YAPA2", @"settings.json");
+        static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
+        readonly string _settingsFileLocation = Path.Combine(BaseDir, @"settings.json");
+        readonly string _themeLocation = Path.Combine(BaseDir, @"settings.json");
+
+        public WpfEnviroment()
+        {
+            if (!Directory.Exists(BaseDir))
+            {
+                Directory.CreateDirectory(BaseDir);
+            }
+        }
 
         public string GetSettings()
         {
@@ -38,12 +46,12 @@ namespace YAPA.WPF
 
         public string GetPluginDirectory()
         {
-            return Path.Combine(BaseDir, @"YAPA2", @"Plugins");
+            return Path.Combine(BaseDir, @"Plugins");
         }
 
         public string GetThemeDirectory()
         {
-            return Path.Combine(BaseDir, @"YAPA2", @"Themes");
+            return Path.Combine(BaseDir, @"Themes");
         }
     }
 }
