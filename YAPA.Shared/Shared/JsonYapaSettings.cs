@@ -108,7 +108,16 @@ namespace YAPA.Shared
 
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
-            _settings = _json.Deserialize<SettingsDictionary>(_enviroment.GetSettings() ?? "[]");
+
+            var settingsContent = _enviroment.GetSettings();
+            if (string.IsNullOrEmpty(settingsContent))
+            {
+                _settings = new SettingsDictionary();
+            }
+            else
+            {
+                _settings = _json.Deserialize<SettingsDictionary>(settingsContent);
+            }
         }
 
         private bool _hasUnsavedChanges;
