@@ -17,6 +17,7 @@ Features:
 - [ ] Discover and load plugins
 - [x] Disable individual plugins
 - [ ] Discover and load themes
+- [x] Command line arguments
 
 - [x] Dashboard
   - [x] Pomodoro counter history similar to github contributions
