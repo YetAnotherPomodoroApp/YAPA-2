@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -269,14 +270,35 @@ namespace YAPA
             WindowState = WindowState.Minimized;
         }
 
+
+        //When mouse is no longer over app, wait 2s and if mouse don't come back over app hide minmax panel
+        //There has to be a better way to do it!!
+        CancellationTokenSource cancelMinMaxPanelHide = new CancellationTokenSource();
+
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
             MinExitPanel.Visibility = Visibility.Visible;
+            cancelMinMaxPanelHide.Cancel();
+            cancelMinMaxPanelHide = new CancellationTokenSource();
         }
 
-        private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
+        private async void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            MinExitPanel.Visibility = Visibility.Hidden;
+
+            await Task.Delay(TimeSpan.FromSeconds(2), cancelMinMaxPanelHide.Token).ContinueWith(
+                 x =>
+                {
+                    if (x.IsCanceled)
+                    {
+                        return;
+                    }
+
+                    Dispatcher.Invoke(() =>
+                   {
+                       MinExitPanel.Visibility = Visibility.Hidden;
+                   });
+                    cancelMinMaxPanelHide = new CancellationTokenSource();
+                });
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
