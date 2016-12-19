@@ -16,12 +16,13 @@ namespace YAPA
     public static class PomodoroExtensions
     {
 
-        public static PomodoroViewModel ToPomodoroViewModel(this PomodoroEntity pomo, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
+        public static PomodoroViewModel ToPomodoroViewModel(this PomodoroEntity pomo, int week, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
         {
             return new PomodoroViewModel()
             {
                 Count = pomo.Count,
                 DateTime = pomo.DateTime,
+                Week = week,
                 Level = level
             };
         }
@@ -34,5 +35,6 @@ namespace YAPA
         public int Count { get; set; }
 
         public PomodoroLevelEnum Level { get; set; }
+        public int Week { get; set; }
     }
 }

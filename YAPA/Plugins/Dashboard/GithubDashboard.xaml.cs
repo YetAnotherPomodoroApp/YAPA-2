@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using YAPA.Plugins.Dashboard;
 using YAPA.Shared;
 
 namespace YAPA.WPF.Plugins
@@ -39,19 +40,19 @@ namespace YAPA.WPF.Plugins
                             x =>
                                 new
                                 {
-                                    week =
-                                        cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
+                                    week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
+                                    month = cal.GetMonth(x.DateTime),
                                     x
                                 })
                         .ToList();
                 var max = pomodoros.Max(x => x.x.Count);
 
-                foreach (var pomodoro in pomodoros.GroupBy(x => x.week))
+                foreach (var pomodoro in pomodoros.GroupBy(x => x.month))
                 {
-                    var week = pomodoro.Select(x => x.x.ToPomodoroViewModel(GetLevelFromCount(x.x.Count, max)));
+                    var month = pomodoro.Select(x => x.x.ToPomodoroViewModel(x.week, GetLevelFromCount(x.x.Count, max)));
                     Dispatcher.Invoke(() =>
                     {
-                        WeekStackPanel.Children.Add(new PomodoroWeek(week));
+                        WeekStackPanel.Children.Add(new PomodoroMonth(month));
                     });
                 }
 

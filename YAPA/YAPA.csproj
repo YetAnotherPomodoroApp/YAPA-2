@@ -147,6 +147,9 @@
       <DependentUpon>GithubDashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Dashboard\ItemRepository.cs" />
+    <Compile Include="Plugins\Dashboard\PomodoroMonth.xaml.cs">
+      <DependentUpon>PomodoroMonth.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Dashboard\PomodoroWeek.xaml.cs">
       <DependentUpon>PomodoroWeek.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,10 @@
     <Page Include="Plugins\Dashboard\GithubDashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\Dashboard\PomodoroMonth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plugins\Dashboard\PomodoroWeek.xaml">
       <Generator>MSBuild:Compile</Generator>

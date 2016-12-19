@@ -19,10 +19,10 @@ namespace YAPA.Shared
 
         public IEnumerable<PomodoroEntity> GetPomodoros()
         {
-            var days = 190;
-            var today = DateTime.Now.Date.Date;
-            var fromDate = today.AddDays(-days);
-            var emptyPomodoros = Enumerable.Range(0, days + 1).Select(x => new PomodoroEntity() { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
+            //last 4 full months + current
+            var fromDate = DateTime.Now.Date.AddMonths(-4).AddDays(-DateTime.Now.Day + 1);
+            var totalDays = (int)(DateTime.Now.Date - fromDate).TotalDays;
+            var emptyPomodoros = Enumerable.Range(0, totalDays + 1).Select(x => new PomodoroEntity() { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 
             var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)

@@ -11,7 +11,7 @@ namespace YAPA.Plugins
     {
         public string Title => "Dashboard";
 
-        public Type Plugin => typeof(Dashboard);
+        public Type Plugin => typeof(Shared.Dashboard);
 
         public Type Settings => typeof(DashboardSettings);
 
