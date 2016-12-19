@@ -13,7 +13,7 @@ using YAPA.WPF.Plugins;
 
 namespace YAPA
 {
-    public partial class App : Application, ISingleInstanceApp
+    public partial class App : ISingleInstanceApp
     {
         private static IContainer Container { get; set; }
         private static IPluginManager PluginManager { get; set; }
@@ -157,11 +157,13 @@ namespace YAPA
 
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            if (args == null || args.Count == 0)
+            //the first index always contains the location of the exe
+            if (args == null || args.Count < 2 || Current.MainWindow == null)
             {
                 return true;
             }
-            return true;//MainWindow.ProcessCommandLineArgs(args.ToArray());
+            var arg = args[1];
+            return ((IApplication)Current.MainWindow).ProcessCommandLineArg(arg);
         }
 
         #endregion

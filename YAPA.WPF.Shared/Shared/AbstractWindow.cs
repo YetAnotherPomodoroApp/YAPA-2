@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
@@ -16,12 +17,12 @@ namespace YAPA.Shared
 
         public IMainViewModel ViewModel { get; set; }
 
-        public AbstractWindow()
+        protected AbstractWindow()
         {
 
         }
 
-        public AbstractWindow(IMainViewModel viewModel)
+        protected AbstractWindow(IMainViewModel viewModel)
         {
             ViewModel = viewModel;
             base.StateChanged += AbstractWindow_StateChanged;
@@ -38,7 +39,13 @@ namespace YAPA.Shared
         {
             Loaded?.Invoke();
             CreateJumpList();
-            //ProcessCommandLineArgs(SingleInstance<App>.CommandLineArgs.ToArray());
+
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                ProcessCommandLineArg(args.Last());
+            }
+
             AbstractWindow_StateChanged(this, EventArgs.Empty);
         }
 
@@ -109,13 +116,12 @@ namespace YAPA.Shared
         }
 
 
-        public bool ProcessCommandLineArgs(params string[] args)
+        public bool ProcessCommandLineArg(string args)
         {
-            if (args == null || args.Length <= 1)
-                return true;
+            if (string.IsNullOrEmpty(args))
+                return false;
 
-            //the first index always contains the location of the exe so we need to check the second index
-            var command = args[1].ToLowerInvariant();
+            var command = args.ToLowerInvariant();
             switch (command)
             {
                 case "/start":

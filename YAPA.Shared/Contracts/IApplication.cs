@@ -25,5 +25,7 @@ namespace YAPA.Contracts
         double Width { get; set; }
         double Height { get; set; }
         ApplicationState AppState { get; set; }
+
+        bool ProcessCommandLineArg(string args);
     }
 }
