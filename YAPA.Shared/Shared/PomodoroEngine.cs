@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using YAPA.Contracts;
 
 namespace YAPA.Shared
@@ -147,11 +148,15 @@ namespace YAPA.Shared
             Current = _pom1;
         }
 
-        private void PomodoroEngine_OnPomodoroCompleted()
+        private async void PomodoroEngine_OnPomodoroCompleted()
         {
             if (_settings.AutoStartBreak)
             {
-                Start();
+                await Task.Delay(TimeSpan.FromSeconds(1.5));
+                if (IsRunning == false)
+                {
+                    Start();
+                }
             }
         }
 
