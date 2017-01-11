@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using YAPA.Contracts;
+using YAPA.Shared;
 using YAPA.WPF;
 
 namespace YAPA
@@ -34,7 +35,7 @@ namespace YAPA
             SettingsTree.SelectedItemChanged += SettingsTree_SelectedItemChanged;
 
 
-            foreach (var rootSetting in _pluginManager.BuiltInPlugins.Where(x => x.SettingEditWindow != null))
+            foreach (var rootSetting in _pluginManager.BuiltInPlugins.Where(x => x.SettingEditWindow != null && !x.IsHidden()))
             {
                 var builtinPlugin = new TreeViewItem
                 {

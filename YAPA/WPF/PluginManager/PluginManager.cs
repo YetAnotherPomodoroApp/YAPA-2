@@ -32,7 +32,7 @@ namespace YAPA.Shared
                 .Where(x =>
                 {
                     var attribute = x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
-                    return attribute != null && !((BuiltInPluginAttribute)attribute).Hide;
+                    return attribute != null; ;
                 })
                 .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
             }
@@ -74,17 +74,17 @@ namespace YAPA.Shared
 
         private IEnumerable<IPlugin> RegisterPlugins(IDependencyInjector container)
         {
-            foreach (var plugin in Plugins.Where(x => x.Plugin != null))
+            foreach (var plugin in Plugins.Union(BuiltInPlugins).Where(x => x.Plugin != null))
             {
                 container.Register(plugin.Plugin, true);
             }
 
-            return ActivePlugins.Where(x => x.Plugin != null).Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
+            return ActivePlugins.Union(BuiltInPlugins).Where(x => x.Plugin != null).Select(plugin => (IPlugin)container.Resolve(plugin.Plugin)).ToList();
         }
 
         private void RegisterPluginSettings(IDependencyInjector container)
         {
-            foreach (var plugin in Plugins.Where(x => x.Settings != null))
+            foreach (var plugin in Plugins.Union(BuiltInPlugins).Where(x => x.Settings != null))
             {
                 container.Register(plugin.Settings);
             }
@@ -92,13 +92,21 @@ namespace YAPA.Shared
 
         private void RegisterPluginSettingsWindows(IDependencyInjector container)
         {
-            foreach (var plugin in Plugins.Where(x => x.SettingEditWindow != null))
+            foreach (var plugin in Plugins.Union(BuiltInPlugins).Where(x => x.SettingEditWindow != null))
             {
                 container.Register(plugin.SettingEditWindow);
             }
         }
     }
 
+    public static class PluginExtensions
+    {
+        public static bool IsHidden(this IPluginMeta plugin)
+        {
+            var attribute = plugin.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
+            return attribute != null && ((BuiltInPluginAttribute)attribute).Hide;
+        }
+    }
 
     public class PluginManagerSettings : IPluginSettings
     {
