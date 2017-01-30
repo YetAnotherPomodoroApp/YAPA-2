@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Forms;
 using YAPA.Contracts;
 using GDIScreen = System.Windows.Forms.Screen;
 
@@ -33,34 +32,25 @@ namespace YAPA.WPF
 
         private void App_Closing()
         {
-            _settings.IsFirstRun = false;
-
             var currentScreen = GDIScreen.FromHandle(_app.WindowHandle);
 
-            _settings.CurrentScreenHeight = currentScreen.WorkingArea.Height;
-            _settings.CurrentScreenWidth = currentScreen.WorkingArea.Width;
-
-            _settings.WindowTop = (int)_app.Top;
-            _settings.WindowLeft = (int)_app.Left;
+            _settings.WindowTopPerc = _app.Top / currentScreen.WorkingArea.Height;
+            _settings.WindowLeftPerc = _app.Left / currentScreen.WorkingArea.Width;
         }
 
         private void App_Loaded()
         {
-            var currentScreen = Screen.FromHandle(_app.WindowHandle);
+            var currentScreen = GDIScreen.FromHandle(_app.WindowHandle);
 
-            var screenChanged = (currentScreen.WorkingArea.Height != _settings.CurrentScreenHeight || currentScreen.WorkingArea.Width != _settings.CurrentScreenWidth);
-
-            // default position only for first run or when screen size changes
-            // position the clock at top / right, primary screen
-            if (_settings.IsFirstRun || screenChanged)
+            if (!double.IsNaN(_settings.WindowLeftPerc) && !double.IsNaN(_settings.WindowTopPerc))
             {
-                _app.Left = SystemParameters.PrimaryScreenWidth - _app.Width - 15.0;
-                _app.Top = 0;
+                _app.Top = currentScreen.WorkingArea.Height * _settings.WindowTopPerc;
+                _app.Left = currentScreen.WorkingArea.Width * _settings.WindowLeftPerc;
             }
-            else if (_settings.WindowLeft != -1 && _settings.WindowTop != -1)
+            else
             {
-                _app.Left = _settings.WindowLeft;
-                _app.Top = _settings.WindowTop;
+                _app.Left = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / currentScreen.WorkingArea.Width;
+                _app.Top = 0;
             }
         }
     }
@@ -69,34 +59,16 @@ namespace YAPA.WPF
     {
         private readonly ISettingsForComponent _settings;
 
-        public bool IsFirstRun
+        public double WindowLeftPerc
         {
-            get { return _settings.Get(nameof(IsFirstRun), true); }
-            set { _settings.Update(nameof(IsFirstRun), value); }
+            get { return _settings.Get(nameof(WindowLeftPerc), double.NaN); }
+            set { _settings.Update(nameof(WindowLeftPerc), value); }
         }
 
-        public int CurrentScreenHeight
+        public double WindowTopPerc
         {
-            get { return _settings.Get(nameof(CurrentScreenHeight), -1); }
-            set { _settings.Update(nameof(CurrentScreenHeight), value); }
-        }
-
-        public int CurrentScreenWidth
-        {
-            get { return _settings.Get(nameof(CurrentScreenWidth), -1); }
-            set { _settings.Update(nameof(CurrentScreenWidth), value); }
-        }
-
-        public int WindowLeft
-        {
-            get { return _settings.Get(nameof(WindowLeft), -1); }
-            set { _settings.Update(nameof(WindowLeft), value); }
-        }
-
-        public int WindowTop
-        {
-            get { return _settings.Get(nameof(WindowTop), -1); }
-            set { _settings.Update(nameof(WindowTop), value); }
+            get { return _settings.Get(nameof(WindowTopPerc), double.NaN); }
+            set { _settings.Update(nameof(WindowTopPerc), value); }
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
