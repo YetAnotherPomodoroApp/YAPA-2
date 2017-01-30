@@ -175,6 +175,7 @@
     <Compile Include="WPF\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\DependencyContainer.cs" />
     <Compile Include="WPF\InternalPluginAttribute.cs" />
     <Compile Include="WPF\Specifics\DependencyInjector.cs" />
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayer.cs" />
