@@ -8,6 +8,7 @@ namespace YAPA.WPF
     {
         static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
         readonly string _settingsFileLocation = Path.Combine(BaseDir, @"settings.json");
+        readonly string _localSettingsFileLocation = Path.Combine(BaseDir, @"localSettings.json");
         readonly string _themeLocation = Path.Combine(BaseDir, @"settings.json");
 
         public WpfEnviroment()
@@ -22,7 +23,7 @@ namespace YAPA.WPF
         {
             if (!File.Exists(_settingsFileLocation))
             {
-                return null;
+                return "{}";
             }
             using (var file = new StreamReader(_settingsFileLocation))
             {
@@ -52,6 +53,32 @@ namespace YAPA.WPF
         public string GetThemeDirectory()
         {
             return Path.Combine(BaseDir, @"Themes");
+        }
+
+        public string GetLocalSettings()
+        {
+            if (!File.Exists(_localSettingsFileLocation))
+            {
+                return "{}";
+            }
+            using (var file = new StreamReader(_localSettingsFileLocation))
+            {
+                return file.ReadToEnd();
+            }
+        }
+
+        public void SaveLocalSettings(string settings)
+        {
+            var settingDir = Path.GetDirectoryName(_localSettingsFileLocation);
+            if (!Directory.Exists(settingDir))
+            {
+                Directory.CreateDirectory(settingDir);
+            }
+
+            using (var file = new StreamWriter(_localSettingsFileLocation))
+            {
+                file.Write(settings);
+            }
         }
     }
 }

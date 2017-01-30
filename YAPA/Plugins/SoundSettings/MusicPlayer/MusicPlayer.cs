@@ -83,26 +83,26 @@ namespace YAPA.Shared
 
         public string WorkSong
         {
-            get { return _settings.Get<string>(nameof(WorkSong), null); }
-            set { _settings.Update(nameof(WorkSong), value); }
+            get { return _settings.Get<string>(nameof(WorkSong), null, true); }
+            set { _settings.Update(nameof(WorkSong), value, true); }
         }
 
         public bool RepeatWorkSong
         {
-            get { return _settings.Get(nameof(RepeatWorkSong), false); }
-            set { _settings.Update(nameof(RepeatWorkSong), value); }
+            get { return _settings.Get(nameof(RepeatWorkSong), false, true); }
+            set { _settings.Update(nameof(RepeatWorkSong), value, true); }
         }
 
         public string BreakSong
         {
-            get { return _settings.Get<string>(nameof(BreakSong), null); }
-            set { _settings.Update(nameof(BreakSong), value); }
+            get { return _settings.Get<string>(nameof(BreakSong), null, true); }
+            set { _settings.Update(nameof(BreakSong), value, true); }
         }
 
         public bool RepeatBreakSong
         {
-            get { return _settings.Get(nameof(RepeatBreakSong), false); }
-            set { _settings.Update(nameof(RepeatBreakSong), value); }
+            get { return _settings.Get(nameof(RepeatBreakSong), false, true); }
+            set { _settings.Update(nameof(RepeatBreakSong), value, true); }
         }
 
         public MusicPlayerPluginSettings(ISettings settings)
