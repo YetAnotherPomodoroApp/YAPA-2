@@ -10,6 +10,13 @@ namespace YAPA
         {
 
         }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PomodoroEntity>().HasKey(x => x.Id);
+            base.OnModelCreating(modelBuilder);
+        }
+
+
         public DbSet<PomodoroEntity> Pomodoros { get; set; }
     }
 

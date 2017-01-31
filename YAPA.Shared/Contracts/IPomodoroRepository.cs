@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace YAPA.Contracts
@@ -14,12 +13,10 @@ namespace YAPA.Contracts
 
     public class PomodoroEntity
     {
-        [Key]
         public int Id { get; set; }
 
         public DateTime DateTime { get; set; }
 
         public int Count { get; set; }
-
     }
 }
