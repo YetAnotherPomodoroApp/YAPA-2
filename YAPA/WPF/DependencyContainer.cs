@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using YAPA.Contracts;
 using YAPA.Shared;
@@ -89,6 +91,7 @@ namespace YAPA.WPF
 
         private static IEnumerable<IPluginMeta> GetPluginMetas()
         {
+
             foreach (IPluginMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
                                          where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
                                          select (IPluginMeta)Activator.CreateInstance(plugin))
@@ -96,36 +99,32 @@ namespace YAPA.WPF
                 yield return meta;
             }
 
-            foreach (IPluginMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Shared.dll").GetTypes()
-                                         where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
-                                         select (IPluginMeta)Activator.CreateInstance(plugin))
+            foreach (var externalPlugin in GetTypes<IPluginMeta>("Plugins"))
             {
-                yield return meta;
+                yield return externalPlugin;
             }
         }
 
         private static IEnumerable<IThemeMeta> GetThemeMetas()
         {
-            foreach (IThemeMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
-                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
-                                        select (IThemeMeta)Activator.CreateInstance(plugin))
-            {
-                yield return meta;
-            }
-
-            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Shared.dll").GetTypes()
-                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
-                                        select (IThemeMeta)Activator.CreateInstance(plugin))
-            {
-                yield return meta;
-            }
-
-            foreach (IThemeMeta meta in from plugin in Assembly.LoadFrom("YAPA.WPF.Themes.dll").GetTypes()
-                                        where plugin.GetInterfaces().Contains(typeof(IThemeMeta))
-                                        select (IThemeMeta)Activator.CreateInstance(plugin))
-            {
-                yield return meta;
-            }
+            return GetTypes<IThemeMeta>("Themes");
         }
+
+        private static IEnumerable<T> GetTypes<T>(params string[] folders)
+        {
+            var themeFiles = folders
+                    .Where(Directory.Exists)
+                    .SelectMany(x => Directory.GetFiles(x, "*.dll"))
+                    .Distinct();
+
+            var exePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            var metas = themeFiles.SelectMany(x => Assembly.LoadFile(Path.Combine(exePath, x)).GetTypes())
+              .Where(x => x.GetInterfaces().Contains(typeof(IThemeMeta)))
+              .Select(x => (T)Activator.CreateInstance(x)).ToList();
+
+            return metas;
+        }
+
     }
 }

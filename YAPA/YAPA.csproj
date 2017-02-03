@@ -41,7 +41,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -50,7 +50,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -341,10 +341,6 @@
     <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
       <Project>{893850db-2b45-4942-b513-73f1d58a8026}</Project>
       <Name>YAPA.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YAPA.WPF.Themes\YAPA.WPF.Themes.csproj">
-      <Project>{3cb19c81-cf0d-466b-9cd6-13fa90ce1329}</Project>
-      <Name>YAPA.WPF.Themes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
