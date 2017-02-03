@@ -39,7 +39,7 @@ namespace YAPA
                         var green = new Rectangle();
                         green.Width = 11;
                         green.Height = 11;
-                        green.Fill = Brushes.White;
+                        green.Fill = Brushes.Transparent;
                         green.Margin = new Thickness(0, 0, 0, 1);
                         PomodorPanel.Children.Add(green);
                     }

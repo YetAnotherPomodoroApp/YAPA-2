@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:YAPA.Plugins.Dashboard"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Margin="0,0,5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Margin="4,0,0,0" Grid.Row="0" x:Name="MonthName"></TextBlock>
-        <StackPanel Grid.Row="1" x:Name="PomodorWeeks" Orientation="Horizontal"></StackPanel>
+        <TextBlock Margin="4,0,0,0" Grid.Row="0"  x:Name="MonthName"></TextBlock>
+        <StackPanel Grid.Row="1" x:Name="PomodorWeeks" Orientation="Horizontal" HorizontalAlignment="Left"></StackPanel>
     </Grid>
 </UserControl>
