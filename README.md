@@ -14,9 +14,9 @@ Features:
 - [x] Hide in taskbar
 - [x] Remember applications position
 - [x] Control app using taskbar jumplist
-- [ ] Discover and load plugins
+- [x] Discover and load plugins
 - [x] Disable individual plugins
-- [ ] Discover and load themes
+- [x] Discover and load themes
 - [x] Command line arguments
 
 - [x] Dashboard
