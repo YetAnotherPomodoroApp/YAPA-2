@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using YAPA.Contracts;
 
 namespace YAPA
@@ -11,7 +12,8 @@ namespace YAPA
 
         public ItemRepository()
         {
-            context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2", "Dashboard"));
+            context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2","Yapa.db"));
+            context.Database.Migrate();
         }
 
         public IQueryable<PomodoroEntity> Pomodoros => context.Pomodoros;

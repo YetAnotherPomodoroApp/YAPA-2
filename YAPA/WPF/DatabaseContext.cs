@@ -1,21 +1,35 @@
 ﻿using System;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using YAPA.Contracts;
+using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace YAPA
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext(string connString) : base(connString)
-        {
+        private readonly string _dbPath;
 
-        }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public DatabaseContext()
         {
+            
+        }
+
+        public DatabaseContext(string dbPath)
+        {
+            _dbPath = dbPath;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite($"Filename={_dbPath}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
             modelBuilder.Entity<PomodoroEntity>().HasKey(x => x.Id);
             base.OnModelCreating(modelBuilder);
         }
-
 
         public DbSet<PomodoroEntity> Pomodoros { get; set; }
     }
