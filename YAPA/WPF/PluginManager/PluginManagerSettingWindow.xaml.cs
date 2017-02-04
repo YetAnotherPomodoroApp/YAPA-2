@@ -10,33 +10,29 @@ namespace YAPA.WPF
 {
     public partial class PluginManagerSettingWindow : UserControl
     {
-        private readonly IPluginManager _plugins;
         private readonly PluginManagerSettings _settings;
-        private readonly ISettings _globalSettings;
         private readonly ISettingManager _settingManager;
         public List<PluginViewModel> Plugins { get; set; }
         public ICommand TogglePlugin { get; set; }
-        private List<string> _disabledPlugins;
+        private readonly List<string> _disabledPlugins;
 
         public PluginManagerSettingWindow(IPluginManager plugins, PluginManagerSettings settings, ISettings globalSettings, ISettingManager settingManager)
         {
-            _plugins = plugins;
             _settings = settings;
             _settings.DeferChanges();
 
-            _globalSettings = globalSettings;
             _settingManager = settingManager;
-            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             _disabledPlugins = _settings.DisabledPlugins;
 
             Plugins = new List<PluginViewModel>();
-            foreach (var pluginMeta in _plugins.CustomPlugins)
+            foreach (var pluginMeta in plugins.CustomPlugins)
             {
                 Plugins.Add(new PluginViewModel
                 {
                     Title = pluginMeta.Title,
-                    Disabled = _disabledPlugins.Contains(pluginMeta.Title)
+                    Enabled = !_disabledPlugins.Contains(pluginMeta.Title)
                 });
             }
 
@@ -57,17 +53,17 @@ namespace YAPA.WPF
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             var context = ((CheckBox)sender).DataContext as PluginViewModel;
-            if (context.Disabled)
-            {
-                _disabledPlugins.Add(context.Title);
-            }
-            else
+            if (context.Enabled)
             {
                 var existing = _disabledPlugins.FirstOrDefault(x => x == context.Title);
                 if (existing != null)
                 {
                     _disabledPlugins.Remove(existing);
                 }
+            }
+            else
+            {
+                _disabledPlugins.Add(context.Title);
             }
 
             if (_disabledPlugins.Count == 0)
@@ -84,7 +80,7 @@ namespace YAPA.WPF
     public class PluginViewModel
     {
         public string Title { get; set; }
-        public bool Disabled { get; set; }
+        public bool Enabled { get; set; }
     }
 
 }

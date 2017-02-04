@@ -11,7 +11,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" x:Name="Panel" >
-                        <CheckBox IsChecked="{Binding Disabled, Mode=TwoWay}" Click="ButtonBase_OnClick" Margin="5,5,5,0" ></CheckBox>
+                        <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Click="ButtonBase_OnClick" Margin="5,5,5,0" ></CheckBox>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding Title}" Margin="0,5"></TextBlock>
                     </StackPanel>
                 </DataTemplate>
