@@ -19,7 +19,7 @@
                 Log.LogError(null, null, null, null, 0, 0, 0, 0, String.Format("Could not find version file: {0}", fileName), new object[0]);
               }
               string content = File.ReadAllText(fileName);
-              File.WriteAllText(
+			  File.WriteAllText(
                 fileName,
                 Regex.Replace(
                   content,

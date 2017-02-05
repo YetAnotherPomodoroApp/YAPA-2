@@ -65,6 +65,14 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <PropertyGroup>
     <ManifestCertificateThumbprint>A281C455581651B73B00AA333AA2B0768A07C1E2</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>

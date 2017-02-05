@@ -178,6 +178,7 @@ namespace YAPA.Shared
                 Description = "Start new Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/reset",
+                IconResourceIndex = 4
             };
             jumpList.JumpItems.Add(resetTask);
 
@@ -187,6 +188,7 @@ namespace YAPA.Shared
                 Description = "Stop Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/stop",
+                IconResourceIndex = 2
             };
             jumpList.JumpItems.Add(stopTask);
 
@@ -196,6 +198,7 @@ namespace YAPA.Shared
                 Description = "Show YAPA settings",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/settings",
+                IconResourceIndex = 5
             };
             jumpList.JumpItems.Add(settingsTask);
 
@@ -205,6 +208,7 @@ namespace YAPA.Shared
                 Description = "Go to YAPA home page",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/homepage",
+                IconResourceIndex = 6
             };
 
             jumpList.Apply();
