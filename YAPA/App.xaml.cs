@@ -3,6 +3,7 @@ using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using Squirrel;
 using YAPA.Contracts;
 using YAPA.Shared;
 using YAPA.WPF;
@@ -47,6 +48,14 @@ namespace YAPA
             Current.Shutdown();
         }
 
+
+        private static async void Update()
+        {
+            using (var mgr = new UpdateManager(@"C:\Users\Intas\Source\Repos\YAPA-2\Releases"))
+            {
+                await mgr.UpdateApp();
+            }
+        }
 
         public void Init()
         {

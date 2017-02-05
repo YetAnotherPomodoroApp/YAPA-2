@@ -1,0 +1,1 @@
+..\packages\squirrel.windows.1.5.2\tools\squirrel --releasify YAPA2.1.0.4.nupkg --releaseDir=Releases

@@ -32,7 +32,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="SettingsTree">
+        <TreeView Grid.Column="0" Grid.Row="0" x:Name="SettingsTree">
             <TreeView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock HorizontalAlignment="Left" Text="{Binding Header}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
@@ -48,6 +48,8 @@
         </StackPanel>
 
 
+        <TextBlock Grid.Column="0" Grid.Row="1" x:Name="Version" VerticalAlignment="Bottom" Margin="4"></TextBlock>
+        
         <StackPanel Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Yellow">
             <TextBlock Text="Restart application to apply changes"></TextBlock>
         </StackPanel>

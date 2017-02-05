@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>YAPA2</id>
+    <!-- version will be replaced by MSBuild -->
+    <version>0.0.0.0</version>
+    <title>YAPA2</title>
+    <authors>Šarūnas Intas</authors>
+    <description>Pomodoro application</description>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2017</copyright>
+    <dependencies />
+  </metadata>
+  <files>
+    <file src="..\Release\*.*" target="lib\net461\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+	<file src="..\Release\Themes\*.*" target="lib\net461\Themes\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+	<file src="..\Release\x64\*.*" target="lib\net461\x64\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+	<file src="..\Release\x86\*.*" target="lib\net461\x86\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+	<file src="..\Release\Resources\*.*" target="lib\net461\Resources\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+  </files>
+</package>

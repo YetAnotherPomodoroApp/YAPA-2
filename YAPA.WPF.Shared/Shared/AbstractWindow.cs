@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Shell;
@@ -167,7 +168,7 @@ namespace YAPA.Shared
                 Description = "Start Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/start",
-                IconResourceIndex = 7
+                IconResourceIndex = 1
             };
             jumpList.JumpItems.Add(startTask);
 
@@ -177,7 +178,6 @@ namespace YAPA.Shared
                 Description = "Start new Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/reset",
-                IconResourceIndex = 2
             };
             jumpList.JumpItems.Add(resetTask);
 
@@ -187,7 +187,6 @@ namespace YAPA.Shared
                 Description = "Stop Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/stop",
-                IconResourceIndex = 3
             };
             jumpList.JumpItems.Add(stopTask);
 
@@ -197,7 +196,6 @@ namespace YAPA.Shared
                 Description = "Show YAPA settings",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/settings",
-                IconResourceIndex = 5
             };
             jumpList.JumpItems.Add(settingsTask);
 
@@ -207,9 +205,7 @@ namespace YAPA.Shared
                 Description = "Go to YAPA home page",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
                 Arguments = "/homepage",
-                IconResourceIndex = 6
             };
-            jumpList.JumpItems.Add(homepageTask);
 
             jumpList.Apply();
         }

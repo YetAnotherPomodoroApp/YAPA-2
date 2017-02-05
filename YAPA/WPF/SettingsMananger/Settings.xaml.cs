@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -60,6 +61,15 @@ namespace YAPA
             SettingsTree.Items.Add(aboutPage);
 
             RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+
+            Loaded += Settings_Loaded;
+        }
+
+        private void Settings_Loaded(object sender, RoutedEventArgs e)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            Version.Text = assembly.GetName().Version.ToString(3);
         }
 
         private void _mananger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
