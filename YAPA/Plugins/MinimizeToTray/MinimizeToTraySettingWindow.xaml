@@ -8,20 +8,13 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <CheckBox IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"  Grid.Column="0" Grid.Row="0" Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Minimize to tray" Grid.Column="1" Grid.Row="0" Margin="0,5"></TextBlock>
-
-            <CheckBox IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Show in taskbar" Grid.Column="1" Grid.Row="1"  Margin="0,5"></TextBlock>
+            <CheckBox  IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" >Minimize to tray</CheckBox>
+            <CheckBox  IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" >Show in taskbar</CheckBox>
 
         </Grid>
     </Grid>

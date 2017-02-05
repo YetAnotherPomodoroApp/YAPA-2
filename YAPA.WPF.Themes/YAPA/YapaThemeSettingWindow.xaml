@@ -19,17 +19,16 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Use white text" Grid.Column="0" Grid.Row="0"></TextBlock>
-            <CheckBox IsChecked="{Binding UseWhiteText, Mode=TwoWay}"  Grid.Column="1" Grid.Row="0"></CheckBox>
-
+            <CheckBox  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Use white text</CheckBox>
+            
             <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
-            <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
+            <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
 
             <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
-            <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+            <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
 
             <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3"></TextBlock>
-            <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"  Minimum="150" Maximum="400" Interval="1" />
+            <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"  Minimum="150" Maximum="400" Interval="1" />
 
         </Grid>
     </Grid>

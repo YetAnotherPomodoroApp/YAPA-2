@@ -9,9 +9,7 @@
       d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Play period start\end sounds" Margin="0,5"></TextBlock>
-        </StackPanel>
+        <CheckBox  IsChecked="{Binding PlayPeriodStartEndSounds, Mode=TwoWay}">Play period start\end sounds</CheckBox>
+
     </Grid>
 </UserControl>

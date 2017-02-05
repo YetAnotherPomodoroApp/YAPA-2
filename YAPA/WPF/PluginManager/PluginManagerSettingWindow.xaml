@@ -3,17 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:YAPA.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
     <Grid>
         <ListBox x:Name="PluginList">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" x:Name="Panel" >
-                        <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Click="ButtonBase_OnClick" Margin="5,5,5,0" ></CheckBox>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding Title}" Margin="0,5"></TextBlock>
-                    </StackPanel>
+                    <CheckBox 
+                        IsChecked="{Binding Enabled, Mode=TwoWay}"
+                        Content="{Binding Title}"></CheckBox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

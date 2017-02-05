@@ -25,27 +25,20 @@
         <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding WorkSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WorkSong" HorizontalContentAlignment="Stretch" 
                  HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2" Margin="2"></TextBox>
-        <Button HorizontalAlignment="Right" x:Name="BrowseWorkSong" Grid.Column="2" Grid.Row="2">
-            <materialDesign:PackIcon Kind="Folder" />
+        <Button HorizontalAlignment="Right" x:Name="BrowseWorkSong" Style="{DynamicResource MaterialDesignFlatButton}"  Grid.Column="2" Grid.Row="2">
+            Browse
         </Button>
 
-        <StackPanel Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Repeat work song" Margin="0,5"></TextBlock>
-        </StackPanel>
+        <CheckBox  IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" >Repeat work song</CheckBox>
 
         <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding BreakSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="BreakSong" HorizontalContentAlignment="Stretch" 
                  HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4" Margin="2"></TextBox>
 
-        <Button HorizontalAlignment="Right" x:Name="BrowseBreakSong"  Grid.Column="2" Grid.Row="4">
-            <materialDesign:PackIcon Kind="Folder" />
+        <Button HorizontalAlignment="Right" x:Name="BrowseBreakSong" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="2" Grid.Row="4">
+            Browse
         </Button>
-
-        <StackPanel Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}"  Margin="5,5,5,0"></CheckBox>
-            <TextBlock Text="Repeat break song" Margin="0,5"></TextBlock>
-        </StackPanel>
+        <CheckBox  IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Repeat break song</CheckBox>
 
     </Grid>
 </UserControl>

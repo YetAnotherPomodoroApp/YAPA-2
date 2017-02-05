@@ -33,7 +33,11 @@
         </Grid.RowDefinitions>
 
         <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="SettingsTree">
-
+            <TreeView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Left" Text="{Binding Header}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage" Margin="10">
         </StackPanel>
