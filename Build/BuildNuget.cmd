@@ -1,1 +1,2 @@
-..\.nuget\nuget pack Yapa2.nuspec -version 1.0.4 -Properties Configuration=Release
+set version=%1
+..\.nuget\nuget pack Yapa2.nuspec -version %version% -Properties Configuration=Release

@@ -8,7 +8,7 @@
  
     <ItemGroup>
         <RegexTransform Include="$(SolutionRoot)\..\CommonAssemblyInfo.cs">
-            <Find>(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+\.(?&lt;revision&gt;\d+)</Find>
+            <Find>(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.(?&lt;revision&gt;\d+)</Find>
             <ReplaceWith>$(BUILD_NUMBER)</ReplaceWith>
         </RegexTransform>
     </ItemGroup>
