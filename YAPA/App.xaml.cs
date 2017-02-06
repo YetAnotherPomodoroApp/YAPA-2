@@ -32,6 +32,7 @@ namespace YAPA
 
                 //Load theme
                 Current.MainWindow = (Window)dCont.MainWindow;
+                Current.MainWindow.Loaded += (s, a) => { Update(); };
 
                 Current.MainWindow.Show();
                 Current.MainWindow.Closed += MainWindow_Closed;
@@ -51,7 +52,7 @@ namespace YAPA
 
         private static async void Update()
         {
-            using (var mgr = new UpdateManager(@"C:\Users\Intas\Source\Repos\YAPA-2\Releases"))
+            using (var mgr = new UpdateManager(@"http://s1.floatas.net/installers/yapa-2/"))
             {
                 await mgr.UpdateApp();
             }
