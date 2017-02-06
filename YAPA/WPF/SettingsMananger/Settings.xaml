@@ -39,7 +39,7 @@
                 </DataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage" Margin="10">
+        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="SettingPage" Margin="10,20,10,10">
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -50,9 +50,9 @@
 
         <TextBlock Grid.Column="0" Grid.Row="1" x:Name="Version" VerticalAlignment="Bottom" Margin="4"></TextBlock>
         
-        <StackPanel Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,40,0" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Yellow">
-            <TextBlock Text="Restart application to apply changes"></TextBlock>
-        </StackPanel>
+        <Border Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Gold" CornerRadius="8,8,8,8" >
+            <TextBlock Text="Restart application to apply changes" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Border>
 
     </Grid>
 </Window>
