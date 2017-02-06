@@ -50,7 +50,7 @@ namespace YAPA.WPF
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void PluginChanged(object sender, RoutedEventArgs e)
         {
             var context = ((CheckBox)sender).DataContext as PluginViewModel;
             if (context.Enabled)

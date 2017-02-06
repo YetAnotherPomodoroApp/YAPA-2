@@ -12,7 +12,7 @@
                 <DataTemplate>
                     <CheckBox 
                         IsChecked="{Binding Enabled, Mode=TwoWay}"
-                        Content="{Binding Title}"></CheckBox>
+                        Content="{Binding Title}" Checked="PluginChanged" Unchecked="PluginChanged"></CheckBox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
