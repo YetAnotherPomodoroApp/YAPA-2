@@ -36,7 +36,7 @@ namespace YAPA.WPF
 
         }
 
-        public void Play(bool repeat = false)
+        public void Play(bool repeat = false, double volume = 0.5)
         {
             if (_musicPlayer.Source == null || !File.Exists(_musicPlayer.Source.OriginalString) || IsPlaying)
             {
@@ -45,6 +45,7 @@ namespace YAPA.WPF
 
             _repeat = repeat;
 
+            _musicPlayer.Volume = volume;
             _musicPlayer.Play();
             IsPlaying = true;
         }

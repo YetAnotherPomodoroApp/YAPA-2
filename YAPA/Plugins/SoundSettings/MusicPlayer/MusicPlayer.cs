@@ -72,7 +72,7 @@ namespace YAPA.Shared
             if (File.Exists(songToPlay))
             {
                 _musicPlayer.Load(songToPlay);
-                _musicPlayer.Play(repeat);
+                _musicPlayer.Play(repeat, _engineSettings.Volume);
             }
         }
     }

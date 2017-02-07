@@ -20,6 +20,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Work time" Grid.Column="0" Grid.Row="0"></TextBlock>
@@ -87,6 +88,10 @@
             <CheckBox  IsChecked="{Binding AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" >Auto start break</CheckBox>
             <CheckBox  IsChecked="{Binding CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" >Count backwards</CheckBox>
             <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Disable sound notifications</CheckBox>
+
+            <TextBlock Text="Volume" Grid.Column="0" Grid.Row="6"></TextBlock>
+            <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="6" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+
         </Grid>
     </Grid>
 </UserControl>

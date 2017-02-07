@@ -46,14 +46,13 @@ namespace YAPA.Shared
         private void PlayPeriodStart()
         {
             _musicPlayer.Load(_settings.PeriodStartSound);
-            _musicPlayer.Play();
+            _musicPlayer.Play(volume: _engineSettings.Volume);
         }
-
 
         private void PlayPeriodEnd()
         {
             _musicPlayer.Load(_settings.PeriodEndSound);
-            _musicPlayer.Play();
+            _musicPlayer.Play(volume: _engineSettings.Volume);
         }
 
         private void Play()

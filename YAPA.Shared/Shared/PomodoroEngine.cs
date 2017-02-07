@@ -227,6 +227,12 @@ namespace YAPA.Shared
             set { _settings.Update(nameof(DisableSoundNotifications), value); }
         }
 
+        public double Volume
+        {
+            get { return _settings.Get(nameof(Volume), 0.5); }
+            set { _settings.Update(nameof(Volume), value); }
+        }
+
         public PomodoroEngineSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(PomodoroEngine));
