@@ -86,7 +86,7 @@ namespace YAPA.Shared
 
         public string SelectedTheme
         {
-            get { return _settings.Get<string>(nameof(SelectedTheme), "Default theme"); }
+            get { return _settings.Get<string>(nameof(SelectedTheme), "YAPA 1.0"); }
             set { _settings.Update(nameof(SelectedTheme), value); }
         }
 
