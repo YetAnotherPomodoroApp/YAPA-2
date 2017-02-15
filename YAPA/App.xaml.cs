@@ -32,7 +32,9 @@ namespace YAPA
 
                 //Load theme
                 Current.MainWindow = (Window)dCont.MainWindow;
+#if !DEBUG
                 Current.MainWindow.Loaded += (s, a) => { Update(); };
+#endif
 
                 Current.MainWindow.Show();
                 Current.MainWindow.Closed += MainWindow_Closed;
@@ -52,12 +54,17 @@ namespace YAPA
 
         private static async void Update()
         {
-#if !DEBUG
-            using (var mgr = new UpdateManager(@"http://s1.floatas.net/installers/yapa-2/"))
+            try
             {
-                await mgr.UpdateApp();
+                using (var mgr = new UpdateManager(@"http://s1.floatas.net/installers/yapa-2/"))
+                {
+                    await mgr.UpdateApp();
+                }
             }
-#endif
+            catch (Exception)
+            {
+
+            }
         }
 
         public void Init()
@@ -65,7 +72,7 @@ namespace YAPA
             InitializeComponent();
         }
 
-#region ISingleInstanceApp Members
+        #region ISingleInstanceApp Members
 
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
@@ -78,6 +85,6 @@ namespace YAPA
             return ((IApplication)Current.MainWindow).ProcessCommandLineArg(arg);
         }
 
-#endregion
+        #endregion
     }
 }

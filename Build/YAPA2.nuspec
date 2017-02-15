@@ -12,10 +12,10 @@
     <dependencies />
   </metadata>
   <files>
-    <file src="..\Release\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
-	<file src="..\Release\Themes\*.*" target="lib\net45\Themes\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
-	<file src="..\Release\x64\*.*" target="lib\net45\x64\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
-	<file src="..\Release\x86\*.*" target="lib\net45\x86\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
-	<file src="..\Release\Resources\*.*" target="lib\net45\Resources\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+    <file src="..\Release\*.*" target="lib\net45\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
+	<file src="..\Release\Themes\*.*" target="lib\net45\Themes\" exclude="**\*.pdb;*.nupkg;**\*.vshost.*"/>
+	<file src="..\Release\x64\*.*" target="lib\net45\x64\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
+	<file src="..\Release\x86\*.*" target="lib\net45\x86\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
+	<file src="..\Release\Resources\*.*" target="lib\net45\Resources\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
   </files>
 </package>
