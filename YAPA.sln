@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3CB19C81-CF0D-466B-9CD6-13FA90CE1329} = {3CB19C81-CF0D-466B-9CD6-13FA90CE1329}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A521D07-7B08-4AB7-A9EF-FC6C3FD2DF35}"
 	ProjectSection(SolutionItems) = preProject

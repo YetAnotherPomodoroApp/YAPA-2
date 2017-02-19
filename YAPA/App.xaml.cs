@@ -20,7 +20,7 @@ namespace YAPA
         [STAThread]
         public static void Main()
         {
-            if (SingleInstance<App>.InitializeAsFirstInstance("AdvancedJumpList"))
+            if (SingleInstance<App>.InitializeAsFirstInstance("YAPA2"))
             {
                 var application = new App();
 

@@ -36,7 +36,7 @@
 
     <Grid >
 
-        <Viewbox >
+        <Viewbox>
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -94,14 +94,6 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </Button.Effect>
                     </Button>
                     <Button x:Name="Exit"
                 HorizontalAlignment="Right" 
@@ -109,8 +101,8 @@
                 Cursor="Hand"
                 Content="x"
                 ToolTip="Close"
-                Height="10"
-                Width="10"
+                Height="15"
+                Width="15"
                     Click="Exit_OnClick">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -130,14 +122,6 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </Button.Effect>
                     </Button>
                 </StackPanel>
 
@@ -149,7 +133,7 @@
                 Cursor="Hand"
                 Content="START"
                 ToolTip="Start Pomodoro"
-                Height="10"
+                Height="15"
                 Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -161,7 +145,8 @@
                                FontSize="11" 
                                Opacity="{Binding ClockOpacity}"
                                FontFamily="Segoe UI"
-                               FontStretch="UltraCondensed"/>
+                               FontStretch="Normal"
+                                           />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -169,14 +154,6 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </Button.Effect>
                     </Button>
 
                     <Button x:Name="Stop"
@@ -186,7 +163,7 @@
                 Cursor="Hand"
                 Content="STOP"
                 ToolTip="Stop Pomodoro"
-                Height="9"
+                Height="15"
                 Width="38"  >
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -206,14 +183,6 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </Button.Effect>
                     </Button>
 
                     <TextBlock x:Name="CurrentPeriod"
@@ -229,14 +198,6 @@
                    Text="{Binding PomodorosCompleted}"
                    ToolTip="Current period"
                    Width="10" >
-                        <TextBlock.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </TextBlock.Effect>
                     </TextBlock>
                 </StackPanel>
                 <!--</StackPanel>-->
