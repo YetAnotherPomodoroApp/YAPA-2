@@ -2,6 +2,7 @@
 using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using Squirrel;
 using YAPA.Contracts;
@@ -33,7 +34,10 @@ namespace YAPA
                 //Load theme
                 Current.MainWindow = (Window)dCont.MainWindow;
 #if !DEBUG
-                Current.MainWindow.Loaded += (s, a) => { Update(); };
+                Task.Run(async () =>
+                {
+                    await Update();
+                });
 #endif
 
                 Current.MainWindow.Show();
@@ -51,12 +55,11 @@ namespace YAPA
             Current.Shutdown();
         }
 
-
-        private static async void Update()
+        private static async Task Update()
         {
             try
             {
-                using (var mgr = new UpdateManager(@"http://s1.floatas.net/installers/yapa-2/"))
+                using (var mgr = new UpdateManager(@"ftp://s1.floatas.net/yapa-2/"))
                 {
                     await mgr.UpdateApp();
                 }
