@@ -10,6 +10,7 @@
         MouseLeftButtonDown="Settings_OnMouseLeftButtonDown"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="Settings" Height="300" Width="700"
         Topmost="True">
     <Window.Resources>
