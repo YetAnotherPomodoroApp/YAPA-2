@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <StackPanel>
+            <Image Source="../Resources/Pomodoro.png" Height="90"></Image>
+            <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application 2 follow at:"/><LineBreak />
+                <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/YetAnotherPomodoroApp/YAPA-2" TextDecorations=""><Run Text="https://github.com/YetAnotherPomodoroApp/YAPA-2"/></Hyperlink></TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>

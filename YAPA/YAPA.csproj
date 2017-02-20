@@ -535,6 +535,9 @@
     <Resource Include="Resources\loader.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\Pomodoro.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\pomoTray.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
