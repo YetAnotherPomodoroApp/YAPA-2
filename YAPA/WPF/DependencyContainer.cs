@@ -68,6 +68,8 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(PluginManagerSettings));
             builder.RegisterType(typeof(PluginManagerSettingWindow));
 
+            builder.RegisterType(typeof(AboutPage));
+
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
 
@@ -79,6 +81,8 @@ namespace YAPA.WPF
 
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
+
+
 
             var container = builder.Build();
 

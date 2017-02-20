@@ -98,7 +98,7 @@ namespace YAPA
             else
             if (treeItem.Header.ToString() == "About")
             {
-                child = new AboutPage();
+                child = (UserControl)_container.Resolve(typeof(AboutPage));
             }
             else
             {
