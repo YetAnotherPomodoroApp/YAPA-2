@@ -17,6 +17,7 @@ namespace YAPA
         private readonly IDependencyInjector _container;
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        private UserControl _settingPage = null;
 
         public Settings(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container)
         {
@@ -82,7 +83,12 @@ namespace YAPA
 
         private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            SettingPage.Children.Clear();
+            if (_settingPage != null)
+            {
+                SettingGrid.Children.Remove(_settingPage);
+            }
+
+            _settingPage = null;
 
             var treeItem = e.NewValue as TreeViewItem;
             if (treeItem == null)
@@ -93,19 +99,24 @@ namespace YAPA
 
             if (treeItem.Header.ToString() == "Plugins")
             {
-                child = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
+                _settingPage = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
             }
             else
             if (treeItem.Header.ToString() == "About")
             {
-                child = (UserControl)_container.Resolve(typeof(AboutPage));
+                _settingPage = (UserControl)_container.Resolve(typeof(AboutPage));
             }
             else
             {
-                child = (UserControl)_container.Resolve(_pluginManager.Plugins.First(x => x.Title == treeItem.Header.ToString()).SettingEditWindow);
+                _settingPage = (UserControl)_container.Resolve(_pluginManager.Plugins.First(x => x.Title == treeItem.Header.ToString()).SettingEditWindow);
             }
-
-            SettingPage.Children.Add(child);
+            if (_settingPage != null)
+            {
+                SettingGrid.Children.Add(_settingPage);
+                Grid.SetColumn(_settingPage, 1);
+                Grid.SetRow(_settingPage, 0);
+                _settingPage.Margin = new Thickness(10, 20, 10, 10);
+            }
         }
 
         private void Settings_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
