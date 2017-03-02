@@ -49,6 +49,13 @@ namespace YAPA.WPF.Themes.YAPA
             set { _settings.Update(nameof(TextBrush), value); }
         }
 
+        public bool DisableFlashingAnimation
+        {
+            get { return _settings.Get(nameof(DisableFlashingAnimation), false); }
+            set { _settings.Update(nameof(DisableFlashingAnimation), value); }
+        }
+
+
         public YapaThemeSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(YapaTheme));

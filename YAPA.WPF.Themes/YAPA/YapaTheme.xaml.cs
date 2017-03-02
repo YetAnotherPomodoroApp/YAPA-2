@@ -41,8 +41,8 @@ namespace YAPA
 
             ViewModel.Engine.PropertyChanged += Engine_PropertyChanged;
             ViewModel.Engine.OnPomodoroCompleted += Engine_OnPomodoroCompleted;
-            ViewModel.Engine.OnStarted += Engine_OnStarted;
-            ViewModel.Engine.OnStopped += Engine_OnStopped;
+            ViewModel.Engine.OnStarted += StopAnimation;
+            ViewModel.Engine.OnStopped += StopAnimation;
             globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             DataContext = this;
@@ -68,19 +68,28 @@ namespace YAPA
             });
         }
 
-        private void Engine_OnStopped()
+        private void StopAnimation()
         {
-            TimerFlush.Stop(this);
-        }
-
-        private void Engine_OnStarted()
-        {
-            TimerFlush.Stop(this);
+            if (Settings.DisableFlashingAnimation == false)
+            {
+                TimerFlush.Stop(this);
+            }
+            else
+            {
+                CurrentTime.Background = Brushes.Transparent;
+            }
         }
 
         private void Engine_OnPomodoroCompleted()
         {
-            TimerFlush.Begin(this, true);
+            if (Settings.DisableFlashingAnimation == false)
+            {
+                TimerFlush.Begin(this, true);
+            }
+            else
+            {
+                CurrentTime.Background = Brushes.Tomato;
+            }
             PomodorosCompleted++;
             RaisePropertyChanged(nameof(PomodorosCompleted));
         }
