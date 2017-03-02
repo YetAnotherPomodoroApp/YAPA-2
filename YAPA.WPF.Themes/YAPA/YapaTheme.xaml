@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
         mc:Ignorable="d"
-        Title="YAPA"
         Height="60" 
         Width="130" 
         ShowInTaskbar="True" 

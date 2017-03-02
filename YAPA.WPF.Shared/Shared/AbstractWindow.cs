@@ -20,11 +20,11 @@ namespace YAPA.Shared
 
         protected AbstractWindow()
         {
-
         }
 
         protected AbstractWindow(IMainViewModel viewModel)
         {
+            Title = "YAPA 2";
             ViewModel = viewModel;
             base.StateChanged += AbstractWindow_StateChanged;
             base.Closing += AbstractWindow_Closing;
