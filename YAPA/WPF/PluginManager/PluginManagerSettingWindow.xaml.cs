@@ -14,7 +14,7 @@ namespace YAPA.WPF
         private readonly ISettingManager _settingManager;
         public List<PluginViewModel> Plugins { get; set; }
         public ICommand TogglePlugin { get; set; }
-        private readonly List<string> _disabledPlugins;
+        private readonly List<string> _enabledPlugins;
 
         public PluginManagerSettingWindow(IPluginManager plugins, PluginManagerSettings settings, ISettings globalSettings, ISettingManager settingManager)
         {
@@ -24,7 +24,7 @@ namespace YAPA.WPF
             _settingManager = settingManager;
             globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
-            _disabledPlugins = _settings.DisabledPlugins;
+            _enabledPlugins = _settings.EnabledPlugins;
 
             Plugins = new List<PluginViewModel>();
             foreach (var pluginMeta in plugins.CustomPlugins)
@@ -32,7 +32,7 @@ namespace YAPA.WPF
                 Plugins.Add(new PluginViewModel
                 {
                     Title = pluginMeta.Title,
-                    Enabled = !_disabledPlugins.Contains(pluginMeta.Title)
+                    Enabled = _enabledPlugins.Contains(pluginMeta.Title)
                 });
             }
 
@@ -44,7 +44,7 @@ namespace YAPA.WPF
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == $"{nameof(PluginManager)}.{nameof(_settings.DisabledPlugins)}")
+            if (e.PropertyName == $"{nameof(PluginManager)}.{nameof(_settings.EnabledPlugins)}")
             {
                 _settingManager.RestartNeeded = true;
             }
@@ -53,27 +53,28 @@ namespace YAPA.WPF
         private void PluginChanged(object sender, RoutedEventArgs e)
         {
             var context = ((CheckBox)sender).DataContext as PluginViewModel;
+            if (context == null)
+            {
+                return;
+            }
             if (context.Enabled)
             {
-                var existing = _disabledPlugins.FirstOrDefault(x => x == context.Title);
-                if (existing != null)
+                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Title);
+                if (string.IsNullOrEmpty(existing))
                 {
-                    _disabledPlugins.Remove(existing);
+                    _enabledPlugins.Add(context.Title);
                 }
             }
             else
             {
-                _disabledPlugins.Add(context.Title);
+                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Title);
+                if (existing != null)
+                {
+                    _enabledPlugins.Remove(existing);
+                }
             }
 
-            if (_disabledPlugins.Count == 0)
-            {
-                _settings.DisabledPlugins = null;
-            }
-            else
-            {
-                _settings.DisabledPlugins = _disabledPlugins;
-            }
+            _settings.EnabledPlugins = _enabledPlugins.Any() ? _enabledPlugins : null;
         }
     }
 

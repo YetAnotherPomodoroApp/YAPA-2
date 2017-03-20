@@ -10,7 +10,7 @@ namespace YAPA.Shared
         private readonly IDependencyInjector _container;
         private readonly PluginManagerSettings _settings;
         private IEnumerable<IPlugin> _pluginInstances;
-        private IEnumerable<string> _disabledPlugins;
+        private IEnumerable<string> _enabledPlugins;
         private bool _initialised = false;
 
         public PluginManager(IDependencyInjector container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
@@ -18,7 +18,7 @@ namespace YAPA.Shared
             _container = container;
             _settings = settings;
 
-            _disabledPlugins = _settings.DisabledPlugins;
+            _enabledPlugins = _settings.EnabledPlugins;
             Plugins = metas;
         }
 
@@ -32,7 +32,7 @@ namespace YAPA.Shared
                 .Where(x =>
                 {
                     var attribute = x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
-                    return attribute != null; ;
+                    return attribute != null;
                 })
                 .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
             }
@@ -48,7 +48,7 @@ namespace YAPA.Shared
 
         public IEnumerable<IPluginMeta> ActivePlugins
         {
-            get { return CustomPlugins.Where(x => !_disabledPlugins.Contains(x.Title)); }
+            get { return CustomPlugins.Where(x => _enabledPlugins.Contains(x.Title)); }
         }
 
         public object ResolveSettingWindow(IPluginMeta plugin)
@@ -112,10 +112,10 @@ namespace YAPA.Shared
     {
         private readonly ISettingsForComponent _settings;
 
-        public List<string> DisabledPlugins
+        public List<string> EnabledPlugins
         {
-            get { return _settings.Get(nameof(DisabledPlugins), new List<string>()); }
-            set { _settings.Update(nameof(DisabledPlugins), value); }
+            get { return _settings.Get(nameof(EnabledPlugins), new List<string>()); }
+            set { _settings.Update(nameof(EnabledPlugins), value); }
         }
 
         public PluginManagerSettings(ISettings settings)
