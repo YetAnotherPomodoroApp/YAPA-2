@@ -51,6 +51,21 @@ namespace YAPA
             HideButtons();
 
             UpdateCompletedPomodoroCount();
+
+            PropertyChanged += YapaTheme_PropertyChanged;
+        }
+
+        private void YapaTheme_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CurrentTimeValue))
+            {
+                var minutes = CurrentTimeValue / 60;
+                var seconds = CurrentTimeValue % 60;
+                CurrentTimeMinutes.Text = $"{minutes / 10:0}";
+                CurrentTimeMinutes2.Text = $"{minutes % 10:0}";
+                CurrentTimeSeconds.Text = $"{seconds / 10:0}";
+                CurrentTimeSeconds2.Text = $"{seconds % 10:0}";
+            }
         }
 
         public double ClockOpacity => Settings.ClockOpacity;

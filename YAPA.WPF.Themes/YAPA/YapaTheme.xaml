@@ -41,7 +41,22 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="CurrentTime" Grid.Column="0"
+                <!-- Current time -->
+                <Grid
+                Background="Transparent"
+                IsHitTestVisible="True"
+                    Name="CurrentTime"
+                >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32" />
+                        <ColumnDefinition Width="32" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="32" />
+                        <ColumnDefinition Width="32" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="CurrentTimeMinutes" Grid.Column="0"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
@@ -50,18 +65,110 @@
                Background="Transparent"    
                HorizontalAlignment="Right" 
                VerticalAlignment="Center"                       
-               Text="{Binding CurrentTimeValue, Converter={StaticResource SecToTimeConverter}}"
                FontStretch="UltraCondensed"
+                               Text="0"
                >
-                    <TextBlock.Effect>
-                        <DropShadowEffect
+                        <TextBlock.Effect>
+                            <DropShadowEffect
 				  ShadowDepth="0"
 				  Direction="0"
 				  Color="{Binding TextShadowColor}"
 				  Opacity="{Binding ShadowOpacity}"
 				  BlurRadius="10" />
-                    </TextBlock.Effect>
-                </TextBlock>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock x:Name="CurrentTimeMinutes2" Grid.Column="1"
+               Cursor="Arrow"
+               FontFamily="Segoe UI Light"
+               FontSize="60"
+               Foreground="{Binding TextBrush}"
+               Opacity="{Binding ClockOpacity}"
+               Background="Transparent"    
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"                       
+               FontStretch="UltraCondensed"
+                               Text="0"
+               >
+
+                        <TextBlock.Effect>
+                            <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock x:Name="CurrentTimeSeparator" Grid.Column="2"
+               Cursor="Arrow"
+               FontFamily="Segoe UI Light"
+               FontSize="60"
+               Foreground="{Binding TextBrush}"
+               Opacity="{Binding ClockOpacity}"
+               Background="Transparent"    
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"                       
+               FontStretch="UltraCondensed"
+                               Text=":"
+               >
+                        <TextBlock.Effect>
+                            <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock x:Name="CurrentTimeSeconds" Grid.Column="3"
+               Cursor="Arrow"
+               FontFamily="Segoe UI Light"
+               FontSize="60"
+               Foreground="{Binding TextBrush}"
+               Opacity="{Binding ClockOpacity}"
+               Background="Transparent"    
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"                       
+               FontStretch="UltraCondensed"
+                               Text="0"
+               >
+                        <TextBlock.Effect>
+                            <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock x:Name="CurrentTimeSeconds2" Grid.Column="4"
+               Cursor="Arrow"
+               FontFamily="Segoe UI Light"
+               FontSize="60"
+               Foreground="{Binding TextBrush}"
+               Opacity="{Binding ClockOpacity}"
+               Background="Transparent"    
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"                       
+               FontStretch="UltraCondensed"
+                               Text="0"
+               >
+                        <TextBlock.Effect>
+                            <DropShadowEffect
+				  ShadowDepth="0"
+				  Direction="0"
+				  Color="{Binding TextShadowColor}"
+				  Opacity="{Binding ShadowOpacity}"
+				  BlurRadius="10" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                </Grid>
+
 
                 <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
                 <StackPanel VerticalAlignment="Top"   Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
