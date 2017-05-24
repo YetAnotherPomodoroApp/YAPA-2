@@ -10,6 +10,7 @@ namespace YAPA.Contracts
         int Elapsed { get; }
         int Remaining { get; }
         int DisplayValue { get; }
+        int CurrentIntervalLength { get; }
         int WorkTime { get; }
         int BreakTime { get; }
 

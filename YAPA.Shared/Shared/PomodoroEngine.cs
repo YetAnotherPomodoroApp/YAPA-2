@@ -12,24 +12,27 @@ namespace YAPA.Shared
 
         public int Index => Current.Index;
 
-        public int Elapsed => (int)(_endDate - _startDate).TotalSeconds;
-        public int Remaining
+        public int Elapsed => Math.Min((int)(_endDate - _startDate).TotalSeconds, CurrentIntervalLength);
+        public int Remaining => CurrentIntervalLength - Elapsed;
+
+        public int CurrentIntervalLength
         {
             get
             {
-                var total = 0;
+                var length = 0;
                 switch (Phase)
                 {
+                    case PomodoroPhase.NotStarted:
                     case PomodoroPhase.WorkEnded:
                     case PomodoroPhase.Work:
-                        total = WorkTime;
+                        length = WorkTime;
                         break;
                     case PomodoroPhase.Break:
                     case PomodoroPhase.BreakEnded:
-                        total = BreakTime;
+                        length = BreakTime;
                         break;
                 }
-                return total - Elapsed;
+                return length;
             }
         }
 
