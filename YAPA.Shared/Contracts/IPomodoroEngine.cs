@@ -8,6 +8,8 @@ namespace YAPA.Contracts
         int Index { get; }
         PomodoroPhase Phase { get; }
         int Elapsed { get; }
+        int Remaining { get; }
+        int DisplayValue { get; }
         int WorkTime { get; }
         int BreakTime { get; }
 

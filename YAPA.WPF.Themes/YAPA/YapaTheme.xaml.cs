@@ -214,11 +214,11 @@ namespace YAPA
                 {
                     case PomodoroPhase.WorkEnded:
                     case PomodoroPhase.Work:
-                        progress = (double)elapsed / (ViewModel.Engine.WorkTime * 60);
+                        progress = (double)elapsed / (ViewModel.Engine.WorkTime);
                         break;
                     case PomodoroPhase.Break:
                     case PomodoroPhase.BreakEnded:
-                        progress = (double)elapsed / (ViewModel.Engine.BreakTime * 60);
+                        progress = (double)elapsed / (ViewModel.Engine.BreakTime);
                         break;
                 }
                 return progress;
@@ -249,32 +249,7 @@ namespace YAPA
             }
         }
 
-        public int CurrentTimeValue
-        {
-            get
-            {
-                if (_engineSettings.CountBackwards)
-                {
-                    var total = 0;
-                    switch (ViewModel.Engine.Phase)
-                    {
-                        case PomodoroPhase.WorkEnded:
-                        case PomodoroPhase.Work:
-                            total = ViewModel.Engine.WorkTime;
-                            break;
-                        case PomodoroPhase.Break:
-                        case PomodoroPhase.BreakEnded:
-                            total = ViewModel.Engine.BreakTime;
-                            break;
-                    }
-                    return total * 60 - ViewModel.Engine.Elapsed;
-                }
-                else
-                {
-                    return ViewModel.Engine.Elapsed;
-                }
-            }
-        }
+        public int CurrentTimeValue => ViewModel.Engine.DisplayValue;
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

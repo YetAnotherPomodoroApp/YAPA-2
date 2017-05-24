@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+            xmlns:wpf="clr-namespace:YAPA.WPF"
+            mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
+    <UserControl.Resources>
+        <wpf:SecondsToMinutesConverter x:Key="SecToMinConverter" />
+    </UserControl.Resources>
+
+
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -30,7 +36,7 @@
                           VerticalAlignment="Bottom" 
                           IsEditable="True">
                 <ComboBox.Text>
-                    <Binding Path="WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         <Binding.ValidationRules>
                             <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
                         </Binding.ValidationRules>
@@ -51,7 +57,7 @@
                           VerticalAlignment="Bottom" 
                           IsEditable="True">
                 <ComboBox.Text>
-                    <Binding Path="BreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="BreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         <Binding.ValidationRules>
                             <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
                         </Binding.ValidationRules>
@@ -63,8 +69,8 @@
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
             </ComboBox>
-            
-            
+
+
             <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="2"></TextBlock>
             <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="LongBreakTimeSelect"
                          Grid.Column="1" Grid.Row="2"  MinWidth="72"
@@ -72,7 +78,7 @@
                           VerticalAlignment="Bottom" 
                           IsEditable="True">
                 <ComboBox.Text>
-                    <Binding Path="LongBreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="LongBreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         <Binding.ValidationRules>
                             <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
                         </Binding.ValidationRules>

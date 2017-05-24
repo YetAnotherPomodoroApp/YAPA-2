@@ -5,7 +5,6 @@ using YAPA.Contracts;
 
 namespace YAPA.Shared
 {
-
     public class PomodoroEngine : IPomodoroEngine, IPlugin
     {
         private readonly PomodoroEngineSettings _settings;
@@ -14,6 +13,27 @@ namespace YAPA.Shared
         public int Index => Current.Index;
 
         public int Elapsed => (int)(_endDate - _startDate).TotalSeconds;
+        public int Remaining
+        {
+            get
+            {
+                var total = 0;
+                switch (Phase)
+                {
+                    case PomodoroPhase.WorkEnded:
+                    case PomodoroPhase.Work:
+                        total = WorkTime;
+                        break;
+                    case PomodoroPhase.Break:
+                    case PomodoroPhase.BreakEnded:
+                        total = BreakTime;
+                        break;
+                }
+                return total - Elapsed;
+            }
+        }
+
+        public int DisplayValue => _settings.CountBackwards ? Remaining : Elapsed;
 
         public int WorkTime => Current.WorkTime;
 
@@ -168,14 +188,14 @@ namespace YAPA.Shared
             _endDate = DateTime.UtcNow;
             NotifyPropertyChanged(nameof(Elapsed));
 
-            if (Phase == PomodoroPhase.Work && Elapsed / 60 >= WorkTime)
+            if (Phase == PomodoroPhase.Work && Elapsed >= WorkTime)
             {
                 _timer.Stop();
                 Phase = PomodoroPhase.WorkEnded;
                 OnPomodoroCompleted?.Invoke();
             }
 
-            if (Phase == PomodoroPhase.Break && Elapsed / 60 >= BreakTime)
+            if (Phase == PomodoroPhase.Break && Elapsed >= BreakTime)
             {
                 _timer.Stop();
                 Phase = PomodoroPhase.BreakEnded;
@@ -196,19 +216,19 @@ namespace YAPA.Shared
 
         public int WorkTime
         {
-            get { return _settings.Get(nameof(WorkTime), 25); }
+            get { return _settings.Get(nameof(WorkTime), 25 * 60); }
             set { _settings.Update(nameof(WorkTime), value); }
         }
 
         public int BreakTime
         {
-            get { return _settings.Get(nameof(BreakTime), 5); }
+            get { return _settings.Get(nameof(BreakTime), 5 * 60); }
             set { _settings.Update(nameof(BreakTime), value); }
         }
 
         public int LongBreakTime
         {
-            get { return _settings.Get(nameof(LongBreakTime), 15); }
+            get { return _settings.Get(nameof(LongBreakTime), 15 * 60); }
             set { _settings.Update(nameof(LongBreakTime), value); }
         }
 
