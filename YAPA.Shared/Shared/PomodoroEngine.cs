@@ -59,17 +59,20 @@ namespace YAPA.Shared
                 return;
             }
 
-            if (Phase == PomodoroPhase.BreakEnded || Phase == PomodoroPhase.NotStarted)
+            switch (Phase)
             {
-                Phase = PomodoroPhase.Work;
-            }
-            else if (Phase == PomodoroPhase.WorkEnded)
-            {
-                Phase = PomodoroPhase.Break;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Can't start pomodoro from phase: {Phase}");
+                case PomodoroPhase.NotStarted:
+                    Phase = PomodoroPhase.Work;
+                    break;
+                case PomodoroPhase.BreakEnded:
+                    Phase = PomodoroPhase.Work;
+                    Current = Current.NextPomodoro;
+                    break;
+                case PomodoroPhase.WorkEnded:
+                    Phase = PomodoroPhase.Break;
+                    break;
+                default:
+                    throw new InvalidOperationException($"Can't start pomodoro from phase: {Phase}");
             }
 
             _startDate = _endDate = DateTime.UtcNow;
