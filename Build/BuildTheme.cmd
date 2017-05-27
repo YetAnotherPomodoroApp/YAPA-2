@@ -1,10 +1,17 @@
 set ThemeRepository=%1
 set ProjectToBuild=%2
 set OutputDirectory=%3
+set ThemeDirectory=%4
+
+IF EXIST %ThemeDirectory% (
+   rd %ThemeDirectory% /s /Q
+)
 
 git clone %ThemeRepository% --recurse-submodules
 
 git pull %ThemeRepository%
+
+cd %ThemeDirectory%
 
 git submodule update --remote --merge
 
