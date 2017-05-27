@@ -31,6 +31,10 @@ Features:
   - [x] Option to change application size
 
 
+Contribution guidelines
+===
+1. Before doing code refactoring, create issue to discuss it.
+2. Create new branch for each bug/feature.
 
 How to build installer
 ===
