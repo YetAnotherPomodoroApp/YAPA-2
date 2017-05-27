@@ -1,5 +1,6 @@
 YAPA 2
 ====
+![](https://floatas.visualstudio.com/_apis/public/build/definitions/85dbe4af-5aee-4fc1-a0cb-40ddc5fcf2d6/3/badge)
 
 YAPA-2 is minimalistic desktop timer app for Pomodoro Technique users. 
 
