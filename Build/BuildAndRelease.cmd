@@ -1,18 +1,16 @@
-set config=%1
-if "%config%" == "" (
-   set config=debug
-)
-set version=%2
+
+set version=%1
 if "%version%" == "" (
    set version=2.0.0
 )
-set releasePath=%3
-if "%releasePath" == "" (
-   set releasePath=Releases\
+
+set releasePath=%2
+if "%releasePath%" == "" (
+   set releasePath=Releases
 )
 
-call Build.cmd %config% %version%
+call Build.cmd %version%
 
 call BuildNuget.cmd %version%
 
-call Releasify.cmd %version% %releasePath%
+call Releasify.cmd %version%  %releasePath% 
