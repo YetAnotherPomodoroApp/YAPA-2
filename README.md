@@ -38,6 +38,7 @@ Features
     - Select light or dark theme for timer
     - Change application size
     - Enable\Disable flashing animation
+![Theme Settings Preview](http://imgur.com/ulwYfix.gif)
 
   - Motivational theme
     - More about theme [here](https://github.com/YetAnotherPomodoroApp/MotivationalTheme).
