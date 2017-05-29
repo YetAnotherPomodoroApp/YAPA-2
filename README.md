@@ -13,7 +13,8 @@ Features
 - Count time backwards
 - Automatically start break
 - Show\hide in taskbar
-- Minimize to  tray
+- Minimize to tray
+- Supports custom themes
 
 - Command line arguments
   - /start
@@ -30,13 +31,16 @@ Features
 - Dashboard
   - Pomodoro counter history similar to github contributions
 
-- YAPA 1.0 theme
-  - Shows period progress on taskbar
-  - Select opacity for timer
-  - Select light or dark theme for timer
-  - Change application size
-  - Enable\Disable flashing animation
+- Themes
+  - YAPA 1.0 theme
+    - Shows period progress on taskbar
+    - Select opacity for timer
+    - Select light or dark theme for timer
+    - Change application size
+    - Enable\Disable flashing animation
 
+  - Motivational theme
+    - More about theme [here](https://github.com/YetAnotherPomodoroApp/MotivationalTheme).
 
 Contribution guidelines
 ===
