@@ -155,11 +155,21 @@ namespace YAPA
                 case PomodoroPhase.BreakEnded:
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
+                    Pause.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Work:
+                    Start.Visibility = Visibility.Collapsed;
+                    Stop.Visibility = Visibility.Visible;
+                    Pause.Visibility = Visibility.Visible;
+                    break;
                 case PomodoroPhase.Break:
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
+                    break;
+                case PomodoroPhase.Pause:
+                    Start.Visibility= Visibility.Visible;
+                    Stop.Visibility = Visibility.Visible;
+                    Pause.Visibility = Visibility.Collapsed;
                     break;
             }
         }
@@ -214,6 +224,7 @@ namespace YAPA
                 {
                     case PomodoroPhase.WorkEnded:
                     case PomodoroPhase.Work:
+                    case PomodoroPhase.Pause:
                         progress = (double)elapsed / (ViewModel.Engine.WorkTime);
                         break;
                     case PomodoroPhase.Break:
@@ -235,6 +246,7 @@ namespace YAPA
                     case PomodoroPhase.NotStarted:
                         break;
                     case PomodoroPhase.Work:
+                    case PomodoroPhase.Pause:
                         progressState = "Normal";
                         break;
                     case PomodoroPhase.Break:

@@ -172,7 +172,7 @@
 
                 <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
                 <StackPanel VerticalAlignment="Top"   Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
-                            Margin="0,10,0,2">
+                            Margin="0,10,0,10" >
                     <Button x:Name="Minimize"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
@@ -256,6 +256,35 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="Pause"
+                Command="{Binding ViewModel.PauseCommand}"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Cursor="Hand"
+                Content="PAUSE"
+                ToolTip="Pause Pomodoro"
+                Height="15"
+                Width="38">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
+                               VerticalAlignment="Center"
+                               x:Name="PauseTextBlock"
+                               TextAlignment="Center"
+                               Foreground="{Binding TextBrush}"
+                               FontSize="11" 
+                               Opacity="{Binding ClockOpacity}"
+                               FontFamily="Segoe UI"
+                               FontStretch="Normal"
+                                           />
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="PauseTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

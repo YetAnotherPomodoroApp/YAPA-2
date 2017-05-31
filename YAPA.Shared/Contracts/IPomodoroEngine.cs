@@ -17,10 +17,12 @@ namespace YAPA.Contracts
         event Func<bool> OnStarting;
         event Action OnStarted;
         event Action OnStopped;
+        event Action OnPaused;
         event Action OnPomodoroCompleted;
 
         void Start();
         void Stop();
+        void Pause();
         void Reset();
 
         bool IsRunning { get; }
@@ -32,6 +34,7 @@ namespace YAPA.Contracts
         Work,
         WorkEnded,
         Break,
-        BreakEnded
+        BreakEnded,
+        Pause
     }
 }

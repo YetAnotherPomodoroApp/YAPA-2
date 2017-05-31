@@ -177,12 +177,13 @@ namespace YAPA.WPF
                     case PomodoroPhase.NotStarted:
                         break;
                     case PomodoroPhase.Work:
+                    case PomodoroPhase.Pause:
                     case PomodoroPhase.WorkEnded:
                         total = _viewModel.Engine.WorkTime;
                         break;
                     case PomodoroPhase.Break:
                     case PomodoroPhase.BreakEnded:
-                        total = _viewModel.Engine.WorkTime;
+                        total = _viewModel.Engine.BreakTime;
                         break;
                 }
 

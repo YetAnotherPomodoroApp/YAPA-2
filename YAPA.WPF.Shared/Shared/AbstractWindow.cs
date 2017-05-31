@@ -143,6 +143,12 @@ namespace YAPA.Shared
                         ViewModel.StopCommand.Execute(null);
                     }
                     break;
+                case "/pause":
+                    if (ViewModel.PauseCommand.CanExecute(null))
+                    {
+                        ViewModel.StopCommand.Execute(null);
+                    }
+                    break;
                 case "/settings":
                     if (ViewModel.ShowSettingsCommand.CanExecute(null))
                     {
@@ -181,6 +187,16 @@ namespace YAPA.Shared
                 IconResourceIndex = 4
             };
             jumpList.JumpItems.Add(resetTask);
+
+            var pauseTask = new JumpTask
+            {
+                Title = "Pause",
+                Description = "Pause Pomodoro session",
+                ApplicationPath = Assembly.GetEntryAssembly().Location,
+                Arguments = "/pause",
+                IconResourceIndex = 2
+            };
+            jumpList.JumpItems.Add(pauseTask);
 
             var stopTask = new JumpTask
             {

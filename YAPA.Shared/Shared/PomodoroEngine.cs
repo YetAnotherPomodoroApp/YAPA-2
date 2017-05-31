@@ -12,7 +12,8 @@ namespace YAPA.Shared
 
         public int Index => Current.Index;
 
-        public int Elapsed => Math.Min((int)(_endDate - _startDate).TotalSeconds, CurrentIntervalLength);
+        private int _elapsedInPause = 0;
+        public int Elapsed => Math.Min(_elapsedInPause + (int)(_endDate - _startDate).TotalSeconds, CurrentIntervalLength);
         public int Remaining => CurrentIntervalLength - Elapsed;
 
         public int CurrentIntervalLength
@@ -25,6 +26,7 @@ namespace YAPA.Shared
                     case PomodoroPhase.NotStarted:
                     case PomodoroPhase.WorkEnded:
                     case PomodoroPhase.Work:
+                    case PomodoroPhase.Pause:
                         length = WorkTime;
                         break;
                     case PomodoroPhase.Break:
@@ -63,6 +65,7 @@ namespace YAPA.Shared
         public event Func<bool> OnStarting;
         public event Action OnStarted;
         public event Action OnStopped;
+        public event Action OnPaused;
 
         /// <summary>
         /// Invoked when pomodoro work is completed
@@ -84,6 +87,7 @@ namespace YAPA.Shared
 
             switch (Phase)
             {
+                case PomodoroPhase.Pause:
                 case PomodoroPhase.NotStarted:
                     Phase = PomodoroPhase.Work;
                     break;
@@ -109,6 +113,15 @@ namespace YAPA.Shared
             ResetTo(Current);
 
             OnStopped?.Invoke();
+        }
+
+        public void Pause()
+        {
+            _timer.Stop();
+            Phase = PomodoroPhase.Pause;
+            _elapsedInPause = Elapsed;
+            _startDate = _endDate = DateTime.UtcNow;
+            OnPaused?.Invoke();
         }
 
         public void Reset()

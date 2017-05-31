@@ -8,6 +8,7 @@ namespace YAPA.Contracts
         ICommand StopCommand { get; set; }
         ICommand StartCommand { get; set; }
         ICommand ResetCommand { get; set; }
+        ICommand PauseCommand { get; set; }
         ICommand ShowSettingsCommand { get; set; }
     }
 }

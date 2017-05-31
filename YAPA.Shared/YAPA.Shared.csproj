@@ -58,6 +58,7 @@
     <Compile Include="Shared\DashboardPlugin.cs" />
     <Compile Include="Shared\JsonYapaSettings.cs" />
     <Compile Include="Shared\MainViewModel.cs" />
+    <Compile Include="Shared\PauseCommand.cs" />
     <Compile Include="Shared\PomodoroEngine.cs" />
     <Compile Include="Shared\ResetCommand.cs" />
     <Compile Include="Shared\StartCommand.cs" />
