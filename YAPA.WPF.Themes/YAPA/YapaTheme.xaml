@@ -9,8 +9,9 @@
         Width="130" 
         ShowInTaskbar="True" 
         ResizeMode="NoResize" 
-        AllowsTransparency="True" 
-        Background="Transparent"
+        AllowsTransparency="True"
+        Background="#01000000"
+        IsHitTestVisible="True"
         WindowStartupLocation="Manual"
         WindowStyle="None" 
         Topmost="True" 
@@ -18,6 +19,7 @@
         MouseEnter="MainWindow_OnMouseEnter"
         MouseLeave="MainWindow_OnMouseLeave"
         MouseDoubleClick="Window_MouseDoubleClick">
+
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
     </Window.TaskbarItemInfo>
@@ -32,20 +34,23 @@
                 To="Tomato" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever"/>
         </Storyboard>
     </Window.Resources>
-
-    <Grid >
-
-        <Viewbox>
+    <Grid Background="Transparent" IsHitTestVisible="True">
+        <Viewbox >
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
                 <!-- Current time -->
                 <Grid
                 Background="Transparent"
                 IsHitTestVisible="True"
-                    Name="CurrentTime"
+                    Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                 >
 
                     <Grid.ColumnDefinitions>
@@ -166,18 +171,17 @@
 				  BlurRadius="10" />
                         </TextBlock.Effect>
                     </TextBlock>
-
                 </Grid>
 
 
                 <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
-                <StackPanel VerticalAlignment="Top"   Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel" Visibility="Hidden"
-                            Margin="0,10,0,10" >
+                <StackPanel VerticalAlignment="Top"   Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel">
                     <Button x:Name="Minimize"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="_"
+                 IsHitTestVisible="True"
                 ToolTip="Minimize"
                 Height="15"
                 Width="15"
@@ -190,7 +194,7 @@
                                TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
                                FontSize="10" 
-                               Opacity="{Binding ClockOpacity}"
+                               Opacity="{Binding ClockOpacity}" 
                                FontFamily="Segoe UI"
                                FontStretch="UltraCondensed"/>
                                 <ControlTemplate.Triggers>
@@ -206,6 +210,7 @@
                 VerticalAlignment="Top" 
                 Cursor="Hand"
                 Content="x"
+                 IsHitTestVisible="True"
                 ToolTip="Close"
                 Height="15"
                 Width="15"
@@ -215,7 +220,9 @@
                                 <TextBlock Text="{TemplateBinding Content}"
                                VerticalAlignment="Center"
                                x:Name="ExitTextBlock"
-                               TextAlignment="Center"
+                            Background="{Binding TextShadowColor}"
+                               
+                                           TextAlignment="Center"
                                Foreground="{Binding TextBrush}"
                                FontSize="10" 
                                Opacity="{Binding ClockOpacity}"
@@ -231,7 +238,7 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel VerticalAlignment="Center" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
                     <Button x:Name="Start"
                 Command="{Binding ViewModel.StartCommand}"
                 HorizontalAlignment="Right" 
