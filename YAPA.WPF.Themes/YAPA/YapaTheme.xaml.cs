@@ -174,7 +174,7 @@ namespace YAPA
             }
         }
 
-        public Brush TextBrush => Settings.UseWhiteText ? Brushes.White : Brushes.Black;
+        public Brush TextBrush => Settings.UseWhiteText ? Brushes.LightGray : Brushes.Black;
 
         public Color TextShadowColor
         {
@@ -182,7 +182,7 @@ namespace YAPA
             {
                 var shadowColor = Colors.White;
 
-                if (TextBrush.ToString() == Brushes.White.ToString())
+                if (TextBrush.ToString() == Brushes.LightGray.ToString())
                 {
                     shadowColor = Colors.Black;
                 }
@@ -201,7 +201,7 @@ namespace YAPA
             {
                 var mouseOverBackgroundColor = Brushes.White;
 
-                if (TextBrush.ToString() == Brushes.White.ToString())
+                if (TextBrush.ToString() == Brushes.LightGray.ToString())
                 {
                     mouseOverBackgroundColor = Brushes.Black;
                 }

@@ -52,6 +52,7 @@
     <Compile Include="DefaultTheme2\MainWindow2.xaml.cs">
       <DependentUpon>MainWindow2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OutlinedText.cs" />
     <Compile Include="YAPA\YapaTheme.xaml.cs">
       <DependentUpon>YapaTheme.xaml</DependentUpon>
     </Compile>
