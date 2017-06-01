@@ -166,29 +166,7 @@ namespace YAPA.WPF
                 DestroyIcon(_systemTrayIcon);
             }
 
-            var displayText = _viewModel.Engine.Elapsed / 60;
-
-            if (_engineSettings.CountBackwards)
-            {
-
-                var total = 0;
-                switch (_viewModel.Engine.Phase)
-                {
-                    case PomodoroPhase.NotStarted:
-                        break;
-                    case PomodoroPhase.Work:
-                    case PomodoroPhase.Pause:
-                    case PomodoroPhase.WorkEnded:
-                        total = _viewModel.Engine.WorkTime;
-                        break;
-                    case PomodoroPhase.Break:
-                    case PomodoroPhase.BreakEnded:
-                        total = _viewModel.Engine.BreakTime;
-                        break;
-                }
-
-                displayText = total - _viewModel.Engine.Elapsed / 60;
-            }
+            var displayText = _viewModel.Engine.DisplayValue / 60;
 
             System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
 
