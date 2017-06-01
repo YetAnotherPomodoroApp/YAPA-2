@@ -94,9 +94,11 @@ namespace YAPA.Shared
                 case PomodoroPhase.BreakEnded:
                     Phase = PomodoroPhase.Work;
                     Current = Current.NextPomodoro;
+                    _elapsedInPause = 0;
                     break;
                 case PomodoroPhase.WorkEnded:
                     Phase = PomodoroPhase.Break;
+                    _elapsedInPause = 0;
                     break;
                 default:
                     throw new InvalidOperationException($"Can't start pomodoro from phase: {Phase}");
@@ -142,8 +144,8 @@ namespace YAPA.Shared
                     Phase = PomodoroPhase.BreakEnded;
                     break;
             }
-
             Phase = PomodoroPhase.NotStarted;
+
             _startDate = _endDate = DateTime.UtcNow;
             if (Current.Index != pom.Index)
             {

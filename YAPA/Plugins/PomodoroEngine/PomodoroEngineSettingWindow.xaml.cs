@@ -34,14 +34,20 @@ namespace YAPA.WPF
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var seconds = (int)value;
+            var seconds = (int)(value ?? 60);
             return seconds / 60;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var minutes = int.Parse(value.ToString());
-            return minutes * 60;
+            int seconds;
+
+            if (!int.TryParse(value?.ToString(), out seconds))
+            {
+                seconds = 1;
+            }
+
+            return seconds * 60;
         }
     }
 }
