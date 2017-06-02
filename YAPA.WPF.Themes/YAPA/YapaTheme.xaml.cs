@@ -48,7 +48,7 @@ namespace YAPA
             DataContext = this;
 
             UpdateAppSize();
-            HideButtons();
+            PhaseChanged();
 
             UpdateCompletedPomodoroCount();
 
@@ -141,32 +141,45 @@ namespace YAPA
             }
             else if (e.PropertyName == nameof(ViewModel.Engine.Phase))
             {
-                HideButtons();
+                PhaseChanged();
                 RaisePropertyChanged(nameof(ProgressState));
             }
         }
 
-        private void HideButtons()
+        private void PhaseChanged()
         {
             switch (ViewModel.Engine.Phase)
             {
                 case PomodoroPhase.NotStarted:
+                    Start.Visibility = Visibility.Visible;
+                    Stop.Visibility = Visibility.Collapsed;
+                    Pause.Visibility = Visibility.Collapsed;
+                    break;
                 case PomodoroPhase.WorkEnded:
+                    StageTextBlock.Text = "Work Ended";
+                    Start.Visibility = Visibility.Visible;
+                    Stop.Visibility = Visibility.Collapsed;
+                    Pause.Visibility = Visibility.Collapsed;
+                    break;
                 case PomodoroPhase.BreakEnded:
+                    StageTextBlock.Text = "Break Ended";
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Work:
+                    StageTextBlock.Text = "Work";
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Visible;
                     break;
                 case PomodoroPhase.Break:
+                    StageTextBlock.Text = "Break";
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
                     break;
                 case PomodoroPhase.Pause:
+                    StageTextBlock.Text = "Work Paused";
                     Start.Visibility= Visibility.Visible;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Collapsed;

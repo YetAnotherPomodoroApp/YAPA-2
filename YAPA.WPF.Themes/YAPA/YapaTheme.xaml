@@ -173,6 +173,15 @@
                     </TextBlock>
                 </Grid>
 
+                <TextBlock Text="YAPA 2.0" Grid.Column="0" Grid.Row="0"
+                               VerticalAlignment="Center"
+                               x:Name="StageTextBlock"
+                               TextAlignment="Left"
+                               Foreground="{Binding TextBrush}"
+                               FontSize="10" 
+                               Opacity="{Binding ClockOpacity}" 
+                               FontFamily="Segoe UI"
+                               FontStretch="UltraCondensed"/>
 
                 <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
                 <StackPanel VerticalAlignment="Top"   Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel">
