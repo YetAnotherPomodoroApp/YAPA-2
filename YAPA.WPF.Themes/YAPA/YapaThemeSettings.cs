@@ -55,6 +55,11 @@ namespace YAPA.WPF.Themes.YAPA
             set { _settings.Update(nameof(DisableFlashingAnimation), value); }
         }
 
+        public bool ShowStatusText
+        {
+            get { return _settings.Get(nameof(ShowStatusText), true); }
+            set { _settings.Update(nameof(ShowStatusText), value); }
+        }
 
         public YapaThemeSettings(ISettings settings)
         {

@@ -49,6 +49,7 @@ namespace YAPA
 
             UpdateAppSize();
             PhaseChanged();
+            UpdateStatusText();
 
             UpdateCompletedPomodoroCount();
 
@@ -74,7 +75,6 @@ namespace YAPA
 
         private async void UpdateCompletedPomodoroCount()
         {
-
             await Task.Run(() =>
             {
                 var today = DateTime.Today.Date;
@@ -123,6 +123,11 @@ namespace YAPA
                 {
                     UpdateAppSize();
                 }
+
+                if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.ShowStatusText)}"))
+                {
+                    UpdateStatusText();
+                }
             }
         }
 
@@ -143,6 +148,51 @@ namespace YAPA
             {
                 PhaseChanged();
                 RaisePropertyChanged(nameof(ProgressState));
+                UpdateStatusText();
+            }
+        }
+
+        private string _statusText;
+
+        public string Status
+        {
+            get { return _statusText; }
+            set
+            {
+                if (Settings.ShowStatusText)
+                {
+                    _statusText = value;
+                }
+                else
+                {
+                    _statusText = String.Empty;
+                }
+                RaisePropertyChanged(nameof(Status));
+            }
+        }
+
+        private void UpdateStatusText()
+        {
+            switch (ViewModel.Engine.Phase)
+            {
+                case PomodoroPhase.NotStarted:
+                    Status = "YAPA 2.0";
+                    break;
+                case PomodoroPhase.WorkEnded:
+                    Status = "Work Ended";
+                    break;
+                case PomodoroPhase.BreakEnded:
+                    Status = "Break Ended";
+                    break;
+                case PomodoroPhase.Work:
+                    Status = "Work";
+                    break;
+                case PomodoroPhase.Break:
+                    Status = "Break";
+                    break;
+                case PomodoroPhase.Pause:
+                    Status = "Work Paused";
+                    break;
             }
         }
 
@@ -156,31 +206,26 @@ namespace YAPA
                     Pause.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.WorkEnded:
-                    StageTextBlock.Text = "Work Ended";
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.BreakEnded:
-                    StageTextBlock.Text = "Break Ended";
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Work:
-                    StageTextBlock.Text = "Work";
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Visible;
                     break;
                 case PomodoroPhase.Break:
-                    StageTextBlock.Text = "Break";
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
                     break;
                 case PomodoroPhase.Pause:
-                    StageTextBlock.Text = "Work Paused";
-                    Start.Visibility= Visibility.Visible;
+                    Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Collapsed;
                     break;

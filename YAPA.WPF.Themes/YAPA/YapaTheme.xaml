@@ -173,7 +173,7 @@
                     </TextBlock>
                 </Grid>
 
-                <TextBlock Text="YAPA 2.0" Grid.Column="0" Grid.Row="0"
+                <TextBlock Text="{Binding Status}" Grid.Column="0" Grid.Row="0"
                                VerticalAlignment="Center"
                                x:Name="StageTextBlock"
                                TextAlignment="Left"

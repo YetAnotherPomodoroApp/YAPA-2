@@ -18,6 +18,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <CheckBox  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Use white text</CheckBox>
@@ -32,6 +33,7 @@
             <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"  Minimum="150" Maximum="400" Interval="1" />
 
             <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
+            <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
 
         </Grid>
     </Grid>
