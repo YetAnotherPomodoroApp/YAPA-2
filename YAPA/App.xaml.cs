@@ -2,8 +2,10 @@
 using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using NLog;
 using Squirrel;
 using YAPA.Contracts;
 using YAPA.Shared;
@@ -24,6 +26,8 @@ namespace YAPA
             if (SingleInstance<App>.InitializeAsFirstInstance("YAPA2"))
             {
                 var application = new App();
+
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; ;
 
                 var dCont = new DependencyContainer();
                 Container = dCont.Container;
@@ -46,8 +50,15 @@ namespace YAPA
                 application.Init();
                 application.Run();
 
+
                 SingleInstance<App>.Cleanup();
             }
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var logger = LogManager.GetLogger("YAPA2");
+            logger.Fatal($"Unhandled exception: {e.ExceptionObject}");
         }
 
         private static void MainWindow_Closed(object sender, EventArgs e)
