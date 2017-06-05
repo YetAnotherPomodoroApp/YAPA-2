@@ -145,12 +145,16 @@ namespace YAPA.Shared
                     break;
             }
             Phase = PomodoroPhase.NotStarted;
+            _elapsedInPause = 0;
 
             _startDate = _endDate = DateTime.UtcNow;
+
             if (Current.Index != pom.Index)
             {
                 Current = pom;
             }
+
+            NotifyPropertyChanged(nameof(Elapsed));
         }
 
         private readonly Pomodoro _pom1, _pom2, _pom3, _pom4;
@@ -166,9 +170,9 @@ namespace YAPA.Shared
                     return;
                 }
                 _current = value;
-                NotifyPropertyChanged("Index");
-                NotifyPropertyChanged("WorkTime");
-                NotifyPropertyChanged("BreakTime");
+                NotifyPropertyChanged(nameof(Index));
+                NotifyPropertyChanged(nameof(WorkTime));
+                NotifyPropertyChanged(nameof(BreakTime));
             }
         }
 
