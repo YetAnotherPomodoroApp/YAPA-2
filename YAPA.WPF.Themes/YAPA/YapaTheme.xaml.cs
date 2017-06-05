@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -26,6 +27,7 @@ namespace YAPA
         public int PomodorosCompleted { get; set; }
 
         private readonly Storyboard TimerFlush;
+        private readonly Storyboard AfterBreakTimerFlush;
 
         public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, IPomodoroRepository pomodoroRepository, PomodoroEngineSettings engineSettings) : base(viewModel)
         {
@@ -37,6 +39,8 @@ namespace YAPA
             InitializeComponent();
 
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
+            AfterBreakTimerFlush = (Storyboard)TryFindResource("AfterBreakFlashTimer");
+
             PomodorosCompleted = 0;
 
             ViewModel.Engine.PropertyChanged += Engine_PropertyChanged;
@@ -72,7 +76,6 @@ namespace YAPA
         public double ClockOpacity => Settings.ClockOpacity;
         public double ShadowOpacity => Settings.ShadowOpacity;
 
-
         private async void UpdateCompletedPomodoroCount()
         {
             await Task.Run(() =>
@@ -83,11 +86,28 @@ namespace YAPA
             });
         }
 
+        public SolidColorBrush FlashingColor
+        {
+            get
+            {
+                if (ViewModel.Engine.Phase == PomodoroPhase.WorkEnded)
+                {
+                    return Brushes.Tomato;
+                }
+                else if (ViewModel.Engine.Phase == PomodoroPhase.BreakEnded)
+                {
+                    return Brushes.MediumSeaGreen;
+                }
+                return Brushes.Transparent;
+            }
+        }
+
         private void StopAnimation()
         {
             if (Settings.DisableFlashingAnimation == false)
             {
                 TimerFlush.Stop(this);
+                AfterBreakTimerFlush.Stop(this);
             }
             else
             {
@@ -95,16 +115,35 @@ namespace YAPA
             }
         }
 
-        private void Engine_OnPomodoroCompleted()
+        private void StartAnimation()
         {
+            Storyboard animationToStart = null;
+
+            if (ViewModel.Engine.Phase == PomodoroPhase.WorkEnded)
+            {
+                animationToStart = TimerFlush;
+            }
+            else if (ViewModel.Engine.Phase == PomodoroPhase.BreakEnded)
+            {
+                animationToStart = AfterBreakTimerFlush;
+            }
+            if (animationToStart == null)
+            {
+                return;
+            }
+
             if (Settings.DisableFlashingAnimation == false)
             {
-                TimerFlush.Begin(this, true);
+                animationToStart.Begin(this, true);
             }
             else
             {
-                CurrentTime.Background = Brushes.Tomato;
+                CurrentTime.Background = FlashingColor;
             }
+        }
+
+        private void Engine_OnPomodoroCompleted()
+        {
             PomodorosCompleted++;
             RaisePropertyChanged(nameof(PomodorosCompleted));
         }
@@ -149,6 +188,7 @@ namespace YAPA
                 PhaseChanged();
                 RaisePropertyChanged(nameof(ProgressState));
                 UpdateStatusText();
+                StartAnimation();
             }
         }
 
@@ -373,6 +413,7 @@ namespace YAPA
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TimerFlush.Stop(this);
+            AfterBreakTimerFlush.Stop(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

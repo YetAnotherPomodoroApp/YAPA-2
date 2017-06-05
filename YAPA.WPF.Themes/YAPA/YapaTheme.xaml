@@ -33,6 +33,11 @@
                 Storyboard.TargetName="CurrentTime" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                 To="Tomato" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever"/>
         </Storyboard>
+        <Storyboard x:Key="AfterBreakFlashTimer" Timeline.DesiredFrameRate="15">
+            <ColorAnimation
+                Storyboard.TargetName="CurrentTime" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                To="MediumSeaGreen" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever"/>
+        </Storyboard>
     </Window.Resources>
     <Grid Background="Transparent" IsHitTestVisible="True">
         <Viewbox >
