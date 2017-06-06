@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,6 +38,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Contracts\IApplication.cs" />
+    <Compile Include="Contracts\IDate.cs" />
     <Compile Include="Contracts\IDependencyInjector.cs" />
     <Compile Include="Contracts\IEnviroment.cs" />
     <Compile Include="Contracts\IJson.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Contracts\IThemeMeta.cs" />
     <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="Shared\DashboardPlugin.cs" />
+    <Compile Include="Shared\DateTimeWrapper.cs" />
     <Compile Include="Shared\JsonYapaSettings.cs" />
     <Compile Include="Shared\MainViewModel.cs" />
     <Compile Include="Shared\PauseCommand.cs" />

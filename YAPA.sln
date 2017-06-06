@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.StarterTheme", "YAPA.WPF.StarterTheme\YAPA.WPF.StarterTheme.csproj", "{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes", "YAPA.WPF.Themes\YAPA.WPF.Themes.csproj", "{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,16 @@ Global
 		{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.CD_ROM|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.CD_ROM|Any CPU.Build.0 = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B573B1F-2850-4535-A264-D30950BB0258}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

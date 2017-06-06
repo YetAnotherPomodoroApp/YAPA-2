@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared
 {
@@ -9,6 +10,7 @@ namespace YAPA.Shared
     {
         private readonly PomodoroEngineSettings _settings;
         private readonly ITimer _timer;
+        private readonly IDate _dateTime;
 
         public int Index => Current.Index;
 
@@ -74,8 +76,8 @@ namespace YAPA.Shared
 
         public bool IsRunning => Phase == PomodoroPhase.Break || Phase == PomodoroPhase.Work;
 
-        private DateTime _startDate = DateTime.UtcNow;
-        private DateTime _endDate = DateTime.UtcNow;
+        private DateTime _startDate;
+        private DateTime _endDate;
 
         public void Start()
         {
@@ -104,7 +106,7 @@ namespace YAPA.Shared
                     throw new InvalidOperationException($"Can't start pomodoro from phase: {Phase}");
             }
 
-            _startDate = _endDate = DateTime.UtcNow;
+            _startDate = _endDate = _dateTime.DateTimeUtc();
             _timer.Start();
 
             OnStarted?.Invoke();
@@ -122,7 +124,7 @@ namespace YAPA.Shared
             _timer.Stop();
             Phase = PomodoroPhase.Pause;
             _elapsedInPause = Elapsed;
-            _startDate = _endDate = DateTime.UtcNow;
+            _startDate = _endDate = _dateTime.DateTimeUtc();
             OnPaused?.Invoke();
         }
 
@@ -147,7 +149,7 @@ namespace YAPA.Shared
             Phase = PomodoroPhase.NotStarted;
             _elapsedInPause = 0;
 
-            _startDate = _endDate = DateTime.UtcNow;
+            _startDate = _endDate = _dateTime.DateTimeUtc();
 
             if (Current.Index != pom.Index)
             {
@@ -176,10 +178,11 @@ namespace YAPA.Shared
             }
         }
 
-        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer)
+        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime)
         {
             _settings = settings;
             _timer = timer;
+            _dateTime = dateTime;
             _timer.Tick += _timer_Tick;
 
             _pom4 = new Pomodoro(_settings) { Index = 4 };
@@ -187,6 +190,8 @@ namespace YAPA.Shared
             _pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = _pom3 };
             _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = _pom2 };
             _pom4.NextPomodoro = _pom1;
+
+            _startDate = _endDate = _dateTime.DateTimeUtc();
 
             OnPomodoroCompleted += PomodoroEngine_OnPomodoroCompleted;
 
@@ -207,7 +212,7 @@ namespace YAPA.Shared
 
         private void _timer_Tick()
         {
-            _endDate = DateTime.UtcNow;
+            _endDate = _dateTime.DateTimeUtc();
             NotifyPropertyChanged(nameof(Elapsed));
 
             if (Phase == PomodoroPhase.Work && Elapsed >= WorkTime)
