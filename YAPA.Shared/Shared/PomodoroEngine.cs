@@ -114,7 +114,7 @@ namespace YAPA.Shared
 
         public void Stop()
         {
-            ResetTo(Current);
+            ResetTo(Phase == PomodoroPhase.Break ? Current.NextPomodoro : Current);
 
             OnStopped?.Invoke();
         }
