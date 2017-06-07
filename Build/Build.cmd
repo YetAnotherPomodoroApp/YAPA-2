@@ -5,6 +5,8 @@ if "%version%" == "" (
 if "%version%" == "" (
    set version="2.0.0"
 )
-call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat"
 
+pushd "%~dp0"
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+popd
 msbuild Build.proj /p:Configuration="Release" /p:build_number="%version%"
