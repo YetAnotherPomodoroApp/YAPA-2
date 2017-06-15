@@ -4,6 +4,10 @@ YAPA 2
 
 YAPA-2 is minimalistic desktop timer app for Pomodoro Technique users. 
 
+![](http://i.imgur.com/VkoEGe0.png)
+
+### [Download latest version!](https://github.com/YetAnotherPomodoroApp/YAPA-2/releases/latest)
+
 Features
 ---------
 
@@ -19,6 +23,7 @@ Features
 - Command line arguments
   - /start
   - /stop
+  - /pause
   - /reset
   - /settings
   - /homepage
