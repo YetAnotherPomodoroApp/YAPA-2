@@ -6,6 +6,9 @@ YAPA-2 is minimalistic desktop timer app for Pomodoro Technique users.
 
 ![](http://i.imgur.com/VkoEGe0.png)
 
+Right click to open dashboard and settings:
+![](http://i.imgur.com/lnhuPzx.png)
+
 ### [Download latest version!](https://github.com/YetAnotherPomodoroApp/YAPA-2/releases/latest)
 
 Features
