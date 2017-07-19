@@ -3,10 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.PluginManager
 {
     public partial class PluginManagerSettingWindow : UserControl
     {

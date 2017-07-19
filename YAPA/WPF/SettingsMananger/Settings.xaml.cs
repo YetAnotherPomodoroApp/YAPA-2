@@ -3,11 +3,11 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using YAPA.Contracts;
-using YAPA.Shared;
-using YAPA.WPF;
+using YAPA.Commands;
+using YAPA.Shared.Contracts;
+using YAPA.WPF.PluginManager;
 
-namespace YAPA
+namespace YAPA.WPF.SettingsMananger
 {
     public partial class Settings : Window
     {
@@ -99,7 +99,7 @@ namespace YAPA
 
             if (treeItem.Header.ToString() == "Plugins")
             {
-                _settingPage = (UserControl)_container.Resolve(typeof(PluginManagerSettingWindow));
+                _settingPage = (UserControl)_container.Resolve(typeof(PluginManager.PluginManagerSettingWindow));
             }
             else
             if (treeItem.Header.ToString() == "About")

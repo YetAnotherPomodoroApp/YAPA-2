@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.WPF.SettingsMananger
 {
     public class SettingManager : ISettingManager
     {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAPA.Contracts;
-using YAPA.WPF;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.WPF.PluginManager
 {
     public class PluginManager : IPluginManager
     {

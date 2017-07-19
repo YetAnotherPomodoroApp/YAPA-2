@@ -56,15 +56,15 @@
     <Compile Include="Contracts\IThemeManager.cs" />
     <Compile Include="Contracts\IThemeMeta.cs" />
     <Compile Include="Contracts\ITimer.cs" />
-    <Compile Include="Shared\DashboardPlugin.cs" />
-    <Compile Include="Shared\DateTimeWrapper.cs" />
-    <Compile Include="Shared\JsonYapaSettings.cs" />
-    <Compile Include="Shared\MainViewModel.cs" />
-    <Compile Include="Shared\PauseCommand.cs" />
-    <Compile Include="Shared\PomodoroEngine.cs" />
-    <Compile Include="Shared\ResetCommand.cs" />
-    <Compile Include="Shared\StartCommand.cs" />
-    <Compile Include="Shared\StopCommand.cs" />
+    <Compile Include="Common\DashboardPlugin.cs" />
+    <Compile Include="Common\DateTimeWrapper.cs" />
+    <Compile Include="Common\JsonYapaSettings.cs" />
+    <Compile Include="Common\MainViewModel.cs" />
+    <Compile Include="Common\PauseCommand.cs" />
+    <Compile Include="Common\PomodoroEngine.cs" />
+    <Compile Include="Common\ResetCommand.cs" />
+    <Compile Include="Common\StartCommand.cs" />
+    <Compile Include="Common\StopCommand.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

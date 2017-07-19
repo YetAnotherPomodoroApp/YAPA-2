@@ -1,7 +1,7 @@
 ﻿using System;
 using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared.Shared
+namespace YAPA.Shared.Common
 {
     public class DateTimeWrapper : IDate
     {

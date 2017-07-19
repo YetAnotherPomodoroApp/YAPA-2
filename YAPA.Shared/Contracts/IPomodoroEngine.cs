@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace YAPA.Contracts
+namespace YAPA.Shared.Contracts
 {
     public interface IPomodoroEngine : INotifyPropertyChanged
     {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Windows.Input;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.Shared.Common
 {
-    public class StartCommand : ICommand
+    public class PauseCommand : ICommand
     {
         private readonly IPomodoroEngine _engine;
-        public StartCommand(IPomodoroEngine engine)
+        public PauseCommand(IPomodoroEngine engine)
         {
             _engine = engine;
             _engine.PropertyChanged += _engine_PropertyChanged;
@@ -23,15 +23,14 @@ namespace YAPA.Shared
 
         public bool CanExecute(object parameter)
         {
-            return _engine.Phase != PomodoroPhase.Work && _engine.Phase != PomodoroPhase.Break;
+            return _engine.Phase == PomodoroPhase.Work;
         }
-
-        public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)
         {
-            _engine.Start();
+            _engine.Pause();
         }
 
+        public event EventHandler CanExecuteChanged;
     }
 }

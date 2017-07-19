@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using YAPA.WPF;
 
 namespace YAPA.Plugins.Dashboard
 {

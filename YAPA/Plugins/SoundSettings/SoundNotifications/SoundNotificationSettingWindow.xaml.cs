@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
-using YAPA.Shared;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins.SoundSettings.SoundNotifications
 {
     public partial class SoundNotificationSettingWindow : UserControl
     {

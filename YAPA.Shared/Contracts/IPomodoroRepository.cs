@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace YAPA.Contracts
+namespace YAPA.Shared.Contracts
 {
     public interface IPomodoroRepository
     {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using YAPA.Contracts;
 using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.Shared.Common
 {
     public class PomodoroEngine : IPomodoroEngine, IPlugin
     {

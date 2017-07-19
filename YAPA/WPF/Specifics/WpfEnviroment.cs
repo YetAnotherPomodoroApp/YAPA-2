@@ -2,7 +2,7 @@
 using System.IO;
 using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.Specifics
 {
     public class WpfEnviroment : IEnvironment
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using YAPA.Contracts;
-
-namespace YAPA.WPF
+﻿namespace YAPA.WPF
 {
     //public class DefaultTheme2 : IThemeMeta
     //{

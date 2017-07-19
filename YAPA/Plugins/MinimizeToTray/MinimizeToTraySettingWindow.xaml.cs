@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins.MinimizeToTray
 {
     public partial class MinimizeToTraySettingWindow : UserControl
     {

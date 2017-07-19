@@ -1,7 +1,8 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using YAPA.Contracts;
 using NSubstitute;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared.Tests
 {

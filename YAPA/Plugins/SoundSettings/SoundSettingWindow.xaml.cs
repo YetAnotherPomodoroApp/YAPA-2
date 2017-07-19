@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using YAPA.WPF;
+using SoundNotificationSettingWindow = YAPA.Plugins.SoundSettings.SoundNotifications.SoundNotificationSettingWindow;
 
 namespace YAPA.Plugins.SoundSettings
 {
@@ -8,7 +8,7 @@ namespace YAPA.Plugins.SoundSettings
     /// </summary>
     public partial class SoundSettingWindow : UserControl
     {
-        public SoundSettingWindow(SoundNotificationSettingWindow soundNotification, MusicPlayerPluginSettingWindow musicPlayer)
+        public SoundSettingWindow(SoundNotificationSettingWindow soundNotification, MusicPlayer.MusicPlayerPluginSettingWindow musicPlayer)
         {
             InitializeComponent();
             Container.Children.Add(soundNotification);

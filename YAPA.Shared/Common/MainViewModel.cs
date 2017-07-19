@@ -1,8 +1,7 @@
 ﻿using System.Windows.Input;
-using YAPA.Contracts;
-using YAPA.Shared.Shared;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.Shared.Common
 {
     public class MainViewModel : IMainViewModel
     {

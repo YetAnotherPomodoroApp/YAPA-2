@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAPA.Contracts
+namespace YAPA.Shared.Contracts
 {
     public interface ITimer
     {

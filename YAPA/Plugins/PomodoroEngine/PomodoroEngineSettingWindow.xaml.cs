@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
-using YAPA.Shared;
+using YAPA.Shared.Common;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins.PomodoroEngine
 {
     public partial class PomodoroEngineSettingWindow : UserControl
     {

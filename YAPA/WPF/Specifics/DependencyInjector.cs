@@ -1,8 +1,8 @@
-﻿using Autofac;
-using System;
-using YAPA.Contracts;
+﻿using System;
+using Autofac;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.WPF.Specifics
 {
     public class DependencyInjector : IDependencyInjector
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace YAPA.Contracts
+namespace YAPA.Shared.Contracts
 {
     public interface IMainViewModel
     {

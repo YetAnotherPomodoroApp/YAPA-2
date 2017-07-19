@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.Shared.Common
 {
     public class ResetCommand : ICommand
     {

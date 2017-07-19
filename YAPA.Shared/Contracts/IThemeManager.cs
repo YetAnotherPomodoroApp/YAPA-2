@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YAPA.Contracts
+namespace YAPA.Shared.Contracts
 {
     public interface IThemeManager
     {

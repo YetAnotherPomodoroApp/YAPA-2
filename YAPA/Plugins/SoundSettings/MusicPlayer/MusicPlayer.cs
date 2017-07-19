@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using YAPA.Contracts;
-using YAPA.Plugins;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
-namespace YAPA.Shared
+namespace YAPA.Plugins.SoundSettings.MusicPlayer
 {
     [BuiltInPlugin(Hide = true)]
     public class MusicPlayerPlugin : IPluginMeta

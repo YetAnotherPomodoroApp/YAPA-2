@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using YAPA.Contracts;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared.Tests

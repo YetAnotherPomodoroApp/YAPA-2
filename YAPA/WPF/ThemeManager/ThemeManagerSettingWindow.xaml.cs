@@ -1,8 +1,7 @@
 ﻿using System.Windows.Controls;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.ThemeManager
 {
     public partial class ThemeManagerSettingWindow : UserControl
     {

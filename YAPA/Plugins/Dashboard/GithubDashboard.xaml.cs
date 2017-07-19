@@ -4,19 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using YAPA.Plugins.Dashboard;
-using YAPA.Shared;
+using YAPA.WPF;
 
-namespace YAPA.WPF.Plugins
+namespace YAPA.Plugins.Dashboard
 {
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
     public partial class GithubDashboard : UserControl
     {
-        private readonly Dashboard _dashboard;
+        private readonly Shared.Common.Dashboard _dashboard;
 
-        public GithubDashboard(Dashboard dashboard)
+        public GithubDashboard(Shared.Common.Dashboard dashboard)
         {
             _dashboard = dashboard;
 

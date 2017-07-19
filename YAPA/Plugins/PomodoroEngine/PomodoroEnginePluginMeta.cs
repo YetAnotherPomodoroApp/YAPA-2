@@ -1,5 +1,5 @@
 ﻿using System;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
 namespace YAPA.Plugins.PomodoroEngine

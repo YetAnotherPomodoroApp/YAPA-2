@@ -1,10 +1,9 @@
 ﻿using System;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
-using YAPA.WPF.Plugins;
 
-namespace YAPA.Plugins
+namespace YAPA.Plugins.Dashboard
 {
     [BuiltInPlugin(Order = 1)]
     public class DashboardPlugin : IPluginMeta
@@ -12,7 +11,7 @@ namespace YAPA.Plugins
         public string Title => "Dashboard";
         public string Id => "Dashboard";
 
-        public Type Plugin => typeof(Shared.Dashboard);
+        public Type Plugin => typeof(Shared.Common.Dashboard);
 
         public Type Settings => typeof(DashboardSettings);
 

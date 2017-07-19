@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA
+namespace YAPA.Commands
 {
     public class SaveSettingsCommand : ICommand
     {

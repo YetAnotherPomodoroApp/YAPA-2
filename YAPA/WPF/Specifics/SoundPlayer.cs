@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Media;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.Specifics
 {
     public class SoundPlayer : IMusicPlayer
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA
+namespace YAPA.WPF.Specifics
 {
     public class ShowSettingsCommand : IShowSettingsCommand
     {
@@ -25,7 +25,7 @@ namespace YAPA
 
         public void Execute(object parameter)
         {
-            var settingWindow = new Settings(_settings, _mananger, _pluginManager, _container);
+            var settingWindow = new SettingsMananger.Settings(_settings, _mananger, _pluginManager, _container);
 
             settingWindow.ShowDialog();
         }

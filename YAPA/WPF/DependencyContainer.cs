@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Plugins.Dashboard;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
-using YAPA.WPF.Plugins;
+using YAPA.WPF.PluginManager;
+using YAPA.WPF.SettingsMananger;
+using YAPA.WPF.Specifics;
+using YAPA.WPF.ThemeManager;
 
 namespace YAPA.WPF
 {
@@ -29,14 +31,14 @@ namespace YAPA.WPF
             di.RegisterInstance(di, typeof(IDependencyInjector));
 
             //Themes
-            ThemeManager = new ThemeManager(di, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
+            ThemeManager = new ThemeManager.ThemeManager(di, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
             var themeUpdater = new ContainerBuilder();
             themeUpdater.RegisterInstance(ThemeManager).As<IThemeManager>().SingleInstance();
             themeUpdater.RegisterType(ThemeManager.ActiveTheme.Theme).As<IApplication>().SingleInstance();
             themeUpdater.Update(Container);
 
             //Plugins
-            PluginManager = new PluginManager(di, GetPluginMetas(), Container.Resolve<PluginManagerSettings>(), Container.Resolve<ISettings>());
+            PluginManager = new PluginManager.PluginManager(di, GetPluginMetas(), Container.Resolve<PluginManagerSettings>(), Container.Resolve<ISettings>());
             var updater = new ContainerBuilder();
             updater.RegisterInstance(PluginManager).As<IPluginManager>().SingleInstance();
             updater.Update(Container);
@@ -67,7 +69,7 @@ namespace YAPA.WPF
             //builder.RegisterType(typeof(ThemeManagerSettingWindow));
 
             builder.RegisterType(typeof(PluginManagerSettings));
-            builder.RegisterType(typeof(PluginManagerSettingWindow));
+            builder.RegisterType(typeof(PluginManager.PluginManagerSettingWindow));
 
             builder.RegisterType(typeof(AboutPage));
 
@@ -79,7 +81,7 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(ItemRepository)).As<IPomodoroRepository>().SingleInstance();
 
             builder.RegisterType(typeof(ShowSettingsCommand)).As<IShowSettingsCommand>();
-            builder.RegisterType(typeof(YAPA.Shared.Shared.DateTimeWrapper)).As<IDate>();
+            builder.RegisterType(typeof(DateTimeWrapper)).As<IDate>();
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA
+namespace YAPA.Commands
 {
     public class CancelSettingsCommand : ICommand
     {

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins.MinimizeToTray
 {
     public class SystemTrayPlugin : IPluginMeta
     {

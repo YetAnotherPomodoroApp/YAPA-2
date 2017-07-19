@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Input;
-using YAPA.Shared;
 
-namespace YAPA.Plugins
+namespace YAPA.Plugins.SoundSettings.MusicPlayer
 {
     /// <summary>
     /// Interaction logic for MusicPlayerSettingWindow.xaml

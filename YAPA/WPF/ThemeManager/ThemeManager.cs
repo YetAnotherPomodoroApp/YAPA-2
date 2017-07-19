@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAPA.Contracts;
-using YAPA.WPF;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.Shared
+namespace YAPA.WPF.ThemeManager
 {
     [BuiltInPlugin(Order = 4)]
     public class ThemeManagerPlugin : IPluginMeta

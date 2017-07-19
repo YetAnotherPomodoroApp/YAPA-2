@@ -2,9 +2,10 @@
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
+using YAPA.WPF;
 
-namespace YAPA
+namespace YAPA.Plugins.Dashboard
 {
     public class ItemRepository : IPomodoroRepository
     {

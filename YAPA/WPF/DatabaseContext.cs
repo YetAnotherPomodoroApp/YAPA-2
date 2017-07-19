@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using YAPA.Contracts;
+using YAPA.Plugins.Dashboard;
+using YAPA.Shared.Contracts;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
-namespace YAPA
+namespace YAPA.WPF
 {
     public class DatabaseContext : DbContext
     {

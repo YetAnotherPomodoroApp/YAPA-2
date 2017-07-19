@@ -1,14 +1,12 @@
 ﻿using Autofac;
-using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using NLog;
 using Squirrel;
-using YAPA.Contracts;
-using YAPA.Shared;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
 namespace YAPA

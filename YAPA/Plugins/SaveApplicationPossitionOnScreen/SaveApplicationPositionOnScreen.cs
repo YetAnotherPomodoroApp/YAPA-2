@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
+using YAPA.WPF;
 using GDIScreen = System.Windows.Forms.Screen;
 
-namespace YAPA.WPF
+namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
 {
     [BuiltInPlugin(Hide = true)]
     public class SaveApplicationPositionOnScreenPlugin : IPluginMeta

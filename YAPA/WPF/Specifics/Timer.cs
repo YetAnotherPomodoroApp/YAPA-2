@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Threading;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.Specifics
 {
     public class Timer : ITimer
     {

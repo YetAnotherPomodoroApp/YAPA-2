@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using YAPA.Contracts;
 using YAPA.Shared;
+using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 using YAPA.WPF.Themes.YAPA;
 
 namespace YAPA

@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using YAPA.Shared.Contracts;
 
-namespace YAPA.WPF
+namespace YAPA.WPF.Specifics
 {
     public class NewftonsJson : IJson
     {

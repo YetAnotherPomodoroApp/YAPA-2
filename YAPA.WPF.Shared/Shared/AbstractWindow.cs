@@ -2,11 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Shell;
-using YAPA.Contracts;
+using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared
 {
