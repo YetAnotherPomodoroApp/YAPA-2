@@ -4,7 +4,7 @@ using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF
 {
-    public class WpfEnviroment : IEnviroment
+    public class WpfEnviroment : IEnvironment
     {
         static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
         readonly string _settingsFileLocation = Path.Combine(BaseDir, @"settings.json");

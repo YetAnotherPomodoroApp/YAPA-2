@@ -10,13 +10,13 @@ namespace YAPA.Shared
 {
     public class JsonYapaSettings : ISettings
     {
-        private readonly IEnviroment _enviroment;
+        private readonly IEnvironment _enviroment;
         private readonly IJson _json;
 
         private YapaSettingFile _settings;
         private YapaSettingFile _localSettings;
 
-        public JsonYapaSettings(IEnviroment enviroment, IJson json)
+        public JsonYapaSettings(IEnvironment enviroment, IJson json)
         {
             _enviroment = enviroment;
             _json = json;

@@ -1,6 +1,6 @@
 ﻿namespace YAPA.Shared.Contracts
 {
-    public interface IEnviroment
+    public interface IEnvironment
     {
         string GetSettings();
         void SaveSettings(string settings);

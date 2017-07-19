@@ -74,7 +74,7 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
 
-            builder.RegisterType(typeof(WpfEnviroment)).As<IEnviroment>().SingleInstance();
+            builder.RegisterType(typeof(WpfEnviroment)).As<IEnvironment>().SingleInstance();
 
             builder.RegisterType(typeof(ItemRepository)).As<IPomodoroRepository>().SingleInstance();
 
