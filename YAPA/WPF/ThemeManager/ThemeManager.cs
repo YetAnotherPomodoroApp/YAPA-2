@@ -7,9 +7,10 @@ using YAPA.WPF;
 namespace YAPA.Shared
 {
     [BuiltInPlugin(Order = 4)]
-    public class DashboardPlugin : IPluginMeta
+    public class ThemeManagerPlugin : IPluginMeta
     {
         public string Title => "Themes";
+        public string Id => "ThemeManager";
 
         public Type Plugin => null;
 
@@ -92,7 +93,7 @@ namespace YAPA.Shared
 
         public ThemeManagerSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForComponent(nameof(ThemeManager));
+            _settings = settings.GetSettingsForComponent(new ThemeManagerPlugin().Id);
         }
 
         public void DeferChanges()

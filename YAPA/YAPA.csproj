@@ -380,7 +380,7 @@
     <Compile Include="Plugins\Dashboard\PomodoroWeek.xaml.cs">
       <DependentUpon>PomodoroWeek.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\MinimizeToTray\MinimizeToTray.cs" />
+    <Compile Include="Plugins\MinimizeToTray\SystemTray.cs" />
     <Compile Include="Plugins\MinimizeToTray\MinimizeToTraySettingWindow.xaml.cs">
       <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
     </Compile>

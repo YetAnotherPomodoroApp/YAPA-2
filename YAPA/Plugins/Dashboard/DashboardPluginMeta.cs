@@ -10,6 +10,7 @@ namespace YAPA.Plugins
     public class DashboardPlugin : IPluginMeta
     {
         public string Title => "Dashboard";
+        public string Id => "Dashboard";
 
         public Type Plugin => typeof(Shared.Dashboard);
 

@@ -32,7 +32,8 @@ namespace YAPA.WPF
                 Plugins.Add(new PluginViewModel
                 {
                     Title = pluginMeta.Title,
-                    Enabled = _enabledPlugins.Contains(pluginMeta.Title)
+                    Enabled = _enabledPlugins.Contains(pluginMeta.Id),
+                    Id = nameof(pluginMeta.Plugin)
                 });
             }
 
@@ -59,15 +60,15 @@ namespace YAPA.WPF
             }
             if (context.Enabled)
             {
-                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Title);
+                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Id);
                 if (string.IsNullOrEmpty(existing))
                 {
-                    _enabledPlugins.Add(context.Title);
+                    _enabledPlugins.Add(context.Id);
                 }
             }
             else
             {
-                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Title);
+                var existing = _enabledPlugins.FirstOrDefault(x => x == context.Id);
                 if (existing != null)
                 {
                     _enabledPlugins.Remove(existing);
@@ -81,6 +82,7 @@ namespace YAPA.WPF
     public class PluginViewModel
     {
         public string Title { get; set; }
+        public string Id { get; set; }
         public bool Enabled { get; set; }
     }
 

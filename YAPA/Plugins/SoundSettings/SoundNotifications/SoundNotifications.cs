@@ -9,6 +9,7 @@ namespace YAPA.Shared
     public class SoundNotificationsPlugin : IPluginMeta
     {
         public string Title => "Sound notifications";
+        public string Id => "SoundNotifications";
 
         public Type Plugin => typeof(SoundNotifications);
 
@@ -102,7 +103,7 @@ namespace YAPA.Shared
 
         public SoundNotificationsSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForComponent(nameof(SoundNotifications));
+            _settings = settings.GetSettingsForComponent(new SoundNotificationsPlugin().Id);
         }
 
         public void DeferChanges()

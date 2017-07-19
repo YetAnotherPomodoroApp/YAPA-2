@@ -4,7 +4,7 @@ namespace YAPA.WPF
 {
     public partial class MinimizeToTraySettingWindow : UserControl
     {
-        public MinimizeToTraySettingWindow(MinimizeToTraySettings settings)
+        public MinimizeToTraySettingWindow(SystemTraySettings settings)
         {
             settings.DeferChanges();
             InitializeComponent();

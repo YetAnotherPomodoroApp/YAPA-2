@@ -36,7 +36,7 @@ namespace YAPA.WPF
             themeUpdater.Update(Container);
 
             //Plugins
-            PluginManager = new PluginManager(di, GetPluginMetas(), (PluginManagerSettings)Container.Resolve(typeof(PluginManagerSettings)));
+            PluginManager = new PluginManager(di, GetPluginMetas(), Container.Resolve<PluginManagerSettings>(), Container.Resolve<ISettings>());
             var updater = new ContainerBuilder();
             updater.RegisterInstance(PluginManager).As<IPluginManager>().SingleInstance();
             updater.Update(Container);
@@ -52,6 +52,7 @@ namespace YAPA.WPF
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<JsonYapaSettings>().As<ISettings>().AutoActivate().SingleInstance();
+
             builder.RegisterType<NewftonsJson>().As<IJson>().SingleInstance();
 
             builder.RegisterType(typeof(PomodoroEngine)).As<IPomodoroEngine>().SingleInstance();
@@ -81,7 +82,6 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(YAPA.Shared.Shared.DateTimeWrapper)).As<IDate>();
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
-
 
 
             var container = builder.Build();

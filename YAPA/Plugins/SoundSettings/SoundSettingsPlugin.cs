@@ -8,6 +8,7 @@ namespace YAPA.Plugins.SoundSettings
     public class SoundSettingsPlugin : IPluginMeta
     {
         public string Title => "Sound";
+        public string Id => "SoundSettingsPlugin";
 
         public Type Plugin => null;
 

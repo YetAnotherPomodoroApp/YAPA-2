@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -83,6 +84,8 @@ namespace YAPA.Shared
         {
             SaveSettings();
             SaveLocalSettings();
+
+            Load();
         }
 
         private void SaveSettings()
@@ -208,6 +211,14 @@ namespace YAPA.Shared
             }
         }
 
+        public void RemoveKey(string plugin)
+        {
+            if (ContainsKey(plugin))
+            {
+                Remove(plugin);
+            }
+        }
+
     }
 
     public class YapaSettingFile : INotifyPropertyChanged
@@ -308,6 +319,7 @@ namespace YAPA.Shared
             else
             {
                 _settings = _json.Deserialize<SettingsDictionary>(settings);
+                ApplyMigration();
             }
         }
 
@@ -326,6 +338,27 @@ namespace YAPA.Shared
                 }
                 _hasUnsavedChanges = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public void ApplyMigration()
+        {
+            var migrations = new List<Tuple<string, string>> { Tuple.Create("MinimizeToTray", "SystemTray") };
+            var anyMigrationApplied = false;
+
+            foreach (var migration in migrations)
+            {
+                if (_settings.ContainsKey(migration.Item1))
+                {
+                    _settings[migration.Item2] = _settings[migration.Item1];
+                    _settings.RemoveKey(migration.Item1);
+                    anyMigrationApplied = true;
+                }
+            }
+
+            if (anyMigrationApplied)
+            {
+                Commit();
             }
         }
 

@@ -9,6 +9,7 @@ namespace YAPA.WPF
     public class SaveApplicationPositionOnScreenPlugin : IPluginMeta
     {
         public string Title => "Save application position on screen";
+        public string Id => "SaveApplicationPositionOnScreen";
 
         public Type Plugin => typeof(SaveApplicationPositionOnScreen);
 
@@ -73,7 +74,7 @@ namespace YAPA.WPF
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForComponent(nameof(SaveApplicationPositionOnScreen));
+            _settings = settings.GetSettingsForComponent(new SaveApplicationPositionOnScreenPlugin().Id);
         }
 
         public void DeferChanges()

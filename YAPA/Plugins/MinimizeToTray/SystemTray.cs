@@ -6,19 +6,19 @@ using YAPA.Shared;
 
 namespace YAPA.WPF
 {
-
-    public class MinimizeToTrayPlugin : IPluginMeta
+    public class SystemTrayPlugin : IPluginMeta
     {
-        public string Title => "Minimize to tray";
+        public string Title => "System tray";
+        public string Id => "SystemTray";
 
-        public Type Plugin => typeof(MinimizeToTray);
+        public Type Plugin => typeof(SystemTray);
 
-        public Type Settings => typeof(MinimizeToTraySettings);
+        public Type Settings => typeof(SystemTraySettings);
 
         public Type SettingEditWindow => typeof(MinimizeToTraySettingWindow);
     }
 
-    public class MinimizeToTray : IPlugin
+    public class SystemTray : IPlugin
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern bool DestroyIcon(IntPtr handle);
@@ -29,11 +29,11 @@ namespace YAPA.WPF
 
         private readonly IApplication _app;
         private readonly IMainViewModel _viewModel;
-        private readonly MinimizeToTraySettings _settings;
+        private readonly SystemTraySettings _settings;
         private readonly ISettings _globalSettings;
         private readonly PomodoroEngineSettings _engineSettings;
 
-        public MinimizeToTray(IApplication app, IMainViewModel viewModel, MinimizeToTraySettings settings, ISettings globalSettings, PomodoroEngineSettings engineSettings)
+        public SystemTray(IApplication app, IMainViewModel viewModel, SystemTraySettings settings, ISettings globalSettings, PomodoroEngineSettings engineSettings)
         {
             _app = app;
             _viewModel = viewModel;
@@ -61,7 +61,7 @@ namespace YAPA.WPF
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == $"{nameof(MinimizeToTray)}.{nameof(_settings.ShowInTaskbar)}")
+            if (e.PropertyName == $"{nameof(SystemTray)}.{nameof(_settings.ShowInTaskbar)}")
             {
                 _app.ShowInTaskbar = _settings.ShowInTaskbar;
             }
@@ -181,7 +181,7 @@ namespace YAPA.WPF
         }
     }
 
-    public class MinimizeToTraySettings : IPluginSettings
+    public class SystemTraySettings : IPluginSettings
     {
         private readonly ISettingsForComponent _settings;
 
@@ -209,9 +209,9 @@ namespace YAPA.WPF
             set { _settings.Update(nameof(MinimizeToTray), value); }
         }
 
-        public MinimizeToTraySettings(ISettings settings)
+        public SystemTraySettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForComponent(nameof(MinimizeToTray));
+            _settings = settings.GetSettingsForComponent(new SystemTrayPlugin().Id);
         }
 
         public void DeferChanges()

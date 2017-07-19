@@ -5,9 +5,10 @@ using YAPA.WPF;
 namespace YAPA.Plugins.PomodoroEngine
 {
     [BuiltInPlugin(Order = 2)]
-    public class PomodoroEnginePluginMeta : IPluginMeta
+    public class PomodoroEnginePlugin : IPluginMeta
     {
         public string Title => "General";
+        public string Id => "PomodoroEngine";
 
         public Type Plugin => null;
 

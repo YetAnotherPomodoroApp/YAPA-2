@@ -7,25 +7,26 @@ using YAPA.WPF;
 namespace YAPA.Shared
 {
     [BuiltInPlugin(Hide = true)]
-    public class MusicPlayerPluginMetas : IPluginMeta
+    public class MusicPlayerPlugin : IPluginMeta
     {
         public string Title => "Music player";
+        public string Id => "MusicPlayer";
 
-        public Type Plugin => typeof(MusicPlayerPlugin);
+        public Type Plugin => typeof(MusicPlayer);
 
         public Type Settings => typeof(MusicPlayerPluginSettings);
 
         public Type SettingEditWindow => typeof(MusicPlayerPluginSettingWindow);
     }
 
-    public class MusicPlayerPlugin : IPlugin
+    public class MusicPlayer : IPlugin
     {
         private readonly IPomodoroEngine _engine;
         private readonly MusicPlayerPluginSettings _settings;
         private readonly IMusicPlayer _musicPlayer;
         private readonly PomodoroEngineSettings _engineSettings;
 
-        public MusicPlayerPlugin(IPomodoroEngine engine, MusicPlayerPluginSettings settings, IMusicPlayer musicPlayer, PomodoroEngineSettings engineSettings)
+        public MusicPlayer(IPomodoroEngine engine, MusicPlayerPluginSettings settings, IMusicPlayer musicPlayer, PomodoroEngineSettings engineSettings)
         {
             _engine = engine;
             _settings = settings;
@@ -107,7 +108,7 @@ namespace YAPA.Shared
 
         public MusicPlayerPluginSettings(ISettings settings)
         {
-            _settings = settings.GetSettingsForComponent(nameof(MusicPlayerPlugin));
+            _settings = settings.GetSettingsForComponent(new MusicPlayerPlugin().Id);
         }
 
         public void DeferChanges()

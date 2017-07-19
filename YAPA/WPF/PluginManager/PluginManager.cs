@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAPA.Contracts;
 using YAPA.WPF;
@@ -13,14 +14,36 @@ namespace YAPA.Shared
         private IEnumerable<string> _enabledPlugins;
         private bool _initialised = false;
 
-        public PluginManager(IDependencyInjector container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings)
+        public PluginManager(IDependencyInjector container, IEnumerable<IPluginMeta> metas, PluginManagerSettings settings, ISettings gloabalSettings)
         {
             _container = container;
             _settings = settings;
 
+            ApplyMigration(settings, gloabalSettings);
+
             _enabledPlugins = _settings.EnabledPlugins;
             Plugins = metas;
         }
+
+        private static void ApplyMigration(PluginManagerSettings settings, ISettings gloabalSettings)
+        {
+            var migrations = new List<Tuple<string, string>> { Tuple.Create("Minimize to tray", "SystemTray") };
+            var enabled = settings.EnabledPlugins;
+            foreach (var migration in migrations)
+            {
+                if (enabled.Contains(migration.Item1))
+                {
+                    enabled.Remove(migration.Item1);
+                    enabled.Add(migration.Item2);
+                }
+            }
+            settings.EnabledPlugins = enabled;
+
+
+            gloabalSettings.Save();
+        }
+
+
 
         public IEnumerable<IPluginMeta> Plugins { get; }
 
@@ -48,7 +71,7 @@ namespace YAPA.Shared
 
         public IEnumerable<IPluginMeta> ActivePlugins
         {
-            get { return CustomPlugins.Where(x => _enabledPlugins.Contains(x.Title)); }
+            get { return CustomPlugins.Where(x => _enabledPlugins.Contains(x.Id)); }
         }
 
         public object ResolveSettingWindow(IPluginMeta plugin)
