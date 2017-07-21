@@ -12,3 +12,6 @@ namespace YAPA.Plugins.MinimizeToTray
         }
     }
 }
+
+
+

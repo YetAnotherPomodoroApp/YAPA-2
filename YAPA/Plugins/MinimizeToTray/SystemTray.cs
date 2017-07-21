@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using YAPA.Shared.Common;
@@ -150,7 +151,7 @@ namespace YAPA.Plugins.MinimizeToTray
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         private void UpdateIcon()
         {
-            System.Drawing.Color textColor;
+            System.Windows.Media.Color textColor;
 
             if (_viewModel.Engine.Phase == PomodoroPhase.Break || _viewModel.Engine.Phase == PomodoroPhase.BreakEnded)
             {
@@ -168,7 +169,7 @@ namespace YAPA.Plugins.MinimizeToTray
 
             var displayText = _viewModel.Engine.DisplayValue / 60;
 
-            System.Drawing.Brush brush = new System.Drawing.SolidBrush(textColor);
+            System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
 
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
@@ -185,15 +186,15 @@ namespace YAPA.Plugins.MinimizeToTray
     {
         private readonly ISettingsForComponent _settings;
 
-        public System.Drawing.Color WorkTrayIconColor
+        public System.Windows.Media.Color WorkTrayIconColor
         {
-            get { return _settings.Get(nameof(WorkTrayIconColor), System.Drawing.Color.DarkGreen); }
+            get { return _settings.Get(nameof(WorkTrayIconColor), System.Windows.Media.Colors.DarkGreen); }
             set { _settings.Update(nameof(WorkTrayIconColor), value); }
         }
 
-        public System.Drawing.Color BreakTrayIconColor
+        public System.Windows.Media.Color BreakTrayIconColor
         {
-            get { return _settings.Get(nameof(BreakTrayIconColor), System.Drawing.Color.DarkRed); }
+            get { return _settings.Get(nameof(BreakTrayIconColor), System.Windows.Media.Colors.DarkRed); }
             set { _settings.Update(nameof(BreakTrayIconColor), value); }
         }
 

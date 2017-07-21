@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Windows.Media;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YAPA.Shared.Contracts;
@@ -20,8 +21,11 @@ namespace YAPA.WPF.Specifics
 
         public T ConvertToType<T>(object value)
         {
-
-            if (typeof(T).IsValueType || value is string)
+            if (typeof(T) == typeof(System.Windows.Media.Color) && value is string)
+            {
+                return (T)ColorConverter.ConvertFromString((string)value);
+            }
+            else if (typeof(T).IsValueType || value is string)
             {
                 return (T)Convert.ChangeType(value, typeof(T));
             }
