@@ -32,7 +32,7 @@ namespace YAPA.WPF.PluginManager
                 {
                     Title = pluginMeta.Title,
                     Enabled = _enabledPlugins.Contains(pluginMeta.Id),
-                    Id = nameof(pluginMeta.Plugin)
+                    Id = pluginMeta.Id
                 });
             }
 
