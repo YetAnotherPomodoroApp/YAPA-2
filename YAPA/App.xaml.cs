@@ -38,7 +38,7 @@ namespace YAPA
 #if !DEBUG
                 Task.Run(async () =>
                 {
-                    await Update();
+                    await Update(Container.Resolve<ISettingManager>());
                 });
 #endif
 
