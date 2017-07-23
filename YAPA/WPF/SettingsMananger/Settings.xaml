@@ -50,7 +50,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" x:Name="Version" VerticalAlignment="Bottom" Margin="4"></TextBlock>
         
         <Border Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Gold" CornerRadius="8,8,8,8" >
-            <TextBlock Text="Restart application to apply changes" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </Border>
 
     </Grid>

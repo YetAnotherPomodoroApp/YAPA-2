@@ -64,13 +64,18 @@ namespace YAPA
             Current.Shutdown();
         }
 
-        private static async Task Update()
+        private static async Task Update(ISettingManager settings)
         {
             try
             {
                 using (var mgr = new UpdateManager(@"ftp://s1.floatas.net/yapa-2/"))
                 {
-                    await mgr.UpdateApp();
+                    var update = await mgr.UpdateApp();
+                    if (!string.IsNullOrEmpty(update?.Filename))
+                    {
+                        settings.RestartNeeded = true;
+                        settings.NewVersion = update.Version.ToString();
+                    }
                 }
             }
             catch (Exception)

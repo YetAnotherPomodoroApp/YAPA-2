@@ -61,9 +61,26 @@ namespace YAPA.WPF.SettingsMananger
             var aboutPage = new TreeViewItem { Header = "About" };
             SettingsTree.Items.Add(aboutPage);
 
-            RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+            UpdateNotificationMessage();
 
             Loaded += Settings_Loaded;
+        }
+
+        private void UpdateNotificationMessage()
+        {
+            RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+
+            var settingsChanged = "Restart application to apply changes";
+            var updatesInstalled = "Restart application to apply updates";
+
+            var message = settingsChanged;
+
+            if (!string.IsNullOrEmpty(_mananger.NewVersion))
+            {
+                message = updatesInstalled;
+            }
+
+            NotificationMessage.Text = message;
         }
 
         private void Settings_Loaded(object sender, RoutedEventArgs e)
@@ -75,9 +92,10 @@ namespace YAPA.WPF.SettingsMananger
 
         private void _mananger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_mananger.RestartNeeded))
+            if (e.PropertyName == nameof(_mananger.RestartNeeded)
+                || e.PropertyName == nameof(_mananger.NewVersion))
             {
-                RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
+                UpdateNotificationMessage();
             }
         }
 
