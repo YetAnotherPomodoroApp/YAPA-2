@@ -18,9 +18,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -38,9 +40,6 @@
                           IsEditable="True">
                 <ComboBox.Text>
                     <Binding Path="WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                        <Binding.ValidationRules>
-                            <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
-                        </Binding.ValidationRules>
                     </Binding>
                 </ComboBox.Text>
                 <ComboBox.ItemsPanel>
@@ -59,9 +58,6 @@
                           IsEditable="True">
                 <ComboBox.Text>
                     <Binding Path="BreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                        <Binding.ValidationRules>
-                            <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
-                        </Binding.ValidationRules>
                     </Binding>
                 </ComboBox.Text>
                 <ComboBox.ItemsPanel>
@@ -80,9 +76,6 @@
                           IsEditable="True">
                 <ComboBox.Text>
                     <Binding Path="LongBreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                        <Binding.ValidationRules>
-                            <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>-->
-                        </Binding.ValidationRules>
                     </Binding>
                 </ComboBox.Text>
                 <ComboBox.ItemsPanel>
@@ -92,12 +85,16 @@
                 </ComboBox.ItemsPanel>
             </ComboBox>
 
-            <CheckBox  IsChecked="{Binding AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" >Auto start break</CheckBox>
-            <CheckBox  IsChecked="{Binding CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" >Count backwards</CheckBox>
-            <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Disable sound notifications</CheckBox>
+            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"></Separator>
+            
+            <CheckBox  IsChecked="{Binding AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" >Auto start break</CheckBox>
+            <CheckBox  IsChecked="{Binding CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Count backwards</CheckBox>
 
-            <TextBlock Text="Volume" Grid.Column="0" Grid.Row="6"></TextBlock>
-            <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="6" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" ></Separator>
+
+            <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" >Disable sound notifications</CheckBox>
+            <TextBlock Text="Volume" Grid.Column="0" Grid.Row="8"></TextBlock>
+            <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="8" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
 
         </Grid>
     </Grid>
