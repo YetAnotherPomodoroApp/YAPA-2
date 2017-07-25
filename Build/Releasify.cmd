@@ -11,5 +11,9 @@ if "%releaseDir%" == "" (
    set releaseDir=Releases
 )
 
+set prevReleaseUrl=%3
+if "%prevReleaseUrl%" == "" (
+   set prevReleaseUrl=ftp://s1.floatas.net/YAPA-2
+)
 
-..\packages\squirrel.windows.1.5.28\tools\Squirrel --releasify YAPA2.%version%.nupkg --releaseDir=%releaseDir% --previous-releases-url=ftp://s1.floatas.net/YAPA-2 --no-msi
+..\packages\squirrel.windows.1.5.28\tools\Squirrel --releasify YAPA2.%version%.nupkg --releaseDir=%releaseDir% --previous-releases-url=%prevReleaseUrl% --no-msi
