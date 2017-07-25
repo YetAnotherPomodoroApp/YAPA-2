@@ -10,7 +10,10 @@ git clone %ThemeRepository%
 
 git pull %ThemeRepository%
 
-call ".nuget\NuGet.exe" update %ProjectToBuild%
+call ".nuget\NuGet.exe" restore %ThemeDirectory%\\%ProjectToBuild%
+call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF.Shared
+call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF
+
 
 cd %ThemeDirectory%
 
