@@ -15,16 +15,18 @@ namespace YAPA.WPF.SettingsMananger
         private readonly ISettingManager _mananger;
         private readonly IPluginManager _pluginManager;
         private readonly IDependencyInjector _container;
+        private readonly IEnvironment _environment;
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         private UserControl _settingPage = null;
 
-        public Settings(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container)
+        public Settings(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container, IEnvironment environment)
         {
             _settings = settings;
             _mananger = mananger;
             _pluginManager = pluginManager;
             _container = container;
+            _environment = environment;
             _mananger.PropertyChanged += _mananger_PropertyChanged;
 
             SaveCommand = new SaveSettingsCommand(_settings);
@@ -88,6 +90,11 @@ namespace YAPA.WPF.SettingsMananger
             var assembly = Assembly.GetExecutingAssembly();
 
             Version.Text = assembly.GetName().Version.ToString(3);
+
+            if (_environment.PreRelease())
+            {
+                Version.Text += " pre-release";
+            }
         }
 
         private void _mananger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

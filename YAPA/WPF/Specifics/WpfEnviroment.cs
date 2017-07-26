@@ -55,6 +55,11 @@ namespace YAPA.WPF.Specifics
             return Path.Combine(BaseDir, @"Themes");
         }
 
+        public bool PreRelease()
+        {
+            return File.Exists(Path.Combine(BaseDir, "PreRelease.txt"));
+        }
+
         public string GetLocalSettings()
         {
             if (!File.Exists(_localSettingsFileLocation))

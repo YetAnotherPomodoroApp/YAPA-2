@@ -10,5 +10,7 @@
 
         string GetPluginDirectory();
         string GetThemeDirectory();
+
+        bool PreRelease();
     }
 }

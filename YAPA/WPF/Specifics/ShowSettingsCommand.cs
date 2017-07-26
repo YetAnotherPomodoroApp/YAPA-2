@@ -9,13 +9,15 @@ namespace YAPA.WPF.Specifics
         private readonly ISettingManager _mananger;
         private readonly IPluginManager _pluginManager;
         private readonly IDependencyInjector _container;
+        private readonly IEnvironment _environment;
 
-        public ShowSettingsCommand(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container)
+        public ShowSettingsCommand(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container, IEnvironment environment)
         {
             _settings = settings;
             _mananger = mananger;
             _pluginManager = pluginManager;
             _container = container;
+            _environment = environment;
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +27,7 @@ namespace YAPA.WPF.Specifics
 
         public void Execute(object parameter)
         {
-            var settingWindow = new SettingsMananger.Settings(_settings, _mananger, _pluginManager, _container);
+            var settingWindow = new SettingsMananger.Settings(_settings, _mananger, _pluginManager, _container, _environment);
 
             settingWindow.ShowDialog();
         }

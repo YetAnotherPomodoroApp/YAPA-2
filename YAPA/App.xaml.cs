@@ -38,7 +38,7 @@ namespace YAPA
 #if !DEBUG
                 Task.Run(async () =>
                 {
-                    await Update(Container.Resolve<ISettingManager>());
+                    await Update(Container.Resolve<ISettingManager>(),Container.Resolve<IEnvironment>());
                 });
 #endif
 
@@ -64,11 +64,16 @@ namespace YAPA
             Current.Shutdown();
         }
 
-        private static async Task Update(ISettingManager settings)
+        private static async Task Update(ISettingManager settings, IEnvironment environment)
         {
             try
             {
-                using (var mgr = new UpdateManager(@"ftp://s1.floatas.net/yapa-2/"))
+                var releaseUrl = @"ftp://s1.floatas.net/yapa-2/";
+                var preReleaseUrl = @"ftp://s1.floatas.net/yapa-2-pre-release/";
+
+                var updateUrl = environment.PreRelease() ? preReleaseUrl : releaseUrl;
+
+                using (var mgr = new UpdateManager(updateUrl))
                 {
                     var update = await mgr.UpdateApp();
                     if (!string.IsNullOrEmpty(update?.Filename))
