@@ -6,13 +6,12 @@ IF EXIST %ThemeDirectory% (
    rd %ThemeDirectory% /s /Q
 )
 
-git clone %ThemeRepository% 
+git clone -q --depth 1 %ThemeRepository%
 
-git pull %ThemeRepository%
 
 call ".nuget\NuGet.exe" restore %ThemeDirectory%\\%ProjectToBuild%
-call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF.Shared
-call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF
+call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF.Shared -Source "https://www.myget.org/F/yapa2/api/v3/index.json"
+call ".nuget\NuGet.exe" update %ThemeDirectory%\\%ProjectToBuild% -Id YAPA.WPF -Source "https://www.myget.org/F/yapa2/api/v3/index.json"
 
 
 cd %ThemeDirectory%
