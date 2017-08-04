@@ -15,6 +15,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -24,18 +25,19 @@
 
             <CheckBox  IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" >Minimize to tray</CheckBox>
             <CheckBox  IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Show in taskbar</CheckBox>
+            <CheckBox  IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
             
-            <Separator Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Separator>
+            <Separator Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"></Separator>
             
-            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="3"></TextBlock>
+            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="4"></TextBlock>
             <xctk:ColorPicker  x:Name="WorkTrayColor"
-                      Grid.Column="1" Grid.Row="3"  MinWidth="72"
+                      Grid.Column="1" Grid.Row="4"  MinWidth="72"
                       Margin="16 0 0 0" SelectedColor="{Binding WorkTrayIconColor}">
             </xctk:ColorPicker>
 
-            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="4"></TextBlock>
+            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="5"></TextBlock>
             <xctk:ColorPicker x:Name="BreakTrayColor"
-                               Grid.Column="1" Grid.Row="4" MinWidth="72"
+                               Grid.Column="1" Grid.Row="5" MinWidth="72"
                                Margin="16 0 0 0" SelectedColor="{Binding BreakTrayIconColor}">
             </xctk:ColorPicker>
         </Grid>

@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using YAPA.Shared.Common;
+using System.Windows.Forms;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Plugins.MinimizeToTray
@@ -24,40 +24,35 @@ namespace YAPA.Plugins.MinimizeToTray
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern bool DestroyIcon(IntPtr handle);
 
-        private readonly System.Windows.Forms.NotifyIcon _sysTrayIcon;
+        private readonly NotifyIcon _sysTrayIcon;
         private IntPtr _systemTrayIcon;
-
 
         private readonly IApplication _app;
         private readonly IMainViewModel _viewModel;
         private readonly SystemTraySettings _settings;
-        private readonly ISettings _globalSettings;
-        private readonly PomodoroEngineSettings _engineSettings;
 
-        public SystemTray(IApplication app, IMainViewModel viewModel, SystemTraySettings settings, ISettings globalSettings, PomodoroEngineSettings engineSettings)
+        public SystemTray(IApplication app, IMainViewModel viewModel, SystemTraySettings settings, ISettings globalSettings)
         {
             _app = app;
             _viewModel = viewModel;
             _settings = settings;
-            _globalSettings = globalSettings;
-            _engineSettings = engineSettings;
 
-            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             _app.StateChanged += _app_StateChanged;
 
-            _sysTrayIcon = new System.Windows.Forms.NotifyIcon
+            _sysTrayIcon = new NotifyIcon
             {
                 Text = @"YAPA 2",
-                Icon = new System.Drawing.Icon(
-                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40),
+                Icon = new Icon(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40),
                 Visible = false
             };
+
             _sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
 
             _viewModel.Engine.PropertyChanged += _engine_PropertyChanged;
 
-            _sysTrayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(CreateNotifyIconContextMenu());
+            _sysTrayIcon.ContextMenu = new ContextMenu(CreateNotifyIconContextMenu());
         }
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -74,11 +69,50 @@ namespace YAPA.Plugins.MinimizeToTray
             {
                 UpdateIcon();
             }
+            else if (e.PropertyName == nameof(_viewModel.Engine.Phase))
+            {
+                if (_sysTrayIcon.Visible == false || _settings.ShowBalloonTipWhenInSystemTray == false)
+                {
+                    return;
+                }
+
+                var phase = _viewModel.Engine.Phase;
+
+                var workEndedMessage = "Work interval ended.";
+                var breakEndedMessage = "Break interal ended.";
+
+                var workStartingMessage = $"Starting {_viewModel.Engine.WorkTime / 60}min work interval.";
+                var breakStartingMessage = $"Starting {_viewModel.Engine.BreakTime / 60}min break interval.";
+
+                var messageToShow = string.Empty;
+
+                switch (phase)
+                {
+                    case PomodoroPhase.Work:
+                        messageToShow = workStartingMessage;
+                        break;
+                    case PomodoroPhase.WorkEnded:
+                        messageToShow = workEndedMessage;
+                        break;
+                    case PomodoroPhase.Break:
+                        messageToShow = breakStartingMessage;
+                        break;
+                    case PomodoroPhase.BreakEnded:
+                        messageToShow = breakEndedMessage;
+                        break;
+                }
+
+
+                if (!string.IsNullOrEmpty(messageToShow))
+                {
+                    _sysTrayIcon.ShowBalloonTip(10, "YAPA 2", messageToShow, ToolTipIcon.None);
+                }
+            }
         }
 
-        private System.Windows.Forms.MenuItem[] CreateNotifyIconContextMenu()
+        private MenuItem[] CreateNotifyIconContextMenu()
         {
-            var startTask = new System.Windows.Forms.MenuItem { Text = @"Start" };
+            var startTask = new MenuItem { Text = @"Start" };
             startTask.Click += (o, s) =>
             {
                 if (_viewModel.StartCommand.CanExecute(null))
@@ -87,7 +121,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var stopTask = new System.Windows.Forms.MenuItem { Text = @"Stop" };
+            var stopTask = new MenuItem { Text = @"Stop" };
             stopTask.Click += (o, s) =>
             {
                 if (_viewModel.ResetCommand.CanExecute(null))
@@ -96,7 +130,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var resetTask = new System.Windows.Forms.MenuItem { Text = @"Reset session" };
+            var resetTask = new MenuItem { Text = @"Reset session" };
             resetTask.Click += (o, s) =>
             {
                 if (_viewModel.ResetCommand.CanExecute(null))
@@ -105,7 +139,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var settings = new System.Windows.Forms.MenuItem { Text = @"Settings" };
+            var settings = new MenuItem { Text = @"Settings" };
             settings.Click += (o, s) =>
             {
                 if (_viewModel.ShowSettingsCommand.CanExecute(null))
@@ -114,7 +148,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var close = new System.Windows.Forms.MenuItem { Text = @"Exit" };
+            var close = new MenuItem { Text = @"Exit" };
             close.Click += (o, s) =>
             {
                 _app.CloseApp();
@@ -169,15 +203,15 @@ namespace YAPA.Plugins.MinimizeToTray
 
             var displayText = _viewModel.Engine.DisplayValue / 60;
 
-            System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
+            Brush brush = new SolidBrush(Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
 
-            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(16, 16);
-            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
-            graphics.DrawString(displayText.ToString(), new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold), brush, 0, 0);
+            var bitmap = new Bitmap(16, 16);
+            var graphics = Graphics.FromImage(bitmap);
+            graphics.DrawString(displayText.ToString(), new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold), brush, 0, 0);
 
             _systemTrayIcon = bitmap.GetHicon();
 
-            System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(_systemTrayIcon);
+            var icon = Icon.FromHandle(_systemTrayIcon);
             _sysTrayIcon.Icon = icon;
         }
     }
@@ -188,26 +222,32 @@ namespace YAPA.Plugins.MinimizeToTray
 
         public System.Windows.Media.Color WorkTrayIconColor
         {
-            get { return _settings.Get(nameof(WorkTrayIconColor), System.Windows.Media.Colors.DarkGreen); }
-            set { _settings.Update(nameof(WorkTrayIconColor), value); }
+            get => _settings.Get(nameof(WorkTrayIconColor), System.Windows.Media.Colors.DarkGreen);
+            set => _settings.Update(nameof(WorkTrayIconColor), value);
         }
 
         public System.Windows.Media.Color BreakTrayIconColor
         {
-            get { return _settings.Get(nameof(BreakTrayIconColor), System.Windows.Media.Colors.DarkRed); }
-            set { _settings.Update(nameof(BreakTrayIconColor), value); }
+            get => _settings.Get(nameof(BreakTrayIconColor), System.Windows.Media.Colors.DarkRed);
+            set => _settings.Update(nameof(BreakTrayIconColor), value);
         }
 
         public bool ShowInTaskbar
         {
-            get { return _settings.Get(nameof(ShowInTaskbar), true); }
-            set { _settings.Update(nameof(ShowInTaskbar), value); }
+            get => _settings.Get(nameof(ShowInTaskbar), true);
+            set => _settings.Update(nameof(ShowInTaskbar), value);
         }
 
         public bool MinimizeToTray
         {
-            get { return _settings.Get(nameof(MinimizeToTray), false); }
-            set { _settings.Update(nameof(MinimizeToTray), value); }
+            get => _settings.Get(nameof(MinimizeToTray), false);
+            set => _settings.Update(nameof(MinimizeToTray), value);
+        }
+
+        public bool ShowBalloonTipWhenInSystemTray
+        {
+            get => _settings.Get(nameof(ShowBalloonTipWhenInSystemTray), true);
+            set => _settings.Update(nameof(ShowBalloonTipWhenInSystemTray), value);
         }
 
         public SystemTraySettings(ISettings settings)
