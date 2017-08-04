@@ -14,7 +14,7 @@ namespace YAPA.Shared.Common
 
         public int Index => Current.Index;
 
-        private int _elapsedInPause = 0;
+        private int _elapsedInPause;
         public int Elapsed => Math.Min(_elapsedInPause + (int)(_endDate - _startDate).TotalSeconds, CurrentIntervalLength);
         public int Remaining => CurrentIntervalLength - Elapsed;
 
@@ -49,10 +49,7 @@ namespace YAPA.Shared.Common
         private PomodoroPhase _phase;
         public PomodoroPhase Phase
         {
-            get
-            {
-                return _phase;
-            }
+            get => _phase;
             private set
             {
                 if (_phase == value)
@@ -161,12 +158,12 @@ namespace YAPA.Shared.Common
             NotifyPropertyChanged(nameof(DisplayValue));
         }
 
-        private readonly Pomodoro _pom1, _pom2, _pom3, _pom4;
+        private readonly Pomodoro _pom1;
 
         private Pomodoro _current;
         private Pomodoro Current
         {
-            get { return _current; }
+            get => _current;
             set
             {
                 if (_current?.Index == value.Index)
@@ -188,11 +185,11 @@ namespace YAPA.Shared.Common
             _threading = threading;
             _timer.Tick += _timer_Tick;
 
-            _pom4 = new Pomodoro(_settings) { Index = 4 };
-            _pom3 = new Pomodoro(_settings) { Index = 3, NextPomodoro = _pom4 };
-            _pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = _pom3 };
-            _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = _pom2 };
-            _pom4.NextPomodoro = _pom1;
+            var pom4 = new Pomodoro(_settings) { Index = 4 };
+            var pom3 = new Pomodoro(_settings) { Index = 3, NextPomodoro = pom4 };
+            var pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = pom3 };
+            _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = pom2 };
+            pom4.NextPomodoro = _pom1;
 
             _startDate = _endDate = _dateTime.DateTimeUtc();
 
@@ -203,13 +200,14 @@ namespace YAPA.Shared.Common
 
         private async void PomodoroEngine_OnPomodoroCompleted()
         {
-            if (_settings.AutoStartBreak)
+            if (!_settings.AutoStartBreak)
             {
-                await Task.Delay(TimeSpan.FromSeconds(1.5));
-                if (IsRunning == false)
-                {
-                    Start();
-                }
+                return;
+            }
+            await Task.Delay(TimeSpan.FromSeconds(1.5));
+            if (IsRunning == false)
+            {
+                Start();
             }
         }
 
@@ -226,8 +224,7 @@ namespace YAPA.Shared.Common
                 Phase = PomodoroPhase.WorkEnded;
                 OnPomodoroCompleted?.Invoke();
             }
-
-            if (Phase == PomodoroPhase.Break && Elapsed >= BreakTime)
+            else if (Phase == PomodoroPhase.Break && Elapsed >= BreakTime)
             {
                 _timer.Stop();
                 Phase = PomodoroPhase.BreakEnded;
@@ -251,44 +248,44 @@ namespace YAPA.Shared.Common
 
         public int WorkTime
         {
-            get { return _settings.Get(nameof(WorkTime), 25 * 60); }
-            set { _settings.Update(nameof(WorkTime), value); }
+            get => _settings.Get(nameof(WorkTime), 25 * 60);
+            set => _settings.Update(nameof(WorkTime), value);
         }
 
         public int BreakTime
         {
-            get { return _settings.Get(nameof(BreakTime), 5 * 60); }
-            set { _settings.Update(nameof(BreakTime), value); }
+            get => _settings.Get(nameof(BreakTime), 5 * 60);
+            set => _settings.Update(nameof(BreakTime), value);
         }
 
         public int LongBreakTime
         {
-            get { return _settings.Get(nameof(LongBreakTime), 15 * 60); }
-            set { _settings.Update(nameof(LongBreakTime), value); }
+            get => _settings.Get(nameof(LongBreakTime), 15 * 60);
+            set => _settings.Update(nameof(LongBreakTime), value);
         }
 
         public bool AutoStartBreak
         {
-            get { return _settings.Get(nameof(AutoStartBreak), false); }
-            set { _settings.Update(nameof(AutoStartBreak), value); }
+            get => _settings.Get(nameof(AutoStartBreak), false);
+            set => _settings.Update(nameof(AutoStartBreak), value);
         }
 
         public bool CountBackwards
         {
-            get { return _settings.Get(nameof(CountBackwards), false); }
-            set { _settings.Update(nameof(CountBackwards), value); }
+            get => _settings.Get(nameof(CountBackwards), false);
+            set => _settings.Update(nameof(CountBackwards), value);
         }
 
         public bool DisableSoundNotifications
         {
-            get { return _settings.Get(nameof(DisableSoundNotifications), false); }
-            set { _settings.Update(nameof(DisableSoundNotifications), value); }
+            get => _settings.Get(nameof(DisableSoundNotifications), false);
+            set => _settings.Update(nameof(DisableSoundNotifications), value);
         }
 
         public double Volume
         {
-            get { return _settings.Get(nameof(Volume), 0.5); }
-            set { _settings.Update(nameof(Volume), value); }
+            get => _settings.Get(nameof(Volume), 0.5);
+            set => _settings.Update(nameof(Volume), value);
         }
 
         public PomodoroEngineSettings(ISettings settings)

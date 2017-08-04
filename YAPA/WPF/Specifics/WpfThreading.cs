@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using YAPA.Shared.Common;
+using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF.Specifics
 {

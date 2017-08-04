@@ -10,15 +10,13 @@ namespace YAPA.Shared.Common
     public class JsonYapaSettings : ISettings
     {
         private readonly IEnvironment _enviroment;
-        private readonly IJson _json;
 
-        private YapaSettingFile _settings;
-        private YapaSettingFile _localSettings;
+        private readonly YapaSettingFile _settings;
+        private readonly YapaSettingFile _localSettings;
 
         public JsonYapaSettings(IEnvironment enviroment, IJson json)
         {
             _enviroment = enviroment;
-            _json = json;
 
             _settings = new YapaSettingFile(json);
             _localSettings = new YapaSettingFile(json);
@@ -44,6 +42,7 @@ namespace YAPA.Shared.Common
             }
             else
             {
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(e.PropertyName);
             }
         }
@@ -104,7 +103,7 @@ namespace YAPA.Shared.Common
         private bool _hasUnsavedChanges;
         public bool HasUnsavedChanges
         {
-            get { return _hasUnsavedChanges; }
+            get => _hasUnsavedChanges;
             set
             {
                 if (_hasUnsavedChanges == value)
@@ -224,7 +223,7 @@ namespace YAPA.Shared.Common
     {
         private readonly IJson _json;
         private SettingsDictionary _settings;
-        private SettingsDictionary _modifiedSettings;
+        private readonly SettingsDictionary _modifiedSettings;
 
         public YapaSettingFile(IJson json)
         {
@@ -235,7 +234,7 @@ namespace YAPA.Shared.Common
 
         public T Get<T>(string name, T defaultValue, string plugin, bool defer)
         {
-            object value = defaultValue;
+            object value;
             var modValue = _modifiedSettings.GetValue(name, plugin, null);
             var settingValue = _settings.GetValue(name, plugin, null);
 
@@ -276,6 +275,7 @@ namespace YAPA.Shared.Common
             else
             {
                 _settings.SetValue(name, plugin, value);
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged($"{plugin}.{name}");
             }
         }
@@ -297,6 +297,7 @@ namespace YAPA.Shared.Common
                     foreach (var value in setting.Value)
                     {
                         _settings.SetValue(value.Key, setting.Key, value.Value);
+                        // ReSharper disable once ExplicitCallerInfoArgument
                         OnPropertyChanged($"{setting.Key}.{value.Key}");
                     }
                 }
@@ -328,7 +329,7 @@ namespace YAPA.Shared.Common
 
         public bool HasUnsavedChanges
         {
-            get { return _hasUnsavedChanges; }
+            get => _hasUnsavedChanges;
             set
             {
                 if (_hasUnsavedChanges == value)
@@ -347,12 +348,13 @@ namespace YAPA.Shared.Common
 
             foreach (var migration in migrations)
             {
-                if (_settings.ContainsKey(migration.Item1))
+                if (!_settings.ContainsKey(migration.Item1))
                 {
-                    _settings[migration.Item2] = _settings[migration.Item1];
-                    _settings.RemoveKey(migration.Item1);
-                    anyMigrationApplied = true;
+                    continue;
                 }
+                _settings[migration.Item2] = _settings[migration.Item1];
+                _settings.RemoveKey(migration.Item1);
+                anyMigrationApplied = true;
             }
 
             if (anyMigrationApplied)

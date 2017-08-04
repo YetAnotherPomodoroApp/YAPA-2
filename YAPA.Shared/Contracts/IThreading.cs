@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAPA.Shared.Common
+namespace YAPA.Shared.Contracts
 {
     public interface IThreading
     {

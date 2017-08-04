@@ -14,6 +14,7 @@ namespace YAPA.Shared.Tests
         {
             var timerSub = new TimerMock();
             var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var threading = Substitute.For<IThreading>();
             var dateTime = new DateMock();
 
             var baseDate = new DateTime(2017, 6, 1, 12, 0, 0);
@@ -29,7 +30,7 @@ namespace YAPA.Shared.Tests
 
             dateTime.DateToReturn = baseDate;
 
-            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime);
+            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime, threading);
 
             //----First pomodoro
             Assert.AreEqual(PomodoroPhase.NotStarted, engine.Phase);
@@ -329,6 +330,7 @@ namespace YAPA.Shared.Tests
             var timerSub = new TimerMock();
             var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
             var dateTime = new DateMock();
+            var threading = Substitute.For<IThreading>();
 
             var baseDate = new DateTime(2017, 6, 1, 12, 0, 0);
             var workTime = 25 * 60;
@@ -343,7 +345,7 @@ namespace YAPA.Shared.Tests
 
             dateTime.DateToReturn = baseDate;
 
-            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime);
+            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime, threading);
 
             //----First pomodoro
             Assert.AreEqual(PomodoroPhase.NotStarted, engine.Phase);
@@ -643,6 +645,7 @@ namespace YAPA.Shared.Tests
             var timerSub = new TimerMock();
             var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
             var dateTime = new DateMock();
+            var threading = Substitute.For<IThreading>();
 
             var baseDate = new DateTime(2017, 6, 1, 12, 0, 0);
             var workTime = 25 * 60;
@@ -657,7 +660,7 @@ namespace YAPA.Shared.Tests
 
             dateTime.DateToReturn = baseDate;
 
-            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime);
+            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime, threading);
 
             //----First pomodoro
             Assert.AreEqual(PomodoroPhase.NotStarted, engine.Phase);
@@ -961,6 +964,7 @@ namespace YAPA.Shared.Tests
             var timerSub = new TimerMock();
             var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
             var dateTime = new DateMock();
+            var threading = Substitute.For<IThreading>();
 
             var baseDate = new DateTime(2017, 6, 1, 12, 0, 0);
             var workTime = 25 * 60;
@@ -975,7 +979,7 @@ namespace YAPA.Shared.Tests
 
             dateTime.DateToReturn = baseDate;
 
-            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime);
+            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime, threading);
 
             //----First pomodoro
             Assert.AreEqual(PomodoroPhase.NotStarted, engine.Phase);
@@ -1105,6 +1109,7 @@ namespace YAPA.Shared.Tests
             var timerSub = new TimerMock();
             var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
             var dateTime = new DateMock();
+            var threading = Substitute.For<IThreading>();
 
             var baseDate = new DateTime(2017, 6, 1, 12, 0, 0);
             var workTime = 25 * 60;
@@ -1119,7 +1124,7 @@ namespace YAPA.Shared.Tests
 
             dateTime.DateToReturn = baseDate;
 
-            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime);
+            var engine = new PomodoroEngine(engineSettings, timerSub, dateTime, threading);
 
             //----First pomodoro
             Assert.AreEqual(PomodoroPhase.NotStarted, engine.Phase);
