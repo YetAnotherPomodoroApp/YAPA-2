@@ -156,6 +156,8 @@ namespace YAPA.Shared.Common
             }
 
             NotifyPropertyChanged(nameof(Elapsed));
+            NotifyPropertyChanged(nameof(Remaining));
+            NotifyPropertyChanged(nameof(DisplayValue));
         }
 
         private readonly Pomodoro _pom1, _pom2, _pom3, _pom4;
@@ -213,6 +215,8 @@ namespace YAPA.Shared.Common
         {
             _endDate = _dateTime.DateTimeUtc();
             NotifyPropertyChanged(nameof(Elapsed));
+            NotifyPropertyChanged(nameof(Remaining));
+            NotifyPropertyChanged(nameof(DisplayValue));
 
             if (Phase == PomodoroPhase.Work && Elapsed >= WorkTime)
             {
