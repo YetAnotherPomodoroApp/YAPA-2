@@ -10,6 +10,7 @@ namespace YAPA.Shared.Common
         private readonly PomodoroEngineSettings _settings;
         private readonly ITimer _timer;
         private readonly IDate _dateTime;
+        private readonly IThreading _threading;
 
         public int Index => Current.Index;
 
@@ -179,11 +180,12 @@ namespace YAPA.Shared.Common
             }
         }
 
-        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime)
+        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime, IThreading threading)
         {
             _settings = settings;
             _timer = timer;
             _dateTime = dateTime;
+            _threading = threading;
             _timer.Tick += _timer_Tick;
 
             _pom4 = new Pomodoro(_settings) { Index = 4 };
@@ -236,7 +238,10 @@ namespace YAPA.Shared.Common
 
         private void NotifyPropertyChanged(string property)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            _threading.RunOnUiThread(() =>
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            });
         }
     }
 

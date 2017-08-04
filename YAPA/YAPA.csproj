@@ -422,6 +422,7 @@
     </Compile>
     <Compile Include="WPF\Specifics\ShowSettingsCommand.cs" />
     <Compile Include="Plugins\SoundSettings\SoundNotifications\SoundNotifications.cs" />
+    <Compile Include="WPF\Specifics\WpfThreading.cs" />
     <Compile Include="WPF\ThemeManager\ThemeManager.cs" />
     <Compile Include="WPF\ThemeManager\ThemeManagerSettingWindow.xaml.cs">
       <DependentUpon>ThemeManagerSettingWindow.xaml</DependentUpon>

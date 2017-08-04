@@ -65,6 +65,8 @@ namespace YAPA.WPF
 
             builder.RegisterType(typeof(MainViewModel)).As<IMainViewModel>();
 
+            builder.RegisterType(typeof(WpfThreading)).As<IThreading>();
+
             builder.RegisterType(typeof(ThemeManagerSettings));
             //builder.RegisterType(typeof(ThemeManagerSettingWindow));
 
