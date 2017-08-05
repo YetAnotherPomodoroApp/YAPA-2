@@ -177,7 +177,7 @@ namespace YAPA.Shared.Common
             }
         }
 
-        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime, IThreading threading)
+        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime, IThreading threading, ISettings globalSettings)
         {
             _settings = settings;
             _timer = timer;
@@ -196,6 +196,21 @@ namespace YAPA.Shared.Common
             OnPomodoroCompleted += PomodoroEngine_OnPomodoroCompleted;
 
             Current = _pom1;
+
+            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+        }
+
+        private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.WorkTime)}"
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.BreakTime)}"
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.LongBreakTime)}"
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.CountBackwards)}")
+            {
+               NotifyPropertyChanged(nameof(DisplayValue)); 
+               NotifyPropertyChanged(nameof(WorkTime)); 
+               NotifyPropertyChanged(nameof(BreakTime)); 
+            }
         }
 
         private async void PomodoroEngine_OnPomodoroCompleted()
