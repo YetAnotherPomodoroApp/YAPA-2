@@ -215,14 +215,17 @@ namespace YAPA.Shared.Common
 
         private async void PomodoroEngine_OnPomodoroCompleted()
         {
+            var delayBeforeStarting = 1.5;
             if (!_settings.AutoStartBreak)
             {
                 return;
             }
-            await Task.Delay(TimeSpan.FromSeconds(1.5));
+            await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
             if (IsRunning == false)
             {
+                var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause + delayBeforeStarting);
                 Start();
+                _startDate = expectedWorkEndTime;
             }
         }
 
