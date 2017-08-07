@@ -79,7 +79,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 var phase = _viewModel.Engine.Phase;
 
                 var workEndedMessage = "Work interval ended.";
-                var breakEndedMessage = "Break interal ended.";
+                var breakEndedMessage = "Break interval ended.";
 
                 var workStartingMessage = $"Starting {_viewModel.Engine.WorkTime / 60}min work interval.";
                 var breakStartingMessage = $"Starting {_viewModel.Engine.BreakTime / 60}min break interval.";
