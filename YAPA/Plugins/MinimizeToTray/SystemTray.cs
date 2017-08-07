@@ -105,7 +105,7 @@ namespace YAPA.Plugins.MinimizeToTray
 
                 if (!string.IsNullOrEmpty(messageToShow))
                 {
-                    _sysTrayIcon.ShowBalloonTip(10, "YAPA 2", messageToShow, ToolTipIcon.None);
+                    _sysTrayIcon.ShowBalloonTip(_settings.TimeToDisplayBalloontip, "YAPA 2", messageToShow, ToolTipIcon.None);
                 }
             }
         }
@@ -248,6 +248,12 @@ namespace YAPA.Plugins.MinimizeToTray
         {
             get => _settings.Get(nameof(ShowBalloonTipWhenInSystemTray), true);
             set => _settings.Update(nameof(ShowBalloonTipWhenInSystemTray), value);
+        }
+
+        public int TimeToDisplayBalloontip
+        {
+            get => _settings.Get(nameof(TimeToDisplayBalloontip), 10);
+            set => _settings.Update(nameof(TimeToDisplayBalloontip), value);
         }
 
         public SystemTraySettings(ISettings settings)

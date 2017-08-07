@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              >
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -25,19 +28,39 @@
 
             <CheckBox  IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" >Minimize to tray</CheckBox>
             <CheckBox  IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Show in taskbar</CheckBox>
-            <CheckBox  IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
             
-            <Separator Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"></Separator>
+            <Separator Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Separator>
+
+            <CheckBox  IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
+            <Label Grid.Row="4" Grid.Column="0">Show balloon tip for (s)</Label>
+            <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="BalloonTipSelect"
+                      Grid.Row="4" Grid.Column="1" MinWidth="72"
+                      IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
+                      Margin="16 0 0 0"
+                      VerticalAlignment="Bottom" 
+                      IsEditable="True">
+                <ComboBox.Text>
+                    <Binding Path="TimeToDisplayBalloontip" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </ComboBox.Text>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <Separator Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"></Separator>
             
-            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="4"></TextBlock>
+            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="6"></TextBlock>
             <xctk:ColorPicker  x:Name="WorkTrayColor"
-                      Grid.Column="1" Grid.Row="4"  MinWidth="72"
+                      Grid.Column="1" Grid.Row="6"  MinWidth="72"
                       Margin="16 0 0 0" SelectedColor="{Binding WorkTrayIconColor}">
             </xctk:ColorPicker>
 
-            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="5"></TextBlock>
+            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="7"></TextBlock>
             <xctk:ColorPicker x:Name="BreakTrayColor"
-                               Grid.Column="1" Grid.Row="5" MinWidth="72"
+                               Grid.Column="1" Grid.Row="7" MinWidth="72"
                                Margin="16 0 0 0" SelectedColor="{Binding BreakTrayIconColor}">
             </xctk:ColorPicker>
         </Grid>
