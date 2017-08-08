@@ -64,3 +64,17 @@ Installers are created with slightly modified [Squirrel.Windows](https://github.
 2. Run ``Build\BuildAndRelease.cmd`` 
 Without arguments 2.0.0 version will be used.
 To create specific version: ``Build\BuildAndRelease.cmd 2.4.9`` 
+
+Nightly builds
+===
+To enable nightly buids:
+1. Go to folder: C:\Users\<username>\Documents\YAPA2
+2. Create empty file: PreRelease.txt
+3. Restart application.
+4. Open application settings, next to version you should see *pre-release*.
+
+To disable nightly builds:
+1. Go to folder: C:\Users\<username>\Documents\YAPA2
+2. Remove file: PreRelease.txt
+3. Uninstall application (application settings and completed pomodoro history will not be removed).
+4. Install latest stable version
