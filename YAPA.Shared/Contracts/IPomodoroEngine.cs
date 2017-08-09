@@ -6,6 +6,7 @@ namespace YAPA.Shared.Contracts
     public interface IPomodoroEngine : INotifyPropertyChanged
     {
         int Index { get; }
+        int Counter { get; }
         PomodoroPhase Phase { get; }
         int Elapsed { get; }
         int Remaining { get; }
@@ -36,5 +37,12 @@ namespace YAPA.Shared.Contracts
         Break,
         BreakEnded,
         Pause
+    }
+    
+    public enum CounterEnum
+    {
+        PomodoroIndex,
+        CompletedToday,
+        CompletedThisSession
     }
 }

@@ -50,7 +50,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                
+
                 <!-- Current time -->
                 <Grid
                 Background="Transparent"
@@ -351,7 +351,7 @@
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center"
                    Height="10" 
-                   Text="{Binding PomodorosCompleted}"
+                   Text="{Binding ViewModel.Engine.Counter}"
                    ToolTip="Current period"
                    Width="10" >
                     </TextBlock>
@@ -361,18 +361,3 @@
         </Viewbox>
     </Grid>
 </shared:AbstractWindow>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -25,6 +25,10 @@ namespace YAPA.WPF.Specifics
             {
                 return (T)ColorConverter.ConvertFromString((string)value);
             }
+            else if (typeof(T).IsEnum)
+            {
+                return (T)Enum.ToObject(typeof(T), value);
+            }
             else if (typeof(T).IsValueType || value is string)
             {
                 return (T)Convert.ChangeType(value, typeof(T));

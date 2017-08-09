@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using YAPA.Shared.Contracts;
 
@@ -11,8 +12,35 @@ namespace YAPA.Shared.Common
         private readonly ITimer _timer;
         private readonly IDate _dateTime;
         private readonly IThreading _threading;
+        private readonly IPomodoroRepository _repository;
 
         public int Index => Current.Index;
+
+        private int _completedPomodorosThisSession;
+        private int _completedTodayBeforeStarting;
+        public int Counter
+        {
+            get
+            {
+                int counter;
+                switch (_settings.Counter)
+                {
+                    case CounterEnum.PomodoroIndex:
+                        counter = Index;
+                        break;
+                    case CounterEnum.CompletedToday:
+                        counter = _completedTodayBeforeStarting + _completedPomodorosThisSession;
+                        break;
+                    case CounterEnum.CompletedThisSession:
+                        counter = _completedPomodorosThisSession;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return counter;
+            }
+        }
 
         private int _elapsedInPause;
         public int Elapsed => Math.Min(_elapsedInPause + (int)(_endDate - _startDate).TotalSeconds, CurrentIntervalLength);
@@ -58,6 +86,7 @@ namespace YAPA.Shared.Common
                 }
                 _phase = value;
                 NotifyPropertyChanged(nameof(Phase));
+                NotifyPropertyChanged(nameof(Counter));
             }
         }
 
@@ -177,12 +206,13 @@ namespace YAPA.Shared.Common
             }
         }
 
-        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime, IThreading threading, ISettings globalSettings)
+        public PomodoroEngine(PomodoroEngineSettings settings, ITimer timer, IDate dateTime, IThreading threading, ISettings globalSettings, IPomodoroRepository repository)
         {
             _settings = settings;
             _timer = timer;
             _dateTime = dateTime;
             _threading = threading;
+            _repository = repository;
             _timer.Tick += _timer_Tick;
 
             var pom4 = new Pomodoro(_settings) { Index = 4 };
@@ -198,6 +228,10 @@ namespace YAPA.Shared.Common
             Current = _pom1;
 
             globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+
+            var todayStart = DateTime.UtcNow.Date;
+            var todayEnd = DateTime.UtcNow.Date.AddDays(1).AddSeconds(-1);
+            _completedTodayBeforeStarting = _repository.Pomodoros.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd);
         }
 
         private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -207,14 +241,22 @@ namespace YAPA.Shared.Common
                 || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.LongBreakTime)}"
                 || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.CountBackwards)}")
             {
-               NotifyPropertyChanged(nameof(DisplayValue)); 
-               NotifyPropertyChanged(nameof(WorkTime)); 
-               NotifyPropertyChanged(nameof(BreakTime)); 
+                NotifyPropertyChanged(nameof(DisplayValue));
+                NotifyPropertyChanged(nameof(WorkTime));
+                NotifyPropertyChanged(nameof(BreakTime));
             }
+            else if (e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.Counter)}")
+            {
+                NotifyPropertyChanged(nameof(Counter));
+            }
+
         }
 
         private async void PomodoroEngine_OnPomodoroCompleted()
         {
+            _completedPomodorosThisSession++;
+            NotifyPropertyChanged(nameof(Counter));
+
             var delayBeforeStarting = 1.5;
             if (!_settings.AutoStartBreak)
             {
@@ -304,6 +346,12 @@ namespace YAPA.Shared.Common
         {
             get => _settings.Get(nameof(Volume), 0.5);
             set => _settings.Update(nameof(Volume), value);
+        }
+
+        public CounterEnum Counter
+        {
+            get => _settings.Get(nameof(Counter), CounterEnum.PomodoroIndex);
+            set => _settings.Update(nameof(Counter), value);
         }
 
         public PomodoroEngineSettings(ISettings settings)
