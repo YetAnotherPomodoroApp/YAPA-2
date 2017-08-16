@@ -145,7 +145,7 @@ namespace YAPA.Shared
                 case "/pause":
                     if (ViewModel.PauseCommand.CanExecute(null))
                     {
-                        ViewModel.StopCommand.Execute(null);
+                        ViewModel.PauseCommand.Execute(null);
                     }
                     break;
                 case "/settings":
@@ -155,7 +155,7 @@ namespace YAPA.Shared
                     }
                     break;
                 case "/homepage":
-                    Process.Start("http://lukaszbanasiak.github.io/YAPA/");
+                    Process.Start("https://github.com/YetAnotherPomodoroApp/YAPA-2/");
                     break;
             }
 
@@ -225,6 +225,7 @@ namespace YAPA.Shared
                 Arguments = "/homepage",
                 IconResourceIndex = 6
             };
+            jumpList.JumpItems.Add(homepageTask);
 
             jumpList.Apply();
         }

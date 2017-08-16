@@ -53,6 +53,13 @@ namespace YAPA.Plugins.MinimizeToTray
             _viewModel.Engine.PropertyChanged += _engine_PropertyChanged;
 
             _sysTrayIcon.ContextMenu = new ContextMenu(CreateNotifyIconContextMenu());
+            _sysTrayIcon.ContextMenu.Popup += ContextMenu_Popup;
+        }
+
+        private void ContextMenu_Popup(object sender, EventArgs e)
+        {
+            _sysTrayIcon.ContextMenu.MenuItems.Clear();
+            _sysTrayIcon.ContextMenu.MenuItems.AddRange(CreateNotifyIconContextMenu());
         }
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -112,7 +119,11 @@ namespace YAPA.Plugins.MinimizeToTray
 
         private MenuItem[] CreateNotifyIconContextMenu()
         {
-            var startTask = new MenuItem { Text = @"Start" };
+            var startTask = new MenuItem
+            {
+                Text = @"Start",
+                Enabled = _viewModel.StartCommand.CanExecute(null),
+            };
             startTask.Click += (o, s) =>
             {
                 if (_viewModel.StartCommand.CanExecute(null))
@@ -121,16 +132,37 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var stopTask = new MenuItem { Text = @"Stop" };
-            stopTask.Click += (o, s) =>
+            var pauseTask = new MenuItem
             {
-                if (_viewModel.ResetCommand.CanExecute(null))
+                Text = @"Pause",
+                Enabled = _viewModel.PauseCommand.CanExecute(null)
+            };
+            pauseTask.Click += (o, s) =>
+            {
+                if (_viewModel.PauseCommand.CanExecute(null))
                 {
-                    _viewModel.ResetCommand.Execute(null);
+                    _viewModel.PauseCommand.Execute(null);
                 }
             };
 
-            var resetTask = new MenuItem { Text = @"Reset session" };
+            var stopTask = new MenuItem
+            {
+                Text = @"Stop",
+                Enabled = _viewModel.StopCommand.CanExecute(null)
+            };
+            stopTask.Click += (o, s) =>
+            {
+                if (_viewModel.StopCommand.CanExecute(null))
+                {
+                    _viewModel.StopCommand.Execute(null);
+                }
+            };
+
+            var resetTask = new MenuItem
+            {
+                Text = @"Reset session",
+                Enabled = _viewModel.ResetCommand.CanExecute(null)
+            };
             resetTask.Click += (o, s) =>
             {
                 if (_viewModel.ResetCommand.CanExecute(null))
@@ -139,7 +171,11 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var settings = new MenuItem { Text = @"Settings" };
+            var settings = new MenuItem
+            {
+                Text = @"Settings",
+                Enabled = _viewModel.ShowSettingsCommand.CanExecute(null)
+            };
             settings.Click += (o, s) =>
             {
                 if (_viewModel.ShowSettingsCommand.CanExecute(null))
@@ -148,7 +184,10 @@ namespace YAPA.Plugins.MinimizeToTray
                 }
             };
 
-            var close = new MenuItem { Text = @"Exit" };
+            var close = new MenuItem
+            {
+                Text = @"Exit"
+            };
             close.Click += (o, s) =>
             {
                 _app.CloseApp();
@@ -156,7 +195,7 @@ namespace YAPA.Plugins.MinimizeToTray
 
             return new[]
             {
-                startTask,stopTask, resetTask, settings,close
+                startTask, pauseTask, stopTask, resetTask, settings,close
             };
         }
 
