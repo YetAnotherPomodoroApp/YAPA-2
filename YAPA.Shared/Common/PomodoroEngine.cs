@@ -277,7 +277,7 @@ namespace YAPA.Shared.Common
             await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
             if (IsRunning == false)
             {
-                var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause + delayBeforeStarting);
+                var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause);
                 Start();
                 _startDate = expectedWorkEndTime;
             }
