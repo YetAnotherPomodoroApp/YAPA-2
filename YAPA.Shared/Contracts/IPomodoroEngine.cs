@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using YAPA.Shared.Common;
 
 namespace YAPA.Shared.Contracts
 {
@@ -27,6 +28,9 @@ namespace YAPA.Shared.Contracts
         void Reset();
 
         bool IsRunning { get; }
+
+        PomodoroEngineSnapshot GetSnapshot();
+        void LoadSnapshot(PomodoroEngineSnapshot snapshot);
     }
 
     public enum PomodoroPhase

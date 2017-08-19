@@ -1,13 +1,16 @@
-﻿using Autofac;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 using NLog;
 using Squirrel;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
+using IContainer = Autofac.IContainer;
 
 namespace YAPA
 {
@@ -42,14 +45,64 @@ namespace YAPA
                 });
 #endif
 
+                Current.MainWindow.Loaded += MainWindow_Loaded;
+                Current.MainWindow.Closing += MainWindowOnClosing;
                 Current.MainWindow.Show();
                 Current.MainWindow.Closed += MainWindow_Closed;
 
                 application.Init();
                 application.Run();
 
-
                 SingleInstance<App>.Cleanup();
+            }
+        }
+
+        private static void MainWindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+#if DEBUG
+            SaveSnapshot();
+#endif
+        }
+
+            private static void SaveSnapshot()
+        {
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
+            var json = Container.Resolve<IJson>();
+            var engine = Container.Resolve<IPomodoroEngine>();
+
+            var file = Path.Combine(baseDir, "snapshot.json");
+            File.WriteAllText(file, json.Serialize(engine.GetSnapshot()));
+        }
+
+        private static void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadSnapshot();
+        }
+
+        private static void LoadSnapshot()
+        {
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
+            var engine = Container.Resolve<IPomodoroEngine>();
+            var json = Container.Resolve<IJson>();
+
+            var file = Path.Combine(baseDir, "snapshot.json");
+
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            var snapshotJson = File.ReadAllText(file);
+            var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
+            engine.LoadSnapshot(snapshot);
+
+            try
+            {
+                File.Delete(file);
+            }
+            catch (Exception)
+            {
+                //Ignore
             }
         }
 
@@ -85,7 +138,7 @@ namespace YAPA
             }
             catch (Exception)
             {
-
+                //Ignore
             }
         }
 

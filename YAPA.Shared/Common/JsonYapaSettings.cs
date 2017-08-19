@@ -73,6 +73,18 @@ namespace YAPA.Shared.Common
             }
         }
 
+        public string GetRawSettingsForComponent(string plugin)
+        {
+            return _settings.GetRawSettingsForComponent(plugin);
+        }
+
+        public void SetRawSettingsForComponent(string plugin, string setting)
+        {
+            var current =  _settings.SetRawSettingsForComponent(plugin, setting);
+
+            _enviroment.SaveSettings(current);
+        }
+
         public ISettingsForComponent GetSettingsForComponent(string plugin)
         {
             return new SettingForPlugin(this, plugin);
@@ -230,6 +242,32 @@ namespace YAPA.Shared.Common
             _json = json;
             _settings = new SettingsDictionary();
             _modifiedSettings = new SettingsDictionary();
+        }
+
+        public string GetRawSettingsForComponent(string plugin)
+        {
+            if (!_settings.ContainsKey(plugin))
+            {
+                return string.Empty;
+            }
+            return _json.Serialize(_settings[plugin]);
+        }
+
+        public string SetRawSettingsForComponent(string plugin, string settings)
+        {
+            if (!_settings.ContainsKey(plugin))
+            {
+                return string.Empty;
+            }
+
+            _settings[plugin] = _json.Deserialize<Dictionary<string, object>>(settings);
+
+            foreach (var pair in _settings[plugin])
+            {
+                OnPropertyChanged($"{plugin}.{pair.Key}");
+            }
+
+            return _json.Serialize(_settings);
         }
 
         public T Get<T>(string name, T defaultValue, string plugin, bool defer)

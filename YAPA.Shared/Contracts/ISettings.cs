@@ -12,6 +12,9 @@ namespace YAPA.Shared.Contracts
 
         ISettingsForComponent GetSettingsForComponent(string plugin);
 
+        void SetRawSettingsForComponent(string plugin, string settings);
+        string GetRawSettingsForComponent(string plugin);
+
         void Save();
         void Load();
     }

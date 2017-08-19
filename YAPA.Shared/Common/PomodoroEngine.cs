@@ -6,6 +6,15 @@ using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared.Common
 {
+    public class PomodoroEngineSnapshot
+    {
+        public string EngineSettings { get; set; }
+        public int PausedTime { get; set; }
+        public DateTime StartDate { get; set; }
+        public PomodoroPhase Phase { get; set; }
+        public int PomodoroIndex { get; set; }
+    }
+
     public class PomodoroEngine : IPomodoroEngine, IPlugin
     {
         private readonly PomodoroEngineSettings _settings;
@@ -190,6 +199,8 @@ namespace YAPA.Shared.Common
         private readonly Pomodoro _pom1;
 
         private Pomodoro _current;
+        private ISettings _globalSettings;
+
         private Pomodoro Current
         {
             get => _current;
@@ -213,6 +224,7 @@ namespace YAPA.Shared.Common
             _dateTime = dateTime;
             _threading = threading;
             _repository = repository;
+            _globalSettings = globalSettings;
             _timer.Tick += _timer_Tick;
 
             var pom4 = new Pomodoro(_settings) { Index = 4 };
@@ -227,7 +239,7 @@ namespace YAPA.Shared.Common
 
             Current = _pom1;
 
-            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             var todayStart = DateTime.UtcNow.Date;
             var todayEnd = DateTime.UtcNow.Date.AddDays(1).AddSeconds(-1);
@@ -289,6 +301,39 @@ namespace YAPA.Shared.Common
                 _timer.Stop();
                 Phase = PomodoroPhase.BreakEnded;
             }
+        }
+
+        public PomodoroEngineSnapshot GetSnapshot()
+        {
+            var snapshot = new PomodoroEngineSnapshot
+            {
+                EngineSettings = _globalSettings.GetRawSettingsForComponent(nameof(PomodoroEngine)),
+                PausedTime = Elapsed,
+                Phase = Phase,
+                StartDate = _dateTime.DateTimeUtc(),
+                PomodoroIndex = Index
+            };
+
+            return snapshot;
+        }
+
+        public void LoadSnapshot(PomodoroEngineSnapshot snapshot)
+        {
+            _timer.Stop();
+
+            _globalSettings.SetRawSettingsForComponent(nameof(PomodoroEngine), snapshot.EngineSettings);
+            _elapsedInPause = snapshot.PausedTime;
+            _startDate = _dateTime.DateTimeUtc();
+
+            if (snapshot.Phase == PomodoroPhase.Work ||
+                snapshot.Phase == PomodoroPhase.Break)
+            {
+                _timer.Start();
+            }
+
+            Phase = snapshot.Phase;
+
+            _timer.Start();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
