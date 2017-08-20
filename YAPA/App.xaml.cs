@@ -64,7 +64,7 @@ namespace YAPA
 #endif
         }
 
-            private static void SaveSnapshot()
+        private static void SaveSnapshot()
         {
             string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
             var json = Container.Resolve<IJson>();
@@ -83,6 +83,7 @@ namespace YAPA
         {
             string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
             var engine = Container.Resolve<IPomodoroEngine>();
+            var date = Container.Resolve<IDate>();
             var json = Container.Resolve<IJson>();
 
             var file = Path.Combine(baseDir, "snapshot.json");
@@ -94,6 +95,7 @@ namespace YAPA
 
             var snapshotJson = File.ReadAllText(file);
             var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
+            snapshot.StartDate = date.DateTimeUtc();
             engine.LoadSnapshot(snapshot);
 
             try

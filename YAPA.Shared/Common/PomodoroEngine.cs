@@ -323,17 +323,15 @@ namespace YAPA.Shared.Common
 
             _globalSettings.SetRawSettingsForComponent(nameof(PomodoroEngine), snapshot.EngineSettings);
             _elapsedInPause = snapshot.PausedTime;
-            _startDate = _dateTime.DateTimeUtc();
 
             if (snapshot.Phase == PomodoroPhase.Work ||
-                snapshot.Phase == PomodoroPhase.Break)
+                snapshot.Phase == PomodoroPhase.Break ||
+                (snapshot.Phase == PomodoroPhase.WorkEnded && _settings.AutoStartBreak))
             {
                 _timer.Start();
             }
 
             Phase = snapshot.Phase;
-
-            _timer.Start();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
