@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using YAPA.Shared.Contracts;
+using System.Collections.Generic;
 
 namespace YAPA.Shared.Common
 {
@@ -251,7 +252,9 @@ namespace YAPA.Shared.Common
             if (e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.WorkTime)}"
                 || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.BreakTime)}"
                 || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.LongBreakTime)}"
-                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.CountBackwards)}")
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.CountBackwards)}"
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.ActiveProfile)}"
+                || e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(_settings.Profiles)}")
             {
                 NotifyPropertyChanged(nameof(DisplayValue));
                 NotifyPropertyChanged(nameof(WorkTime));
@@ -349,28 +352,80 @@ namespace YAPA.Shared.Common
     {
         private readonly ISettingsForComponent _settings;
 
+        private static Dictionary<string, PomodoroProfile> DefaultProfile;
+        private static string DefaultProfileName = "Pomodoro";
+
+        static PomodoroEngineSettings()
+        {
+            DefaultProfile = new Dictionary<string, PomodoroProfile>();
+            DefaultProfile[DefaultProfileName] = new PomodoroProfile
+            {
+                AutoStartBreak = false,
+                BreakTime = 5 * 60,
+                LongBreakTime = 15 * 60,
+                WorkTime = 25 * 60,
+                PomodorosBeforeLongBreak = 4
+            };
+        }
+
+        public Dictionary<string, PomodoroProfile> Profiles
+        {
+            get => _settings.Get(nameof(Profiles), DefaultProfile);
+            set => _settings.Update(nameof(Profiles), value);
+        }
+
+        public string ActiveProfile
+        {
+            get => _settings.Get(nameof(ActiveProfile), DefaultProfileName);
+            set => _settings.Update(nameof(ActiveProfile), value);
+        }
+
         public int WorkTime
         {
-            get => _settings.Get(nameof(WorkTime), 25 * 60);
-            set => _settings.Update(nameof(WorkTime), value);
+            get => Profiles[ActiveProfile].WorkTime;
+            set
+            {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.WorkTime = value;
+                Profiles = temp;
+            }
         }
 
         public int BreakTime
         {
-            get => _settings.Get(nameof(BreakTime), 5 * 60);
-            set => _settings.Update(nameof(BreakTime), value);
+            get => Profiles[ActiveProfile].BreakTime;
+            set
+            {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.BreakTime = value;
+                Profiles = temp;
+            }
         }
 
         public int LongBreakTime
         {
-            get => _settings.Get(nameof(LongBreakTime), 15 * 60);
-            set => _settings.Update(nameof(LongBreakTime), value);
+            get => Profiles[ActiveProfile].LongBreakTime;
+            set
+            {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.LongBreakTime = value;
+                Profiles = temp;
+            }
         }
 
         public bool AutoStartBreak
         {
-            get => _settings.Get(nameof(AutoStartBreak), false);
-            set => _settings.Update(nameof(AutoStartBreak), value);
+            get => Profiles[ActiveProfile].AutoStartBreak;
+            set
+            {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.AutoStartBreak = value;
+                Profiles = temp;
+            }
         }
 
         public bool CountBackwards
@@ -406,6 +461,15 @@ namespace YAPA.Shared.Common
         {
             _settings.DeferChanges();
         }
+    }
+
+    public class PomodoroProfile
+    {
+        public int WorkTime { get; set; }
+        public int BreakTime { get; set; }
+        public int LongBreakTime { get; set; }
+        public bool AutoStartBreak { get; set; }
+        public int PomodorosBeforeLongBreak { get; set; }
     }
 
     internal class Pomodoro
