@@ -12,7 +12,7 @@ namespace YAPA.Plugins.PomodoroEngine
     public partial class PomodoroEngineSettingWindow : UserControl
     {
 
-        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings)
+        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine)
         {
             settings.DeferChanges();
             InitializeComponent();
@@ -32,8 +32,13 @@ namespace YAPA.Plugins.PomodoroEngine
             CounterList.ItemsSource = counterValues;
             CounterList.SelectionChanged += CounterList_SelectionChanged;
 
-            DataContext = settings;
+            Settings = settings;
+            Engine = engine;
+            DataContext = this;
         }
+
+        public PomodoroEngineSettings Settings { get; }
+        public IPomodoroEngine Engine { get; }
 
         private void CounterList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -66,4 +71,18 @@ namespace YAPA.Plugins.PomodoroEngine
             return seconds * 60;
         }
     }
+
+    public class InverseBoolean : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+    }
+
 }

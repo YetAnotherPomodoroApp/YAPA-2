@@ -97,6 +97,7 @@ namespace YAPA.Shared.Common
                 _phase = value;
                 NotifyPropertyChanged(nameof(Phase));
                 NotifyPropertyChanged(nameof(Counter));
+                NotifyPropertyChanged(nameof(IsRunning));
             }
         }
 
