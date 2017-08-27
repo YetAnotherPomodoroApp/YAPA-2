@@ -148,3 +148,6 @@ $RECYCLE.BIN/
 .DS_Store
 /packages
 /.vs/config
+*.ide
+/null
+/MotivationalTheme
