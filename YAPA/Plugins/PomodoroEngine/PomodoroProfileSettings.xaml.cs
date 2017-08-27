@@ -13,6 +13,7 @@ namespace YAPA.Plugins.PomodoroEngine
         public List<string> Profiles { get; set; } = new List<string>();
         public PomodoroEngineSettings Settings { get; }
         public IPomodoroEngine Engine { get; }
+        public bool CanDeleteProfile { get; set; }
 
         private ISettings _globalSetting { get; }
 
@@ -31,8 +32,8 @@ namespace YAPA.Plugins.PomodoroEngine
 
             _globalSetting = globalSetting;
             DataContext = this;
-            ActiveProfile.ItemsSource = Profiles;
-            ActiveProfile.SelectionChanged += ActiveProfile_SelectectionChanged;
+            ActiveProfileSelect.ItemsSource = Profiles;
+            ActiveProfileSelect.SelectionChanged += ActiveProfile_SelectectionChanged;
             RefreshProfilesList();
         }
 
@@ -41,6 +42,9 @@ namespace YAPA.Plugins.PomodoroEngine
             Profiles.Clear();
             Profiles.AddRange(Settings.Profiles.Select(x => x.Key).ToList());
             NotifyPropertyChanged(nameof(Profiles));
+
+            CanDeleteProfile = Profiles.Count > 1;
+            NotifyPropertyChanged(nameof(CanDeleteProfile));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,10 +56,43 @@ namespace YAPA.Plugins.PomodoroEngine
 
         private void ActiveProfile_SelectectionChanged(object sender, System.Windows.RoutedEventArgs e)
         {
+            RefreshProfileProperties();
+        }
+
+        private void RefreshProfileProperties()
+        {
+            ActiveProfileSelect.GetBindingExpression(ComboBox.SelectedItemProperty)?.UpdateTarget();
             WorkTimeSelect.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
             BreakTimeSelect.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
             LongBreakTimeSelect.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
             AutoStartBreak.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateTarget();
+        }
+
+        private void RemoveProfile_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var profiles = Settings.Profiles;
+            profiles.Remove(Settings.ActiveProfile);
+            Settings.Profiles = profiles;
+            Settings.ActiveProfile = Settings.Profiles.First().Key;
+
+            RefreshProfilesList();
+
+            RefreshProfileProperties();
+        }
+
+        private void AddProfile_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60 };
+            var profileName = $"Profile #{Settings.Profiles.Count}";
+            var profiles = Settings.Profiles;
+            profiles.Add(profileName, newProfile);
+
+            Settings.Profiles = profiles;
+            Settings.ActiveProfile = profileName;
+
+            RefreshProfilesList();
+
+            RefreshProfileProperties();
         }
     }
 }

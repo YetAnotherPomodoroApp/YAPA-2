@@ -330,14 +330,20 @@ namespace YAPA.Shared.Common
         {
             if (HasUnsavedChanges)
             {
+                var changedProperties = new List<string>();
                 foreach (var setting in _modifiedSettings)
                 {
                     foreach (var value in setting.Value)
                     {
                         _settings.SetValue(value.Key, setting.Key, value.Value);
                         // ReSharper disable once ExplicitCallerInfoArgument
-                        OnPropertyChanged($"{setting.Key}.{value.Key}");
+                        changedProperties.Add($"{setting.Key}.{value.Key}");
                     }
+                }
+
+                foreach (var item in changedProperties)
+                {
+                    OnPropertyChanged(item);
                 }
             }
 
