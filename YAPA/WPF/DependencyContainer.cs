@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using YAPA.Plugins.Dashboard;
+using YAPA.Plugins.PomodoroEngine;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF.PluginManager;
@@ -86,6 +87,8 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(DateTimeWrapper)).As<IDate>();
 
             builder.RegisterType(typeof(SettingManager)).As<ISettingManager>().SingleInstance();
+
+            builder.RegisterType(typeof(PomodoroProfileSettings));
 
 
             var container = builder.Build();

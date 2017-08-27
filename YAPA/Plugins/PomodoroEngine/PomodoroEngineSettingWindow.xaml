@@ -3,16 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-            xmlns:wpf="clr-namespace:YAPA.WPF"
-            xmlns:pomodoroEngine="clr-namespace:YAPA.Plugins.PomodoroEngine"
             mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
-    <UserControl.Resources>
-        <pomodoroEngine:SecondsToMinutesConverter x:Key="SecToMinConverter" />
-        <pomodoroEngine:InverseBoolean x:Key="InverseBooleanConverter" />
-    </UserControl.Resources>
-
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -34,68 +26,13 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Work time" Grid.Column="0" Grid.Row="0"></TextBlock>
-            <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="WorkTimeSelect"
-                         Grid.Column="1" Grid.Row="0"  MinWidth="72"
-                          Margin="16 0 0 0"
-                          VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                            IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
-                <ComboBox.Text>
-                    <Binding Path="Settings.WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                    </Binding>
-                </ComboBox.Text>
-                <ComboBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox.ItemsPanel>
-            </ComboBox>
+            <StackPanel  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="ProfileSetting">
 
+            </StackPanel>
 
-            <TextBlock Text="Break time" Grid.Column="0" Grid.Row="1" ></TextBlock>
-            <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="BreakTimeSelect"
-                         Grid.Column="1" Grid.Row="1"  MinWidth="72"
-                          Margin="16 0 0 0"
-                          VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                      IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
-                <ComboBox.Text>
-                    <Binding Path="Settings.BreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                    </Binding>
-                </ComboBox.Text>
-                <ComboBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox.ItemsPanel>
-            </ComboBox>
+            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" ></Separator>
 
-
-            <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="2"></TextBlock>
-            <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="LongBreakTimeSelect"
-                         Grid.Column="1" Grid.Row="2"  MinWidth="72"
-                          Margin="16 0 0 0"
-                          VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                        IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
-                <ComboBox.Text>
-                    <Binding Path="Settings.LongBreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
-                    </Binding>
-                </ComboBox.Text>
-                <ComboBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox.ItemsPanel>
-            </ComboBox>
-
-            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"></Separator>
-
-            <CheckBox  IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" >Auto start break</CheckBox>
-            <CheckBox  IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Count backwards</CheckBox>
-
-            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" ></Separator>
+            <CheckBox  IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" >Count backwards</CheckBox>
 
             <CheckBox  IsChecked="{Binding Settings.DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" >Disable sound notifications</CheckBox>
             <TextBlock Text="Volume" Grid.Column="0" Grid.Row="8"></TextBlock>
@@ -113,14 +50,14 @@
                       SelectedValuePath="Item"
                       SelectedValue="{Binding Settings.Counter}"
                       >
-        
+
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
             </ComboBox>
-            
+
         </Grid>
     </Grid>
 </UserControl>

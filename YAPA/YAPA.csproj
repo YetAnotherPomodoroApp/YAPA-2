@@ -387,6 +387,9 @@
     <Compile Include="Plugins\MinimizeToTray\MinimizeToTraySettingWindow.xaml.cs">
       <DependentUpon>MinimizeToTraySettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\PomodoroEngine\PomodoroProfileSettings.xaml.cs">
+      <DependentUpon>PomodoroProfileSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayerPluginSettingWindow.xaml.cs">
       <DependentUpon>MusicPlayerPluginSettingWindow.xaml</DependentUpon>
     </Compile>
@@ -453,6 +456,10 @@
     <Page Include="Plugins\MinimizeToTray\MinimizeToTraySettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\PomodoroEngine\PomodoroProfileSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plugins\SoundSettings\MusicPlayer\MusicPlayerPluginSettingWindow.xaml">
       <SubType>Designer</SubType>

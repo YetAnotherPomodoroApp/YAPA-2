@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using YAPA.Shared.Common;
@@ -12,15 +11,10 @@ namespace YAPA.Plugins.PomodoroEngine
     public partial class PomodoroEngineSettingWindow : UserControl
     {
 
-        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine)
+        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine, PomodoroProfileSettings profileSettings)
         {
             settings.DeferChanges();
             InitializeComponent();
-
-            var oneHour = Enumerable.Range(1, 60).ToList();
-            WorkTimeSelect.ItemsSource = oneHour;
-            BreakTimeSelect.ItemsSource = oneHour;
-            LongBreakTimeSelect.ItemsSource = oneHour;
 
             var counterValues = new List<CounterListItem>
             {
@@ -30,19 +24,17 @@ namespace YAPA.Plugins.PomodoroEngine
             };
 
             CounterList.ItemsSource = counterValues;
-            CounterList.SelectionChanged += CounterList_SelectionChanged;
 
             Settings = settings;
             Engine = engine;
             DataContext = this;
+
+            ProfileSetting.Children.Clear();
+            ProfileSetting.Children.Add(profileSettings);
         }
 
         public PomodoroEngineSettings Settings { get; }
         public IPomodoroEngine Engine { get; }
-
-        private void CounterList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
     }
 
     public class CounterListItem
