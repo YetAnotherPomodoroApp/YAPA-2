@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
@@ -10,10 +12,9 @@ namespace YAPA.Plugins.PomodoroEngine
 {
     public partial class PomodoroProfileSettings : UserControl, INotifyPropertyChanged
     {
-        public List<string> Profiles { get; set; } = new List<string>();
+        public ObservableCollection<string> Profiles { get; set; } = new ObservableCollection<string>();
         public PomodoroEngineSettings Settings { get; }
         public IPomodoroEngine Engine { get; }
-        public bool CanDeleteProfile { get; set; }
 
         private ISettings _globalSetting { get; }
 
@@ -40,11 +41,13 @@ namespace YAPA.Plugins.PomodoroEngine
         private void RefreshProfilesList()
         {
             Profiles.Clear();
-            Profiles.AddRange(Settings.Profiles.Select(x => x.Key).ToList());
+            foreach (var item in Settings.Profiles.Select(x => x.Key).ToList())
+            {
+                Profiles.Add(item);
+            }
             NotifyPropertyChanged(nameof(Profiles));
 
-            CanDeleteProfile = Profiles.Count > 1;
-            NotifyPropertyChanged(nameof(CanDeleteProfile));
+            RemoveButton.IsEnabled = Profiles.Count > 1;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -56,6 +59,13 @@ namespace YAPA.Plugins.PomodoroEngine
 
         private void ActiveProfile_SelectectionChanged(object sender, System.Windows.RoutedEventArgs e)
         {
+            var selected = (string)((ComboBox)sender).SelectedItem;
+            if (string.IsNullOrEmpty(selected))
+            {
+                return;
+            }
+            Settings.ActiveProfile = (string)((ComboBox)sender).SelectedItem;
+
             RefreshProfileProperties();
         }
 
@@ -72,8 +82,9 @@ namespace YAPA.Plugins.PomodoroEngine
         {
             var profiles = Settings.Profiles;
             profiles.Remove(Settings.ActiveProfile);
+            Settings.ActiveProfile = profiles.First().Key;
+
             Settings.Profiles = profiles;
-            Settings.ActiveProfile = Settings.Profiles.First().Key;
 
             RefreshProfilesList();
 
@@ -83,7 +94,20 @@ namespace YAPA.Plugins.PomodoroEngine
         private void AddProfile_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60 };
-            var profileName = $"Profile #{Settings.Profiles.Count}";
+
+            var createWindow = new CreatePomodoroProfile(Settings.Profiles.Select(x => x.Key).ToList());
+
+            var parent = Window.GetWindow(this);
+            createWindow.Left = parent.Left + parent.Width / 2.5;
+            createWindow.Top = parent.Top + parent.Height / 2.5;
+            createWindow.Topmost = true;
+            createWindow.ShowDialog();
+            if (string.IsNullOrEmpty(createWindow.SelectedName))
+            {
+                return;
+            }
+
+            var profileName = createWindow.SelectedName;
             var profiles = Settings.Profiles;
             profiles.Add(profileName, newProfile);
 

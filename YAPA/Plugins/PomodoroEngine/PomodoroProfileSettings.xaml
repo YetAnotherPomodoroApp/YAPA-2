@@ -36,10 +36,10 @@
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
                           IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}"
-                           SelectedItem="{Binding Settings.ActiveProfile}" 
+                          SelectedItem="{Binding Settings.ActiveProfile, Mode=OneWay}" 
                          >
                 </ComboBox>
-                <Button Grid.Column="3" Grid.Row="0" Margin="5,1,5,1" Content="Remove" Click="RemoveProfile_Click" IsEnabled="{Binding CanDeleteProfile}"></Button>
+                <Button Grid.Column="3" Grid.Row="0" Margin="5,1,5,1" Content="Remove" Click="RemoveProfile_Click" x:Name="RemoveButton"></Button>
                 <Button Grid.Column="3" Grid.Row="1" Margin="5,1,5,1" Content="Add" Click="AddProfile_Click"></Button>
 
                 <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1"></TextBlock>
