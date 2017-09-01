@@ -9,7 +9,8 @@ namespace YAPA.Shared.Common
 {
     public class PomodoroEngineSnapshot
     {
-        public string EngineSettings { get; set; }
+        public PomodoroProfile PomodoroProfile { get; set; }
+        public string ProfileName { get; set; }
         public int PausedTime { get; set; }
         public DateTime StartDate { get; set; }
         public PomodoroPhase Phase { get; set; }
@@ -311,7 +312,8 @@ namespace YAPA.Shared.Common
         {
             var snapshot = new PomodoroEngineSnapshot
             {
-                EngineSettings = _globalSettings.GetRawSettingsForComponent(nameof(PomodoroEngine)),
+                PomodoroProfile = _settings.Profiles[_settings.ActiveProfile],
+                ProfileName= _settings.ActiveProfile,
                 PausedTime = Elapsed,
                 Phase = Phase,
                 StartDate = _dateTime.DateTimeUtc(),
@@ -325,13 +327,32 @@ namespace YAPA.Shared.Common
         {
             _timer.Stop();
 
-            _globalSettings.SetRawSettingsForComponent(nameof(PomodoroEngine), snapshot.EngineSettings);
+            if (string.IsNullOrEmpty(snapshot.ProfileName))
+            {
+                var standartProfile = "Snapshot";
+
+                var currentProfiles = _settings.Profiles;
+                currentProfiles[standartProfile] = snapshot.PomodoroProfile;
+
+                _settings.Profiles = currentProfiles;
+                _settings.ActiveProfile = standartProfile;
+            }
+            else
+            {
+                var currentProfiles = _settings.Profiles;
+                currentProfiles[snapshot.ProfileName] = snapshot.PomodoroProfile;
+
+                _settings.Profiles= currentProfiles;
+                _settings.ActiveProfile = snapshot.ProfileName;
+            }
+
             _elapsedInPause = snapshot.PausedTime;
 
             if (snapshot.Phase == PomodoroPhase.Work ||
                 snapshot.Phase == PomodoroPhase.Break ||
                 (snapshot.Phase == PomodoroPhase.WorkEnded && _settings.AutoStartBreak))
             {
+                _startDate = _endDate = snapshot.StartDate;
                 _timer.Start();
             }
 

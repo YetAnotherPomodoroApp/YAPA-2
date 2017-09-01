@@ -59,9 +59,7 @@ namespace YAPA
 
         private static void MainWindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
-#if DEBUG
             SaveSnapshot();
-#endif
         }
 
         private static void SaveSnapshot()
@@ -95,8 +93,14 @@ namespace YAPA
 
             var snapshotJson = File.ReadAllText(file);
             var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
-            snapshot.StartDate = date.DateTimeUtc();
-            engine.LoadSnapshot(snapshot);
+            
+            var remainingTime = TimeSpan.FromSeconds(snapshot.PomodoroProfile.WorkTime - snapshot.PausedTime);
+            if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause) 
+                && MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?","Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                snapshot.StartDate = date.DateTimeUtc();
+                engine.LoadSnapshot(snapshot);
+            }
 
             try
             {
