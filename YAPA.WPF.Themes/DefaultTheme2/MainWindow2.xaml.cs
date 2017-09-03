@@ -84,13 +84,13 @@ namespace YAPA
             if (ViewModel.Engine.IsRunning)
             {
                 var currMin = startDate.Minute;
-                var duration = ViewModel.Engine.WorkTime;
+                var duration = ViewModel.Engine.WorkTime / 60;
                 var periodColor = Colors.Green;
 
                 if (ViewModel.Engine.Phase == PomodoroPhase.Break)
                 {
                     periodColor = Colors.Red;
-                    duration = ViewModel.Engine.BreakTime;
+                    duration = ViewModel.Engine.BreakTime / 60;
                 }
 
                 for (int i = currMin; i < currMin + duration; i++)
