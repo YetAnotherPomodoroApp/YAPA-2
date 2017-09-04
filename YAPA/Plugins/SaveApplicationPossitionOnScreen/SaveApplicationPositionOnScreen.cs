@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Windows;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
@@ -36,24 +38,53 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
         {
             var currentScreen = GDIScreen.FromHandle(_app.WindowHandle);
 
-            _settings.WindowTopPerc = _app.Top / currentScreen.WorkingArea.Height;
-            _settings.WindowLeftPerc = _app.Left / currentScreen.WorkingArea.Width;
+            _settings.ActiveMonitor = currentScreen.DeviceName;
+
+            var top = _app.Top - currentScreen.Bounds.Top;
+            var left = _app.Left - currentScreen.Bounds.Left;
+
+            _settings.WindowTopPerc = top / currentScreen.WorkingArea.Height;
+            _settings.WindowLeftPerc = left / currentScreen.WorkingArea.Width;
         }
 
         private void App_Loaded()
         {
-            var currentScreen = GDIScreen.FromHandle(_app.WindowHandle);
+            var activeScreen = GetActiveScreen();
+            var workingArea = activeScreen.WorkingArea;
+            var screenBounds = activeScreen.Bounds;
+
+            double calculatedLeft;
+            double calculatedTop;
 
             if (!double.IsNaN(_settings.WindowLeftPerc) && !double.IsNaN(_settings.WindowTopPerc))
             {
-                _app.Top = currentScreen.WorkingArea.Height * _settings.WindowTopPerc;
-                _app.Left = currentScreen.WorkingArea.Width * _settings.WindowLeftPerc;
+                calculatedLeft = workingArea.Width * _settings.WindowLeftPerc;
+                calculatedTop = workingArea.Height * _settings.WindowTopPerc;
             }
             else
             {
-                _app.Left = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / currentScreen.WorkingArea.Width;
-                _app.Top = 0;
+                calculatedLeft = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / workingArea.Width;
+                calculatedTop = 0;
             }
+            
+            calculatedLeft += screenBounds.Left;
+            calculatedTop += screenBounds.Top;
+
+            if (!GDIScreen.AllScreens.ToList().Any(x => x.Bounds.Contains((int)calculatedLeft, (int)calculatedTop)))
+            {
+                //misscalculated, app is not visible on any screen :(
+                calculatedLeft = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / workingArea.Width;
+                calculatedTop = 0;
+            }
+
+            _app.Left = calculatedLeft;
+            _app.Top = calculatedTop;
+        }
+
+        private GDIScreen GetActiveScreen()
+        {
+            var activeScreen = GDIScreen.AllScreens.FirstOrDefault(x => string.Equals(x.DeviceName, _settings.ActiveMonitor));
+            return activeScreen ?? GDIScreen.FromHandle(_app.WindowHandle);
         }
     }
 
@@ -63,14 +94,20 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
 
         public double WindowLeftPerc
         {
-            get { return _settings.Get(nameof(WindowLeftPerc), double.NaN); }
-            set { _settings.Update(nameof(WindowLeftPerc), value); }
+            get => _settings.Get(nameof(WindowLeftPerc), double.NaN);
+            set => _settings.Update(nameof(WindowLeftPerc), value);
         }
 
         public double WindowTopPerc
         {
-            get { return _settings.Get(nameof(WindowTopPerc), double.NaN); }
-            set { _settings.Update(nameof(WindowTopPerc), value); }
+            get => _settings.Get(nameof(WindowTopPerc), double.NaN);
+            set => _settings.Update(nameof(WindowTopPerc), value);
+        }
+
+        public string ActiveMonitor
+        {
+            get => _settings.Get<string>(nameof(ActiveMonitor), null);
+            set => _settings.Update(nameof(ActiveMonitor), value);
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)
