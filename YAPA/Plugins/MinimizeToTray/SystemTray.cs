@@ -261,13 +261,22 @@ namespace YAPA.Plugins.MinimizeToTray
 
         public System.Windows.Media.Color WorkTrayIconColor
         {
-            get => _settings.Get(nameof(WorkTrayIconColor), System.Windows.Media.Colors.DarkGreen);
+            get
+            {
+                var color = _settings.Get(nameof(WorkTrayIconColor), "DarkGreen");
+                return (System.Windows.Media.Color)(System.Windows.Media.ColorConverter.ConvertFromString(color) ?? Color.DarkGreen);
+            }
             set => _settings.Update(nameof(WorkTrayIconColor), value);
         }
 
         public System.Windows.Media.Color BreakTrayIconColor
         {
-            get => _settings.Get(nameof(BreakTrayIconColor), System.Windows.Media.Colors.DarkRed);
+            get
+            {
+
+                var color = _settings.Get(nameof(BreakTrayIconColor), "DarkRed");
+                return (System.Windows.Media.Color)(System.Windows.Media.ColorConverter.ConvertFromString(color) ?? Color.DarkRed);
+            }
             set => _settings.Update(nameof(BreakTrayIconColor), value);
         }
 
@@ -298,6 +307,7 @@ namespace YAPA.Plugins.MinimizeToTray
         public SystemTraySettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(new SystemTrayPlugin().Id);
+
         }
 
         public void DeferChanges()

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Windows.Media;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YAPA.Shared.Contracts;
@@ -25,17 +24,10 @@ namespace YAPA.WPF.Specifics
             {
                 return default(T);
             }
-
-            if (value.GetType() == typeof(T))
+            else if (value.GetType() == typeof(T))
             {
                 return (T)value;
-            }
-
-            if (typeof(T) == typeof(System.Windows.Media.Color) && value is string)
-            {
-                return (T)ColorConverter.ConvertFromString((string)value);
-            }
-            else if (typeof(T).IsEnum)
+            }else if (typeof(T).IsEnum)
             {
                 return (T)Enum.ToObject(typeof(T), value);
             }
