@@ -65,8 +65,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Yapa.Shared.Standard\Yapa.Shared.csproj">
-      <Project>{d5560a33-c5df-430a-9ac7-16438ffc215f}</Project>
+    <ProjectReference Include="..\Yapa.Shared\Yapa.Shared.csproj">
+      <Project>{e7b67cdc-3d67-40db-8ba8-6b3d0d99ebfc}</Project>
       <Name>Yapa.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\YAPA.WPF.Shared\YAPA.WPF.Shared.csproj">
