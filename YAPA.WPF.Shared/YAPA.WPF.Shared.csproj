@@ -50,15 +50,14 @@
     <Compile Include="Shared\SecToTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
-      <Project>{893850db-2b45-4942-b513-73f1d58a8026}</Project>
-      <Name>YAPA.Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Yapa.Shared.Standard\Yapa.Shared.csproj">
+      <Project>{d5560a33-c5df-430a-9ac7-16438ffc215f}</Project>
+      <Name>Yapa.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

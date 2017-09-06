@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -15,15 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A521D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared", "YAPA.Shared\YAPA.Shared.csproj", "{893850DB-2B45-4942-B513-73F1D58A8026}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Shared", "YAPA.WPF.Shared\YAPA.WPF.Shared.csproj", "{3C26FD01-08D3-4192-BBB3-778D9D7692D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.StarterTheme", "YAPA.WPF.StarterTheme\YAPA.WPF.StarterTheme.csproj", "{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes", "YAPA.WPF.Themes\YAPA.WPF.Themes.csproj", "{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapa.Shared", "Yapa.Shared.Standard\Yapa.Shared.csproj", "{D5560A33-C5DF-430A-9AC7-16438FFC215F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,16 +44,6 @@ Global
 		{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.Release|Any CPU.Build.0 = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{893850DB-2B45-4942-B513-73F1D58A8026}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{3C26FD01-08D3-4192-BBB3-778D9D7692D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -94,8 +84,21 @@ Global
 		{2B573B1F-2850-4535-A264-D30950BB0258}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B573B1F-2850-4535-A264-D30950BB0258}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B573B1F-2850-4535-A264-D30950BB0258}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.CD_ROM|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.CD_ROM|Any CPU.Build.0 = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5560A33-C5DF-430A-9AC7-16438FFC215F}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2087D619-6102-4BC7-8F52-3EE513F2E494}
 	EndGlobalSection
 EndGlobal

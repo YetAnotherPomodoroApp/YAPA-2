@@ -584,13 +584,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yapa.Shared.Standard\Yapa.Shared.csproj">
+      <Project>{d5560a33-c5df-430a-9ac7-16438ffc215f}</Project>
+      <Name>Yapa.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YAPA.WPF.Shared\YAPA.WPF.Shared.csproj">
       <Project>{3c26fd01-08d3-4192-bbb3-778d9d7692d4}</Project>
       <Name>YAPA.WPF.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj">
-      <Project>{893850db-2b45-4942-b513-73f1d58a8026}</Project>
-      <Name>YAPA.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using YAPA.Shared.Common;
@@ -13,7 +14,7 @@ namespace YAPA.Shared.Tests
         public void SimpleWorkflowThroughAllPomodoros()
         {
             var timerSub = new TimerMock();
-            var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var engineSettings = new PomodoroEngineSettings(Substitute.For<ISettings>());
             var threading = Substitute.For<IThreading>();
             var globalSettings = Substitute.For<ISettings>();
             var repository = Substitute.For<IPomodoroRepository>();
@@ -24,11 +25,20 @@ namespace YAPA.Shared.Tests
             var breakTime = 5 * 60;
             var longBreakTime = 10 * 60;
 
-            engineSettings.AutoStartBreak.Returns(false);
+            var profileName = "test";
+            var profile = new PomodoroProfile
+            {
+                AutoStartBreak = false,
+                BreakTime = breakTime,
+                WorkTime = workTime,
+                LongBreakTime = longBreakTime
+            };
+
+            var profiles = new Dictionary<string, PomodoroProfile> {[profileName] = profile};
+
+            engineSettings.Profiles.Returns(profiles);
+            engineSettings.ActiveProfile.Returns(profileName);
             engineSettings.CountBackwards.Returns(false);
-            engineSettings.BreakTime.Returns(breakTime);
-            engineSettings.WorkTime.Returns(workTime);
-            engineSettings.LongBreakTime.Returns(longBreakTime);
 
             dateTime.DateToReturn = baseDate;
 
@@ -330,7 +340,7 @@ namespace YAPA.Shared.Tests
         public void SimpleWorkflowThroughAllPomodoros_CountBackwards()
         {
             var timerSub = new TimerMock();
-            var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var engineSettings = new PomodoroEngineSettings(Substitute.For<ISettings>());
             var dateTime = new DateMock();
             var globalSettings = Substitute.For<ISettings>();
             var threading = Substitute.For<IThreading>();
@@ -341,11 +351,21 @@ namespace YAPA.Shared.Tests
             var breakTime = 5 * 60;
             var longBreakTime = 10 * 60;
 
-            engineSettings.AutoStartBreak.Returns(false);
+            var profileName = "test";
+            var profile = new PomodoroProfile
+            {
+                AutoStartBreak = false,
+                BreakTime = breakTime,
+                WorkTime = workTime,
+                LongBreakTime = longBreakTime
+            };
+
+            var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
+
+            engineSettings.Profiles.Returns(profiles);
+            engineSettings.ActiveProfile.Returns(profileName);
+
             engineSettings.CountBackwards.Returns(true);
-            engineSettings.BreakTime.Returns(breakTime);
-            engineSettings.WorkTime.Returns(workTime);
-            engineSettings.LongBreakTime.Returns(longBreakTime);
 
             dateTime.DateToReturn = baseDate;
 
@@ -647,7 +667,7 @@ namespace YAPA.Shared.Tests
         public void SimpleWorkflowThroughAllPomodoros_AutoStartBreak()
         {
             var timerSub = new TimerMock();
-            var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var engineSettings = new PomodoroEngineSettings(Substitute.For<ISettings>());
             var globalSettings = Substitute.For<ISettings>();
             var dateTime = new DateMock();
             var threading = Substitute.For<IThreading>();
@@ -658,11 +678,22 @@ namespace YAPA.Shared.Tests
             var breakTime = 5 * 60;
             var longBreakTime = 10 * 60;
 
-            engineSettings.AutoStartBreak.Returns(true);
+
+            var profileName = "test";
+            var profile = new PomodoroProfile
+            {
+                AutoStartBreak = true,
+                BreakTime = breakTime,
+                WorkTime = workTime,
+                LongBreakTime = longBreakTime
+            };
+
+            var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
+
+            engineSettings.Profiles.Returns(profiles);
+            engineSettings.ActiveProfile.Returns(profileName);
+
             engineSettings.CountBackwards.Returns(false);
-            engineSettings.BreakTime.Returns(breakTime);
-            engineSettings.WorkTime.Returns(workTime);
-            engineSettings.LongBreakTime.Returns(longBreakTime);
 
             dateTime.DateToReturn = baseDate;
 
@@ -968,7 +999,7 @@ namespace YAPA.Shared.Tests
         public void SimpleWorkflowThroughAllPomodoros_AutoStartBreak_ManuallyStarting()
         {
             var timerSub = new TimerMock();
-            var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var engineSettings = new PomodoroEngineSettings(Substitute.For<ISettings>());
             var globalSettings = Substitute.For<ISettings>();
             var dateTime = new DateMock();
             var threading = Substitute.For<IThreading>();
@@ -979,11 +1010,21 @@ namespace YAPA.Shared.Tests
             var breakTime = 5 * 60;
             var longBreakTime = 10 * 60;
 
-            engineSettings.AutoStartBreak.Returns(true);
+            var profileName = "test";
+            var profile = new PomodoroProfile
+            {
+                AutoStartBreak = true,
+                BreakTime = breakTime,
+                WorkTime = workTime,
+                LongBreakTime = longBreakTime
+            };
+
+            var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
+
+            engineSettings.Profiles.Returns(profiles);
+            engineSettings.ActiveProfile.Returns(profileName);
+
             engineSettings.CountBackwards.Returns(false);
-            engineSettings.BreakTime.Returns(breakTime);
-            engineSettings.WorkTime.Returns(workTime);
-            engineSettings.LongBreakTime.Returns(longBreakTime);
 
             dateTime.DateToReturn = baseDate;
 
@@ -1115,7 +1156,7 @@ namespace YAPA.Shared.Tests
         public void SimpleWorkflowThroughAllPomodoros_PauseAndStop()
         {
             var timerSub = new TimerMock();
-            var engineSettings = Substitute.For<PomodoroEngineSettings>(Substitute.For<ISettings>());
+            var engineSettings = new PomodoroEngineSettings(Substitute.For<ISettings>());
             var globalSettings = Substitute.For<ISettings>();
             var dateTime = new DateMock();
             var threading = Substitute.For<IThreading>();
@@ -1126,11 +1167,21 @@ namespace YAPA.Shared.Tests
             var breakTime = 5 * 60;
             var longBreakTime = 10 * 60;
 
-            engineSettings.AutoStartBreak.Returns(false);
+            var profileName = "test";
+            var profile = new PomodoroProfile
+            {
+                AutoStartBreak = false,
+                BreakTime = breakTime,
+                WorkTime = workTime,
+                LongBreakTime = longBreakTime
+            };
+
+            var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
+
+            engineSettings.Profiles.Returns(profiles);
+            engineSettings.ActiveProfile.Returns(profileName);
+
             engineSettings.CountBackwards.Returns(false);
-            engineSettings.BreakTime.Returns(breakTime);
-            engineSettings.WorkTime.Returns(workTime);
-            engineSettings.LongBreakTime.Returns(longBreakTime);
 
             dateTime.DateToReturn = baseDate;
 
