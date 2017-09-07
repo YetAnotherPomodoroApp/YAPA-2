@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes", "YAPA.WPF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapa.Shared", "Yapa.Shared\Yapa.Shared.csproj", "{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared", "Yapa.Shared\YAPA.Shared.csproj", "{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yapa.Shared\Yapa.Shared.csproj" />
+    <ProjectReference Include="..\Yapa.Shared\YAPA.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
