@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared.Common
@@ -43,7 +44,10 @@ namespace YAPA.Shared.Common
 
         private void _engine_OnPomodoroCompleted()
         {
-            _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date });
+            Task.Run(() =>
+            {
+                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date });
+            });
         }
     }
 
