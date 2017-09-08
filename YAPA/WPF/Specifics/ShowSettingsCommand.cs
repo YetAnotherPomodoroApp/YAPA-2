@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF.Specifics
@@ -28,7 +29,8 @@ namespace YAPA.WPF.Specifics
         public void Execute(object parameter)
         {
             var settingWindow = new SettingsMananger.Settings(_settings, _mananger, _pluginManager, _container, _environment);
-
+            settingWindow.Owner = (Window)_container.Resolve(typeof(IApplication)); 
+            settingWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             settingWindow.ShowDialog();
         }
 
