@@ -31,11 +31,21 @@ namespace YAPA.Plugins.PomodoroEngine
             Settings = settings;
             Engine = engine;
 
+            Engine.PropertyChanged += Engine_PropertyChanged;
+
             GlobalSetting = globalSetting;
             DataContext = this;
             ActiveProfileSelect.ItemsSource = Profiles;
             ActiveProfileSelect.SelectionChanged += ActiveProfile_SelectectionChanged;
             RefreshProfilesList();
+        }
+
+        private void Engine_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Engine.Phase))
+            {
+                RemoveButton.IsEnabled = Profiles.Count > 1 && !Engine.IsRunning;
+            }
         }
 
         private void RefreshProfilesList()
@@ -47,7 +57,7 @@ namespace YAPA.Plugins.PomodoroEngine
             }
             NotifyPropertyChanged(nameof(Profiles));
 
-            RemoveButton.IsEnabled = Profiles.Count > 1;
+            RemoveButton.IsEnabled = Profiles.Count > 1 && !Engine.IsRunning;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
