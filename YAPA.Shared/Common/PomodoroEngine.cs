@@ -357,6 +357,17 @@ namespace YAPA.Shared.Common
             }
 
             Phase = snapshot.Phase;
+
+            NotifyPropertyChanged(nameof(Phase));
+            NotifyPropertyChanged(nameof(Counter));
+            NotifyPropertyChanged(nameof(IsRunning));
+            NotifyPropertyChanged(nameof(Elapsed));
+            NotifyPropertyChanged(nameof(Remaining));
+            NotifyPropertyChanged(nameof(DisplayValue));
+            NotifyPropertyChanged(nameof(Index));
+            NotifyPropertyChanged(nameof(WorkTime));
+            NotifyPropertyChanged(nameof(BreakTime));
+            NotifyPropertyChanged(nameof(DisplayValue));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
