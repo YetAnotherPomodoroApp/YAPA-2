@@ -56,14 +56,14 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (ViewModel.Engine?.Phase == PomodoroPhase.Work)
-            {
-                if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
+            //if (ViewModel.Engine?.Phase == PomodoroPhase.Work)
+            //{
+            //    if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            //    {
+            //        e.Cancel = true;
+            //        return;
+            //    }
+            //}
             Closing?.Invoke();
         }
 
