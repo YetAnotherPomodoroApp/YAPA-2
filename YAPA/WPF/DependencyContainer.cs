@@ -24,12 +24,16 @@ namespace YAPA.WPF
         public Dashboard Dashboard { get; private set; }
         public Window MainWindow { get; private set; }
 
+        private static Dictionary<string, bool> LoadedAssemblies = new Dictionary<string, bool>();
+
         public DependencyContainer()
         {
             Container = ConfigureContainer();
 
             var di = new DependencyInjector(Container);
             di.RegisterInstance(di, typeof(IDependencyInjector));
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             //Themes
             ThemeManager = new ThemeManager.ThemeManager(di, GetThemeMetas(), (ThemeManagerSettings)Container.Resolve(typeof(ThemeManagerSettings)));
@@ -102,18 +106,25 @@ namespace YAPA.WPF
 
         private static IEnumerable<IPluginMeta> GetPluginMetas()
         {
+            var metas = new List<IPluginMeta>();
 
             foreach (IPluginMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
                                          where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
                                          select (IPluginMeta)Activator.CreateInstance(plugin))
             {
-                yield return meta;
+                metas.Add(meta);
             }
 
             foreach (var externalPlugin in GetTypes<IPluginMeta>("Plugins"))
             {
-                yield return externalPlugin;
+                metas.Add(externalPlugin);
             }
+            return metas;
+        }
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return Assembly.LoadFile(args.RequestingAssembly.Location);
         }
 
         private static IEnumerable<IThemeMeta> GetThemeMetas()
@@ -125,16 +136,39 @@ namespace YAPA.WPF
         {
             var themeFiles = folders
                     .Where(Directory.Exists)
-                    .SelectMany(x => Directory.GetFiles(x, "*.dll"))
+                    .SelectMany(x => Directory.GetFiles(x, "*.dll", SearchOption.AllDirectories))
                     .Distinct();
 
             var exePath = AppDomain.CurrentDomain.BaseDirectory;
 
-            var metas = themeFiles.SelectMany(x => Assembly.LoadFile(Path.Combine(exePath, x)).GetTypes())
-              .Where(x => x.GetInterfaces().Contains(typeof(IThemeMeta)))
-              .Select(x => (T)Activator.CreateInstance(x)).ToList();
+            var results = new List<T>();
 
-            return metas;
+            foreach (var file in themeFiles)
+            {
+                Type[] types = Array.Empty<Type>();
+                try
+                {
+                    var assemblyPath = Path.Combine(exePath, file);
+                    if (LoadedAssemblies.ContainsKey(assemblyPath))
+                    {
+                        continue;
+                    }
+                    types = Assembly.LoadFile(assemblyPath).GetTypes();
+                    LoadedAssemblies[assemblyPath] = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                if (types.Any())
+                {
+                    foreach (var type in types.Where(x => x.GetInterfaces().Contains(typeof(T))))
+                    {
+                        results.Add((T)Activator.CreateInstance(type));
+                    }
+                }
+            }
+            return results;
         }
 
     }

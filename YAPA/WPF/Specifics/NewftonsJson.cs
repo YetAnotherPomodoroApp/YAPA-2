@@ -27,7 +27,8 @@ namespace YAPA.WPF.Specifics
             else if (value.GetType() == typeof(T))
             {
                 return (T)value;
-            }else if (typeof(T).IsEnum)
+            }
+            else if (typeof(T).IsEnum)
             {
                 return (T)Enum.ToObject(typeof(T), value);
             }
@@ -65,7 +66,15 @@ namespace YAPA.WPF.Specifics
             else if (valA.GetType().GetInterface(nameof(IEnumerable)) != null)
             {
                 var listA = (IEnumerable)valA;
-                var listB = (IEnumerable)((JObject)valB).ToObject(valA.GetType());
+                IEnumerable listB = null;
+                if (valB is JObject)
+                {
+                    listB = (IEnumerable)((JObject)valB).ToObject(valA.GetType());
+                }
+                else
+                {
+                    listB = (IEnumerable)valB;
+                }
 
 
                 if (Count(listA) != Count(listB))

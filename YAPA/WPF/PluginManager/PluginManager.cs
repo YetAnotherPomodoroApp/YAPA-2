@@ -38,11 +38,8 @@ namespace YAPA.WPF.PluginManager
             }
             settings.EnabledPlugins = enabled;
 
-
             gloabalSettings.Save();
         }
-
-
 
         public IEnumerable<IPluginMeta> Plugins { get; }
 
