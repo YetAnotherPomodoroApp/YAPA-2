@@ -134,12 +134,13 @@ namespace YAPA.WPF
 
         private static IEnumerable<T> GetTypes<T>(params string[] folders)
         {
+            var exePath = AppDomain.CurrentDomain.BaseDirectory;
+
             var themeFiles = folders
+                .Select(x => Path.Combine(exePath, x))
                     .Where(Directory.Exists)
                     .SelectMany(x => Directory.GetFiles(x, "*.dll", SearchOption.AllDirectories))
                     .Distinct();
-
-            var exePath = AppDomain.CurrentDomain.BaseDirectory;
 
             var results = new List<T>();
 
