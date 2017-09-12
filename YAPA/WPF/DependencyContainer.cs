@@ -106,20 +106,7 @@ namespace YAPA.WPF
 
         private static IEnumerable<IPluginMeta> GetPluginMetas()
         {
-            var metas = new List<IPluginMeta>();
-
-            foreach (IPluginMeta meta in from plugin in Assembly.GetExecutingAssembly().GetTypes()
-                                         where plugin.GetInterfaces().Contains(typeof(IPluginMeta))
-                                         select (IPluginMeta)Activator.CreateInstance(plugin))
-            {
-                metas.Add(meta);
-            }
-
-            foreach (var externalPlugin in GetTypes<IPluginMeta>("Plugins"))
-            {
-                metas.Add(externalPlugin);
-            }
-            return metas;
+            return GetTypes<IPluginMeta>("Plugins");
         }
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -144,31 +131,23 @@ namespace YAPA.WPF
 
             var results = new List<T>();
 
-            foreach (var file in themeFiles)
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var loadedPaths = loadedAssemblies.Where(x => !x.IsDynamic).Select(a => Path.GetFileName(a.Location)).ToArray();
+
+            var toLoad = themeFiles.Where(r => !loadedPaths.Contains(Path.GetFileName(r), StringComparer.InvariantCultureIgnoreCase)).ToList();
+            toLoad.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
+
+            foreach (var ass in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.IsDynamic))
             {
-                Type[] types = Array.Empty<Type>();
-                try
+                foreach (var t in ass.GetExportedTypes())
                 {
-                    var assemblyPath = Path.Combine(exePath, file);
-                    if (LoadedAssemblies.ContainsKey(assemblyPath))
+                    if (t.GetInterfaces().Contains(typeof(T)))
                     {
-                        continue;
-                    }
-                    types = Assembly.LoadFile(assemblyPath).GetTypes();
-                    LoadedAssemblies[assemblyPath] = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-                if (types.Any())
-                {
-                    foreach (var type in types.Where(x => x.GetInterfaces().Contains(typeof(T))))
-                    {
-                        results.Add((T)Activator.CreateInstance(type));
+                        results.Add((T)Activator.CreateInstance(t));
                     }
                 }
             }
+
             return results;
         }
 
