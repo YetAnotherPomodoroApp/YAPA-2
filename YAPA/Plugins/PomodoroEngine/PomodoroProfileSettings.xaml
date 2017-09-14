@@ -47,8 +47,7 @@
                          Grid.Column="1" Grid.Row="1"  MinWidth="72"
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                            IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
+                          IsEditable="True">
                     <ComboBox.Text>
                         <Binding Path="Settings.WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         </Binding>
@@ -65,8 +64,7 @@
                          Grid.Column="1" Grid.Row="2"  MinWidth="72"
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                      IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
+                          IsEditable="True">
                     <ComboBox.Text>
                         <Binding Path="Settings.BreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         </Binding>
@@ -83,8 +81,7 @@
                          Grid.Column="1" Grid.Row="3"  MinWidth="72"
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
-                          IsEditable="True"
-                        IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}">
+                          IsEditable="True">
                     <ComboBox.Text>
                         <Binding Path="Settings.LongBreakTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                         </Binding>
