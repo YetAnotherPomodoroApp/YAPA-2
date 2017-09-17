@@ -111,7 +111,12 @@ namespace YAPA.WPF
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return Assembly.LoadFile(args.RequestingAssembly.Location);
+            var location = args?.RequestingAssembly?.Location;
+            if (string.IsNullOrEmpty(location))
+            {
+                return null;
+            }
+            return Assembly.LoadFile(location);
         }
 
         private static IEnumerable<IThemeMeta> GetThemeMetas()
@@ -123,7 +128,7 @@ namespace YAPA.WPF
         {
             var exePath = AppDomain.CurrentDomain.BaseDirectory;
 
-            var themeFiles = folders
+            var assembliesInDirectory = folders
                 .Select(x => Path.Combine(exePath, x))
                     .Where(Directory.Exists)
                     .SelectMany(x => Directory.GetFiles(x, "*.dll", SearchOption.AllDirectories))
@@ -132,14 +137,14 @@ namespace YAPA.WPF
             var results = new List<T>();
 
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
-            var loadedPaths = loadedAssemblies.Where(x => !x.IsDynamic).Select(a => Path.GetFileName(a.Location)).ToArray();
+            var loadedAssemblyPaths = loadedAssemblies.Where(x => !x.IsDynamic).Select(a => Path.GetFileName(a.Location)).ToArray();
 
-            var toLoad = themeFiles.Where(r => !loadedPaths.Contains(Path.GetFileName(r), StringComparer.InvariantCultureIgnoreCase)).ToList();
-            toLoad.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
+            var assembliesToLoad = assembliesInDirectory.Where(r => !loadedAssemblyPaths.Contains(Path.GetFileName(r), StringComparer.InvariantCultureIgnoreCase)).ToList();
+            assembliesToLoad.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
 
-            foreach (var ass in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.IsDynamic))
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.IsDynamic))
             {
-                foreach (var t in ass.GetExportedTypes())
+                foreach (var t in assembly.GetExportedTypes())
                 {
                     if (t.GetInterfaces().Contains(typeof(T)))
                     {
