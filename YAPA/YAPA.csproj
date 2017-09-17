@@ -107,8 +107,7 @@
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\squirrel.windows.1.5.2\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\squirrel.windows.1.6.0\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -229,8 +228,7 @@
       <HintPath>..\packages\NLog.4.4.10\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NuGet.Squirrel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\squirrel.windows.1.5.2\lib\Net45\NuGet.Squirrel.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\squirrel.windows.1.6.0\lib\Net45\NuGet.Squirrel.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
@@ -240,9 +238,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
     </Reference>
-    <Reference Include="Squirrel, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\squirrel.windows.1.5.28\lib\Net45\Squirrel.dll</HintPath>
+    <Reference Include="Squirrel, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\squirrel.windows.1.6.0\lib\Net45\Squirrel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -522,7 +519,9 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
