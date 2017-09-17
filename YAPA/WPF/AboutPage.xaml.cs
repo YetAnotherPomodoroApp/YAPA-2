@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Navigation;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF
@@ -82,5 +83,12 @@ namespace YAPA.WPF
                 MessageBox.Show(ex.Message, "Error while importing", MessageBoxButton.OK);
             }
         }
+
+        private void OnNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.AbsoluteUri);
+            e.Handled = true;
+        }
+
     }
 }
