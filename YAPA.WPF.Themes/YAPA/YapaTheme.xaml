@@ -253,6 +253,36 @@
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+                    <Button x:Name="Skip"
+                            Command="{Binding ViewModel.StopCommand}"
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Top" 
+                            Cursor="Hand"
+                            Content="SKIP"
+                            ToolTip="Skip break"
+                            Height="15"
+                            Width="38">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}"
+                                           VerticalAlignment="Center"
+                                           x:Name="PauseTextBlock"
+                                           TextAlignment="Center"
+                                           Foreground="{Binding TextBrush}"
+                                           FontSize="11" 
+                                           Opacity="{Binding ClockOpacity}"
+                                           FontFamily="Segoe UI"
+                                           FontStretch="Normal"
+                                />
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="PauseTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
                     <Button x:Name="Start"
                 Command="{Binding ViewModel.StartCommand}"
                 HorizontalAlignment="Right" 
@@ -311,7 +341,6 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-
                     <Button x:Name="Stop"
                 Command="{Binding ViewModel.StopCommand}"
                 HorizontalAlignment="Right" 

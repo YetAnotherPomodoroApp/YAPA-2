@@ -250,30 +250,36 @@ namespace YAPA
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
+                    Skip.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.WorkEnded:
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
+                    Skip.Visibility = Visibility.Visible;
                     break;
                 case PomodoroPhase.BreakEnded:
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Collapsed;
                     Pause.Visibility = Visibility.Collapsed;
+                    Skip.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Work:
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Visible;
+                    Skip.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Break:
                     Start.Visibility = Visibility.Collapsed;
                     Stop.Visibility = Visibility.Visible;
+                    Skip.Visibility = Visibility.Collapsed;
                     break;
                 case PomodoroPhase.Pause:
                     Start.Visibility = Visibility.Visible;
                     Stop.Visibility = Visibility.Visible;
                     Pause.Visibility = Visibility.Collapsed;
+                    Skip.Visibility = Visibility.Collapsed;
                     break;
             }
         }

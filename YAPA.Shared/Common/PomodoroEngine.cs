@@ -23,7 +23,6 @@ namespace YAPA.Shared.Common
         private readonly ITimer _timer;
         private readonly IDate _dateTime;
         private readonly IThreading _threading;
-        private readonly IPomodoroRepository _repository;
 
         public int Index => Current.Index;
 
@@ -152,7 +151,7 @@ namespace YAPA.Shared.Common
 
         public void Stop()
         {
-            ResetTo(Phase == PomodoroPhase.Break ? Current.NextPomodoro : Current);
+            ResetTo(Phase == PomodoroPhase.Break || Phase == PomodoroPhase.WorkEnded ? Current.NextPomodoro : Current);
 
             OnStopped?.Invoke();
         }
@@ -194,15 +193,12 @@ namespace YAPA.Shared.Common
                 Current = pom;
             }
 
-            NotifyPropertyChanged(nameof(Elapsed));
-            NotifyPropertyChanged(nameof(Remaining));
-            NotifyPropertyChanged(nameof(DisplayValue));
+            EverythingChanged();
         }
 
         private readonly Pomodoro _pom1;
 
         private Pomodoro _current;
-        private ISettings _globalSettings;
 
         private Pomodoro Current
         {
@@ -226,8 +222,6 @@ namespace YAPA.Shared.Common
             _timer = timer;
             _dateTime = dateTime;
             _threading = threading;
-            _repository = repository;
-            _globalSettings = globalSettings;
             _timer.Tick += _timer_Tick;
 
             var pom4 = new Pomodoro(_settings) { Index = 4 };
@@ -242,11 +236,11 @@ namespace YAPA.Shared.Common
 
             Current = _pom1;
 
-            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
             var todayStart = DateTime.UtcNow.Date;
             var todayEnd = DateTime.UtcNow.Date.AddDays(1).AddSeconds(-1);
-            _completedTodayBeforeStarting = _repository.Pomodoros.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd);
+            _completedTodayBeforeStarting = repository.Pomodoros.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd);
         }
 
         private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -358,6 +352,11 @@ namespace YAPA.Shared.Common
 
             Phase = snapshot.Phase;
 
+            EverythingChanged();
+        }
+
+        private void EverythingChanged()
+        {
             NotifyPropertyChanged(nameof(Phase));
             NotifyPropertyChanged(nameof(Counter));
             NotifyPropertyChanged(nameof(IsRunning));
@@ -385,19 +384,21 @@ namespace YAPA.Shared.Common
     {
         private readonly ISettingsForComponent _settings;
 
-        private static Dictionary<string, PomodoroProfile> DefaultProfile;
+        private static readonly Dictionary<string, PomodoroProfile> DefaultProfile;
         private static string DefaultProfileName = "Pomodoro";
 
         static PomodoroEngineSettings()
         {
-            DefaultProfile = new Dictionary<string, PomodoroProfile>();
-            DefaultProfile[DefaultProfileName] = new PomodoroProfile
+            DefaultProfile = new Dictionary<string, PomodoroProfile>
             {
-                AutoStartBreak = false,
-                BreakTime = 5 * 60,
-                LongBreakTime = 15 * 60,
-                WorkTime = 25 * 60,
-                PomodorosBeforeLongBreak = 4
+                [DefaultProfileName] = new PomodoroProfile
+                {
+                    AutoStartBreak = false,
+                    BreakTime = 5 * 60,
+                    LongBreakTime = 15 * 60,
+                    WorkTime = 25 * 60,
+                    PomodorosBeforeLongBreak = 4
+                }
             };
         }
 

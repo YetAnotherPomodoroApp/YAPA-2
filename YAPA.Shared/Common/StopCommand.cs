@@ -23,7 +23,7 @@ namespace YAPA.Shared.Common
 
         public bool CanExecute(object parameter)
         {
-            return _engine.Phase == PomodoroPhase.Work || _engine.Phase == PomodoroPhase.Break || _engine.Phase == PomodoroPhase.Pause;
+            return _engine.Phase == PomodoroPhase.Work || _engine.Phase == PomodoroPhase.Break || _engine.Phase == PomodoroPhase.Pause || _engine.Phase == PomodoroPhase.WorkEnded;
         }
 
         public void Execute(object parameter)
