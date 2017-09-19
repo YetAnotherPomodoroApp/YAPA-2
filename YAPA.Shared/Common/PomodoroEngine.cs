@@ -238,9 +238,9 @@ namespace YAPA.Shared.Common
 
             globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
 
-            var todayStart = DateTime.UtcNow.Date;
-            var todayEnd = DateTime.UtcNow.Date.AddDays(1).AddSeconds(-1);
-            _completedTodayBeforeStarting = repository.Pomodoros.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd);
+            var todayStart = _dateTime.DateTimeUtc().Date;
+            var todayEnd = _dateTime.DateTimeUtc().Date.AddDays(1).AddSeconds(-1);
+            _completedTodayBeforeStarting = repository?.Pomodoros?.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd) ?? 0;
         }
 
         private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
