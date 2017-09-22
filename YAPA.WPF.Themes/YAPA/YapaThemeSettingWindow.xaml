@@ -19,6 +19,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <CheckBox  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Use white text</CheckBox>
@@ -34,6 +35,7 @@
 
             <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
             <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
+            <CheckBox  IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6">Hide seconds</CheckBox>
 
         </Grid>
     </Grid>

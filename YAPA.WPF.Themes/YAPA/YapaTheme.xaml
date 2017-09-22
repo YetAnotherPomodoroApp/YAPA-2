@@ -119,7 +119,8 @@
                Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
                HorizontalAlignment="Right" 
-               VerticalAlignment="Center"                       
+               VerticalAlignment="Center"                  
+               Visibility="{Binding SecondsVisible}"
                FontStretch="UltraCondensed"
                                Text=":"
                >
@@ -141,7 +142,8 @@
                Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
                HorizontalAlignment="Right" 
-               VerticalAlignment="Center"                       
+               VerticalAlignment="Center"         
+                               Visibility="{Binding SecondsVisible}"
                FontStretch="UltraCondensed"
                                Text="0"
                >
@@ -163,6 +165,7 @@
                Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
                HorizontalAlignment="Right" 
+                               Visibility="{Binding SecondsVisible}"
                VerticalAlignment="Center"                       
                FontStretch="UltraCondensed"
                                Text="0"

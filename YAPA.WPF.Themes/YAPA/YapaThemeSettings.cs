@@ -61,6 +61,13 @@ namespace YAPA.WPF.Themes.YAPA
             set { _settings.Update(nameof(ShowStatusText), value); }
         }
 
+        public bool HideSeconds
+        {
+            get { return _settings.Get(nameof(HideSeconds), false); }
+            set { _settings.Update(nameof(HideSeconds), value); }
+        }
+
+
         public YapaThemeSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(YapaTheme));

@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -77,6 +78,37 @@ namespace YAPA
             {
                 UpdateDisplayedTime();
             }
+        }
+
+        private void HideSeconds()
+        {
+            CurrentTime.ColumnDefinitions.Clear();
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+
+            SecondsVisible = Visibility.Collapsed;
+            RaisePropertyChanged(nameof(SecondsVisible));
+        }
+
+        private void ShowSeconds()
+        {
+            CurrentTime.ColumnDefinitions.Clear();
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+
+            SecondsVisible = Visibility.Visible;
+            RaisePropertyChanged(nameof(SecondsVisible));
+        }
+
+
+        private Visibility _secondsVisibility = Visibility.Visible;
+        public Visibility SecondsVisible
+        {
+            get => _secondsVisibility;
+            set => _secondsVisibility = value;
         }
 
         public double ClockOpacity => Settings.ClockOpacity;
@@ -173,13 +205,26 @@ namespace YAPA
                 {
                     UpdateStatusText();
                 }
+
+                if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.HideSeconds)}"))
+                {
+                    if (Settings.HideSeconds)
+                    {
+                        HideSeconds();
+                    }
+                    else
+                    {
+                        ShowSeconds();
+                    }
+                }
+
             }
         }
 
         private void UpdateAppSize()
         {
-            this.Width = Settings.Width;
-            this.Height = Settings.Width * _sizeRatio;
+            Width = Settings.Width;
+            Height = Settings.Width * _sizeRatio;
         }
 
         private void Engine_PropertyChanged(object sender, PropertyChangedEventArgs e)
