@@ -45,7 +45,7 @@ namespace YAPA.Plugins.MinimizeToTray
             {
                 Text = @"YAPA 2",
                 Icon = new Icon(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\pomoTray.ico"), 40, 40),
-                Visible = false
+                Visible = SystemTrayVisible()
             };
 
             _sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
@@ -54,6 +54,11 @@ namespace YAPA.Plugins.MinimizeToTray
 
             _sysTrayIcon.ContextMenu = new ContextMenu(CreateNotifyIconContextMenu());
             _sysTrayIcon.ContextMenu.Popup += ContextMenu_Popup;
+        }
+
+        private bool SystemTrayVisible()
+        {
+            return _settings.ShowInTaskbar == false || (_settings.MinimizeToTray && _app.AppState == ApplicationState.Minimized);
         }
 
         private void ContextMenu_Popup(object sender, EventArgs e)
@@ -67,6 +72,11 @@ namespace YAPA.Plugins.MinimizeToTray
             if (e.PropertyName == $"{nameof(SystemTray)}.{nameof(_settings.ShowInTaskbar)}")
             {
                 _app.ShowInTaskbar = _settings.ShowInTaskbar;
+            }
+
+            if (e.PropertyName.StartsWith($"{nameof(SystemTray)}"))
+            {
+                _sysTrayIcon.Visible = SystemTrayVisible();
             }
         }
 
@@ -201,7 +211,6 @@ namespace YAPA.Plugins.MinimizeToTray
 
         private void _app_StateChanged(ApplicationState state)
         {
-
             if (state == ApplicationState.Minimized && (_settings.MinimizeToTray || _settings.ShowInTaskbar == false))
             {
                 _app.Hide();
@@ -218,7 +227,6 @@ namespace YAPA.Plugins.MinimizeToTray
         {
             _app.Show();
             _app.AppState = ApplicationState.Normal;
-            _sysTrayIcon.Visible = false;
         }
 
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
