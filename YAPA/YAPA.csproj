@@ -592,6 +592,10 @@
       <Project>{3c26fd01-08d3-4192-bbb3-778d9d7692d4}</Project>
       <Name>YAPA.WPF.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\YAPA.WPF.Themes\YAPA.WPF.Themes.csproj">
+      <Project>{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}</Project>
+      <Name>YAPA.WPF.Themes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

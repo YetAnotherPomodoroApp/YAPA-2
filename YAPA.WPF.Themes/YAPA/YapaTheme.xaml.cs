@@ -329,45 +329,54 @@ namespace YAPA
             }
         }
 
-        public Brush TextBrush => Settings.UseWhiteText ? Brushes.LightGray : Brushes.Black;
+        public Brush TextBrush
+        {
+            get
+            {
+                Color color;
+                switch (Settings.ThemeColors)
+                {
+                    case ThemeColors.White:
+                        color = Colors.White;
+                        break;
+                    case ThemeColors.Black:
+                        color = Colors.Black;
+                        break;
+                    case ThemeColors.Custom:
+                        color = Settings.TextColor;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                return new SolidColorBrush(color);
+            }
+        }
+        //Settings.UseWhiteText ? Brushes.LightGray : Brushes.Black;
 
         public Color TextShadowColor
         {
             get
             {
-                var shadowColor = Colors.White;
-
-                if (TextBrush.ToString() == Brushes.LightGray.ToString())
+                Color color;
+                switch (Settings.ThemeColors)
                 {
-                    shadowColor = Colors.Black;
+                    case ThemeColors.White:
+                        color = Colors.Black;
+                        break;
+                    case ThemeColors.Black:
+                        color = Colors.White;
+                        break;
+                    case ThemeColors.Custom:
+                        color = Settings.ShadowColor;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                else
-                {
-                    shadowColor = Colors.White;
-                }
-
-                return shadowColor;
+                return color;
             }
         }
 
-        public Brush MouseOverBackgroundColor
-        {
-            get
-            {
-                var mouseOverBackgroundColor = Brushes.White;
-
-                if (TextBrush.ToString() == Brushes.LightGray.ToString())
-                {
-                    mouseOverBackgroundColor = Brushes.Black;
-                }
-                else
-                {
-                    mouseOverBackgroundColor = Brushes.White;
-                }
-
-                return mouseOverBackgroundColor;
-            }
-        }
+        public Brush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor);
 
         public double ProgressValue
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF.Themes.YAPA
@@ -15,58 +16,78 @@ namespace YAPA.WPF.Themes.YAPA
         public Type SettingEditWindow => typeof(YapaThemeSettingWindow);
     }
 
+    public enum ThemeColors
+    {
+        White,
+        Black,
+        Custom
+    }
+
     public class YapaThemeSettings : IPluginSettings
     {
         private readonly ISettingsForComponent _settings;
 
         public int Width
         {
-            get { return _settings.Get(nameof(Width), 200); }
-            set { _settings.Update(nameof(Width), value); }
+            get => _settings.Get(nameof(Width), 200);
+            set => _settings.Update(nameof(Width), value);
         }
 
         public double ClockOpacity
         {
-            get { return _settings.Get(nameof(ClockOpacity), 0.6); }
-            set { _settings.Update(nameof(ClockOpacity), value); }
+            get => _settings.Get(nameof(ClockOpacity), 0.6);
+            set => _settings.Update(nameof(ClockOpacity), value);
         }
 
         public double ShadowOpacity
         {
-            get { return _settings.Get(nameof(ShadowOpacity), 0.6); }
-            set { _settings.Update(nameof(ShadowOpacity), value); }
+            get => _settings.Get(nameof(ShadowOpacity), 0.6);
+            set => _settings.Update(nameof(ShadowOpacity), value);
         }
 
-        public bool UseWhiteText
+        public ThemeColors ThemeColors
         {
-            get { return _settings.Get(nameof(UseWhiteText), false); }
-            set { _settings.Update(nameof(UseWhiteText), value); }
+            get => _settings.Get(nameof(ThemeColors), ThemeColors.White);
+            set => _settings.Update(nameof(ThemeColors), value);
         }
 
-        public string TextBrush
+        public Color TextColor
         {
-            get { return _settings.Get(nameof(TextBrush), "White"); }
-            set { _settings.Update(nameof(TextBrush), value); }
+            get
+            {
+                var color = _settings.Get(nameof(TextColor), "White");
+                return (Color)(ColorConverter.ConvertFromString(color) ?? Colors.White);
+            }
+            set => _settings.Update(nameof(TextColor), value.ToString());
+        }
+
+        public Color ShadowColor
+        {
+            get
+            {
+                var color = _settings.Get(nameof(ShadowColor), "Black");
+                return (Color)(ColorConverter.ConvertFromString(color) ?? Colors.Black);
+            }
+            set => _settings.Update(nameof(ShadowColor), value.ToString());
         }
 
         public bool DisableFlashingAnimation
         {
-            get { return _settings.Get(nameof(DisableFlashingAnimation), false); }
-            set { _settings.Update(nameof(DisableFlashingAnimation), value); }
+            get => _settings.Get(nameof(DisableFlashingAnimation), false);
+            set => _settings.Update(nameof(DisableFlashingAnimation), value);
         }
 
         public bool ShowStatusText
         {
-            get { return _settings.Get(nameof(ShowStatusText), true); }
-            set { _settings.Update(nameof(ShowStatusText), value); }
+            get => _settings.Get(nameof(ShowStatusText), true);
+            set => _settings.Update(nameof(ShowStatusText), value);
         }
 
         public bool HideSeconds
         {
-            get { return _settings.Get(nameof(HideSeconds), false); }
-            set { _settings.Update(nameof(HideSeconds), value); }
+            get => _settings.Get(nameof(HideSeconds), false);
+            set => _settings.Update(nameof(HideSeconds), value);
         }
-
 
         public YapaThemeSettings(ISettings settings)
         {
