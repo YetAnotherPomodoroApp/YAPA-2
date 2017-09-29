@@ -86,20 +86,20 @@ namespace YAPA.Plugins.SoundSettings.SoundNotifications
 
         public string PeriodStartSound
         {
-            get { return _settings.Get(nameof(PeriodStartSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav")); }
-            set { _settings.Update(nameof(PeriodStartSound), value); }
+            get => _settings.Get(nameof(PeriodStartSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\tick.wav"));
+            set => _settings.Update(nameof(PeriodStartSound), value);
         }
 
         public string PeriodEndSound
         {
-            get { return _settings.Get(nameof(PeriodEndSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav")); }
-            set { _settings.Update(nameof(PeriodEndSound), value); }
+            get => _settings.Get(nameof(PeriodEndSound), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\ding.wav"));
+            set => _settings.Update(nameof(PeriodEndSound), value);
         }
 
         public bool PlayPeriodStartEndSounds
         {
-            get { return _settings.Get(nameof(PlayPeriodStartEndSounds), true); }
-            set { _settings.Update(nameof(PlayPeriodStartEndSounds), value); }
+            get => _settings.Get(nameof(PlayPeriodStartEndSounds), true);
+            set => _settings.Update(nameof(PlayPeriodStartEndSounds), value);
         }
 
         public SoundNotificationsSettings(ISettings settings)

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF
 {
-    public partial class AboutPage : UserControl
+    public partial class AboutPage
     {
         private readonly IPomodoroRepository _pomodoroRepository;
 

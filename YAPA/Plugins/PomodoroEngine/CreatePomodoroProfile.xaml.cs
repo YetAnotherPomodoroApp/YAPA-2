@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace YAPA.Plugins.PomodoroEngine
 {
-    public partial class CreatePomodoroProfile : Window
+    public partial class CreatePomodoroProfile
     {
         public CreatePomodoroProfile(List<string> invalidNames)
         {

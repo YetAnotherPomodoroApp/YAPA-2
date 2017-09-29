@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace YAPA.Plugins.SoundSettings.SoundNotifications
+﻿namespace YAPA.Plugins.SoundSettings.SoundNotifications
 {
-    public partial class SoundNotificationSettingWindow : UserControl
+    public partial class SoundNotificationSettingWindow
     {
         public SoundNotificationSettingWindow(SoundNotificationsSettings settings)
         {
@@ -11,6 +9,5 @@ namespace YAPA.Plugins.SoundSettings.SoundNotifications
 
             DataContext = settings;
         }
-
     }
 }

@@ -16,9 +16,7 @@ namespace YAPA.Plugins.PomodoroEngine
         public PomodoroEngineSettings Settings { get; }
         public IPomodoroEngine Engine { get; }
 
-        private ISettings GlobalSetting { get; }
-
-        public PomodoroProfileSettings(PomodoroEngineSettings settings, IPomodoroEngine engine, ISettings globalSetting)
+        public PomodoroProfileSettings(PomodoroEngineSettings settings, IPomodoroEngine engine)
         {
             settings.DeferChanges();
 
@@ -33,11 +31,16 @@ namespace YAPA.Plugins.PomodoroEngine
 
             Engine.PropertyChanged += Engine_PropertyChanged;
 
-            GlobalSetting = globalSetting;
+            Unloaded += PomodoroProfileSettings_Unloaded;
             DataContext = this;
             ActiveProfileSelect.ItemsSource = Profiles;
             ActiveProfileSelect.SelectionChanged += ActiveProfile_SelectectionChanged;
             RefreshProfilesList();
+        }
+
+        private void PomodoroProfileSettings_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Engine.PropertyChanged -= Engine_PropertyChanged;
         }
 
         private void Engine_PropertyChanged(object sender, PropertyChangedEventArgs e)

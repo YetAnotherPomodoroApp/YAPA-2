@@ -20,9 +20,9 @@ namespace YAPA.WPF.ThemeManager
 
     public class ThemeManager : IThemeManager
     {
-        public IEnumerable<IThemeMeta> Themes { get; private set; }
+        public IEnumerable<IThemeMeta> Themes { get; }
 
-        public IThemeMeta ActiveTheme { get; private set; }
+        public IThemeMeta ActiveTheme { get; }
 
         private IThemeMeta GetActiveTheme()
         {
@@ -86,8 +86,8 @@ namespace YAPA.WPF.ThemeManager
 
         public string SelectedTheme
         {
-            get { return _settings.Get<string>(nameof(SelectedTheme), "YAPA 1.0"); }
-            set { _settings.Update(nameof(SelectedTheme), value); }
+            get => _settings.Get(nameof(SelectedTheme), "YAPA 1.0");
+            set => _settings.Update(nameof(SelectedTheme), value);
         }
 
         public ThemeManagerSettings(ISettings settings)

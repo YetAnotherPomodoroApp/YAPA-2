@@ -1,12 +1,8 @@
-﻿using System.Windows.Controls;
-using SoundNotificationSettingWindow = YAPA.Plugins.SoundSettings.SoundNotifications.SoundNotificationSettingWindow;
+﻿using YAPA.Plugins.SoundSettings.SoundNotifications;
 
 namespace YAPA.Plugins.SoundSettings
 {
-    /// <summary>
-    /// Interaction logic for SoundSettingWindow.xaml
-    /// </summary>
-    public partial class SoundSettingWindow : UserControl
+    public partial class SoundSettingWindow
     {
         public SoundSettingWindow(SoundNotificationSettingWindow soundNotification, MusicPlayer.MusicPlayerPluginSettingWindow musicPlayer)
         {

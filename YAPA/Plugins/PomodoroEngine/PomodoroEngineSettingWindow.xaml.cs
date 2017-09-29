@@ -53,9 +53,7 @@ namespace YAPA.Plugins.PomodoroEngine
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int seconds;
-
-            if (!int.TryParse(value?.ToString(), out seconds))
+            if (!int.TryParse(value?.ToString(), out var seconds))
             {
                 seconds = 1;
             }
@@ -68,12 +66,12 @@ namespace YAPA.Plugins.PomodoroEngine
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !(bool)value;
+            return value != null && !(bool)value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !(bool)value;
+            return value != null && !(bool)value;
         }
     }
 

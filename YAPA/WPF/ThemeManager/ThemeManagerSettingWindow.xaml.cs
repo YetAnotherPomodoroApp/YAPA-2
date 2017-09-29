@@ -3,26 +3,26 @@ using YAPA.Shared.Contracts;
 
 namespace YAPA.WPF.ThemeManager
 {
-    public partial class ThemeManagerSettingWindow : UserControl
+    public partial class ThemeManagerSettingWindow
     {
-        private readonly IThemeManager _themes;
         private readonly ThemeManagerSettings _settings;
         private readonly ISettingManager _manager;
         private readonly ISettings _globalSettings;
 
-        public ThemeManagerSettingWindow(IThemeManager themes, ThemeManagerSettings settings, ISettingManager manager, ISettings globalSettings)
+        public ThemeManagerSettingWindow(IThemeManager themeManager, ThemeManagerSettings settings, ISettingManager manager, ISettings globalSettings)
         {
-            _themes = themes;
+            var themes = themeManager;
             _settings = settings;
             _manager = manager;
             _globalSettings = globalSettings;
 
-            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+            _globalSettings.PropertyChanged += GlobalSettings_PropertyChanged;
 
             _settings.DeferChanges();
 
             InitializeComponent();
-            foreach (var themeMeta in _themes.Themes)
+
+            foreach (var themeMeta in themes.Themes)
             {
                 var selectedTheme = settings.SelectedTheme == themeMeta.Title;
                 var cb = new ComboBoxItem
@@ -34,16 +34,23 @@ namespace YAPA.WPF.ThemeManager
                 ThemeList.Items.Add(cb);
             }
 
-            if (_themes.ActiveTheme.SettingEditWindow != null)
+            if (themes.ActiveTheme.SettingEditWindow != null)
             {
                 SettingPage.Children.Clear();
-                SettingPage.Children.Add((UserControl)_themes.ResolveSettingWindow(_themes.ActiveTheme));
+                SettingPage.Children.Add((UserControl)themes.ResolveSettingWindow(themes.ActiveTheme));
             }
 
             ThemeList.SelectionChanged += ThemeList_SelectionChanged;
+
+            Unloaded += ThemeManagerSettingWindow_Unloaded;
         }
 
-        private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ThemeManagerSettingWindow_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _globalSettings.PropertyChanged -= GlobalSettings_PropertyChanged;
+        }
+
+        private void GlobalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == $"{nameof(ThemeManager)}.{nameof(_settings.SelectedTheme)}")
             {
@@ -55,5 +62,6 @@ namespace YAPA.WPF.ThemeManager
         {
             _settings.SelectedTheme = (string)((ComboBoxItem)ThemeList.SelectedItem).Content;
         }
+
     }
 }

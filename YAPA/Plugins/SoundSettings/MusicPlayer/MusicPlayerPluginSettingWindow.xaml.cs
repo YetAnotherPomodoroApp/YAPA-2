@@ -4,10 +4,7 @@ using System.Windows.Input;
 
 namespace YAPA.Plugins.SoundSettings.MusicPlayer
 {
-    /// <summary>
-    /// Interaction logic for MusicPlayerSettingWindow.xaml
-    /// </summary>
-    public partial class MusicPlayerPluginSettingWindow : UserControl
+    public partial class MusicPlayerPluginSettingWindow
     {
         public MusicPlayerPluginSettingWindow(MusicPlayerPluginSettings settings)
         {

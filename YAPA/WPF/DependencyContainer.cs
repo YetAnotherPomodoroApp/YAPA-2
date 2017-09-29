@@ -18,13 +18,13 @@ namespace YAPA.WPF
 {
     public class DependencyContainer
     {
-        public IContainer Container { get; private set; }
-        public IPluginManager PluginManager { get; private set; }
-        public IThemeManager ThemeManager { get; private set; }
-        public Dashboard Dashboard { get; private set; }
-        public Window MainWindow { get; private set; }
+        public IContainer Container { get; }
+        public IPluginManager PluginManager { get; }
+        public IThemeManager ThemeManager { get; }
+        public Dashboard Dashboard { get; }
+        public Window MainWindow { get; }
 
-        private static Dictionary<string, bool> LoadedAssemblies = new Dictionary<string, bool>();
+        public static Dictionary<string, bool> LoadedAssemblies { get; } = new Dictionary<string, bool>();
 
         public DependencyContainer()
         {
@@ -76,7 +76,7 @@ namespace YAPA.WPF
             //builder.RegisterType(typeof(ThemeManagerSettingWindow));
 
             builder.RegisterType(typeof(PluginManagerSettings));
-            builder.RegisterType(typeof(PluginManager.PluginManagerSettingWindow));
+            builder.RegisterType(typeof(PluginManagerSettingWindow));
 
             builder.RegisterType(typeof(AboutPage));
 
