@@ -486,6 +486,12 @@ namespace YAPA.Shared.Common
             set => _settings.Update(nameof(Counter), value);
         }
 
+        public string ReleaseNotes
+        {
+            get => _settings.Get(nameof(ReleaseNotes), string.Empty);
+            set => _settings.Update(nameof(ReleaseNotes), value);
+        }
+
         public PomodoroEngineSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(PomodoroEngine));

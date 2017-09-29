@@ -236,6 +236,9 @@
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SimpleFeedReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleFeedReader.1.0.7\lib\net40-client\SimpleFeedReader.dll</HintPath>
+    </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
@@ -332,6 +335,7 @@
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.3.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
       <Private>True</Private>
@@ -413,6 +417,10 @@
     </Compile>
     <Compile Include="WPF\DependencyContainer.cs" />
     <Compile Include="WPF\InternalPluginAttribute.cs" />
+    <Compile Include="WPF\ReleaseNotesWindow.xaml.cs">
+      <DependentUpon>ReleaseNotesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\RssFeedNormalizer.cs" />
     <Compile Include="WPF\Specifics\DependencyInjector.cs" />
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayer.cs" />
     <Compile Include="WPF\Specifics\NewftonsJson.cs" />
@@ -491,6 +499,10 @@
     <Page Include="WPF\PluginManager\PluginManagerSettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\ReleaseNotesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\SettingsMananger\Settings.xaml">
       <Generator>MSBuild:Compile</Generator>

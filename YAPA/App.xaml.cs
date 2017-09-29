@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using NLog;
+using SimpleFeedReader;
 using Squirrel;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
@@ -41,7 +43,7 @@ namespace YAPA
 #if !DEBUG
                 Task.Run(async () =>
                 {
-                    await Update(Container.Resolve<ISettingManager>(),Container.Resolve<IEnvironment>());
+                    await Update(Container.Resolve<ISettingManager>(), Container.Resolve<IEnvironment>(), Container.Resolve<PomodoroEngineSettings>());
                 });
 #endif
 
@@ -75,6 +77,15 @@ namespace YAPA
         private static void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSnapshot();
+
+            var settings = Container.Resolve<PomodoroEngineSettings>();
+            if (!string.IsNullOrEmpty(settings.ReleaseNotes))
+            {
+                var parent = (Window)sender;
+                var releaseNoteWindow = new ReleaseNotesWindow(settings.ReleaseNotes) { Owner = parent };
+                releaseNoteWindow.ShowDialog();
+                settings.ReleaseNotes = null;
+            }
         }
 
         private static void LoadSnapshot()
@@ -93,10 +104,10 @@ namespace YAPA
 
             var snapshotJson = File.ReadAllText(file);
             var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
-            
+
             var remainingTime = TimeSpan.FromSeconds(snapshot.PomodoroProfile.WorkTime - snapshot.PausedTime);
-            if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause) 
-                && MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?","Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause)
+                && MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?", "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 snapshot.StartDate = date.DateTimeUtc();
                 engine.LoadSnapshot(snapshot);
@@ -123,7 +134,7 @@ namespace YAPA
             Current.Shutdown();
         }
 
-        private static async Task Update(ISettingManager settings, IEnvironment environment)
+        private static async Task Update(ISettingManager settings, IEnvironment environment, PomodoroEngineSettings engineSettings)
         {
             try
             {
@@ -139,6 +150,7 @@ namespace YAPA
                     {
                         settings.RestartNeeded = true;
                         settings.NewVersion = update.Version.ToString();
+                        engineSettings.ReleaseNotes = GetReleaseNotesFor(settings.NewVersion);
                     }
                 }
             }
@@ -146,6 +158,14 @@ namespace YAPA
             {
                 //Ignore
             }
+        }
+
+        private static string GetReleaseNotesFor(string newVersion)
+        {
+            var reader = new FeedReader(new RssFeedNormalizer());
+            var releases = reader.RetrieveFeed("https://github.com/YetAnotherPomodoroApp/YAPA-2/releases.atom");
+            var release = releases.First(x => x.Title.Contains(newVersion));
+            return release?.Content;
         }
 
         public void Init()

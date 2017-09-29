@@ -1,0 +1,18 @@
+﻿<Window x:Class="YAPA.WPF.ReleaseNotesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Release notes" Height="300" Width="300"
+        WindowStartupLocation="CenterOwner"
+        Topmost="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WebBrowser Grid.Row="0" x:Name="Browser"></WebBrowser>
+        <Button Content="Close" x:Name="CloseButon" Grid.Row="1" Click="CloseButon_OnClick"></Button>
+    </Grid>
+</Window>
