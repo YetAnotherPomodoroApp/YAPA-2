@@ -307,7 +307,7 @@ namespace YAPA.Shared.Common
             var snapshot = new PomodoroEngineSnapshot
             {
                 PomodoroProfile = _settings.Profiles[_settings.ActiveProfile],
-                ProfileName= _settings.ActiveProfile,
+                ProfileName = _settings.ActiveProfile,
                 PausedTime = Elapsed,
                 Phase = Phase,
                 StartDate = _dateTime.DateTimeUtc(),
@@ -336,7 +336,7 @@ namespace YAPA.Shared.Common
                 var currentProfiles = _settings.Profiles;
                 currentProfiles[snapshot.ProfileName] = snapshot.PomodoroProfile;
 
-                _settings.Profiles= currentProfiles;
+                _settings.Profiles = currentProfiles;
                 _settings.ActiveProfile = snapshot.ProfileName;
             }
 
@@ -488,8 +488,8 @@ namespace YAPA.Shared.Common
 
         public string ReleaseNotes
         {
-            get => _settings.Get(nameof(ReleaseNotes), string.Empty);
-            set => _settings.Update(nameof(ReleaseNotes), value);
+            get => _settings.Get(nameof(ReleaseNotes), string.Empty, true);
+            set => _settings.Update(nameof(ReleaseNotes), value, true);
         }
 
         public PomodoroEngineSettings(ISettings settings)

@@ -7,12 +7,22 @@
         Title="Release notes" Height="300" Width="300"
         WindowStartupLocation="CenterOwner"
         Topmost="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <WebBrowser Grid.Row="0" x:Name="Browser"></WebBrowser>
-        <Button Content="Close" x:Name="CloseButon" Grid.Row="1" Click="CloseButon_OnClick"></Button>
+        <Button Content="Close" Width="100" Margin="0,5,0,5" x:Name="CloseButon" Grid.Row="1" Click="CloseButon_OnClick" Style="{DynamicResource MaterialDesignFlatButton}"></Button>
     </Grid>
 </Window>
