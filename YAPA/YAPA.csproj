@@ -412,6 +412,7 @@
     <Compile Include="Plugins\SoundSettings\SoundSettingWindow.xaml.cs">
       <DependentUpon>SoundSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Unclickable\UnclickableMeta.cs" />
     <Compile Include="WPF\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -609,6 +610,7 @@
       <Name>YAPA.WPF.Themes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
