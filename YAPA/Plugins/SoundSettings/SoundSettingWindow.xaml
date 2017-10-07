@@ -7,6 +7,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel x:Name="Container"></StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" >Disable sound notifications</CheckBox>
+        <TextBlock Text="Volume" Grid.Column="0" Grid.Row="1"></TextBlock>
+        <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="1" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+
+        <StackPanel Grid.Row="2" x:Name="Container" Grid.Column="0" Grid.ColumnSpan="2"></StackPanel>
     </Grid>
 </UserControl>

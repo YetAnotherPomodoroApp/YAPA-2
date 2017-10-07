@@ -34,11 +34,6 @@
 
             <CheckBox  IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" >Count backwards</CheckBox>
 
-            <CheckBox  IsChecked="{Binding Settings.DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" >Disable sound notifications</CheckBox>
-            <TextBlock Text="Volume" Grid.Column="0" Grid.Row="8"></TextBlock>
-            <Slider Value="{Binding Settings.Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="8" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
-
-            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="9"></Separator>
 
             <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="10"></TextBlock>
             <ComboBox x:Name="CounterList"
