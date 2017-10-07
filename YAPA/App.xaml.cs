@@ -9,6 +9,7 @@ using Autofac;
 using NLog;
 using SimpleFeedReader;
 using Squirrel;
+using YAPA.Shared;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
@@ -105,9 +106,12 @@ namespace YAPA
             var snapshotJson = File.ReadAllText(file);
             var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
 
+            var args = Environment.GetCommandLineArgs();
+            var startImmediately = args.Select(x => x.ToLowerInvariant()).Contains(CommandLineArguments.Start);
+
             var remainingTime = TimeSpan.FromSeconds(snapshot.PomodoroProfile.WorkTime - snapshot.PausedTime);
             if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause)
-                && MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?", "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                && (startImmediately || MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?", "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes))
             {
                 snapshot.StartDate = date.DateTimeUtc();
                 engine.LoadSnapshot(snapshot);

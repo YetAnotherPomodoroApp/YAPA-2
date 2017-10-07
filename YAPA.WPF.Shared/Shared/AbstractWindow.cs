@@ -9,6 +9,16 @@ using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared
 {
+    public static class CommandLineArguments
+    {
+        public const string Start = "/start";
+        public const string Stop = "/stop";
+        public const string Reset = "/reset";
+        public const string Pause = "/pause";
+        public const string Settings = "/settings";
+        public const string HomePage = "/homepage";
+    }
+
     public abstract class AbstractWindow : Window, IApplication
     {
         public new event Action<ApplicationState> StateChanged;
@@ -56,14 +66,6 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //if (ViewModel.Engine?.Phase == PomodoroPhase.Work)
-            //{
-            //    if (MessageBox.Show("Are you sure you want to exit and cancel pomodoro ?", "Cancel pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.No)
-            //    {
-            //        e.Cancel = true;
-            //        return;
-            //    }
-            //}
             Closing?.Invoke();
         }
 
@@ -71,8 +73,8 @@ namespace YAPA.Shared
 
         public ApplicationState AppState
         {
-            get { return GetAppState(); }
-            set { SetAppState(value); }
+            get => GetAppState();
+            set => SetAppState(value);
         }
 
         private ApplicationState GetAppState()
@@ -98,7 +100,6 @@ namespace YAPA.Shared
 
         private void SetAppState(ApplicationState state)
         {
-
             switch (state)
             {
                 case ApplicationState.Minimized:
@@ -115,7 +116,6 @@ namespace YAPA.Shared
             }
         }
 
-
         public bool ProcessCommandLineArg(string args)
         {
             if (string.IsNullOrEmpty(args))
@@ -124,13 +124,13 @@ namespace YAPA.Shared
             var command = args.ToLowerInvariant();
             switch (command)
             {
-                case "/start":
+                case CommandLineArguments.Start:
                     if (ViewModel.StartCommand.CanExecute(null))
                     {
                         ViewModel.StartCommand.Execute(null);
                     }
                     break;
-                case "/reset":
+                case CommandLineArguments.Reset:
                     if (ViewModel.ResetCommand.CanExecute(null))
                     {
                         ViewModel.ResetCommand.Execute(null);
@@ -142,19 +142,19 @@ namespace YAPA.Shared
                         ViewModel.StopCommand.Execute(null);
                     }
                     break;
-                case "/pause":
+                case CommandLineArguments.Pause:
                     if (ViewModel.PauseCommand.CanExecute(null))
                     {
                         ViewModel.PauseCommand.Execute(null);
                     }
                     break;
-                case "/settings":
+                case CommandLineArguments.Settings:
                     if (ViewModel.ShowSettingsCommand.CanExecute(null))
                     {
                         ViewModel.ShowSettingsCommand.Execute(null);
                     }
                     break;
-                case "/homepage":
+                case CommandLineArguments.HomePage:
                     Process.Start("https://github.com/YetAnotherPomodoroApp/YAPA-2/");
                     break;
             }
@@ -172,7 +172,7 @@ namespace YAPA.Shared
                 Title = "Start",
                 Description = "Start Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/start",
+                Arguments = CommandLineArguments.Start,
                 IconResourceIndex = 1
             };
             jumpList.JumpItems.Add(startTask);
@@ -182,7 +182,7 @@ namespace YAPA.Shared
                 Title = "Start from the beginning",
                 Description = "Start new Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/reset",
+                Arguments = CommandLineArguments.Reset,
                 IconResourceIndex = 4
             };
             jumpList.JumpItems.Add(resetTask);
@@ -192,7 +192,7 @@ namespace YAPA.Shared
                 Title = "Pause",
                 Description = "Pause Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/pause",
+                Arguments = CommandLineArguments.Pause,
                 IconResourceIndex = 2
             };
             jumpList.JumpItems.Add(pauseTask);
@@ -202,7 +202,7 @@ namespace YAPA.Shared
                 Title = "Stop",
                 Description = "Stop Pomodoro session",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/stop",
+                Arguments = CommandLineArguments.Stop,
                 IconResourceIndex = 2
             };
             jumpList.JumpItems.Add(stopTask);
@@ -212,7 +212,7 @@ namespace YAPA.Shared
                 Title = "Settings",
                 Description = "Show YAPA settings",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/settings",
+                Arguments = CommandLineArguments.Settings,
                 IconResourceIndex = 5
             };
             jumpList.JumpItems.Add(settingsTask);
@@ -222,7 +222,7 @@ namespace YAPA.Shared
                 Title = "Visit home page",
                 Description = "Go to YAPA home page",
                 ApplicationPath = Assembly.GetEntryAssembly().Location,
-                Arguments = "/homepage",
+                Arguments = CommandLineArguments.HomePage,
                 IconResourceIndex = 6
             };
             jumpList.JumpItems.Add(homepageTask);
