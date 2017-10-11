@@ -453,6 +453,8 @@ namespace YAPA
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
             MinExitPanel.Visibility = Visibility.Visible;
+            ButtonPanel.Visibility = Visibility.Visible;
+
             cancelMinMaxPanelHide.Cancel();
             cancelMinMaxPanelHide = new CancellationTokenSource();
         }
@@ -471,6 +473,11 @@ namespace YAPA
                     Dispatcher.Invoke(() =>
                    {
                        MinExitPanel.Visibility = Visibility.Hidden;
+                       if (Settings.HideButtons)
+                       {
+                           ButtonPanel.Visibility = Visibility.Hidden;
+                       }
+
                    });
                     cancelMinMaxPanelHide = new CancellationTokenSource();
                 });

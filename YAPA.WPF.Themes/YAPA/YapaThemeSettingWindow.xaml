@@ -28,6 +28,7 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
@@ -42,6 +43,7 @@
                     <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
                     <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
                     <CheckBox  IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6">Hide seconds</CheckBox>
+                    <CheckBox  IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">Hide buttons</CheckBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Colors">

@@ -89,6 +89,12 @@ namespace YAPA.WPF.Themes.YAPA
             set => _settings.Update(nameof(HideSeconds), value);
         }
 
+        public bool HideButtons
+        {
+            get => _settings.Get(nameof(HideButtons), false);
+            set => _settings.Update(nameof(HideButtons), value);
+        }
+
         public YapaThemeSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(YapaTheme));

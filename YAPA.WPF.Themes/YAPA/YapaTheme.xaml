@@ -255,7 +255,7 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" x:Name="ButtonPanel">
                     <Button x:Name="Skip"
                             Command="{Binding ViewModel.StopCommand}"
                             HorizontalAlignment="Right" 
