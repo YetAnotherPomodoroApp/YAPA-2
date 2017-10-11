@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using LiveCharts;
+using LiveCharts.Wpf;
 using YAPA.WPF;
 
 namespace YAPA.Plugins.Dashboard
@@ -18,6 +20,13 @@ namespace YAPA.Plugins.Dashboard
             Loaded += Dashboard_Loaded;
 
             InitializeComponent();
+
+            Chart.DataHover += Chart_DataHover;
+        }
+
+        private void Chart_DataHover(object sender, ChartPoint chartPoint)
+        {
+            //TODO: highlight grid dashboard cell
         }
 
         private void Dashboard_Loaded(object sender, RoutedEventArgs e)
@@ -32,18 +41,20 @@ namespace YAPA.Plugins.Dashboard
                    return;
                }
 
-               var pomodoros =
-                   _dashboard.GetPomodoros()
-                       .Select(
-                           x =>
-                               new
-                               {
-                                   week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
-                                   month = cal.GetMonth(x.DateTime),
-                                   x
-                               })
-                       .ToList();
+               var allPomodoros = _dashboard.GetPomodoros().ToList();
+               var pomodoros = allPomodoros
+                      .Select(
+                          x =>
+                              new
+                              {
+                                  week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
+                                  month = cal.GetMonth(x.DateTime),
+                                  x
+                              })
+                      .ToList();
                var max = pomodoros.Max(x => x.x.Count);
+
+               var seriesCollection = new SeriesCollection();
 
                foreach (var pomodoro in pomodoros.GroupBy(x => x.month))
                {
@@ -51,8 +62,20 @@ namespace YAPA.Plugins.Dashboard
                    Dispatcher.Invoke(() =>
                    {
                        WeekStackPanel.Children.Add(new PomodoroMonth(month));
+
+                       seriesCollection.Add(
+                           new StackedColumnSeries
+                           {
+                               Title = new DateTime(2017, pomodoro.Key, 1).ToString("MMMM"),
+                               Values = new ChartValues<double>(pomodoro.Select(x => Math.Round((double)x.x.DurationMin / 60, 2)))
+                           });
                    });
                }
+               Dispatcher.Invoke(() =>
+               {
+                   Chart.Series = seriesCollection;
+                   ChartLabels.Labels = Enumerable.Range(1, 31).Select(x => $"{x}d.").ToArray();
+               });
 
                Dispatcher.Invoke(() =>
                {

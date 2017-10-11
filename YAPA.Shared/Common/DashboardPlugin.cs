@@ -31,8 +31,8 @@ namespace YAPA.Shared.Common
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 
             var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
-                .GroupBy(c => c.DateTime.Date, c => c.Count,
-                    (time, ints) => new PomodoroEntity() { DateTime = time, Count = ints.Sum(x => x) });
+                .GroupBy(c => c.DateTime.Date, c => new { Count = c.Count, WorkTime = c.DurationMin },
+                    (time, ints) => new PomodoroEntity { DateTime = time, Count = ints.Sum(x => x.Count), DurationMin = ints.Sum(x => x.WorkTime) });
 
             return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
@@ -47,7 +47,7 @@ namespace YAPA.Shared.Common
         {
             Task.Run(() =>
             {
-                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date, DurationMin = _engine.WorkTime % 60 });
+                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date, DurationMin = _engine.WorkTime / 60 });
             });
         }
     }
