@@ -10,12 +10,14 @@ namespace YAPA.Shared.Common
     public class Dashboard : IPlugin
     {
         private readonly IPomodoroRepository _itemRepository;
+        private readonly IPomodoroEngine _engine;
 
         public Dashboard(IPomodoroEngine engine, IPomodoroRepository itemRepository)
         {
             _itemRepository = itemRepository;
+            _engine = engine;
 
-            engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
+            _engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
         }
 
         public IEnumerable<PomodoroEntity> GetPomodoros()
@@ -25,7 +27,7 @@ namespace YAPA.Shared.Common
             var fromDate = new DateTime(date.Year, date.Month, 01, 0, 0, 0, 0, DateTimeKind.Utc);
 
             var totalDays = (int)(DateTime.Now.Date - fromDate).TotalDays;
-            var emptyPomodoros = Enumerable.Range(0, totalDays + 1).Select(x => new PomodoroEntity() { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
+            var emptyPomodoros = Enumerable.Range(0, totalDays + 1).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 
             var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
@@ -34,7 +36,6 @@ namespace YAPA.Shared.Common
 
             return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
-
 
         public int CompletedToday()
         {
@@ -46,7 +47,7 @@ namespace YAPA.Shared.Common
         {
             Task.Run(() =>
             {
-                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date });
+                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date, DurationMin = _engine.WorkTime % 60 });
             });
         }
     }

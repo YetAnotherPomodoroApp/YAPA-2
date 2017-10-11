@@ -18,5 +18,7 @@ namespace YAPA.Shared.Contracts
         public DateTime DateTime { get; set; }
 
         public int Count { get; set; }
+
+        public int DurationMin { get; set; }
     }
 }

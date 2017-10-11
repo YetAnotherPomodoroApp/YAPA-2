@@ -9,15 +9,15 @@ namespace YAPA.Plugins.Dashboard
 {
     public class ItemRepository : IPomodoroRepository
     {
-        private DatabaseContext context;
+        private readonly DatabaseContext _context;
 
         public ItemRepository()
         {
-            context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2","Yapa.db"));
-            context.Database.Migrate();
+            _context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2","Yapa.db"));
+            _context.Database.Migrate();
         }
 
-        public IQueryable<PomodoroEntity> Pomodoros => context.Pomodoros;
+        public IQueryable<PomodoroEntity> Pomodoros => _context.Pomodoros;
 
         public void Delete(int id)
         {
@@ -25,14 +25,15 @@ namespace YAPA.Plugins.Dashboard
 
             if (existing != null)
             {
+                _context.Pomodoros.Remove(existing);
+                _context.SaveChanges();
             }
-
         }
 
         public void Add(PomodoroEntity pomodoroEntity)
         {
-            context.Pomodoros.Add(pomodoroEntity);
-            context.SaveChanges();
+            _context.Pomodoros.Add(pomodoroEntity);
+            _context.SaveChanges();
         }
     }
 
