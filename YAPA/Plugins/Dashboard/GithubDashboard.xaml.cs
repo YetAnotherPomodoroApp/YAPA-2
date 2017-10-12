@@ -62,19 +62,31 @@ namespace YAPA.Plugins.Dashboard
                    Dispatcher.Invoke(() =>
                    {
                        WeekStackPanel.Children.Add(new PomodoroMonth(month));
-
-                       seriesCollection.Add(
-                           new StackedColumnSeries
-                           {
-                               Title = new DateTime(2017, pomodoro.Key, 1).ToString("MMMM"),
-                               Values = new ChartValues<double>(pomodoro.Select(x => Math.Round((double)x.x.DurationMin / 60, 2)))
-                           });
                    });
                }
                Dispatcher.Invoke(() =>
                {
-                   Chart.Series = seriesCollection;
-                   ChartLabels.Labels = Enumerable.Range(1, 31).Select(x => $"{x}d.").ToArray();
+                   var daysToShow = 60;
+
+                   var lastPomodoros = pomodoros.Skip(pomodoros.Count - daysToShow).ToList();
+
+                   if (lastPomodoros.Any(x => x.x.DurationMin / 60.0 > 0.01))
+                   {
+                       seriesCollection.Add(
+                           new LineSeries
+                           {
+                               Title = "Hours",
+                               Values = new ChartValues<double>(lastPomodoros.Select(x => Math.Round((double)x.x.DurationMin / 60, 2)))
+                           });
+
+                       Chart.Series = seriesCollection;
+                       ChartLabels.Labels = Enumerable.Range(1, daysToShow).Reverse().Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString()).ToArray();
+                   }
+                   else
+                   {
+                       Chart.Visibility = Visibility.Collapsed;
+                   }
+
                });
 
                Dispatcher.Invoke(() =>
