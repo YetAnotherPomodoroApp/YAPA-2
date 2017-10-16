@@ -385,6 +385,10 @@
     <Compile Include="Migrations\20171011164113_Duration min.designer.cs">
       <DependentUpon>20171011164113_Duration min.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20171016181624_profile name.cs" />
+    <Compile Include="Migrations\20171016181624_profile name.designer.cs">
+      <DependentUpon>20171016181624_profile name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Plugins\Dashboard\DashboardPluginMeta.cs" />
     <Compile Include="Plugins\Dashboard\GithubDashboard.xaml.cs">

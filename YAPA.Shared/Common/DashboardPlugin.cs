@@ -10,11 +10,13 @@ namespace YAPA.Shared.Common
     public class Dashboard : IPlugin
     {
         private readonly IPomodoroRepository _itemRepository;
+        private readonly PomodoroEngineSettings _engineSettings;
         private readonly IPomodoroEngine _engine;
 
-        public Dashboard(IPomodoroEngine engine, IPomodoroRepository itemRepository)
+        public Dashboard(IPomodoroEngine engine, IPomodoroRepository itemRepository, PomodoroEngineSettings engineSettings)
         {
             _itemRepository = itemRepository;
+            _engineSettings = engineSettings;
             _engine = engine;
 
             _engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
@@ -47,7 +49,13 @@ namespace YAPA.Shared.Common
         {
             Task.Run(() =>
             {
-                _itemRepository.Add(new PomodoroEntity { Count = 1, DateTime = DateTime.UtcNow.Date, DurationMin = _engine.WorkTime / 60 });
+                _itemRepository.Add(new PomodoroEntity
+                {
+                    Count = 1,
+                    DateTime = DateTime.UtcNow.Date,
+                    DurationMin = _engine.WorkTime / 60,
+                    ProfileName = _engineSettings.ActiveProfile
+                });
             });
         }
     }

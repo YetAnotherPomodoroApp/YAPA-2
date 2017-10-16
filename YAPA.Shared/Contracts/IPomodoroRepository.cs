@@ -14,11 +14,9 @@ namespace YAPA.Shared.Contracts
     public class PomodoroEntity
     {
         public int Id { get; set; }
-
         public DateTime DateTime { get; set; }
-
         public int Count { get; set; }
-
         public int DurationMin { get; set; }
+        public string ProfileName { get; set; }
     }
 }
