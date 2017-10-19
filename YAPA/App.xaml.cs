@@ -142,26 +142,57 @@ namespace YAPA
         {
             try
             {
-                var releaseUrl = @"ftp://s1.floatas.net/yapa-2/";
-                var preReleaseUrl = @"ftp://s1.floatas.net/yapa-2-pre-release/";
+                var releaseUrl = "yapa-2/";
+                var preReleaseUrl = "yapa-2-pre-release/";
 
-                var updateUrl = environment.PreRelease() ? preReleaseUrl : releaseUrl;
+                var ftpUrl = "ftp://s1.floatas.net";
+                var httpUrl = "app.floatas.net/installers";
 
-                using (var mgr = new UpdateManager(updateUrl))
+                var updateType = environment.PreRelease() ? preReleaseUrl : releaseUrl;
+
+                try
                 {
-                    var update = await mgr.UpdateApp();
-                    if (!string.IsNullOrEmpty(update?.Filename))
-                    {
-                        settings.RestartNeeded = true;
-                        settings.NewVersion = update.Version.ToString();
-                        engineSettings.ReleaseNotes = GetReleaseNotesFor(settings.NewVersion);
-                    }
+                    var httpUpdateUrl = Path.Combine(httpUrl, updateType);
+                    var newVersion = await UpdateFromUrl(httpUpdateUrl);
+                    UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
+                }
+                catch (Exception)
+                {
+                    var httpUpdateUrl = Path.Combine(ftpUrl, updateType);
+                    var newVersion = await UpdateFromUrl(httpUpdateUrl);
+                    UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
                 }
             }
             catch (Exception)
             {
                 //Ignore
             }
+        }
+
+        private static void UpdateSettingsWithReleaseInfo(string newVersion, ISettingManager settings, PomodoroEngineSettings engineSettings)
+        {
+            if (string.IsNullOrEmpty(newVersion))
+            {
+                return;
+            }
+            settings.RestartNeeded = true;
+            settings.NewVersion = newVersion;
+            engineSettings.ReleaseNotes = GetReleaseNotesFor(newVersion);
+        }
+
+        private static async Task<string> UpdateFromUrl(string updateUrl)
+        {
+            var version = string.Empty;
+            using (var mgr = new UpdateManager(updateUrl))
+            {
+                var update = await mgr.UpdateApp();
+                if (!string.IsNullOrEmpty(update?.Filename))
+                {
+                    version = update.Version.ToString();
+                }
+            }
+
+            return version;
         }
 
         private static string GetReleaseNotesFor(string newVersion)
