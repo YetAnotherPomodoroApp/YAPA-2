@@ -15,6 +15,7 @@ namespace YAPA.Shared
         public const string Stop = "/stop";
         public const string Reset = "/reset";
         public const string Pause = "/pause";
+        public const string Skip = "/skip";
         public const string Settings = "/settings";
         public const string HomePage = "/homepage";
     }
@@ -154,6 +155,12 @@ namespace YAPA.Shared
                         ViewModel.ShowSettingsCommand.Execute(null);
                     }
                     break;
+                case CommandLineArguments.Skip:
+                    if (ViewModel.SkipCommand.CanExecute(null))
+                    {
+                        ViewModel.SkipCommand.Execute(null);
+                    }
+                    break;
                 case CommandLineArguments.HomePage:
                     Process.Start("https://github.com/YetAnotherPomodoroApp/YAPA-2/");
                     break;
@@ -206,6 +213,16 @@ namespace YAPA.Shared
                 IconResourceIndex = 2
             };
             jumpList.JumpItems.Add(stopTask);
+
+            var skipTask = new JumpTask
+            {
+                Title = "Skip",
+                Description = "Skip break and start working",
+                ApplicationPath = Assembly.GetEntryAssembly().Location,
+                Arguments = CommandLineArguments.Skip,
+                IconResourceIndex = 2
+            };
+            jumpList.JumpItems.Add(skipTask);
 
             var settingsTask = new JumpTask
             {

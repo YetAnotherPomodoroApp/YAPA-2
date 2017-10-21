@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Input;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Plugins.MinimizeToTray
@@ -129,70 +132,34 @@ namespace YAPA.Plugins.MinimizeToTray
 
         private MenuItem[] CreateNotifyIconContextMenu()
         {
-            var startTask = new MenuItem
+            var commands = new List<Tuple<string, ICommand>>
             {
-                Text = @"Start",
-                Enabled = _viewModel.StartCommand.CanExecute(null),
-            };
-            startTask.Click += (o, s) =>
-            {
-                if (_viewModel.StartCommand.CanExecute(null))
-                {
-                    _viewModel.StartCommand.Execute(null);
-                }
+                new Tuple<string, ICommand>("Start",_viewModel.StartCommand),
+                new Tuple<string, ICommand>("Pause",_viewModel.PauseCommand),
+                new Tuple<string, ICommand>("Stop",_viewModel.StopCommand),
+                new Tuple<string, ICommand>("Skip",_viewModel.SkipCommand),
+                new Tuple<string, ICommand>("Reset session",_viewModel.ResetCommand),
+                new Tuple<string, ICommand>("Settings",_viewModel.ShowSettingsCommand),
             };
 
-            var pauseTask = new MenuItem
+            var menuItems = commands.Select(x =>
             {
-                Text = @"Pause",
-                Enabled = _viewModel.PauseCommand.CanExecute(null)
-            };
-            pauseTask.Click += (o, s) =>
-            {
-                if (_viewModel.PauseCommand.CanExecute(null))
-                {
-                    _viewModel.PauseCommand.Execute(null);
-                }
-            };
+                var command = x.Item2;
 
-            var stopTask = new MenuItem
-            {
-                Text = @"Stop",
-                Enabled = _viewModel.StopCommand.CanExecute(null)
-            };
-            stopTask.Click += (o, s) =>
-            {
-                if (_viewModel.StopCommand.CanExecute(null))
+                var item = new MenuItem
                 {
-                    _viewModel.StopCommand.Execute(null);
-                }
-            };
-
-            var resetTask = new MenuItem
-            {
-                Text = @"Reset session",
-                Enabled = _viewModel.ResetCommand.CanExecute(null)
-            };
-            resetTask.Click += (o, s) =>
-            {
-                if (_viewModel.ResetCommand.CanExecute(null))
+                    Text = x.Item1,
+                    Enabled = command.CanExecute(null)
+                };
+                item.Click += (sender, args) =>
                 {
-                    _viewModel.ResetCommand.Execute(null);
-                }
-            };
-
-            var settings = new MenuItem
-            {
-                Text = @"Settings",
-                Enabled = _viewModel.ShowSettingsCommand.CanExecute(null)
-            };
-            settings.Click += (o, s) =>
-            {
-                if (_viewModel.ShowSettingsCommand.CanExecute(null))
-                {
-                    _viewModel.ShowSettingsCommand.Execute(null);
-                }
-            };
+                    if (command.CanExecute(null))
+                    {
+                        command.Execute(null);
+                    }
+                };
+                return item;
+            });
 
             var close = new MenuItem
             {
@@ -203,10 +170,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 _app.CloseApp();
             };
 
-            return new[]
-            {
-                startTask, pauseTask, stopTask, resetTask, settings,close
-            };
+            return menuItems.Union(new List<MenuItem> { close }).ToArray();
         }
 
         private void _app_StateChanged(ApplicationState state)

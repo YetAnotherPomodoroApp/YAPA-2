@@ -10,5 +10,6 @@ namespace YAPA.Shared.Contracts
         ICommand ResetCommand { get; set; }
         ICommand PauseCommand { get; set; }
         ICommand ShowSettingsCommand { get; set; }
+        ICommand SkipCommand { get; set; }
     }
 }

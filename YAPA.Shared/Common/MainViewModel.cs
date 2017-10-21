@@ -11,6 +11,7 @@ namespace YAPA.Shared.Common
         public ICommand StartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand PauseCommand { get; set; }
+        public ICommand SkipCommand { get; set; }
 
         public ICommand ShowSettingsCommand { get; set; }
 
@@ -20,7 +21,8 @@ namespace YAPA.Shared.Common
             StopCommand = new StopCommand(Engine);
             StartCommand = new StartCommand(Engine);
             ResetCommand = new ResetCommand(Engine);
-            PauseCommand= new PauseCommand(Engine);
+            PauseCommand = new PauseCommand(Engine);
+            SkipCommand = new SkipCommand(Engine);
 
             ShowSettingsCommand = showSettings;
         }
