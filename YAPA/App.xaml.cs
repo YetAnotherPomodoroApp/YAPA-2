@@ -146,7 +146,7 @@ namespace YAPA
                 var preReleaseUrl = "yapa-2-pre-release/";
 
                 var ftpUrl = "ftp://s1.floatas.net";
-                var httpUrl = "app.floatas.net/installers";
+                var httpUrl = "http://app.floatas.net/installers";
 
                 var updateType = environment.PreRelease() ? preReleaseUrl : releaseUrl;
 
