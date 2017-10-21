@@ -60,6 +60,7 @@ namespace YAPA
 
             PropertyChanged += YapaTheme_PropertyChanged;
             UpdateDisplayedTime();
+            UpdateSecondVisibility();
         }
 
         private void UpdateDisplayedTime()
@@ -208,16 +209,22 @@ namespace YAPA
 
                 if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.HideSeconds)}"))
                 {
-                    if (Settings.HideSeconds)
-                    {
-                        HideSeconds();
-                    }
-                    else
-                    {
-                        ShowSeconds();
-                    }
+                    UpdateSecondVisibility();
                 }
 
+            }
+        }
+
+
+        private void UpdateSecondVisibility()
+        {
+            if (Settings.HideSeconds)
+            {
+                HideSeconds();
+            }
+            else
+            {
+                ShowSeconds();
             }
         }
 
