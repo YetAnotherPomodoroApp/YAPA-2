@@ -152,14 +152,14 @@ namespace YAPA
 
                 try
                 {
-                    var httpUpdateUrl = Path.Combine(httpUrl, updateType);
+                    var httpUpdateUrl = CombineUri(httpUrl, updateType);
                     var newVersion = await UpdateFromUrl(httpUpdateUrl);
                     UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
                 }
                 catch (Exception)
                 {
-                    var httpUpdateUrl = Path.Combine(ftpUrl, updateType);
-                    var newVersion = await UpdateFromUrl(httpUpdateUrl);
+                    var ftpUpdateUrl = CombineUri(ftpUrl, updateType);
+                    var newVersion = await UpdateFromUrl(ftpUpdateUrl);
                     UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
                 }
             }
@@ -167,6 +167,11 @@ namespace YAPA
             {
                 //Ignore
             }
+        }
+
+        private static string CombineUri(params string[] parts)
+        {
+            return string.Join("/", parts);
         }
 
         private static void UpdateSettingsWithReleaseInfo(string newVersion, ISettingManager settings, PomodoroEngineSettings engineSettings)
