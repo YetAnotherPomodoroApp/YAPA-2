@@ -13,6 +13,7 @@ using YAPA.Shared;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
+using YAPA.WPF.SettingsMananger;
 using IContainer = Autofac.IContainer;
 
 namespace YAPA
@@ -62,6 +63,15 @@ namespace YAPA
 
         private static void MainWindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
+            try
+            {
+                var settingsWindow = Container.Resolve<SettingsWindow>();
+                settingsWindow.Close();
+            }
+            catch
+            {
+            }
+
             SaveSnapshot();
         }
 

@@ -449,8 +449,8 @@
     <Compile Include="WPF\PluginManager\PluginManagerSettingWindow.xaml.cs">
       <DependentUpon>PluginManagerSettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\SettingsMananger\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
+    <Compile Include="WPF\SettingsMananger\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\Specifics\ShowSettingsCommand.cs" />
     <Compile Include="Plugins\SoundSettings\SoundNotifications\SoundNotifications.cs" />
@@ -526,7 +526,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\SettingsMananger\Settings.xaml">
+    <Page Include="WPF\SettingsMananger\SettingsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

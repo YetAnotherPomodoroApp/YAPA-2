@@ -10,4 +10,9 @@ namespace YAPA.Shared.Contracts
         Type Settings { get; }
         Type SettingEditWindow { get; }
     }
+
+    public interface IPluginSettingWindow
+    {
+        void Refresh();
+    }
 }

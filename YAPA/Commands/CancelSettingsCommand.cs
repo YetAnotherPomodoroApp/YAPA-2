@@ -31,7 +31,7 @@ namespace YAPA.Commands
             {
                 _settings.Load();
             }
-            _settingsWindow.Close();
+            _settingsWindow.Hide();
         }
 
         public event EventHandler CanExecuteChanged;

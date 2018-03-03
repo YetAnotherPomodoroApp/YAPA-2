@@ -9,7 +9,7 @@ using YAPA.WPF.PluginManager;
 
 namespace YAPA.WPF.SettingsMananger
 {
-    public partial class Settings : Window
+    public partial class SettingsWindow
     {
         private readonly ISettings _settings;
         private readonly ISettingManager _mananger;
@@ -20,7 +20,7 @@ namespace YAPA.WPF.SettingsMananger
         public ICommand CancelCommand { get; set; }
         private UserControl _settingPage = null;
 
-        public Settings(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container, IEnvironment environment)
+        public SettingsWindow(ISettings settings, ISettingManager mananger, IPluginManager pluginManager, IDependencyInjector container, IEnvironment environment)
         {
             _settings = settings;
             _mananger = mananger;
@@ -32,30 +32,36 @@ namespace YAPA.WPF.SettingsMananger
             SaveCommand = new SaveSettingsCommand(_settings);
             CancelCommand = new CancelSettingsCommand(this, _settings);
 
-
             DataContext = this;
             InitializeComponent();
 
             SettingsTree.SelectedItemChanged += SettingsTree_SelectedItemChanged;
-
 
             foreach (var rootSetting in _pluginManager.BuiltInPlugins.Where(x => x.SettingEditWindow != null && !x.IsHidden()))
             {
                 var builtinPlugin = new TreeViewItem
                 {
                     Header = rootSetting.Title,
-                    IsSelected = SettingsTree.Items.IsEmpty
+                    IsSelected = SettingsTree.Items.IsEmpty,
+                    Tag = _container.Resolve(rootSetting.SettingEditWindow)
                 };
 
                 SettingsTree.Items.Add(builtinPlugin);
             }
 
-
-            var pluginsTree = new TreeViewItem { Header = "Plugins" };
+            var pluginsTree = new TreeViewItem
+            {
+                Header = "Plugins",
+                Tag = _container.Resolve(typeof(PluginManagerSettingWindow))
+            };
 
             foreach (var customSettings in _pluginManager.ActivePlugins.Where(x => x.SettingEditWindow != null))
             {
-                pluginsTree.Items.Add(new TreeViewItem() { Header = customSettings.Title });
+                pluginsTree.Items.Add(new TreeViewItem
+                {
+                    Header = customSettings.Title,
+                    Tag = _container.Resolve(customSettings.SettingEditWindow)
+                });
             }
 
             SettingsTree.Items.Add(pluginsTree);
@@ -66,6 +72,15 @@ namespace YAPA.WPF.SettingsMananger
             UpdateNotificationMessage();
 
             Loaded += Settings_Loaded;
+            IsVisibleChanged += SettingsWindow_IsVisibleChanged;
+        }
+
+        private void SettingsWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                RefreshSelectedMenuItem();
+            }
         }
 
         private void UpdateNotificationMessage()
@@ -108,6 +123,11 @@ namespace YAPA.WPF.SettingsMananger
 
         private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            RefreshSelectedMenuItem();
+        }
+
+        private void RefreshSelectedMenuItem()
+        {
             if (_settingPage != null)
             {
                 SettingGrid.Children.Remove(_settingPage);
@@ -115,28 +135,19 @@ namespace YAPA.WPF.SettingsMananger
 
             _settingPage = null;
 
-            var treeItem = e.NewValue as TreeViewItem;
-            if (treeItem == null)
+            if (!(SettingsTree.SelectedItem is TreeViewItem treeItem))
             {
                 return;
             }
-            UserControl child = null;
 
-            if (treeItem.Header.ToString() == "Plugins")
+            if (treeItem.Tag is IPluginSettingWindow)
             {
-                _settingPage = (UserControl)_container.Resolve(typeof(PluginManager.PluginManagerSettingWindow));
+                ((IPluginSettingWindow)treeItem.Tag).Refresh();
             }
-            else
-            if (treeItem.Header.ToString() == "About")
+
+            if (treeItem.Tag is UserControl)
             {
-                _settingPage = (UserControl)_container.Resolve(typeof(AboutPage));
-            }
-            else
-            {
-                _settingPage = (UserControl)_container.Resolve(_pluginManager.Plugins.First(x => x.Title == treeItem.Header.ToString()).SettingEditWindow);
-            }
-            if (_settingPage != null)
-            {
+                _settingPage = (UserControl)treeItem.Tag;
                 SettingGrid.Children.Add(_settingPage);
                 Grid.SetColumn(_settingPage, 1);
                 Grid.SetRow(_settingPage, 0);
@@ -148,7 +159,7 @@ namespace YAPA.WPF.SettingsMananger
         {
             try
             {
-                base.OnMouseLeftButtonDown(e);
+                OnMouseLeftButtonDown(e);
                 DragMove();
                 e.Handled = true;
             }

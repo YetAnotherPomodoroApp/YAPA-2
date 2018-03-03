@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Controls;
 using System.Windows.Data;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Plugins.PomodoroEngine
 {
-    public partial class PomodoroEngineSettingWindow : UserControl
+    public partial class PomodoroEngineSettingWindow
     {
 
         public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine, PomodoroProfileSettings profileSettings)
