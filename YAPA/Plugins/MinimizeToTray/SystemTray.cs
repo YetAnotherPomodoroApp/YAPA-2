@@ -222,13 +222,15 @@ namespace YAPA.Plugins.MinimizeToTray
                 DestroyIcon(_systemTrayIcon);
             }
 
-            var displayText = _viewModel.Engine.DisplayValue / 60;
+            var minutes = _viewModel.Engine.DisplayValue / 60;
+            var seconds = _viewModel.Engine.DisplayValue % 60;
+            var displayText = minutes == 0 && seconds > 0 ? "<1" : minutes.ToString();
 
             Brush brush = new SolidBrush(Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
 
             var bitmap = new Bitmap(16, 16);
             var graphics = Graphics.FromImage(bitmap);
-            graphics.DrawString(displayText.ToString(), new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold), brush, 0, 0);
+            graphics.DrawString(displayText, new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold), brush, 0, 0);
 
             _systemTrayIcon = bitmap.GetHicon();
 

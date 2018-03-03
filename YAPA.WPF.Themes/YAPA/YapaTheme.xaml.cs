@@ -71,6 +71,12 @@ namespace YAPA
             CurrentTimeMinutes2.Text = $"{minutes % 10:0}";
             CurrentTimeSeconds.Text = $"{seconds / 10:0}";
             CurrentTimeSeconds2.Text = $"{seconds % 10:0}";
+
+            if (SecondsVisible == Visibility.Collapsed && minutes == 0 && seconds > 0)
+            {
+                CurrentTimeMinutes.Text = "<";
+                CurrentTimeMinutes2.Text = "1";
+            }
         }
 
         private void YapaTheme_PropertyChanged(object sender, PropertyChangedEventArgs e)
