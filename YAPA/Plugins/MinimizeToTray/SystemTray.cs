@@ -57,6 +57,16 @@ namespace YAPA.Plugins.MinimizeToTray
 
             _sysTrayIcon.ContextMenu = new ContextMenu(CreateNotifyIconContextMenu());
             _sysTrayIcon.ContextMenu.Popup += ContextMenu_Popup;
+            _sysTrayIcon.BalloonTipClicked += _sysTrayIcon_BalloonTipClicked;
+        }
+
+        private void _sysTrayIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            if (_settings.ShowApplicationOnBalloonTipClick)
+            {
+                _app.Show();
+                _app.AppState = ApplicationState.Normal;
+            }
         }
 
         private bool SystemTrayVisible()
@@ -268,6 +278,12 @@ namespace YAPA.Plugins.MinimizeToTray
         {
             get => _settings.Get(nameof(ShowBalloonTipWhenInSystemTray), true);
             set => _settings.Update(nameof(ShowBalloonTipWhenInSystemTray), value);
+        }
+
+        public bool ShowApplicationOnBalloonTipClick
+        {
+            get => _settings.Get(nameof(ShowApplicationOnBalloonTipClick), false);
+            set => _settings.Update(nameof(ShowApplicationOnBalloonTipClick), value);
         }
 
         public int TimeToDisplayBalloontip

@@ -19,6 +19,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -32,9 +33,10 @@
             <Separator Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Separator>
 
             <CheckBox  IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
-            <Label Grid.Row="4" Grid.Column="0">Show balloon tip for (s)</Label>
+            <CheckBox  IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Show application when clicked on balloon tip</CheckBox>
+            <Label Grid.Row="5" Grid.Column="0">Show balloon tip for (s)</Label>
             <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="BalloonTipSelect"
-                      Grid.Row="4" Grid.Column="1" MinWidth="72"
+                      Grid.Row="5" Grid.Column="1" MinWidth="72"
                       IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
                       Margin="16 0 0 0"
                       VerticalAlignment="Bottom" 
@@ -50,17 +52,17 @@
                 </ComboBox.ItemsPanel>
             </ComboBox>
 
-            <Separator Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"></Separator>
+            <Separator Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"></Separator>
             
-            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="6"></TextBlock>
+            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="7"></TextBlock>
             <xctk:ColorPicker  x:Name="WorkTrayColor"
-                      Grid.Column="1" Grid.Row="6"  MinWidth="72"
+                      Grid.Column="1" Grid.Row="7"  MinWidth="72"
                       Margin="16 0 0 0" SelectedColor="{Binding WorkTrayIconColor}">
             </xctk:ColorPicker>
 
-            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="7"></TextBlock>
+            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="8"></TextBlock>
             <xctk:ColorPicker x:Name="BreakTrayColor"
-                               Grid.Column="1" Grid.Row="7" MinWidth="72"
+                               Grid.Column="1" Grid.Row="8" MinWidth="72"
                                Margin="16 0 0 0" SelectedColor="{Binding BreakTrayIconColor}">
             </xctk:ColorPicker>
         </Grid>
