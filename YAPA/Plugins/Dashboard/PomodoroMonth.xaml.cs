@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
 using YAPA.WPF;
 
 namespace YAPA.Plugins.Dashboard
 {
-    public partial class PomodoroMonth : UserControl
+    public partial class PomodoroMonth
     {
-        private IEnumerable<PomodoroViewModel> _month;
+        private readonly IEnumerable<PomodoroViewModel> _month;
         public PomodoroMonth(IEnumerable<PomodoroViewModel> month = null)
         {
             _month = month;
@@ -30,7 +29,19 @@ namespace YAPA.Plugins.Dashboard
                 PomodorWeeks.Children.Add(new PomodoroWeek(week));
             }
 
-            PomodorWeeks.Width = weeks.Count() * 13;
+            PomodorWeeks.Width = weeks.Count * 13;
+        }
+
+        ~PomodoroMonth()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    PomodorWeeks.Children.Clear();
+                }
+                catch { }
+            });
         }
     }
 }

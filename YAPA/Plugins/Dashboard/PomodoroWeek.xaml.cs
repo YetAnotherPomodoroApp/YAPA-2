@@ -9,75 +9,94 @@ using YAPA.WPF;
 
 namespace YAPA.Plugins.Dashboard
 {
-    /// <summary>
-    /// Interaction logic for PomdoroWeek.xaml
-    /// </summary>
-    public partial class PomodoroWeek : UserControl
+    public static class LevelBrushes
     {
+        public static Brush Level0 { get; }
+        public static Brush Level1 { get; }
+        public static Brush Level2 { get; }
+        public static Brush Level3 { get; }
+        public static Brush Level4 { get; }
+
+        static LevelBrushes()
+        {
+            var converter = new BrushConverter();
+            Level0 = (Brush)converter.ConvertFromString("#eee");
+            Level1 = (Brush)converter.ConvertFromString("#d6e685");
+            Level2 = (Brush)converter.ConvertFromString("#8cc665");
+            Level3 = (Brush)converter.ConvertFromString("#44a340");
+            Level4 = (Brush)converter.ConvertFromString("#1e6823");
+        }
+    }
+
+    public partial class PomodoroWeek
+    {
+        private static Brush GreenFill(PomodoroLevelEnum level)
+        {
+            Brush fill = Brushes.Transparent;
+            switch (level)
+            {
+                case PomodoroLevelEnum.Level0:
+                    fill = LevelBrushes.Level0;
+                    break;
+                case PomodoroLevelEnum.Level1:
+                    fill = LevelBrushes.Level1;
+                    break;
+                case PomodoroLevelEnum.Level2:
+                    fill = LevelBrushes.Level2;
+                    break;
+                case PomodoroLevelEnum.Level3:
+                    fill = LevelBrushes.Level3;
+                    break;
+                case PomodoroLevelEnum.Level4:
+                    fill = LevelBrushes.Level4;
+                    break;
+            }
+            return fill;
+        }
+
         public PomodoroWeek(IEnumerable<PomodoroViewModel> week = null)
         {
             InitializeComponent();
-
-            var converter = new BrushConverter();
-            var Level0 = (Brush)converter.ConvertFromString("#eee");
-            var Level1 = (Brush)converter.ConvertFromString("#d6e685");
-            var Level2 = (Brush)converter.ConvertFromString("#8cc665");
-            var Level3 = (Brush)converter.ConvertFromString("#44a340");
-            var Level4 = (Brush)converter.ConvertFromString("#1e6823");
 
             if (week == null)
             {
                 return;
             }
 
-            if (week.Count() < 7)
+            var pomodoroViewModels = week as PomodoroViewModel[] ?? week.ToArray();
+            if (pomodoroViewModels.Length < 7)
             {
-                var firstDay = week.Min(x => x.DateTime);
+                var firstDay = pomodoroViewModels.Min(x => x.DateTime);
                 if (firstDay.DayOfWeek != System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek)
                 {
-                    for (int i = 0; i < 7 - week.Count(); i++)
+                    for (var i = 0; i < 7 - pomodoroViewModels.Length; i++)
                     {
-                        var green = new Rectangle();
-                        green.Width = 11;
-                        green.Height = 11;
-                        green.Fill = Brushes.Transparent;
-                        green.Margin = new Thickness(0, 0, 0, 1);
+                        var green = new Rectangle
+                        {
+                            Width = 11,
+                            Height = 11,
+                            Fill = Brushes.Transparent,
+                            Margin = new Thickness(0, 0, 0, 1)
+                        };
                         PomodorPanel.Children.Add(green);
                     }
                 }
             }
 
-            foreach (var pomodoroViewModel in week)
+            foreach (var pomodoroViewModel in pomodoroViewModels)
             {
-                var green = new Rectangle();
-                green.Width = 11;
-                green.Height = 11;
-
-                switch (pomodoroViewModel.Level)
+                var green = new Rectangle
                 {
-                    case PomodoroLevelEnum.Level0:
-                        green.Fill = Level0;
-                        break;
-                    case PomodoroLevelEnum.Level1:
-                        green.Fill = Level1;
-                        break;
-                    case PomodoroLevelEnum.Level2:
-                        green.Fill = Level2;
-                        break;
-                    case PomodoroLevelEnum.Level3:
-                        green.Fill = Level3;
-                        break;
-                    case PomodoroLevelEnum.Level4:
-                        green.Fill = Level4;
-                        break;
-                }
-
-                green.Margin = new Thickness(0, 0, 0, 1);
+                    Width = 11,
+                    Height = 11,
+                    Margin = new Thickness(0, 0, 0, 1),
+                    Fill = GreenFill(pomodoroViewModel.Level)
+                };
 
                 var toolTip = new ToolTip();
                 var pomodoros = new TextBlock();
-                pomodoros.Inlines.Add(new Bold(new Run(pomodoroViewModel.Count == 0 ? "No pomodoros" : string.Format("{0} pomodoros", pomodoroViewModel.Count))));
-                pomodoros.Inlines.Add(new Run(string.Format(" on {0}", pomodoroViewModel.DateTime.ToString("yyyy-MM-dd"))));
+                pomodoros.Inlines.Add(new Bold(new Run(pomodoroViewModel.Count == 0 ? "No pomodoros" : $"{pomodoroViewModel.Count} pomodoros")));
+                pomodoros.Inlines.Add(new Run($" on {pomodoroViewModel.DateTime:yyyy-MM-dd}"));
                 toolTip.Content = pomodoros;
 
                 green.ToolTip = toolTip;
@@ -87,5 +106,20 @@ namespace YAPA.Plugins.Dashboard
 
             PomodorPanel.Margin = new Thickness(1, 0, 0, 0);
         }
+
+        ~PomodoroWeek()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    PomodorPanel.Children.Clear();
+                }
+                catch
+                {
+                }
+            });
+        }
+
     }
 }
