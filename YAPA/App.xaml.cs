@@ -88,6 +88,7 @@ namespace YAPA
         private static void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSnapshot();
+            RemoveSnapshotFile();
 
             var settings = Container.Resolve<PomodoroEngineSettings>();
             if (!string.IsNullOrEmpty(settings.ReleaseNotes))
@@ -101,12 +102,11 @@ namespace YAPA
 
         private static void LoadSnapshot()
         {
-            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
             var engine = Container.Resolve<IPomodoroEngine>();
             var date = Container.Resolve<IDate>();
             var json = Container.Resolve<IJson>();
 
-            var file = Path.Combine(baseDir, "snapshot.json");
+            var file = SnapshotFile();
 
             if (!File.Exists(file))
             {
@@ -114,8 +114,15 @@ namespace YAPA
             }
 
             var snapshotJson = File.ReadAllText(file);
+            if (string.IsNullOrEmpty(snapshotJson))
+            {
+                return;
+            }
             var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
-
+            if (snapshot == null)
+            {
+                return;
+            }
             var args = Environment.GetCommandLineArgs();
             var startImmediately = args.Select(x => x.ToLowerInvariant()).Contains(CommandLineArguments.Start);
 
@@ -126,9 +133,25 @@ namespace YAPA
                 snapshot.StartDate = date.DateTimeUtc();
                 engine.LoadSnapshot(snapshot);
             }
+        }
 
+        private static string SnapshotFile()
+        {
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
+
+            var file = Path.Combine(baseDir, "snapshot.json");
+            return file;
+        }
+
+        private static void RemoveSnapshotFile()
+        {
             try
             {
+                var file = SnapshotFile();
+                if (!File.Exists(file))
+                {
+                    return;
+                }
                 File.Delete(file);
             }
             catch (Exception)
