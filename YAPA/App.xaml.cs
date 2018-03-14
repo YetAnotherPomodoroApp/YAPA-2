@@ -88,7 +88,6 @@ namespace YAPA
         private static void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSnapshot();
-            RemoveSnapshotFile();
 
             var settings = Container.Resolve<PomodoroEngineSettings>();
             if (!string.IsNullOrEmpty(settings.ReleaseNotes))
@@ -106,32 +105,46 @@ namespace YAPA
             var date = Container.Resolve<IDate>();
             var json = Container.Resolve<IJson>();
 
-            var file = SnapshotFile();
+            try
+            {
+                var file = SnapshotFile();
 
-            if (!File.Exists(file))
-            {
-                return;
-            }
+                if (!File.Exists(file))
+                {
+                    return;
+                }
 
-            var snapshotJson = File.ReadAllText(file);
-            if (string.IsNullOrEmpty(snapshotJson))
-            {
-                return;
-            }
-            var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
-            if (snapshot == null)
-            {
-                return;
-            }
-            var args = Environment.GetCommandLineArgs();
-            var startImmediately = args.Select(x => x.ToLowerInvariant()).Contains(CommandLineArguments.Start);
+                var snapshotJson = File.ReadAllText(file);
+                if (string.IsNullOrEmpty(snapshotJson))
+                {
+                    return;
+                }
+                var snapshot = json.Deserialize<PomodoroEngineSnapshot>(snapshotJson);
+                if (snapshot == null)
+                {
+                    return;
+                }
+                var args = Environment.GetCommandLineArgs();
+                var startImmediately = args.Select(x => x.ToLowerInvariant()).Contains(CommandLineArguments.Start);
 
-            var remainingTime = TimeSpan.FromSeconds(snapshot.PomodoroProfile.WorkTime - snapshot.PausedTime);
-            if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause)
-                && (startImmediately || MessageBox.Show($"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?", "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes))
+                var remainingTime = TimeSpan.FromSeconds(snapshot.PomodoroProfile.WorkTime - snapshot.PausedTime);
+                if ((snapshot.Phase == PomodoroPhase.Work || snapshot.Phase == PomodoroPhase.Pause)
+                    && (startImmediately ||
+                        MessageBox.Show(
+                            $"Remaining time: {remainingTime.Minutes:00}:{remainingTime.Seconds:00}. Resume pomodoro ?",
+                            "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes))
+                {
+                    snapshot.StartDate = date.DateTimeUtc();
+                    engine.LoadSnapshot(snapshot);
+                }
+            }
+            catch
             {
-                snapshot.StartDate = date.DateTimeUtc();
-                engine.LoadSnapshot(snapshot);
+                //Ignore corrupted snapshots
+            }
+            finally
+            {
+                RemoveSnapshotFile();
             }
         }
 
