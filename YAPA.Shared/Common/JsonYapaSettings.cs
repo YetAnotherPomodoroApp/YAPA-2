@@ -80,7 +80,7 @@ namespace YAPA.Shared.Common
 
         public void SetRawSettingsForComponent(string plugin, string setting)
         {
-            var current =  _settings.SetRawSettingsForComponent(plugin, setting);
+            var current = _settings.SetRawSettingsForComponent(plugin, setting);
 
             _enviroment.SaveSettings(current);
         }
@@ -356,15 +356,20 @@ namespace YAPA.Shared.Common
             _modifiedSettings.Clear();
             HasUnsavedChanges = false;
 
-            if (string.IsNullOrEmpty(settings))
+            try
             {
-                _settings = new SettingsDictionary();
+                if (!string.IsNullOrEmpty(settings))
+                {
+                    _settings = _json.Deserialize<SettingsDictionary>(settings);
+                    ApplyMigration();
+                }
             }
-            else
+            catch
             {
-                _settings = _json.Deserialize<SettingsDictionary>(settings);
-                ApplyMigration();
+                //Ignore
             }
+
+            _settings = _settings ?? new SettingsDictionary();
         }
 
         private bool _hasUnsavedChanges;
