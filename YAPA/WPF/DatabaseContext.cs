@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using YAPA.Plugins.Dashboard;
 using YAPA.Shared.Contracts;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
+using YAPA.Shared.Common;
 
 namespace YAPA.WPF
 {
@@ -37,13 +38,12 @@ namespace YAPA.WPF
 
     public static class PomodoroExtensions
     {
-
         public static PomodoroViewModel ToPomodoroViewModel(this PomodoroEntity pomo, int week, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
         {
             return new PomodoroViewModel()
             {
                 Count = pomo.Count,
-                DateTime = pomo.DateTime,
+                DateTime = pomo.DateTime.TryToLocalTime(),
                 Week = week,
                 Level = level
             };

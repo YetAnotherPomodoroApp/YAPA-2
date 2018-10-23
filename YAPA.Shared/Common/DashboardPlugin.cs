@@ -6,7 +6,6 @@ using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared.Common
 {
-
     public class Dashboard : IPlugin
     {
         private readonly IPomodoroRepository _itemRepository;
@@ -26,23 +25,33 @@ namespace YAPA.Shared.Common
         {
             //last 4 full months + current
             var date = DateTime.Now.Date.AddMonths(-4);
-            var fromDate = new DateTime(date.Year, date.Month, 01, 0, 0, 0, 0, DateTimeKind.Utc);
+            var fromDate = new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
             var totalDays = (int)(DateTime.Now.Date - fromDate).TotalDays;
             var emptyPomodoros = Enumerable.Range(0, totalDays + 1).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 
             var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
-                .GroupBy(c => c.DateTime.Date, c => new { Count = c.Count, WorkTime = c.DurationMin },
-                    (time, ints) => new PomodoroEntity { DateTime = time, Count = ints.Sum(x => x.Count), DurationMin = ints.Sum(x => x.WorkTime) });
+                .GroupBy(c =>
+                {
+                    var local = c.DateTime.TryToLocalTime();
+                    return new Tuple<int, int, int>(local.Year, local.Month, local.Day);
+                },
+                    c => new { c.Count, WorkTime = c.DurationMin },
+                    (time, ints) => new PomodoroEntity { DateTime = new DateTime(time.Item1, time.Item2, time.Item3, 0, 0, 0, DateTimeKind.Local), Count = ints.Sum(x => x.Count), DurationMin = ints.Sum(x => x.WorkTime) });
 
             return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
 
         public int CompletedToday()
         {
-            var today = DateTime.Now.Date;
-            return _itemRepository.Pomodoros.Where(x => x.DateTime == today).Select(a => a.Count).DefaultIfEmpty(0).Sum();
+            var startDate = DateTime.Now.Date;
+            var endDate = startDate.AddDays(1).AddSeconds(-1);
+            return _itemRepository.Pomodoros
+                .Where(pomodoro => startDate <= pomodoro.DateTime && pomodoro.DateTime <= endDate)
+                .Select(_ => _.Count)
+                .DefaultIfEmpty(0)
+                .Sum();
         }
 
         private void _engine_OnPomodoroCompleted()
@@ -52,7 +61,7 @@ namespace YAPA.Shared.Common
                 _itemRepository.Add(new PomodoroEntity
                 {
                     Count = 1,
-                    DateTime = DateTime.UtcNow.Date,
+                    DateTime = DateTime.UtcNow,
                     DurationMin = _engine.WorkTime / 60,
                     ProfileName = _engineSettings.ActiveProfile
                 });

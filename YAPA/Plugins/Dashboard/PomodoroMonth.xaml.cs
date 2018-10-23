@@ -34,7 +34,7 @@ namespace YAPA.Plugins.Dashboard
 
         ~PomodoroMonth()
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.InvokeAsync(() =>
             {
                 try
                 {

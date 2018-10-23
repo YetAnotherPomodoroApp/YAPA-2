@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\YAPA",
+    "\\YAPA\\Plugins",
+    "\\YAPA\\Plugins\\SaveApplicationPossitionOnScreen",
     "\\YAPA\\WPF",
     "\\YAPA\\WPF\\SettingsMananger",
     "\\YAPA\\WPF\\Specifics"
   ],
-  "SelectedNode": "\\YAPA\\WPF\\Specifics\\ShowSettingsCommand.cs",
+  "SelectedNode": "\\YAPA\\Plugins\\SaveApplicationPossitionOnScreen\\SaveApplicationPositionOnScreen.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -109,7 +109,7 @@ namespace YAPA.Plugins.Dashboard
 
         ~PomodoroWeek()
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.InvokeAsync(() =>
             {
                 try
                 {
