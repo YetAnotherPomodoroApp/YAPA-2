@@ -59,11 +59,12 @@ Contribution guidelines
 How to build installer
 ===
 Installers are created with slightly modified [Squirrel.Windows](https://github.com/floatas/Squirrel.Windows)
-1. Restore nuget packages.
+1. `cd Build`
+2. Restore nuget packages.
 ``NuGet restore ..\Yapa.sln``
-2. Run ``Build\BuildAndRelease.cmd`` 
+2. Run ``BuildAndRelease.cmd`` 
 Without arguments 2.0.0 version will be used.
-To create specific version: ``Build\BuildAndRelease.cmd 2.4.9`` 
+To create specific version: ``BuildAndRelease.cmd 2.4.9`` 
 
 Nightly builds
 ===
