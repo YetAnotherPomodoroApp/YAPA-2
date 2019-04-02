@@ -58,6 +58,8 @@ namespace YAPA.Plugins.MinimizeToTray
             _sysTrayIcon.ContextMenu = new ContextMenu(CreateNotifyIconContextMenu());
             _sysTrayIcon.ContextMenu.Popup += ContextMenu_Popup;
             _sysTrayIcon.BalloonTipClicked += _sysTrayIcon_BalloonTipClicked;
+
+            _app.Closing += () => _sysTrayIcon.Dispose();
         }
 
         private void _sysTrayIcon_BalloonTipClicked(object sender, EventArgs e)
