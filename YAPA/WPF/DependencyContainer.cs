@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Microsoft.Extensions.Logging;
+using NLog;
 using YAPA.Plugins.Dashboard;
 using YAPA.Plugins.PomodoroEngine;
 using YAPA.Shared.Common;
@@ -13,6 +15,7 @@ using YAPA.WPF.PluginManager;
 using YAPA.WPF.SettingsMananger;
 using YAPA.WPF.Specifics;
 using YAPA.WPF.ThemeManager;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace YAPA.WPF
 {
@@ -58,6 +61,9 @@ namespace YAPA.WPF
         private static IContainer ConfigureContainer()
         {
             var builder = new ContainerBuilder();
+
+            builder.RegisterInstance(LogManager.GetLogger("YAPA2")).As<NLog.ILogger>();
+
             builder.RegisterType<JsonYapaSettings>().As<ISettings>().AutoActivate().SingleInstance();
 
             builder.RegisterType<NewftonsJson>().As<IJson>().SingleInstance();
