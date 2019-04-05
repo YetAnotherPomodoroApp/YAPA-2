@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26823.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared", "Yapa.Shared\YAPA.Shared.csproj", "{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes.Motivational", "YAPA.WPF.MotivationalTheme\YAPA.WPF.Themes.Motivational.csproj", "{C1FACD37-C92E-4339-9C02-D3A5BE430D02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,16 @@ Global
 		{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
 		{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{C1FACD37-C92E-4339-9C02-D3A5BE430D02}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
