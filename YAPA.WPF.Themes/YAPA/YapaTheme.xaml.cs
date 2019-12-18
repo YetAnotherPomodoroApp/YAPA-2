@@ -29,6 +29,7 @@ namespace YAPA
 
         private readonly Storyboard TimerFlush;
         private readonly Storyboard AfterBreakTimerFlush;
+        private readonly Storyboard OnPauseFlashTimer;
 
         public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, IPomodoroRepository pomodoroRepository, PomodoroEngineSettings engineSettings) : base(viewModel)
         {
@@ -41,6 +42,7 @@ namespace YAPA
 
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
             AfterBreakTimerFlush = (Storyboard)TryFindResource("AfterBreakFlashTimer");
+            OnPauseFlashTimer = (Storyboard)TryFindResource("OnPauseFlashTimer");
 
             PomodorosCompleted = 0;
 
@@ -153,6 +155,7 @@ namespace YAPA
             {
                 TimerFlush.Stop(this);
                 AfterBreakTimerFlush.Stop(this);
+                OnPauseFlashTimer.Stop(this);
             }
             else
             {
@@ -171,6 +174,10 @@ namespace YAPA
             else if (ViewModel.Engine.Phase == PomodoroPhase.BreakEnded)
             {
                 animationToStart = AfterBreakTimerFlush;
+            }
+            else if (ViewModel.Engine.Phase == PomodoroPhase.Pause)
+            {
+                animationToStart = OnPauseFlashTimer;
             }
             if (animationToStart == null)
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YAPA.Shared.Contracts;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace YAPA.Shared.Common
 {
@@ -151,9 +152,16 @@ namespace YAPA.Shared.Common
 
         public void Stop()
         {
-            ResetTo(Phase == PomodoroPhase.Break || Phase == PomodoroPhase.WorkEnded ? Current.NextPomodoro : Current);
+            if (((Phase == PomodoroPhase.Pause || Phase == PomodoroPhase.Work) && MessageBox.Show(
+                            $"Do you really want to discard the current pomodoro?",
+                            "Unfinished pomodoro", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                            || !(Phase == PomodoroPhase.Pause || Phase == PomodoroPhase.Work))
+            {
 
-            OnStopped?.Invoke();
+                ResetTo(Phase == PomodoroPhase.Break || Phase == PomodoroPhase.WorkEnded ? Current.NextPomodoro : Current);
+
+                OnStopped?.Invoke();
+            }
         }
 
         public void Pause()
