@@ -26,6 +26,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0"></TextBlock>
@@ -92,6 +93,6 @@
         </ComboBox>
 
         <CheckBox x:Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="4" >Auto start break</CheckBox>
-
+        <CheckBox x:Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5" >Auto start work</CheckBox>
     </Grid>
 </UserControl>
