@@ -67,7 +67,7 @@ To create specific version: ``Build\BuildAndRelease.cmd 2.4.9``
 
 Nightly builds
 ===
-To enable nightly buids:
+To enable nightly builds:
 1. Go to folder: C:\Users\<username>\Documents\YAPA2
 2. Create empty file: PreRelease.txt
 3. Restart application.
