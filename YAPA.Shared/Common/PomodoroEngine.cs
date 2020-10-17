@@ -281,6 +281,18 @@ namespace YAPA.Shared.Common
                 _startDate = expectedWorkEndTime;
             }
         }
+        private async void PomodoroEngine_OnPomodoroBreakCompleted() {
+            var delayBeforeStarting = 1.5;
+            if (!_settings.AutoStartWork) {
+                return;
+            }
+            await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
+            if (IsRunning == false) {
+                var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause);
+                Start();
+                _startDate = expectedWorkEndTime;
+            }
+        }
 
         private void _timer_Tick()
         {
@@ -299,6 +311,7 @@ namespace YAPA.Shared.Common
             {
                 _timer.Stop();
                 Phase = PomodoroPhase.BreakEnded;
+                PomodoroEngine_OnPomodoroBreakCompleted();
             }
         }
 
@@ -461,6 +474,15 @@ namespace YAPA.Shared.Common
                 Profiles = temp;
             }
         }
+        public bool AutoStartWork {
+            get => Profiles[ActiveProfile].AutoStartWork;
+            set {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.AutoStartWork = value;
+                Profiles = temp;
+            }
+        }
 
         public bool CountBackwards
         {
@@ -509,6 +531,7 @@ namespace YAPA.Shared.Common
         public int BreakTime { get; set; }
         public int LongBreakTime { get; set; }
         public bool AutoStartBreak { get; set; }
+        public bool AutoStartWork { get; set; }
         public int PomodorosBeforeLongBreak { get; set; }
     }
 
