@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using YAPA.Shared.Contracts;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace YAPA.Plugins.MinimizeToTray
 {
@@ -51,7 +52,7 @@ namespace YAPA.Plugins.MinimizeToTray
                 Visible = SystemTrayVisible()
             };
 
-            _sysTrayIcon.DoubleClick += SysTrayIcon_DoubleClick;
+            _sysTrayIcon.MouseClick += SysTrayIcon_MouseClick;
 
             _viewModel.Engine.PropertyChanged += _engine_PropertyChanged;
 
@@ -199,8 +200,11 @@ namespace YAPA.Plugins.MinimizeToTray
             }
         }
 
-        private void SysTrayIcon_DoubleClick(object sender, EventArgs e)
+        private void SysTrayIcon_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+                return;
+
             _app.Show();
             _app.AppState = ApplicationState.Normal;
         }
