@@ -33,6 +33,12 @@ namespace YAPA.WPF.Themes.YAPA
             set => _settings.Update(nameof(Width), value);
         }
 
+        public double BackgroundOpacity
+        {
+          get => _settings.Get(nameof(BackgroundOpacity), 0.0);
+          set => _settings.Update(nameof(BackgroundOpacity), value);
+        }
+
         public double ClockOpacity
         {
             get => _settings.Get(nameof(ClockOpacity), 0.6);
@@ -49,6 +55,16 @@ namespace YAPA.WPF.Themes.YAPA
         {
             get => _settings.Get(nameof(ThemeColors), ThemeColors.White);
             set => _settings.Update(nameof(ThemeColors), value);
+        }
+
+        public Color BackgroundColor
+        {
+          get
+          {
+            var color = _settings.Get(nameof(BackgroundColor), "White");
+            return (Color)(ColorConverter.ConvertFromString(color) ?? Colors.White);
+          }
+          set => _settings.Update(nameof(BackgroundColor), value.ToString());
         }
 
         public Color TextColor
