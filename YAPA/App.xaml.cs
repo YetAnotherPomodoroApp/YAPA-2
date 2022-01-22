@@ -205,7 +205,7 @@ namespace YAPA
                 try
                 {
                     var httpUpdateUrl = CombineUri(httpUrl, updateType);
-                    logger.Fatal($"Updating from: {httpUpdateUrl}");
+                    logger.Info($"Updating from: {httpUpdateUrl}");
 
                     var newVersion = await UpdateFromUrl(httpUpdateUrl);
                     UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
