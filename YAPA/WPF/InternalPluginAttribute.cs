@@ -7,6 +7,7 @@ namespace YAPA.WPF
     {
         public int Order { get; set; }
         public bool Hide { get; set; }
+        public bool Disabled { get; set; }
 
         public BuiltInPluginAttribute()
         {

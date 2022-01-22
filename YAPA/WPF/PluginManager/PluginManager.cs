@@ -50,8 +50,14 @@ namespace YAPA.WPF.PluginManager
                 return Plugins
                 .Where(x =>
                 {
-                    var attribute = x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
-                    return attribute != null;
+                    var attributeObject = x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault();
+                    var attributeClass = attributeObject as BuiltInPluginAttribute;
+                    if (attributeClass != null && attributeClass.Disabled == false)
+                    {
+                        return true;
+                    }
+
+                    return false;
                 })
                 .OrderBy(x => ((BuiltInPluginAttribute)x.GetType().GetCustomAttributes(typeof(BuiltInPluginAttribute), false).FirstOrDefault()).Order);
             }
