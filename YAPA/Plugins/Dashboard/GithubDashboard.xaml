@@ -26,7 +26,7 @@
             <StackPanel Height="100">
                 <wpf:CartesianChart x:Name="Chart" Series="{Binding CompletedPomodoros}" MinHeight="130">
                     <wpf:CartesianChart.AxisY>
-                        <wpf:Axis Title="Hours" LabelFormatter="{Binding YFormatter}" MinValue="0"></wpf:Axis>
+                        <wpf:Axis Title="Total time" x:Name="AxisYLabels" MinValue="0"></wpf:Axis>
                     </wpf:CartesianChart.AxisY>
                     <wpf:CartesianChart.AxisX>
                         <wpf:Axis Title="Day" x:Name="ChartLabels" Labels="{Binding Labels}"></wpf:Axis>

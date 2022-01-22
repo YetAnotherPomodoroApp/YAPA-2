@@ -116,12 +116,17 @@ namespace YAPA.Plugins.Dashboard
                         seriesCollection.Add(
                                 new LineSeries
                                 {
-                                    Title = "Hours",
-                                    Values = new ChartValues<double>(lastPomodoros.Select(x => Math.Round((double)x.x.DurationMin / 60, 2)))
+                                    Title = "Total time",
+                                    Values = new ChartValues<double>(lastPomodoros.Select(x => (double)x.x.DurationMin))
                                 });
 
                         Chart.Series = seriesCollection;
-                        ChartLabels.Labels = Enumerable.Range(1, daysToShow).Reverse().Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString()).ToArray();
+                        AxisYLabels.LabelFormatter = x => TimeSpan.FromMinutes(x).ToString("g");
+                        ChartLabels.Labels = Enumerable
+                        .Range(1, daysToShow)
+                        .Reverse()
+                        .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
+                        .ToArray();
                     });
                 }
                 else
@@ -142,5 +147,11 @@ namespace YAPA.Plugins.Dashboard
                 });
             });
         }
+
+        public string HoursToTimestamp(double value)
+        {
+            return value.ToString() + "testas321";
+        }
+
     }
 }
