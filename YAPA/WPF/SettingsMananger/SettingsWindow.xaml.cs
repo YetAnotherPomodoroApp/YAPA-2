@@ -66,7 +66,7 @@ namespace YAPA.WPF.SettingsMananger
 
             SettingsTree.Items.Add(pluginsTree);
 
-            var aboutPage = new TreeViewItem { Header = "About" };
+            var aboutPage = new TreeViewItem { Header = "About", Tag = _container.Resolve(typeof(AboutPage)) };
             SettingsTree.Items.Add(aboutPage);
 
             UpdateNotificationMessage();

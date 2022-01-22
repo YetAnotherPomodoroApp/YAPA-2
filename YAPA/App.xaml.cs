@@ -54,6 +54,10 @@ namespace YAPA
                 Current.MainWindow.Show();
                 Current.MainWindow.Closed += MainWindow_Closed;
 
+                var logger = LogManager.GetLogger("YAPA2");
+                logger.Info("Application starting");
+
+
                 application.Init();
                 application.Run();
 
@@ -186,6 +190,8 @@ namespace YAPA
 
         private static async Task Update(ISettingManager settings, IEnvironment environment, PomodoroEngineSettings engineSettings)
         {
+            var logger = LogManager.GetLogger("YAPA2");
+
             try
             {
                 var releaseUrl = "yapa-2/";
@@ -199,19 +205,23 @@ namespace YAPA
                 try
                 {
                     var httpUpdateUrl = CombineUri(httpUrl, updateType);
+                    logger.Fatal($"Updating from: {httpUpdateUrl}");
+
                     var newVersion = await UpdateFromUrl(httpUpdateUrl);
                     UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    logger.Fatal(e, $"Unhandled exception while updating from http");
+
                     var ftpUpdateUrl = CombineUri(ftpUrl, updateType);
                     var newVersion = await UpdateFromUrl(ftpUpdateUrl);
                     UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //Ignore
+                logger.Fatal(e, $"Unhandled exception while updating");
             }
         }
 
