@@ -39,6 +39,8 @@ Invoke-WebRequest -Uri  $lastReleasePath -OutFile "Release\$lastRelease"
 
 ..\packages\squirrel.windows.1.5.28\tools\Squirrel --releasify YAPA2.$squirrelVersion.nupkg --releaseDir=Release  --no-msi
 
+Move-Item -Path Release\Setup.exe -Destination Release\YAPA2.exe -Force
+
 
 
 
