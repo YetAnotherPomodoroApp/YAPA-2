@@ -197,27 +197,15 @@ namespace YAPA
                 var releaseUrl = "yapa-2/";
                 var preReleaseUrl = "yapa-2-pre-release/";
 
-                var ftpUrl = "ftp://s1.floatas.net";
                 var httpUrl = "http://app.floatas.net/installers";
 
                 var updateType = environment.PreRelease() ? preReleaseUrl : releaseUrl;
 
-                try
-                {
-                    var httpUpdateUrl = CombineUri(httpUrl, updateType);
-                    logger.Info($"Updating from: {httpUpdateUrl}");
+                var httpUpdateUrl = CombineUri(httpUrl, updateType);
+                logger.Info($"Updating from: {httpUpdateUrl}");
 
-                    var newVersion = await UpdateFromUrl(httpUpdateUrl);
-                    UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
-                }
-                catch (Exception e)
-                {
-                    logger.Fatal(e, $"Unhandled exception while updating from http");
-
-                    var ftpUpdateUrl = CombineUri(ftpUrl, updateType);
-                    var newVersion = await UpdateFromUrl(ftpUpdateUrl);
-                    UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
-                }
+                var newVersion = await UpdateFromUrl(httpUpdateUrl);
+                UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
             }
             catch (Exception e)
             {
