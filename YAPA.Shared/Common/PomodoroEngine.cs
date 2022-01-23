@@ -281,13 +281,16 @@ namespace YAPA.Shared.Common
                 _startDate = expectedWorkEndTime;
             }
         }
-        private async void PomodoroEngine_OnPomodoroBreakCompleted() {
+        private async void PomodoroEngine_OnPomodoroBreakCompleted()
+        {
             var delayBeforeStarting = 1.5;
-            if (!_settings.AutoStartWork) {
+            if (!_settings.AutoStartWork)
+            {
                 return;
             }
             await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
-            if (IsRunning == false) {
+            if (IsRunning == false)
+            {
                 var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause);
                 Start();
                 _startDate = expectedWorkEndTime;
@@ -474,14 +477,22 @@ namespace YAPA.Shared.Common
                 Profiles = temp;
             }
         }
-        public bool AutoStartWork {
+        public bool AutoStartWork
+        {
             get => Profiles[ActiveProfile].AutoStartWork;
-            set {
+            set
+            {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
                 var profile = temp[ActiveProfile];
                 profile.AutoStartWork = value;
                 Profiles = temp;
             }
+        }
+
+        public string FontFamily
+        {
+            get => _settings.Get(nameof(FontFamily), string.Empty);
+            set => _settings.Update(nameof(FontFamily), value);
         }
 
         public bool CountBackwards

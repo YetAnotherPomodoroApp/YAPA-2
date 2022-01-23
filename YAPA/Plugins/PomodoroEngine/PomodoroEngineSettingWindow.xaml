@@ -3,8 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:pomodoroEngine="clr-namespace:YAPA.Plugins.PomodoroEngine"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
+    <UserControl.Resources>
+        <pomodoroEngine:StringToFontFamily x:Key="StringToFontFamily" />
+
+        <DataTemplate x:Key="ListBoxTaskTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="{Binding}"/>
+                <TextBlock Grid.Row="1"  Text="1234567890" FontFamily="{Binding Converter={StaticResource StringToFontFamily}}"
+                           FontSize="24"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -34,10 +52,9 @@
 
             <CheckBox  IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" >Count backwards</CheckBox>
 
-
-            <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="10"></TextBlock>
+            <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="7"></TextBlock>
             <ComboBox x:Name="CounterList"
-                      Grid.Column="1" Grid.Row="10" MinWidth="72"
+                      Grid.Column="1" Grid.Row="7" MinWidth="72"
                       Margin="16 0 0 0"
                       VerticalAlignment="Bottom" 
                       IsEditable="True"
@@ -45,9 +62,29 @@
                       SelectedValuePath="Item"
                       SelectedValue="{Binding Settings.Counter}"
                       >
-
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="8" ></Separator>
+
+
+            <TextBlock Text="Font" Grid.Column="0" Grid.Row="9"></TextBlock>
+            <ComboBox materialDesign:HintAssist.Hint="" x:Name="FontSelector"
+                         Grid.Column="1" Grid.Row="9"  MinWidth="72"
+                          Margin="16 0 0 0"
+                          VerticalAlignment="Bottom" 
+                          IsEditable="False"
+                          ItemTemplate="{StaticResource ListBoxTaskTemplate}">
+                <ComboBox.Text>
+                    <Binding Path="Settings.FontFamily" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </ComboBox.Text>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>

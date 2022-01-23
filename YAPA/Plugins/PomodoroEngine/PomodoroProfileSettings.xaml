@@ -4,14 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:YAPA.Plugins.PomodoroEngine"
              xmlns:pomodoroEngine="clr-namespace:YAPA.Plugins.PomodoroEngine"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <pomodoroEngine:SecondsToMinutesConverter x:Key="SecToMinConverter" />
         <pomodoroEngine:InverseBoolean x:Key="InverseBooleanConverter" />
-
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -20,6 +18,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -38,21 +37,24 @@
                           SelectedItem="{Binding Settings.ActiveProfile, Mode=OneWay}" 
                          >
         </ComboBox>
+
+
         <Button Grid.Column="2" Grid.Row="0" Margin="5,1,5,1" Content="Remove" Click="RemoveProfile_Click" x:Name="RemoveButton" IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}"></Button>
         <Button Grid.Column="2" Grid.Row="1" Margin="5,1,5,1" Content="Add" Click="AddProfile_Click" x:Name="AddButton" IsEnabled="{Binding Engine.IsRunning, Converter={StaticResource InverseBooleanConverter}}"></Button>
 
         <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1"></TextBlock>
-        <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="WorkTimeSelect"
+        <ComboBox materialDesign:HintAssist.Hint="" x:Name="WorkTimeSelect"
                          Grid.Column="1" Grid.Row="1"  MinWidth="72"
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
-                          IsEditable="True">
+                          IsEditable="True"
+>
             <ComboBox.Text>
                 <Binding Path="Settings.WorkTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource SecToMinConverter}">
                 </Binding>
             </ComboBox.Text>
             <ComboBox.ItemsPanel>
-                <ItemsPanelTemplate>
+                <ItemsPanelTemplate >
                     <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
@@ -94,5 +96,6 @@
 
         <CheckBox x:Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="4" >Auto start break</CheckBox>
         <CheckBox x:Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5" >Auto start work</CheckBox>
+
     </Grid>
 </UserControl>

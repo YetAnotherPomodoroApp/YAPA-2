@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -37,6 +37,7 @@ namespace YAPA
             _pomodoroRepository = pomodoroRepository;
             _engineSettings = engineSettings;
 
+
             InitializeComponent();
 
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
@@ -61,21 +62,23 @@ namespace YAPA
             PropertyChanged += YapaTheme_PropertyChanged;
             UpdateDisplayedTime();
             UpdateSecondVisibility();
+
+            UpdateFontFamily(_engineSettings.FontFamily);
         }
 
         private void UpdateDisplayedTime()
         {
             var minutes = CurrentTimeValue / 60;
             var seconds = CurrentTimeValue % 60;
-            CurrentTimeMinutes.Text = $"{minutes / 10:0}";
-            CurrentTimeMinutes2.Text = $"{minutes % 10:0}";
-            CurrentTimeSeconds.Text = $"{seconds / 10:0}";
-            CurrentTimeSeconds2.Text = $"{seconds % 10:0}";
+
+            var numberLength = Math.Max(Math.Truncate((CurrentIntervalLength / 60.0d)).ToString().Length, 2);
+
+            CurrentTimeMinutes.Text = minutes.ToString("D" + numberLength);
+            CurrentTimeSeconds.Text = $"{seconds:00}";
 
             if (SecondsVisible == Visibility.Collapsed && minutes == 0 && seconds > 0)
             {
-                CurrentTimeMinutes.Text = "<";
-                CurrentTimeMinutes2.Text = "1";
+                CurrentTimeMinutes.Text = "<1";
             }
         }
 
@@ -89,27 +92,35 @@ namespace YAPA
 
         private void HideSeconds()
         {
-            CurrentTime.ColumnDefinitions.Clear();
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-
-            SecondsVisible = Visibility.Collapsed;
-            RaisePropertyChanged(nameof(SecondsVisible));
+            UpdateSecondsVisibility(Visibility.Collapsed);
         }
 
         private void ShowSeconds()
         {
-            CurrentTime.ColumnDefinitions.Clear();
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-            CurrentTime.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
+            UpdateSecondsVisibility(Visibility.Visible);
+        }
 
-            SecondsVisible = Visibility.Visible;
+        private void UpdateSecondsVisibility(Visibility visibility)
+        {
+            CurrentTimeSeconds.Visibility = visibility;
+            CurrentTimeSeparator.Visibility = visibility;
+
+            SecondsVisible = visibility;
             RaisePropertyChanged(nameof(SecondsVisible));
         }
 
+        private void UpdateFontFamily(string fontName)
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                     "Resources",
+                     "Fonts",
+                     fontName);
+            var font = new FontFamily(path);
+
+            CurrentTimeSeconds.FontFamily = font;
+            CurrentTimeSeparator.FontFamily = font;
+            CurrentTimeMinutes.FontFamily = font;
+        }
 
         private Visibility _secondsVisibility = Visibility.Visible;
         public Visibility SecondsVisible
@@ -439,6 +450,7 @@ namespace YAPA
         }
 
         public int CurrentTimeValue => ViewModel.Engine.DisplayValue;
+        public int CurrentIntervalLength => ViewModel.Engine.CurrentIntervalLength;
 
         private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

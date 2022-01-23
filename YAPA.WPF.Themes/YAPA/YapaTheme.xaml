@@ -52,43 +52,15 @@
                 </Grid.RowDefinitions>
 
                 <!-- Current time -->
-                <Grid
+                <StackPanel
                 Background="Transparent"
                 IsHitTestVisible="True"
                     Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                    Orientation="Horizontal"
                 >
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="32" />
-                        <ColumnDefinition Width="32" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="32" />
-                        <ColumnDefinition Width="32" />
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="CurrentTimeMinutes" Grid.Column="0"
-               Cursor="Arrow"
-               FontFamily="Segoe UI Light"
-               FontSize="60"
-               Foreground="{Binding TextBrush}"
-               Opacity="{Binding ClockOpacity}"
-               Background="Transparent"    
-               HorizontalAlignment="Right" 
-               VerticalAlignment="Center"                       
-               FontStretch="UltraCondensed"
-                               Text="0"
-               >
-                        <TextBlock.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </TextBlock.Effect>
-                    </TextBlock>
-
-                    <TextBlock x:Name="CurrentTimeMinutes2" Grid.Column="1"
+                    <TextBlock x:Name="CurrentTimeMinutes" Grid.Column="2"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
@@ -111,10 +83,11 @@
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock x:Name="CurrentTimeSeparator" Grid.Column="2"
+                    <TextBlock x:Name="CurrentTimeSeparator" Grid.Column="3"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
+               Margin="-10,0,-10,0"
                Foreground="{Binding TextBrush}"
                Opacity="{Binding ClockOpacity}"
                Background="Transparent"    
@@ -134,7 +107,7 @@
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock x:Name="CurrentTimeSeconds" Grid.Column="3"
+                    <TextBlock x:Name="CurrentTimeSeconds" Grid.Column="4"
                Cursor="Arrow"
                FontFamily="Segoe UI Light"
                FontSize="60"
@@ -157,29 +130,7 @@
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock x:Name="CurrentTimeSeconds2" Grid.Column="4"
-               Cursor="Arrow"
-               FontFamily="Segoe UI Light"
-               FontSize="60"
-               Foreground="{Binding TextBrush}"
-               Opacity="{Binding ClockOpacity}"
-               Background="Transparent"    
-               HorizontalAlignment="Right" 
-                               Visibility="{Binding SecondsVisible}"
-               VerticalAlignment="Center"                       
-               FontStretch="UltraCondensed"
-                               Text="0"
-               >
-                        <TextBlock.Effect>
-                            <DropShadowEffect
-				  ShadowDepth="0"
-				  Direction="0"
-				  Color="{Binding TextShadowColor}"
-				  Opacity="{Binding ShadowOpacity}"
-				  BlurRadius="10" />
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Grid>
+                </StackPanel>
 
                 <TextBlock Text="{Binding Status}" Grid.Column="0" Grid.Row="0"
                                VerticalAlignment="Center"

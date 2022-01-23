@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -21,7 +24,7 @@ namespace YAPA.Plugins.PomodoroEngine
             settings.DeferChanges();
 
             InitializeComponent();
-
+            var a = AppDomain.CurrentDomain.BaseDirectory;
             var oneHour = Enumerable.Range(1, 60).Reverse().ToList();
             WorkTimeSelect.ItemsSource = oneHour;
             BreakTimeSelect.ItemsSource = oneHour;
@@ -65,7 +68,7 @@ namespace YAPA.Plugins.PomodoroEngine
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName]string name = "")
+        private void NotifyPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(name, new PropertyChangedEventArgs(name));
         }
