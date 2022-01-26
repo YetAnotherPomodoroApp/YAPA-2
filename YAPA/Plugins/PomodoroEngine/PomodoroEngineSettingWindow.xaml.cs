@@ -7,22 +7,22 @@ using System.Windows.Data;
 using System.Windows.Media;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
+using System.Linq;
 
 namespace YAPA.Plugins.PomodoroEngine
 {
     public partial class PomodoroEngineSettingWindow
     {
         private readonly ISettingManager _settingManager;
+        private readonly IFontService _fontService;
 
-        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine, PomodoroProfileSettings profileSettings, ISettings globalSettings, ISettingManager settingManager)
+        public PomodoroEngineSettingWindow(PomodoroEngineSettings settings, IPomodoroEngine engine, PomodoroProfileSettings profileSettings, ISettings globalSettings, ISettingManager settingManager, IFontService fontService)
         {
             settings.DeferChanges();
             InitializeComponent();
 
-            globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
             _settingManager = settingManager;
-
-
+            _fontService = fontService;
             var counterValues = new List<CounterListItem>
             {
                 new CounterListItem{ Item = CounterEnum.CompletedThisSession, Title = "Completed this session"},
@@ -39,36 +39,7 @@ namespace YAPA.Plugins.PomodoroEngine
             ProfileSetting.Children.Clear();
             ProfileSetting.Children.Add(profileSettings);
 
-            var fonts = new List<string>
-            {
-                "Novar.ttf#Novar",
-                "Zoika.ttf#Zoika font",
-                "Segoe UI Light.ttf#Segoe UI Light",
-                "Cascadia.ttf#Cascadia Code",
-                "ANDALEMO.TTF#Andale Mono",
-                "cinecavD type.ttf#CinecavD Type",
-                "CutiveMono-Regular.ttf#Cutive Mono",
-                "Elronmonospace.ttf#ElroNet Monospace",
-                "LibertinusMono-Regular.otf#Libertinus Mono",
-                "MajorMonoDisplay-Regular.ttf#Major Mono Display",
-                "XanhMono-Regular.ttf#Xanh Mono",
-                "Nitti-Normal.ttf#Nitti",
-                "Ra-Mono.otf#Ra Mono",
-                "SabirMonoRegular.otf#Sabir Mono",
-                "Sanchezregular.otf#Sanchez Regular",
-                "Solid-Mono.ttf#Solid Mono",
-                "Torrance-lgZl0.ttf#Torrance"
-            };
-
-            FontSelector.ItemsSource = fonts;
-        }
-
-        private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(Settings.FontFamily)}")
-            {
-                _settingManager.RestartNeeded = true;
-            }
+            FontSelector.ItemsSource = _fontService.GetAllFonts();
         }
 
         public PomodoroEngineSettings Settings { get; }
@@ -120,11 +91,7 @@ namespace YAPA.Plugins.PomodoroEngine
             var fontName = value?.ToString();
             if (!string.IsNullOrEmpty(fontName))
             {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                      "Resources",
-                      "Fonts",
-                      value.ToString());
-                var font = new FontFamily(path);
+                var font = new FontFamily(fontName);
                 return font;
             }
             return new FontFamily();

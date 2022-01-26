@@ -17,8 +17,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{Binding}"/>
-                <TextBlock Grid.Row="1"  Text="1234567890" FontFamily="{Binding Converter={StaticResource StringToFontFamily}}"
+                <TextBlock Grid.Row="0" Text="{Binding Key}"/>
+                <TextBlock Grid.Row="1"  Text="1234567890" FontFamily="{Binding Value, Converter={StaticResource StringToFontFamily}}"
                            FontSize="24"/>
             </Grid>
         </DataTemplate>
@@ -78,18 +78,15 @@
                           Margin="16 0 0 0"
                           VerticalAlignment="Bottom" 
                           IsEditable="False"
+                          SelectedValuePath="Key"
+                            SelectedValue="{Binding Settings.FontFamily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           ItemTemplate="{StaticResource ListBoxTaskTemplate}">
-                <ComboBox.Text>
-                    <Binding Path="Settings.FontFamily" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    </Binding>
-                </ComboBox.Text>
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate >
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
             </ComboBox>
-
         </Grid>
     </Grid>
 </UserControl>

@@ -24,20 +24,20 @@ namespace YAPA
         private YapaThemeSettings Settings { get; }
         private readonly IPomodoroRepository _pomodoroRepository;
         private readonly PomodoroEngineSettings _engineSettings;
+        private readonly IFontService _fontService;
 
         public int PomodorosCompleted { get; set; }
 
         private readonly Storyboard TimerFlush;
         private readonly Storyboard AfterBreakTimerFlush;
 
-        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, IPomodoroRepository pomodoroRepository, PomodoroEngineSettings engineSettings) : base(viewModel)
+        public YapaTheme(IMainViewModel viewModel, YapaThemeSettings settings, IPomodoroEngine engine, ISettings globalSettings, IPomodoroRepository pomodoroRepository, PomodoroEngineSettings engineSettings, IFontService fontService) : base(viewModel)
         {
             ViewModel = viewModel;
             Settings = settings;
             _pomodoroRepository = pomodoroRepository;
             _engineSettings = engineSettings;
-
-
+            _fontService = fontService;
             InitializeComponent();
 
             TimerFlush = (Storyboard)TryFindResource("FlashTimer");
@@ -117,11 +117,7 @@ namespace YAPA
 
         private void UpdateFontFamily(string fontName)
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                     "Resources",
-                     "Fonts",
-                     fontName);
-            var font = new FontFamily(path);
+            var font = new FontFamily(_fontService.GetFontPath(fontName));
 
             CurrentTimeSeconds.FontFamily = font;
             CurrentTimeSeconds2.FontFamily = font;

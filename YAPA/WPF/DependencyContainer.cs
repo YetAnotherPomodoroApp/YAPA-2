@@ -16,6 +16,7 @@ using YAPA.WPF.SettingsMananger;
 using YAPA.WPF.Specifics;
 using YAPA.WPF.ThemeManager;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+using YAPA.WPF.Shared.Common;
 
 namespace YAPA.WPF
 {
@@ -101,6 +102,8 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(PomodoroProfileSettings));
 
             builder.RegisterType(typeof(SettingsWindow)).As<SettingsWindow>().SingleInstance();
+
+            builder.RegisterType(typeof(FontService)).As<IFontService>();
 
 
             var container = builder.Build();
