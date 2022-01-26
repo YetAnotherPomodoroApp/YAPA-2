@@ -71,14 +71,20 @@ namespace YAPA
             var minutes = CurrentTimeValue / 60;
             var seconds = CurrentTimeValue % 60;
 
-            var numberLength = Math.Max(Math.Truncate((CurrentIntervalLength / 60.0d)).ToString().Length, 2);
+            var thirdDigit = Math.Truncate(minutes / 100.0);
 
-            CurrentTimeMinutes.Text = minutes.ToString("D" + numberLength);
-            CurrentTimeSeconds.Text = $"{seconds:00}";
+            CurrentTimeMinutes3.Text = thirdDigit.ToString();
+            CurrentTimeMinutes3.Visibility = thirdDigit > 0 ? Visibility.Visible : Visibility.Collapsed;
+            CurrentTimeMinutes2.Text = Math.Truncate(minutes / 10.0 % 10).ToString();
+            CurrentTimeMinutes.Text = Math.Truncate(minutes % 10.0).ToString();
+
+            CurrentTimeSeconds2.Text = Math.Truncate(seconds / 10.0).ToString();
+            CurrentTimeSeconds.Text = Math.Truncate(seconds % 10.0).ToString();
 
             if (SecondsVisible == Visibility.Collapsed && minutes == 0 && seconds > 0)
             {
-                CurrentTimeMinutes.Text = "<1";
+                CurrentTimeMinutes2.Text = "<";
+                CurrentTimeMinutes.Text = "1";
             }
         }
 
@@ -118,8 +124,11 @@ namespace YAPA
             var font = new FontFamily(path);
 
             CurrentTimeSeconds.FontFamily = font;
+            CurrentTimeSeconds2.FontFamily = font;
             CurrentTimeSeparator.FontFamily = font;
             CurrentTimeMinutes.FontFamily = font;
+            CurrentTimeMinutes2.FontFamily = font;
+            CurrentTimeMinutes3.FontFamily = font;
         }
 
         private Visibility _secondsVisibility = Visibility.Visible;
@@ -229,6 +238,11 @@ namespace YAPA
                     UpdateSecondVisibility();
                 }
 
+            }
+
+            if (e.PropertyName == $"{nameof(PomodoroEngine)}.{nameof(PomodoroEngineSettings.FontFamily)}")
+            {
+                UpdateFontFamily(_engineSettings.FontFamily);
             }
         }
 

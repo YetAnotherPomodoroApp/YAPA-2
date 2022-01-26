@@ -41,6 +41,9 @@ namespace YAPA.Plugins.PomodoroEngine
 
             var fonts = new List<string>
             {
+                "Novar.ttf#Novar",
+                "Zoika.ttf#Zoika font",
+                "Segoe UI Light.ttf#Segoe UI Light",
                 "Cascadia.ttf#Cascadia Code",
                 "ANDALEMO.TTF#Andale Mono",
                 "cinecavD type.ttf#CinecavD Type",
