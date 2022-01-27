@@ -31,6 +31,11 @@ namespace YAPA.WPF.Shared.Common
         private Dictionary<string, string> GetFontsFromFolder(string folder)
         {
             var fonts = new Dictionary<string, string>();
+            if (!Directory.Exists(folder))
+            {
+                return new Dictionary<string, string>();
+            }
+
             var allFiles = Directory.GetFiles(folder);
             foreach (var file in allFiles)
             {
