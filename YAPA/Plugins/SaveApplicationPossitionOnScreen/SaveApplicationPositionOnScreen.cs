@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
+using WpfScreenHelper;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
 using GDIScreen = System.Windows.Forms.Screen;
@@ -62,17 +62,17 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
             }
             else
             {
-                calculatedLeft = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / workingArea.Width;
+                calculatedLeft = (Screen.PrimaryScreen.WorkingArea.Width - _app.Width - 15.0) / workingArea.Width;
                 calculatedTop = 0;
             }
-            
+
             calculatedLeft += screenBounds.Left;
             calculatedTop += screenBounds.Top;
 
-            if (!GDIScreen.AllScreens.ToList().Any(x => x.Bounds.Contains((int)calculatedLeft, (int)calculatedTop)))
+            if (!Screen.AllScreens.ToList().Any(x => x.Bounds.Contains((int)calculatedLeft, (int)calculatedTop)))
             {
                 //misscalculated, app is not visible on any screen :(
-                calculatedLeft = (SystemParameters.PrimaryScreenWidth - _app.Width - 15.0) / workingArea.Width;
+                calculatedLeft = (Screen.PrimaryScreen.WorkingArea.Width - _app.Width - 15.0) / workingArea.Width;
                 calculatedTop = 0;
             }
 
@@ -80,10 +80,10 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
             _app.Top = calculatedTop;
         }
 
-        private GDIScreen GetActiveScreen()
+        private Screen GetActiveScreen()
         {
-            var activeScreen = GDIScreen.AllScreens.FirstOrDefault(x => string.Equals(x.DeviceName, _settings.ActiveMonitor));
-            return activeScreen ?? GDIScreen.FromHandle(_app.WindowHandle);
+            var activeScreen = Screen.AllScreens.FirstOrDefault(_ => string.Equals(_.DeviceName, _settings.ActiveMonitor));
+            return activeScreen ?? Screen.FromHandle(_app.WindowHandle);
         }
     }
 

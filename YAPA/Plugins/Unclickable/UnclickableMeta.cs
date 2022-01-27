@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using YAPA.Shared.Contracts;
 using GDIScreen = System.Windows.Forms.Screen;
@@ -71,23 +72,23 @@ namespace YAPA.Plugins.Unclickable
                 return;
             }
 
-            var screen = GDIScreen.FromHandle(_app.WindowHandle);
+            var screen = Screen.FromHandle(_app.WindowHandle);
 
             if (_settings.UnclickablityType == UnclickablityType.MoveHorizontally)
             {
                 var appCenter = _window.Left - screen.Bounds.X;
-                var relativePossition = 1 - appCenter / (screen.Bounds.Width - _window.Width / 2);
+                var relativePossition = 1 - appCenter / (screen.Bounds.Width - _window.Width );
 
-                var newPossition = relativePossition * (screen.Bounds.Width - _window.Width / 2);
+                var newPossition = relativePossition * (screen.Bounds.Width - _window.Width );
 
                 _window.Left = newPossition + screen.Bounds.X;
             }
             else if (_settings.UnclickablityType == UnclickablityType.MoveVertically)
             {
                 var appCenter = _window.Top - screen.Bounds.Y;
-                var relativePossition = 1 - appCenter / (screen.Bounds.Height - _window.Height / 2);
+                var relativePossition = 1 - appCenter / (screen.Bounds.Height - _window.Height );
 
-                var newPossition = relativePossition * (screen.Bounds.Height - _window.Height / 2);
+                var newPossition = relativePossition * (screen.Bounds.Height - _window.Height);
 
                 _window.Top = newPossition + screen.Bounds.Y;
             }
