@@ -8,7 +8,7 @@
     <authors>Šarūnas Intas</authors>
     <description>Pomodoro application</description>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>Copyright 2019</copyright>
+    <copyright>Copyright 2022</copyright>
     <dependencies />
   </metadata>
   <files>
@@ -17,8 +17,11 @@
 	<file src="..\Release\x64\*.*" target="lib\net45\x64\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
 	<file src="..\Release\x86\*.*" target="lib\net45\x86\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
 	<file src="..\Release\Resources\*.*" target="lib\net45\Resources\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
+	<file src="..\Release\Resources\Fonts\*.*" target="lib\net45\Resources\Fonts\" exclude="**\*.pdb;**\*.nupkg;**\*.vshost.*"/>
   </files>
 </package>
+
+
 
 
 

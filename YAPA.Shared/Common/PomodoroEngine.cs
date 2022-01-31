@@ -477,6 +477,7 @@ namespace YAPA.Shared.Common
                 Profiles = temp;
             }
         }
+
         public bool AutoStartWork
         {
             get => Profiles[ActiveProfile].AutoStartWork;
