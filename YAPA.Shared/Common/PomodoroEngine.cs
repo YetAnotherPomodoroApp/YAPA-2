@@ -491,7 +491,7 @@ namespace YAPA.Shared.Common
 
         public string FontFamily
         {
-            get => _settings.Get(nameof(FontFamily), string.Empty);
+            get => _settings.Get(nameof(FontFamily), "Segoe UI Light.ttf");
             set => _settings.Update(nameof(FontFamily), value);
         }
 
