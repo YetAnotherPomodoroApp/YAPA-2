@@ -1,6 +1,7 @@
  #-------Get Version from YAPA.exe
  $fullVersion = (dir ..\Release\Yapa.exe).VersionInfo.FileVersion
  $baseUri = 'http://app.floatas.net/installers/YAPA-2/'
+ #-PRE-RELEASE
  $squirrelVersionRegex = "\d+\.\d+\.\d+"
  $squirrelVersion = [regex]::matches($fullVersion, $squirrelVersionRegex)
 
@@ -39,7 +40,7 @@ Invoke-WebRequest -Uri  $lastReleasePath -OutFile "Release\$lastRelease"
 
 ..\packages\squirrel.windows.1.5.28\tools\Squirrel --releasify YAPA2.$squirrelVersion.nupkg --releaseDir=Release  --no-msi
 
-Move-Item -Path Release\Setup.exe -Destination Release\YAPA2.exe -Force
+Move-Item -Path Release\Setup.exe -Destination Release\YAPA2.$squirrelVersion.exe -Force
 
 
 
