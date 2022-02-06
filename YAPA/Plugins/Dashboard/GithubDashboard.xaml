@@ -19,7 +19,7 @@
                     <TextBlock Height="11"  Margin="0,0,0,12" FontSize="10" VerticalAlignment="Top" Text="Wen"></TextBlock>
                     <TextBlock Height="11"  Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="Fri"></TextBlock>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel" Width="377">
+                <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel" Width="530">
 
                 </StackPanel>
             </StackPanel>

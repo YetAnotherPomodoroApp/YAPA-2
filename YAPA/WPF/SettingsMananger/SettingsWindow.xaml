@@ -11,7 +11,7 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Settings" Height="370" Width="700"
+        Title="Settings" Height="370" Width="800"
         Topmost="True">
     <Window.Resources>
         <ResourceDictionary>

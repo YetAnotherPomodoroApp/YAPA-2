@@ -23,11 +23,12 @@ namespace YAPA.Shared.Common
 
         public IEnumerable<PomodoroEntity> GetPomodoros()
         {
-            //last 4 full months + current
-            var date = DateTime.Now.Date.AddMonths(-4);
+            var date = DateTime.Now.Date.AddMonths(-6);
             var fromDate = new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-            var totalDays = (int)(DateTime.Now.Date - fromDate).TotalDays;
+            var today = DateTime.Now.Date;
+
+            var totalDays = (int)(today - fromDate).TotalDays;
             var emptyPomodoros = Enumerable.Range(0, totalDays + 1).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 

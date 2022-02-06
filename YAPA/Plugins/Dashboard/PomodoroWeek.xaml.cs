@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,23 +66,50 @@ namespace YAPA.Plugins.Dashboard
             }
 
             var pomodoroViewModels = week as PomodoroViewModel[] ?? week.ToArray();
-            if (pomodoroViewModels.Length < 7)
+
+            var firstDayOfWeek = System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            var maxDate = pomodoroViewModels.Max(x => x.DateTime);
+            var minDate = pomodoroViewModels.Min(x => x.DateTime);
+            var daysToAdd = 0;
+
+            var dfi = DateTimeFormatInfo.CurrentInfo;
+            var cal = dfi?.Calendar;
+
+            if (cal == null)
             {
-                var firstDay = pomodoroViewModels.Min(x => x.DateTime);
-                if (firstDay.DayOfWeek != System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek)
+                return;
+            }
+
+            if (cal.GetDayOfWeek(minDate) == firstDayOfWeek)
+            {
+                //do nothing, this is start of the week
+            }
+            else if (cal.GetDayOfWeek(maxDate.AddDays(1)) != firstDayOfWeek)
+            {
+                //this is not the start of the week and not the end of the week
+                var daysTillStartOfWeek = 0;
+                while (cal.GetDayOfWeek(maxDate.AddDays(1)) != firstDayOfWeek)
                 {
-                    for (var i = 0; i < 7 - pomodoroViewModels.Length; i++)
-                    {
-                        var green = new Rectangle
-                        {
-                            Width = 11,
-                            Height = 11,
-                            Fill = Brushes.Transparent,
-                            Margin = new Thickness(0, 0, 0, 1)
-                        };
-                        PomodorPanel.Children.Add(green);
-                    }
+                    maxDate = maxDate.AddDays(1);
+                    daysTillStartOfWeek++;
                 }
+                daysToAdd = 7 - pomodoroViewModels.Length - daysTillStartOfWeek;
+            }
+            else if (cal.GetDayOfWeek(maxDate.AddDays(1)) == firstDayOfWeek)
+            {
+                daysToAdd = 7 - pomodoroViewModels.Length;
+            }
+
+            for (var i = 0; i < daysToAdd; i++)
+            {
+                var green = new Rectangle
+                {
+                    Width = 11,
+                    Height = 11,
+                    Fill = Brushes.Transparent,
+                    Margin = new Thickness(0, 0, 0, 1)
+                };
+                PomodorPanel.Children.Add(green);
             }
 
             foreach (var pomodoroViewModel in pomodoroViewModels)
