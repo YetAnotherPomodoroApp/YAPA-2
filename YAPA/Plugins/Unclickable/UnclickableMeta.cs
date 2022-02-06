@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Interop;
 using YAPA.Shared.Contracts;
-using GDIScreen = System.Windows.Forms.Screen;
 
 namespace YAPA.Plugins.Unclickable
 {
@@ -24,8 +22,6 @@ namespace YAPA.Plugins.Unclickable
         private readonly ISettings _globalSettings;
         private readonly Window _window;
 
-        private readonly IApplication _app;
-
         private bool _setOnce;
 
         private int _extendedStyle;
@@ -38,13 +34,11 @@ namespace YAPA.Plugins.Unclickable
             _settings = settings;
             _globalSettings = globalSettings;
             _window = (Window)app;
-            _app = app;
 
             _engine.PropertyChanged += _engine_PropertyChanged;
 
             _window.Loaded += (sender, args) => SaveInitialStyle();
 
-            _window.MouseEnter += _window_MouseEnter;
             _globalSettings.PropertyChanged += _globalSettings_PropertyChanged; ;
         }
 
@@ -57,42 +51,6 @@ namespace YAPA.Plugins.Unclickable
                     Clickable();
                 }
             }
-        }
-
-        private void _window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (_settings.UnclickablityType != UnclickablityType.MoveHorizontally &&
-                _settings.UnclickablityType != UnclickablityType.MoveVertically)
-            {
-                return;
-            }
-
-            if (_engine.Phase != PomodoroPhase.Break && _engine.Phase != PomodoroPhase.Work)
-            {
-                return;
-            }
-
-            var screen = Screen.FromHandle(_app.WindowHandle);
-
-            if (_settings.UnclickablityType == UnclickablityType.MoveHorizontally)
-            {
-                var appCenter = _window.Left - screen.Bounds.X;
-                var relativePossition = 1 - appCenter / (screen.Bounds.Width - _window.Width );
-
-                var newPossition = relativePossition * (screen.Bounds.Width - _window.Width );
-
-                _window.Left = newPossition + screen.Bounds.X;
-            }
-            else if (_settings.UnclickablityType == UnclickablityType.MoveVertically)
-            {
-                var appCenter = _window.Top - screen.Bounds.Y;
-                var relativePossition = 1 - appCenter / (screen.Bounds.Height - _window.Height );
-
-                var newPossition = relativePossition * (screen.Bounds.Height - _window.Height);
-
-                _window.Top = newPossition + screen.Bounds.Y;
-            }
-
         }
 
         private void _engine_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -165,9 +123,7 @@ namespace YAPA.Plugins.Unclickable
 
     public enum UnclickablityType
     {
-        ClickThrough,
-        MoveHorizontally,
-        MoveVertically
+        ClickThrough
     }
 
     public class UnclickableSettings : IPluginSettings
