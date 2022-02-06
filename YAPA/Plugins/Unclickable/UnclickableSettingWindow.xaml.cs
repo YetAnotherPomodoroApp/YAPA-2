@@ -16,8 +16,6 @@ namespace YAPA.Plugins.Unclickable
             var counterValues = new List<BehaviourListItem>
             {
                 new BehaviourListItem{ Item = UnclickablityType.ClickThrough, Title = "Click through"},
-                new BehaviourListItem{ Item = UnclickablityType.MoveHorizontally, Title = "Move horizontally"},
-                new BehaviourListItem{ Item = UnclickablityType.MoveVertically, Title = "Move vertically"},
             };
 
             BehaviourList.ItemsSource = counterValues;
