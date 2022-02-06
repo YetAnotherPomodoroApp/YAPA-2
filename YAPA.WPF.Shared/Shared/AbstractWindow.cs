@@ -67,6 +67,17 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (ViewModel.Engine.IsRunning)
+            {
+                var messageBoxResult = MessageBox.Show( $"Do you really want to close application ?{Environment.NewLine}{Environment.NewLine}Next time you start application, you can continue from this checkpoint.", "Timer is running", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+            }
+
             Closing?.Invoke();
         }
 
@@ -137,7 +148,7 @@ namespace YAPA.Shared
                         ViewModel.ResetCommand.Execute(null);
                     }
                     break;
-                case "/stop":
+                case CommandLineArguments.Stop:
                     if (ViewModel.StopCommand.CanExecute(null))
                     {
                         ViewModel.StopCommand.Execute(null);
