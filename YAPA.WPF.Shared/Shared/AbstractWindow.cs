@@ -48,7 +48,6 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Loaded?.Invoke();
             CreateJumpList();
 
             var args = Environment.GetCommandLineArgs();
@@ -58,6 +57,7 @@ namespace YAPA.Shared
             }
 
             AbstractWindow_StateChanged(this, EventArgs.Empty);
+            Loaded?.Invoke();
         }
 
         public void CloseApp()

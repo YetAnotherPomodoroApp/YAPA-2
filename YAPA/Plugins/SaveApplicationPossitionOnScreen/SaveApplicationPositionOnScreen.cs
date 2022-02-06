@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-using WpfScreenHelper;
+﻿using NLog;
+using System;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
-using GDIScreen = System.Windows.Forms.Screen;
 
 namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
 {
@@ -24,66 +22,42 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
     {
         private readonly IApplication _app;
         private readonly SaveApplicationPositionOnScreenSettings _settings;
+        private readonly ILogger _logger;
 
-        public SaveApplicationPositionOnScreen(IApplication app, SaveApplicationPositionOnScreenSettings settings)
+        public SaveApplicationPositionOnScreen(IApplication app,
+            SaveApplicationPositionOnScreenSettings settings,
+            ILogger logger)
         {
             _app = app;
             _settings = settings;
+            _logger = logger;
             _app.Closing += App_Closing;
-            App_Loaded();
-        }
-
-        private void App_Closing()
-        {
-            var currentScreen = GDIScreen.FromHandle(_app.WindowHandle);
-
-            _settings.ActiveMonitor = currentScreen.DeviceName;
-
-            var top = _app.Top - currentScreen.Bounds.Top;
-            var left = _app.Left - currentScreen.Bounds.Left;
-
-            _settings.WindowTopPerc = top / currentScreen.WorkingArea.Height;
-            _settings.WindowLeftPerc = left / currentScreen.WorkingArea.Width;
+            _app.Loaded += App_Loaded;
         }
 
         private void App_Loaded()
         {
-            var activeScreen = GetActiveScreen();
-            var workingArea = activeScreen.WorkingArea;
-            var screenBounds = activeScreen.Bounds;
-
-            double calculatedLeft;
-            double calculatedTop;
-
-            if (!double.IsNaN(_settings.WindowLeftPerc) && !double.IsNaN(_settings.WindowTopPerc))
+            try
             {
-                calculatedLeft = workingArea.Width * _settings.WindowLeftPerc;
-                calculatedTop = workingArea.Height * _settings.WindowTopPerc;
+                WindowPlacement.SetPlacement(_app.WindowHandle, _settings.Position);
             }
-            else
+            catch (Exception ex)
             {
-                calculatedLeft = (Screen.PrimaryScreen.WorkingArea.Width - _app.Width - 15.0) / workingArea.Width;
-                calculatedTop = 0;
+                _logger.Error(ex, "Unable to restore application position ");
             }
-
-            calculatedLeft += screenBounds.Left;
-            calculatedTop += screenBounds.Top;
-
-            if (!Screen.AllScreens.ToList().Any(x => x.Bounds.Contains((int)calculatedLeft, (int)calculatedTop)))
-            {
-                //misscalculated, app is not visible on any screen :(
-                calculatedLeft = (Screen.PrimaryScreen.WorkingArea.Width - _app.Width - 15.0) / workingArea.Width;
-                calculatedTop = 0;
-            }
-
-            _app.Left = calculatedLeft;
-            _app.Top = calculatedTop;
         }
 
-        private Screen GetActiveScreen()
+        private void App_Closing()
         {
-            var activeScreen = Screen.AllScreens.FirstOrDefault(_ => string.Equals(_.DeviceName, _settings.ActiveMonitor));
-            return activeScreen ?? Screen.FromHandle(_app.WindowHandle);
+            try
+            {
+                var currentPosition = WindowPlacement.GetPlacement(_app.WindowHandle);
+                _settings.Position = currentPosition;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to save application position ");
+            }
         }
     }
 
@@ -91,22 +65,10 @@ namespace YAPA.Plugins.SaveApplicationPossitionOnScreen
     {
         private readonly ISettingsForComponent _settings;
 
-        public double WindowLeftPerc
+        public string Position
         {
-            get => _settings.Get(nameof(WindowLeftPerc), double.NaN);
-            set => _settings.Update(nameof(WindowLeftPerc), value);
-        }
-
-        public double WindowTopPerc
-        {
-            get => _settings.Get(nameof(WindowTopPerc), double.NaN);
-            set => _settings.Update(nameof(WindowTopPerc), value);
-        }
-
-        public string ActiveMonitor
-        {
-            get => _settings.Get<string>(nameof(ActiveMonitor), null);
-            set => _settings.Update(nameof(ActiveMonitor), value);
+            get => _settings.Get<string>(nameof(Position), null);
+            set => _settings.Update(nameof(Position), value);
         }
 
         public SaveApplicationPositionOnScreenSettings(ISettings settings)

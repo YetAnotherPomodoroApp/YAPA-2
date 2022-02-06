@@ -301,9 +301,6 @@
       <HintPath>..\packages\WpfAnimatedGif.1.4.4\lib\net\WpfAnimatedGif.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WpfScreenHelper, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfScreenHelper.1.1.0\lib\net40\WpfScreenHelper.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>..\Libraries\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
@@ -348,6 +345,7 @@
     <Compile Include="Plugins\PomodoroEngine\PomodoroProfileSettings.xaml.cs">
       <DependentUpon>PomodoroProfileSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\SaveApplicationPossitionOnScreen\WindowPlacement.cs" />
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayerPluginSettingWindow.xaml.cs">
       <DependentUpon>MusicPlayerPluginSettingWindow.xaml</DependentUpon>
     </Compile>
