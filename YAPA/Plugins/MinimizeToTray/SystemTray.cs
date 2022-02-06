@@ -274,7 +274,7 @@ namespace YAPA.Plugins.MinimizeToTray
 
         public bool MinimizeToTray
         {
-            get => _settings.Get(nameof(MinimizeToTray), false);
+            get => _settings.Get(nameof(MinimizeToTray), true);
             set => _settings.Update(nameof(MinimizeToTray), value);
         }
 
