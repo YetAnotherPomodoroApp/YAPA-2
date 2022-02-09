@@ -20,7 +20,7 @@ namespace YAPA.Plugins.Dashboard
 
             InitializeComponent();
 
-            Chart.DataHover += Chart_DataHover;
+            CartesianChart.DataHover += Chart_DataHover;
         }
 
         ~GithubDashboard()
@@ -87,6 +87,18 @@ namespace YAPA.Plugins.Dashboard
                                    x
                                })
                        .ToList();
+
+                var count = allPomodoros.Sum(_ => _.Count);
+                var totalTime = allPomodoros.Sum(_ => _.DurationMin);
+                Dispatcher.Invoke(() =>
+                {
+                    if (count > 0)
+                    {
+                        var multiple = count > 1 ? "s" : "";
+                        Summary.Text = $"{count} Pomodoro{multiple}, {TimeSpan.FromMinutes(totalTime)} total time";
+                    }
+                });
+
                 var max = pomodoros.Max(x => x.x.Count);
 
                 var seriesCollection = new SeriesCollection();
@@ -120,20 +132,21 @@ namespace YAPA.Plugins.Dashboard
                                     Values = new ChartValues<double>(lastPomodoros.Select(x => (double)x.x.DurationMin))
                                 });
 
-                        Chart.Series = seriesCollection;
+                        CartesianChart.Series = seriesCollection;
+                        CartesianChartTitle.Text = $"Last {daysToShow} days";
                         AxisYLabels.LabelFormatter = x => TimeSpan.FromMinutes(x).ToString("g");
                         ChartLabels.Labels = Enumerable
-                        .Range(1, daysToShow)
-                        .Reverse()
-                        .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
-                        .ToArray();
+                            .Range(1, daysToShow)
+                            .Reverse()
+                            .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
+                            .ToArray();
                     });
                 }
                 else
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        Chart.Visibility = Visibility.Collapsed;
+                        CartesianContainer.Visibility = Visibility.Collapsed;
                     });
                 }
 
@@ -147,11 +160,5 @@ namespace YAPA.Plugins.Dashboard
                 });
             });
         }
-
-        public string HoursToTimestamp(double value)
-        {
-            return value.ToString() + "testas321";
-        }
-
     }
 }

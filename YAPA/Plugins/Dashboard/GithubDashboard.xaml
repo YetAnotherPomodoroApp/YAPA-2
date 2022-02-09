@@ -23,8 +23,15 @@
 
                 </StackPanel>
             </StackPanel>
-            <StackPanel Height="100">
-                <wpf:CartesianChart x:Name="Chart" Series="{Binding CompletedPomodoros}" MinHeight="130">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock x:Name="Summary"></TextBlock>
+            </StackPanel>
+            <Separator Margin="100,10,100,10"/>
+            <StackPanel Height="140" x:Name="CartesianContainer">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" x:Name="CartesianChartTitle"></TextBlock>
+                </StackPanel>
+                <wpf:CartesianChart x:Name="CartesianChart"  Series="{Binding CompletedPomodoros}" MinHeight="130">
                     <wpf:CartesianChart.AxisY>
                         <wpf:Axis Title="Total time" x:Name="AxisYLabels" MinValue="0"></wpf:Axis>
                     </wpf:CartesianChart.AxisY>
