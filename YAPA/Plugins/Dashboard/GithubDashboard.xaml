@@ -26,8 +26,9 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock x:Name="Summary"></TextBlock>
             </StackPanel>
-            <Separator Margin="100,10,100,10"/>
-            <StackPanel Height="140" x:Name="CartesianContainer">
+            <Separator Margin="0,10,0,10"/>
+
+            <StackPanel Height="140" x:Name="CartesianContainer" >
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <TextBlock FontWeight="Bold" x:Name="CartesianChartTitle"></TextBlock>
                 </StackPanel>
@@ -40,6 +41,7 @@
                     </wpf:CartesianChart.AxisX>
                 </wpf:CartesianChart>
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,97 +69,121 @@ namespace YAPA.Plugins.Dashboard
         {
             Task.Run(() =>
             {
-                var dfi = DateTimeFormatInfo.CurrentInfo;
-                var cal = dfi?.Calendar;
-
-                if (cal == null)
+                var pomodoros = GetPomodoros();
+                if (pomodoros?.Any() == false)
                 {
                     return;
                 }
 
-                var allPomodoros = _dashboard.GetPomodoros().ToList();
-                var pomodoros = allPomodoros
-                       .Select(
-                           x =>
-                               new
-                               {
-                                   week = cal.GetWeekOfYear(x.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
-                                   month = cal.GetMonth(x.DateTime),
-                                   x
-                               })
-                       .ToList();
+                UpdateCompletedSummary(pomodoros);
 
-                var count = allPomodoros.Sum(_ => _.Count);
-                var totalTime = allPomodoros.Sum(_ => _.DurationMin);
-                Dispatcher.Invoke(() =>
-                {
-                    if (count > 0)
-                    {
-                        var multiple = count > 1 ? "s" : "";
-                        Summary.Text = $"{count} Pomodoro{multiple}, {TimeSpan.FromMinutes(totalTime)} total time";
-                    }
-                });
+                UpdateGithubDashboard(pomodoros);
 
-                var max = pomodoros.Max(x => x.x.Count);
-
-                var seriesCollection = new SeriesCollection();
-
-                Dispatcher.Invoke(() =>
-                {
-                    WeekStackPanel.Children.Clear();
-                });
-
-                foreach (var pomodoro in pomodoros.GroupBy(x => x.month))
-                {
-                    var month = pomodoro.Select(x => x.x.ToPomodoroViewModel(x.week, GetLevelFromCount(x.x.Count, max)));
-                    Dispatcher.Invoke(() =>
-                    {
-                        WeekStackPanel.Children.Add(new PomodoroMonth(month));
-                    });
-                }
-
-                const int daysToShow = 60;
-
-                var lastPomodoros = pomodoros.Skip(pomodoros.Count - daysToShow).ToList();
-
-                if (lastPomodoros.Any(x => x.x.DurationMin / 60.0 > 0.01))
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        seriesCollection.Add(
-                                new LineSeries
-                                {
-                                    Title = "Total time",
-                                    Values = new ChartValues<double>(lastPomodoros.Select(x => (double)x.x.DurationMin))
-                                });
-
-                        CartesianChart.Series = seriesCollection;
-                        CartesianChartTitle.Text = $"Last {daysToShow} days";
-                        AxisYLabels.LabelFormatter = x => TimeSpan.FromMinutes(x).ToString("g");
-                        ChartLabels.Labels = Enumerable
-                            .Range(1, daysToShow)
-                            .Reverse()
-                            .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
-                            .ToArray();
-                    });
-                }
-                else
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        CartesianContainer.Visibility = Visibility.Collapsed;
-                    });
-                }
-
-                Dispatcher.Invoke(() =>
-                {
-                    var weekShift = DayOfWeek.Monday - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-                    MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
-
-                    DayPanel.Visibility = Visibility.Visible;
-                    LoadingPanel.Visibility = Visibility.Collapsed;
-                });
+                UpdateCartesianChart(pomodoros);
             });
+        }
+
+        private void UpdateGithubDashboard(IEnumerable<PomodorosPerTimeModel> pomodoros)
+        {
+            var max = pomodoros.Max(_ => _.Pomodoro.Count);
+
+            Dispatcher.Invoke(() =>
+            {
+                WeekStackPanel.Children.Clear();
+            });
+
+            foreach (var pomodoro in pomodoros.GroupBy(_ => _.Month))
+            {
+                var month = pomodoro.Select(_ => _.Pomodoro.ToPomodoroViewModel(_.Week, GetLevelFromCount(_.Pomodoro.Count, max)));
+                Dispatcher.Invoke(() =>
+                {
+                    WeekStackPanel.Children.Add(new PomodoroMonth(month));
+                });
+            }
+            Dispatcher.Invoke(() =>
+            {
+                var weekShift = DayOfWeek.Monday - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+                MondayTextBlock.Margin = new Thickness(0, 12 * weekShift - 1, 0, 12);
+
+                DayPanel.Visibility = Visibility.Visible;
+                LoadingPanel.Visibility = Visibility.Collapsed;
+            });
+        }
+
+        private void UpdateCompletedSummary(IEnumerable<PomodorosPerTimeModel> pomodoros)
+        {
+            var count = pomodoros.Sum(_ => _.Pomodoro.Count);
+            var totalTime = pomodoros.Sum(_ => _.Pomodoro.DurationMin);
+            Dispatcher.Invoke(() =>
+            {
+                if (count > 0)
+                {
+                    var multiple = count > 1 ? "s" : "";
+                    Summary.Text = $"Total time: {TimeSpan.FromMinutes(totalTime)}, Pomodoro{multiple}: {count}";
+                }
+            });
+        }
+
+        private IEnumerable<PomodorosPerTimeModel> GetPomodoros()
+        {
+            var dfi = DateTimeFormatInfo.CurrentInfo;
+            var cal = dfi?.Calendar;
+
+            if (cal == null)
+            {
+                return Enumerable.Empty<PomodorosPerTimeModel>();
+            }
+
+            var allPomodoros = _dashboard.GetPomodoros().ToList();
+            var pomodoros = allPomodoros
+                   .Select(
+                       _ =>
+                           new PomodorosPerTimeModel
+                           {
+                               Week = cal.GetWeekOfYear(_.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
+                               Month = cal.GetMonth(_.DateTime),
+                               Pomodoro = _,
+                           })
+                   .ToList();
+
+            return pomodoros;
+        }
+
+        private void UpdateCartesianChart(IEnumerable<PomodorosPerTimeModel> pomodoros)
+        {
+            const int daysToShow = 60;
+            var seriesCollection = new SeriesCollection();
+
+            var lastPomodoros = pomodoros.Skip(pomodoros.Count() - daysToShow).ToList();
+
+            if (lastPomodoros.Any(_ => _.Pomodoro.DurationMin / 60.0 > 0.01))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    seriesCollection.Add(
+                            new LineSeries
+                            {
+                                Title = "Total time",
+                                Values = new ChartValues<double>(lastPomodoros.Select(_ => (double)_.Pomodoro.DurationMin))
+                            });
+
+                    CartesianChart.Series = seriesCollection;
+                    CartesianChartTitle.Text = $"Last {daysToShow} days";
+                    AxisYLabels.LabelFormatter = x => TimeSpan.FromMinutes(x).ToString("g");
+                    ChartLabels.Labels = Enumerable
+                        .Range(1, daysToShow)
+                        .Reverse()
+                        .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
+                        .ToArray();
+                });
+            }
+            else
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    CartesianContainer.Visibility = Visibility.Collapsed;
+                });
+            }
         }
     }
 }

@@ -332,6 +332,7 @@
     <Compile Include="Plugins\Dashboard\PomodoroMonth.xaml.cs">
       <DependentUpon>PomodoroMonth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Dashboard\PomodorosPerTimeModel.cs" />
     <Compile Include="Plugins\Dashboard\PomodoroWeek.xaml.cs">
       <DependentUpon>PomodoroWeek.xaml</DependentUpon>
     </Compile>
