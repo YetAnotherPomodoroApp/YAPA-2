@@ -289,12 +289,8 @@ namespace YAPA.Shared.Common
                 return;
             }
             await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
-            if (IsRunning == false)
-            {
-                var expectedWorkEndTime = _startDate.AddSeconds(WorkTime - _elapsedInPause);
-                Start();
-                _startDate = expectedWorkEndTime;
-            }
+            
+            Start();
         }
 
         private void _timer_Tick()
