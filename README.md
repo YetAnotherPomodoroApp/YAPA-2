@@ -1,16 +1,8 @@
-YAPA 2
-====
-[![Build status](https://ci.appveyor.com/api/projects/status/p7k6ort2xvl35vbq?svg=true)](https://ci.appveyor.com/project/floatas/yapa-2-lffj9) [![Total downloads](https://img.shields.io/github/downloads/YetAnotherPomodoroApp/YAPA-2/total)](https://somsubhra.github.io/github-release-stats/?username=YetAnotherPomodoroApp&repository=YAPA-2&page=1&per_page=5)
+![Yapa2](https://user-images.githubusercontent.com/7883111/155704469-7854e3d0-9f1e-4d46-b42a-acaf09856f57.jpg)
 
+YAPA-2 is minimalistic desktop timer app for Pomodoro Technique users.
 
-YAPA-2 is minimalistic desktop timer app for Pomodoro Technique users. 
-
-![](http://i.imgur.com/VkoEGe0.png)
-
-Right click to open dashboard and settings:
-![](http://i.imgur.com/lnhuPzx.png)
-
-### [Download latest version!](https://github.com/YetAnotherPomodoroApp/YAPA-2/releases/latest)
+[![Build status](https://ci.appveyor.com/api/projects/status/p7k6ort2xvl35vbq?svg=true)](https://ci.appveyor.com/project/floatas/yapa-2-lffj9) [![Total downloads](https://img.shields.io/github/downloads/YetAnotherPomodoroApp/YAPA-2/total)](https://somsubhra.github.io/github-release-stats/?username=YetAnotherPomodoroApp&repository=YAPA-2&page=1&per_page=5) [Download latest version](https://github.com/YetAnotherPomodoroApp/YAPA-2/releases/latest) | [Website](https://yapa2.app)
 
 Features
 ---------
