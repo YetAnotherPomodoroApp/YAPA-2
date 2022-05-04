@@ -92,7 +92,7 @@ namespace YAPA.Plugins.Dashboard
                 WeekStackPanel.Children.Clear();
             });
 
-            foreach (var pomodoro in pomodoros.GroupBy(_ => _.Month))
+            foreach (var pomodoro in pomodoros.GroupBy(_ => new { _.Month, _.Year }))
             {
                 var month = pomodoro.Select(_ => _.Pomodoro.ToPomodoroViewModel(_.Week, GetLevelFromCount(_.Pomodoro.Count, max)));
                 Dispatcher.Invoke(() =>
@@ -142,6 +142,7 @@ namespace YAPA.Plugins.Dashboard
                            {
                                Week = cal.GetWeekOfYear(_.DateTime, CalendarWeekRule.FirstFullWeek, dfi.FirstDayOfWeek),
                                Month = cal.GetMonth(_.DateTime),
+                               Year = cal.GetYear(_.DateTime),
                                Pomodoro = _,
                            })
                    .ToList();

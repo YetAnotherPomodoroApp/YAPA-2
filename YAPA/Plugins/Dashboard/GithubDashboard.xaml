@@ -13,16 +13,21 @@
                 <Image gif:ImageBehavior.AnimatedSource="../../Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="110" x:Name="DayPanel" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="120" x:Name="DayPanel" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" Margin="0,15,0,0" Width="20">
                     <TextBlock Height="11"  Margin="0,-1,0,12" FontSize="10" VerticalAlignment="Top" Text="Mon" x:Name="MondayTextBlock"></TextBlock>
                     <TextBlock Height="11"  Margin="0,0,0,12" FontSize="10" VerticalAlignment="Top" Text="Wen"></TextBlock>
                     <TextBlock Height="11"  Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="Fri"></TextBlock>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel" Width="530">
 
-                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Width="500">
+                    <StackPanel Orientation="Horizontal"  x:Name="WeekStackPanel">
+
+                    </StackPanel>
+                </ScrollViewer>
             </StackPanel>
+
+
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock x:Name="Summary"></TextBlock>
             </StackPanel>
