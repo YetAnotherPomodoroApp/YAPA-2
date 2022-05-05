@@ -13,6 +13,24 @@
                 <Image gif:ImageBehavior.AnimatedSource="../../Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel>
+                <ComboBox  x:Name="FilteredProfiles"
+                         Grid.Column="1" Grid.Row="1"  MinWidth="72"
+                          Margin="16 0 0 0"
+                          VerticalAlignment="Bottom" 
+                           
+                          IsEditable="True"
+>
+                    <ComboBox.Text>
+                        <Binding Path="settings.ProfileFilter" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </ComboBox.Text>
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+                
                 <ComboBox  x:Name="NumberOfMonths"
                          Grid.Column="1" Grid.Row="1"  MinWidth="72"
                           Margin="16 0 0 0"

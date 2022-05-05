@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace YAPA.Shared.Contracts
@@ -14,9 +15,23 @@ namespace YAPA.Shared.Contracts
     public class PomodoroEntity
     {
         public int Id { get; set; }
+        public string ProfileName { get; set; }
+
         public DateTime DateTime { get; set; }
         public int Count { get; set; }
         public int DurationMin { get; set; }
-        public string ProfileName { get; set; }
+    }
+
+    public class PomodoroGithubDashboardModel
+    {
+        public DateTime DateTime { get; set; }
+        public int Count { get; set; }
+        public int DurationMin { get; set; }
+    }
+
+    public class PomodoroDashboardModel
+    {
+        public IEnumerable<PomodoroGithubDashboardModel> DashboardItems { get; set; }
+        public IEnumerable<string> Profiles { get; set; }
     }
 }

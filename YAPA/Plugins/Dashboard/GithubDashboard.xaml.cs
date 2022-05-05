@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows;
 using LiveCharts;
@@ -16,8 +18,12 @@ namespace YAPA.Plugins.Dashboard
     {
         private Shared.Common.Dashboard _dashboard;
         private readonly ISettings _globalSettings;
+        private const int MaxNumberOfMonths = 13;
 
         public DashboardSettings settings { get; }
+
+        Subject<object> filterChange = new Subject<object>();
+        IDisposable _filterChangeDispose;
 
         public GithubDashboard(Shared.Common.Dashboard dashboard, DashboardSettings settings, ISettings globalSettings)
         {
@@ -30,25 +36,41 @@ namespace YAPA.Plugins.Dashboard
 
             CartesianChart.DataHover += Chart_DataHover;
 
-            for (int i = 1; i < 13; i++)
+            for (int i = 1; i < MaxNumberOfMonths; i++)
             {
                 NumberOfMonths.Items.Add(i);
             }
+
+            _filterChangeDispose = filterChange
+                .AsObservable()
+                .Throttle(TimeSpan.FromMilliseconds(100))
+                .Subscribe(_ =>
+                {
+                    Refresh(settings.NumberOfMonths, settings.ProfileFilter);
+                });
 
             _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
         }
 
         private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == $"{nameof(Shared.Common.Dashboard)}.{nameof(DashboardSettings.NumberOfMonths)}")
+            if (e.PropertyName.StartsWith($"{nameof(Shared.Common.Dashboard)}.{nameof(DashboardSettings.NumberOfMonths)}"))
             {
-                Refresh(settings.NumberOfMonths);
+                FilteredProfiles.Items.Clear();
+                settings.ProfileFilter = null;
+                filterChange.OnNext(null);
+            }
+
+            if (e.PropertyName.StartsWith($"{nameof(Shared.Common.Dashboard)}.{nameof(DashboardSettings.ProfileFilter)}"))
+            {
+                filterChange.OnNext(null);
             }
         }
 
         ~GithubDashboard()
         {
             _dashboard = null;
+            _filterChangeDispose?.Dispose();
         }
 
         private void Chart_DataHover(object sender, ChartPoint chartPoint)
@@ -89,14 +111,14 @@ namespace YAPA.Plugins.Dashboard
 
         public void Refresh()
         {
-            Refresh(settings.NumberOfMonths);
+            Refresh(settings.NumberOfMonths, settings.ProfileFilter);
         }
 
-        public void Refresh(int numberOfMonths)
+        public void Refresh(int numberOfMonths, string profileFilter)
         {
             Task.Run(() =>
             {
-                var pomodoros = GetPomodoros(numberOfMonths);
+                var pomodoros = GetPomodoros(numberOfMonths, profileFilter);
                 if (pomodoros?.Any() == false)
                 {
                     return;
@@ -151,7 +173,7 @@ namespace YAPA.Plugins.Dashboard
             });
         }
 
-        private IEnumerable<PomodorosPerTimeModel> GetPomodoros(int numberOfMonths)
+        private IEnumerable<PomodorosPerTimeModel> GetPomodoros(int numberOfMonths, string profileFilter)
         {
             var dfi = DateTimeFormatInfo.CurrentInfo;
             var cal = dfi?.Calendar;
@@ -161,8 +183,20 @@ namespace YAPA.Plugins.Dashboard
                 return Enumerable.Empty<PomodorosPerTimeModel>();
             }
 
-            var allPomodoros = _dashboard.GetPomodoros(numberOfMonths).ToList();
-            var pomodoros = allPomodoros
+            var allPomodoros = _dashboard.GetPomodoros(numberOfMonths, profileFilter);
+
+            if (FilteredProfiles.Items.Count == 0)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    foreach (var item in allPomodoros.Profiles)
+                    {
+                        FilteredProfiles.Items.Add(item);
+                    }
+                });
+            }
+
+            var pomodoros = allPomodoros.DashboardItems.ToList()
                    .Select(
                        _ =>
                            new PomodorosPerTimeModel

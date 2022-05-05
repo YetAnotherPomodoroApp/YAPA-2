@@ -38,7 +38,7 @@ namespace YAPA.WPF
 
     public static class PomodoroExtensions
     {
-        public static PomodoroViewModel ToPomodoroViewModel(this PomodoroEntity pomo, int week, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
+        public static PomodoroViewModel ToPomodoroViewModel(this PomodoroGithubDashboardModel pomo, int week, PomodoroLevelEnum level = PomodoroLevelEnum.Level0)
         {
             return new PomodoroViewModel()
             {

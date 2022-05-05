@@ -21,7 +21,7 @@ namespace YAPA.Shared.Common
             _engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
         }
 
-        public IEnumerable<PomodoroEntity> GetPomodoros(int numberOfMonths)
+        public PomodoroDashboardModel GetPomodoros(int numberOfMonths, string profileFilter)
         {
             var today = DateTime.Now.Date;
 
@@ -32,7 +32,15 @@ namespace YAPA.Shared.Common
             var emptyPomodoros = Enumerable.Range(0, totalDays).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
             var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
 
-            var joinedPomodoros = capturedPomodoros.Union(emptyPomodoros)
+
+            var distinctProfiles = capturedPomodoros.Select(_ => _.ProfileName).Distinct().ToList();
+
+            if (string.IsNullOrEmpty(profileFilter) == false)
+            {
+                capturedPomodoros = capturedPomodoros.Where(_ => _.ProfileName == profileFilter).ToList();
+            }
+
+            var joinedPomodoros = capturedPomodoros.ToList().Union(emptyPomodoros)
                 .GroupBy(c =>
                 {
                     var local = c.DateTime.TryToLocalTime();
@@ -40,14 +48,20 @@ namespace YAPA.Shared.Common
                 },
                     c => new { c.Count, WorkTime = c.DurationMin },
                     (time, ints) =>
-                    new PomodoroEntity
+                    new PomodoroGithubDashboardModel
                     {
                         DateTime = new DateTime(time.Item1, time.Item2, time.Item3, 0, 0, 0, DateTimeKind.Local),
                         Count = ints.Sum(x => x.Count),
                         DurationMin = ints.Sum(x => x.WorkTime)
                     });
 
-            return joinedPomodoros.OrderBy(x => x.DateTime.Date);
+            var result = new PomodoroDashboardModel
+            {
+                DashboardItems = joinedPomodoros.OrderBy(x => x.DateTime.Date),
+                Profiles = distinctProfiles
+            };
+
+            return result;
         }
 
         public int CompletedToday()
@@ -89,6 +103,12 @@ namespace YAPA.Shared.Common
         {
             get => _settings.Get(nameof(NumberOfMonths), 6);
             set => _settings.Update(nameof(NumberOfMonths), value);
+        }
+
+        public string ProfileFilter
+        {
+            get => _settings.Get<string>(nameof(ProfileFilter), null);
+            set => _settings.Update(nameof(ProfileFilter), value);
         }
 
         public void DeferChanges()
