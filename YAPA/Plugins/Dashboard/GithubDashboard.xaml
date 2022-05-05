@@ -12,6 +12,24 @@
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="110" x:Name="LoadingPanel" Visibility="Visible">
                 <Image gif:ImageBehavior.AnimatedSource="../../Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
+            <StackPanel>
+                <ComboBox  x:Name="NumberOfMonths"
+                         Grid.Column="1" Grid.Row="1"  MinWidth="72"
+                          Margin="16 0 0 0"
+                          VerticalAlignment="Bottom" 
+                          IsEditable="True"
+>
+                    <ComboBox.Text>
+                        <Binding Path="settings.NumberOfMonths" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </ComboBox.Text>
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+            </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="120" x:Name="DayPanel" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical" Margin="0,15,0,0" Width="20">

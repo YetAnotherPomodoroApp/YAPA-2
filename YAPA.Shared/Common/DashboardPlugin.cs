@@ -21,11 +21,11 @@ namespace YAPA.Shared.Common
             _engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
         }
 
-        public IEnumerable<PomodoroEntity> GetPomodoros()
+        public IEnumerable<PomodoroEntity> GetPomodoros(int numberOfMonths)
         {
             var today = DateTime.Now.Date;
 
-            var date = today.Date.AddMonths(-16);
+            var date = today.Date.AddMonths(numberOfMonths * -1);
             var fromDate = new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
             var totalDays = (int)Math.Truncate((today - fromDate).TotalDays);
@@ -39,7 +39,13 @@ namespace YAPA.Shared.Common
                     return new Tuple<int, int, int>(local.Year, local.Month, local.Day);
                 },
                     c => new { c.Count, WorkTime = c.DurationMin },
-                    (time, ints) => new PomodoroEntity { DateTime = new DateTime(time.Item1, time.Item2, time.Item3, 0, 0, 0, DateTimeKind.Local), Count = ints.Sum(x => x.Count), DurationMin = ints.Sum(x => x.WorkTime) });
+                    (time, ints) =>
+                    new PomodoroEntity
+                    {
+                        DateTime = new DateTime(time.Item1, time.Item2, time.Item3, 0, 0, 0, DateTimeKind.Local),
+                        Count = ints.Sum(x => x.Count),
+                        DurationMin = ints.Sum(x => x.WorkTime)
+                    });
 
             return joinedPomodoros.OrderBy(x => x.DateTime.Date);
         }
@@ -77,6 +83,12 @@ namespace YAPA.Shared.Common
         public DashboardSettings(ISettings settings)
         {
             _settings = settings.GetSettingsForComponent(nameof(Dashboard));
+        }
+
+        public int NumberOfMonths
+        {
+            get => _settings.Get(nameof(NumberOfMonths), 6);
+            set => _settings.Update(nameof(NumberOfMonths), value);
         }
 
         public void DeferChanges()

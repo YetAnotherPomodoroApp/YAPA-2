@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Wpf;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
@@ -14,14 +15,35 @@ namespace YAPA.Plugins.Dashboard
     public partial class GithubDashboard : IPluginSettingWindow
     {
         private Shared.Common.Dashboard _dashboard;
+        private readonly ISettings _globalSettings;
 
-        public GithubDashboard(Shared.Common.Dashboard dashboard)
+        public DashboardSettings settings { get; }
+
+        public GithubDashboard(Shared.Common.Dashboard dashboard, DashboardSettings settings, ISettings globalSettings)
         {
             _dashboard = dashboard;
-
+            this.settings = settings;
+            _globalSettings = globalSettings;
             InitializeComponent();
 
+            DataContext = this;
+
             CartesianChart.DataHover += Chart_DataHover;
+
+            for (int i = 1; i < 13; i++)
+            {
+                NumberOfMonths.Items.Add(i);
+            }
+
+            _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
+        }
+
+        private void _globalSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == $"{nameof(Shared.Common.Dashboard)}.{nameof(DashboardSettings.NumberOfMonths)}")
+            {
+                Refresh(settings.NumberOfMonths);
+            }
         }
 
         ~GithubDashboard()
@@ -67,9 +89,14 @@ namespace YAPA.Plugins.Dashboard
 
         public void Refresh()
         {
+            Refresh(settings.NumberOfMonths);
+        }
+
+        public void Refresh(int numberOfMonths)
+        {
             Task.Run(() =>
             {
-                var pomodoros = GetPomodoros();
+                var pomodoros = GetPomodoros(numberOfMonths);
                 if (pomodoros?.Any() == false)
                 {
                     return;
@@ -124,7 +151,7 @@ namespace YAPA.Plugins.Dashboard
             });
         }
 
-        private IEnumerable<PomodorosPerTimeModel> GetPomodoros()
+        private IEnumerable<PomodorosPerTimeModel> GetPomodoros(int numberOfMonths)
         {
             var dfi = DateTimeFormatInfo.CurrentInfo;
             var cal = dfi?.Calendar;
@@ -134,7 +161,7 @@ namespace YAPA.Plugins.Dashboard
                 return Enumerable.Empty<PomodorosPerTimeModel>();
             }
 
-            var allPomodoros = _dashboard.GetPomodoros().ToList();
+            var allPomodoros = _dashboard.GetPomodoros(numberOfMonths).ToList();
             var pomodoros = allPomodoros
                    .Select(
                        _ =>
