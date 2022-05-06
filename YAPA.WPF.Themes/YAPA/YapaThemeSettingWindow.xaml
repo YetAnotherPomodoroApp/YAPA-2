@@ -14,7 +14,7 @@
     <Grid>
         <TabControl>
             <TabItem Header="Configuration">
-                <Grid>
+                <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -47,7 +47,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Colors">
-                <StackPanel>
+                <StackPanel Margin="0,10,0,0">
                     <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.White}}" Content="White"></RadioButton>
                     <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.Black}}" Content="Black"></RadioButton>
                     <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.Custom}}" Content="Custom"></RadioButton>
