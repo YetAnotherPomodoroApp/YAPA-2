@@ -13,10 +13,10 @@
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="110" x:Name="LoadingPanel" Visibility="Visible">
                 <Image gif:ImageBehavior.AnimatedSource="../../Resources/loader.gif" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <ComboBox x:Name="FilteredProfiles"
                           MinWidth="200"
-                          Margin="16 10 0 0"
+                          Margin="16 0 0 10"
                           materialDesign:HintAssist.FloatingScale="1.2"
                           materialDesign:HintAssist.Hint="Profile"
                           materialDesign:TextFieldAssist.HasClearButton="True"
@@ -36,7 +36,7 @@
                 
                 <ComboBox x:Name="NumberOfMonths"
                           MinWidth="200"
-                          Margin="16 10 0 0"
+                          Margin="16 0 0 10"
                           materialDesign:HintAssist.Hint="Number of months"
                           materialDesign:HintAssist.FloatingScale="1.2"
                           Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
