@@ -101,7 +101,7 @@ namespace YAPA.WPF
 
             builder.RegisterType(typeof(PomodoroProfileSettings));
 
-            builder.RegisterType(typeof(SettingsWindow)).As<SettingsWindow>().SingleInstance();
+            builder.RegisterType(typeof(SettingsWindow)).As<SettingsWindow>().InstancePerDependency();
 
             builder.RegisterType(typeof(FontService)).As<IFontService>();
 
