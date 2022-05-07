@@ -9,7 +9,7 @@ using System.Windows;
 [assembly: AssemblyTitle("YAPA")]
 [assembly: AssemblyDescription("Yet Another Pomodoro Application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Łukasz Banasiak")]
+[assembly: AssemblyCompany("YAPA 2")]
 [assembly: AssemblyProduct("YAPA")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]

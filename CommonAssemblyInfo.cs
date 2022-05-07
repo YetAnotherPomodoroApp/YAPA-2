@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("YAPA 2")]
 [assembly: AssemblyDescription("Yet Another Pomodoro Application 2")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Šarūnas Intas; Łukasz Banasiak")]
+[assembly: AssemblyCompany("YAPA 2")]
 [assembly: AssemblyProduct("YAPA 2")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
