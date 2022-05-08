@@ -8,72 +8,47 @@
              xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <local:ThemeColorSelectConverter x:Key="ThemeColorSelectConverter" />
-    </UserControl.Resources>
-    <Grid>
-        <TabControl>
-            <TabItem Header="Configuration">
-                <Grid Margin="0,20,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
+    <Grid Margin="0,20,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
-                    <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
-                    <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
+        <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
 
-                    <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
-                    <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+        <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
+        <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
 
-                    <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3"></TextBlock>
-                    <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"  Minimum="50" Maximum="600" Interval="1" />
+        <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3"></TextBlock>
+        <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"  Minimum="50" Maximum="600" Interval="1" />
 
-                    <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
-                    <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
-                    <CheckBox  IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6">Hide seconds</CheckBox>
-                    <CheckBox  IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">Hide buttons</CheckBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Colors">
-                <StackPanel Margin="0,20,0,0">
-                    <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.White}}" Content="White"></RadioButton>
-                    <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.Black}}" Content="Black"></RadioButton>
-                    <RadioButton GroupName="Theme" IsChecked="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.Custom}}" Content="Custom"></RadioButton>
-                    <Grid IsEnabled="{Binding ThemeColors, Converter={StaticResource ThemeColorSelectConverter}, ConverterParameter={x:Static local:ThemeColors.Custom}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Text" Grid.Row="0" Grid.Column="0"></TextBlock>
-                        <xctk:ColorPicker  x:Name="TextColor"
-                                               Grid.Column="1" Grid.Row="0"  MinWidth="72"
+        <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
+        <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
+        <CheckBox  IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6">Hide seconds</CheckBox>
+        <CheckBox  IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">Hide buttons</CheckBox>
+
+        <TextBlock Text="Text color" Grid.Row="8" Grid.Column="0"></TextBlock>
+        <xctk:ColorPicker  x:Name="TextColor" Grid.Column="1" Grid.Row="8"  MinWidth="72"
                                                Margin="16 0 0 0"  SelectedColor="{Binding TextColor}">
-                        </xctk:ColorPicker>
-                        <TextBlock Text="Shadow" Grid.Row="1" Grid.Column="0"></TextBlock>
-                        <xctk:ColorPicker  x:Name="ShadowColor"
-                                               Grid.Column="1" Grid.Row="1"  MinWidth="72"
+        </xctk:ColorPicker>
+        <TextBlock Text="Shadow color" Grid.Row="9" Grid.Column="0"></TextBlock>
+        <xctk:ColorPicker  x:Name="ShadowColor" Grid.Column="1" Grid.Row="9"  MinWidth="72"
                                                Margin="16 0 0 0" SelectedColor="{Binding ShadowColor}">
-                        </xctk:ColorPicker>
-                    </Grid>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
+        </xctk:ColorPicker>
 
     </Grid>
 </UserControl>

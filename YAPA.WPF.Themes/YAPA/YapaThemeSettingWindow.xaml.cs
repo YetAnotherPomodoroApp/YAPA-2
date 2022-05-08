@@ -1,8 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows.Controls;
 
 namespace YAPA.WPF.Themes.YAPA
 {
@@ -12,20 +8,6 @@ namespace YAPA.WPF.Themes.YAPA
         {
             InitializeComponent();
             DataContext = settings;
-        }
-    }
-
-    public class ThemeColorSelectConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var integer = (int)value;
-            return integer == (int)Enum.Parse(typeof(ThemeColors), parameter.ToString());
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return parameter;
         }
     }
 }

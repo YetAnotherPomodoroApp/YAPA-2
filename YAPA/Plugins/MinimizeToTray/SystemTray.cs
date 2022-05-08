@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using YAPA.Shared.Contracts;
+using YAPA.WPF.Shared.Shared;
 
 namespace YAPA.Plugins.MinimizeToTray
 {
@@ -228,7 +230,7 @@ namespace YAPA.Plugins.MinimizeToTray
             var seconds = _viewModel.Engine.DisplayValue % 60;
             var displayText = minutes == 0 && seconds > 0 ? "<1" : minutes.ToString();
 
-            Brush brush = new SolidBrush(Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
+            System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
 
             var bitmap = new Bitmap(16, 16);
             var graphics = Graphics.FromImage(bitmap);
@@ -250,7 +252,7 @@ namespace YAPA.Plugins.MinimizeToTray
             get
             {
                 var color = _settings.Get(nameof(WorkTrayIconColor), "DarkGreen");
-                return (System.Windows.Media.Color)(System.Windows.Media.ColorConverter.ConvertFromString(color) ?? Color.DarkGreen);
+                return YapaHelpers.ColorFromString(color, Colors.DarkGreen);
             }
             set => _settings.Update(nameof(WorkTrayIconColor), value);
         }
@@ -259,9 +261,8 @@ namespace YAPA.Plugins.MinimizeToTray
         {
             get
             {
-
                 var color = _settings.Get(nameof(BreakTrayIconColor), "DarkRed");
-                return (System.Windows.Media.Color)(System.Windows.Media.ColorConverter.ConvertFromString(color) ?? Color.DarkRed);
+                return YapaHelpers.ColorFromString(color, Colors.DarkRed);
             }
             set => _settings.Update(nameof(BreakTrayIconColor), value);
         }

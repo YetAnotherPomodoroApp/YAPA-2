@@ -367,46 +367,15 @@ namespace YAPA
         {
             get
             {
-                Color color;
-                switch (Settings.ThemeColors)
-                {
-                    case ThemeColors.White:
-                        color = Colors.White;
-                        break;
-                    case ThemeColors.Black:
-                        color = Colors.Black;
-                        break;
-                    case ThemeColors.Custom:
-                        color = Settings.TextColor;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                return new SolidColorBrush(color);
+                return new SolidColorBrush(Settings.TextColor);
             }
         }
-        //Settings.UseWhiteText ? Brushes.LightGray : Brushes.Black;
 
         public Color TextShadowColor
         {
             get
             {
-                Color color;
-                switch (Settings.ThemeColors)
-                {
-                    case ThemeColors.White:
-                        color = Colors.Black;
-                        break;
-                    case ThemeColors.Black:
-                        color = Colors.White;
-                        break;
-                    case ThemeColors.Custom:
-                        color = Settings.ShadowColor;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                return color;
+                return Settings.ShadowColor;
             }
         }
 

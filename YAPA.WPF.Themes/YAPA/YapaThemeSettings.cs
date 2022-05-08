@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using YAPA.Shared.Contracts;
+using YAPA.WPF.Shared.Shared;
 
 namespace YAPA.WPF.Themes.YAPA
 {
@@ -14,13 +15,6 @@ namespace YAPA.WPF.Themes.YAPA
         public Type Settings => typeof(YapaThemeSettings);
 
         public Type SettingEditWindow => typeof(YapaThemeSettingWindow);
-    }
-
-    public enum ThemeColors
-    {
-        White,
-        Black,
-        Custom
     }
 
     public class YapaThemeSettings : IPluginSettings
@@ -45,18 +39,12 @@ namespace YAPA.WPF.Themes.YAPA
             set => _settings.Update(nameof(ShadowOpacity), value);
         }
 
-        public ThemeColors ThemeColors
-        {
-            get => _settings.Get(nameof(ThemeColors), ThemeColors.White);
-            set => _settings.Update(nameof(ThemeColors), value);
-        }
-
         public Color TextColor
         {
             get
             {
                 var color = _settings.Get(nameof(TextColor), "White");
-                return (Color)(ColorConverter.ConvertFromString(color) ?? Colors.White);
+                return YapaHelpers.ColorFromString(color, Colors.White);
             }
             set => _settings.Update(nameof(TextColor), value.ToString());
         }
@@ -66,7 +54,7 @@ namespace YAPA.WPF.Themes.YAPA
             get
             {
                 var color = _settings.Get(nameof(ShadowColor), "Black");
-                return (Color)(ColorConverter.ConvertFromString(color) ?? Colors.Black);
+                return YapaHelpers.ColorFromString(color, Colors.Black);
             }
             set => _settings.Update(nameof(ShadowColor), value.ToString());
         }

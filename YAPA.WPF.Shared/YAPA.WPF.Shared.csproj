@@ -49,6 +49,7 @@
     <Compile Include="Shared\AbstractWindow.cs" />
     <Compile Include="Shared\FontService.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
+    <Compile Include="Shared\YapaHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
