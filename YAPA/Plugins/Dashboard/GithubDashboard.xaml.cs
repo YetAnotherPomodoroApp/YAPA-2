@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -22,9 +19,6 @@ namespace YAPA.Plugins.Dashboard
 
         public DashboardSettings settings { get; }
 
-        Subject<object> filterChange = new Subject<object>();
-        IDisposable _filterChangeDispose;
-
         public GithubDashboard(Shared.Common.Dashboard dashboard, DashboardSettings settings, ISettings globalSettings)
         {
             _dashboard = dashboard;
@@ -41,14 +35,6 @@ namespace YAPA.Plugins.Dashboard
                 NumberOfMonths.Items.Add(i);
             }
 
-            _filterChangeDispose = filterChange
-                .AsObservable()
-                .Throttle(TimeSpan.FromMilliseconds(100))
-                .Subscribe(_ =>
-                {
-                    Refresh(settings.NumberOfMonths, settings.ProfileFilter);
-                });
-
             _globalSettings.PropertyChanged += _globalSettings_PropertyChanged;
         }
 
@@ -58,19 +44,19 @@ namespace YAPA.Plugins.Dashboard
             {
                 FilteredProfiles.Items.Clear();
                 settings.ProfileFilter = null;
-                filterChange.OnNext(null);
+                Refresh();
+
             }
 
             if (e.PropertyName.StartsWith($"{nameof(Shared.Common.Dashboard)}.{nameof(DashboardSettings.ProfileFilter)}"))
             {
-                filterChange.OnNext(null);
+                Refresh();
             }
         }
 
         ~GithubDashboard()
         {
             _dashboard = null;
-            _filterChangeDispose?.Dispose();
         }
 
         private void Chart_DataHover(object sender, ChartPoint chartPoint)
@@ -111,13 +97,15 @@ namespace YAPA.Plugins.Dashboard
 
         public void Refresh()
         {
+            Console.WriteLine("Refresh 1");
             Refresh(settings.NumberOfMonths, settings.ProfileFilter);
         }
 
         public void Refresh(int numberOfMonths, string profileFilter)
         {
-            Task.Run(() =>
-            {
+            //Task.Run(() =>
+            //{
+                Console.WriteLine("refresh");
                 var pomodoros = GetPomodoros(numberOfMonths, profileFilter);
                 if (pomodoros?.Any() == false)
                 {
@@ -129,7 +117,7 @@ namespace YAPA.Plugins.Dashboard
                 UpdateGithubDashboard(pomodoros);
 
                 UpdateCartesianChart(pomodoros);
-            });
+            //});
         }
 
         private void UpdateGithubDashboard(IEnumerable<PomodorosPerTimeModel> pomodoros)
