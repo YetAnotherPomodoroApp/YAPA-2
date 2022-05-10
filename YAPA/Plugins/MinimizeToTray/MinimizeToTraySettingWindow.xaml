@@ -29,11 +29,11 @@
 
             <CheckBox  IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" >Minimize to tray</CheckBox>
             <CheckBox  IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">Show in taskbar</CheckBox>
-            
-            <Separator Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Separator>
 
-            <CheckBox  IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
-            <CheckBox  IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Show application when clicked on balloon tip</CheckBox>
+            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></Separator>
+
+            <CheckBox IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">Show balloon tip when in system tray</CheckBox>
+            <CheckBox IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Show application when clicked on balloon tip</CheckBox>
             <Label Grid.Row="5" Grid.Column="0">Show balloon tip for (s)</Label>
             <ComboBox materialDesign:HintAssist.Hint="(editable)" x:Name="BalloonTipSelect"
                       Grid.Row="5" Grid.Column="1" MinWidth="72"
@@ -52,7 +52,7 @@
                 </ComboBox.ItemsPanel>
             </ComboBox>
 
-            <Separator Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"></Separator>
+            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"></Separator>
             
             <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="7"></TextBlock>
             <xctk:ColorPicker  x:Name="WorkTrayColor"
