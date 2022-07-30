@@ -97,7 +97,6 @@ namespace YAPA.Plugins.Dashboard
 
         public void Refresh()
         {
-            Console.WriteLine("Refresh 1");
             Refresh(settings.NumberOfMonths, settings.ProfileFilter);
         }
 
@@ -105,18 +104,13 @@ namespace YAPA.Plugins.Dashboard
         {
             //Task.Run(() =>
             //{
-                Console.WriteLine("refresh");
-                var pomodoros = GetPomodoros(numberOfMonths, profileFilter);
-                if (pomodoros?.Any() == false)
-                {
-                    return;
-                }
+            var pomodoros = GetPomodoros(numberOfMonths, profileFilter);
 
-                UpdateCompletedSummary(pomodoros);
+            UpdateCompletedSummary(pomodoros);
 
-                UpdateGithubDashboard(pomodoros);
+            UpdateGithubDashboard(pomodoros);
 
-                UpdateCartesianChart(pomodoros);
+            UpdateCartesianChart(pomodoros);
             //});
         }
 
@@ -157,6 +151,10 @@ namespace YAPA.Plugins.Dashboard
                 {
                     var multiple = count > 1 ? "s" : "";
                     Summary.Text = $"Total time: {TimeSpan.FromMinutes(totalTime)}, Pomodoro{multiple}: {count}";
+                }
+                else
+                {
+                    Summary.Text = $"Total time: -, Pomodoros: -";
                 }
             });
         }
@@ -225,6 +223,8 @@ namespace YAPA.Plugins.Dashboard
                         .Reverse()
                         .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
                         .ToArray();
+
+                    CartesianContainer.Visibility = Visibility.Visible;
                 });
             }
             else
