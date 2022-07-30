@@ -47,6 +47,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Shared\AbstractWindow.cs" />
+    <Compile Include="Shared\BoolToVisibilityConverter.cs" />
     <Compile Include="Shared\FontService.cs" />
     <Compile Include="Shared\SecToTimeConverter.cs" />
     <Compile Include="Shared\YapaHelpers.cs" />

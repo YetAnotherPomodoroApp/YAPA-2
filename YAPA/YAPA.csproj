@@ -362,6 +362,10 @@
     <Compile Include="Plugins\SoundSettings\SoundSettingWindow.xaml.cs">
       <DependentUpon>SoundSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Tasks\TasksMeta.cs" />
+    <Compile Include="Plugins\Tasks\TasksWindow.xaml.cs">
+      <DependentUpon>TasksWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Unclickable\UnclickableMeta.cs" />
     <Compile Include="Plugins\Unclickable\UnclickableSettingWindow.xaml.cs">
       <DependentUpon>UnclickableSettingWindow.xaml</DependentUpon>
@@ -443,6 +447,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\SoundSettings\SoundSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Tasks\TasksWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
