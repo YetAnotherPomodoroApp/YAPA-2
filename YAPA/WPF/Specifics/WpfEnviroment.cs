@@ -6,7 +6,7 @@ namespace YAPA.WPF.Specifics
 {
     public class WpfEnviroment : IEnvironment
     {
-        static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
+        public static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"YAPA2");
         readonly string _settingsFileLocation = Path.Combine(BaseDir, @"settings.json");
         readonly string _localSettingsFileLocation = Path.Combine(BaseDir, @"localSettings.json");
         readonly string _themeLocation = Path.Combine(BaseDir, @"settings.json");

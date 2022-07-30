@@ -1,51 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace YAPA.Plugins.Tasks
 {
-    /// <summary>
-    /// Interaction logic for TasksWindow.xaml
-    /// </summary>
     public partial class TasksWindow
     {
+        private LocalTasksProvider _taskProvider;
 
-        public List<TaskGroup> TreeItems { get; set; }
+        private TaskGroup _selected = null;
+
         public TasksWindow()
         {
+            _taskProvider = new LocalTasksProvider();
 
-            TreeItems = new List<TaskGroup>
+            _taskProvider.LoadTasks();
+
+            DataContext = _taskProvider;
+            InitializeComponent();
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            _selected = (TaskGroup)e.NewValue;
+            _taskProvider.SaveTasks();
+        }
+
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            _taskProvider.SaveTasks();
+        }
+
+        private void Remove_Click(object sender, RoutedEventArgs e)
+        {
+            _taskProvider.Remove(_selected);
+        }
+
+        private void AddNew_Click(object sender, RoutedEventArgs e)
+        {
+            _taskProvider.AddNew(_selected, "testas");
+        }
+
+        private void TriggerChanges(ObservableCollection<TaskGroup> group)
+        {
+            foreach (TaskGroup groupItem in group)
             {
-                new TaskGroup
+                if (groupItem != null)
                 {
-                    Title = "testas",
-                    SubGroups =new List<TaskGroup>
+                    if (groupItem.SubGroups != null)
                     {
-                        new TaskGroup{ 
-                            Title = "kazkas",
-                            SubGroups = new List<TaskGroup>
-                            {
-                                new TaskGroup
-                                {
-                                    Title = "trecias lygis"
-                                }
-                            }
-                        },
+                        TriggerChanges(groupItem.SubGroups);
                     }
                 }
-            };
-            this.DataContext = this;
-            InitializeComponent();
+                groupItem.TriggerPropertyChanged();
+                Console.WriteLine(groupItem.Title);
+            }
         }
     }
 }

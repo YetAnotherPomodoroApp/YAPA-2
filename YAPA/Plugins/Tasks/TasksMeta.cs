@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Plugins.Tasks
@@ -25,12 +29,36 @@ namespace YAPA.Plugins.Tasks
 
     }
 
-    public class TaskGroup
+    public class TaskGroup : INotifyPropertyChanged
     {
         public string Title { get; set; }
         public bool Completed { get; set; }
         public bool CanBeCompleted => SubGroups == null || SubGroups.Count == 0;
-        public List<TaskGroup> SubGroups { get; set; }
+        public ObservableCollection<TaskGroup> SubGroups { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void AddSubGroup(TaskGroup group)
+        {
+            if (SubGroups == null)
+            {
+                SubGroups = new ObservableCollection<TaskGroup>();
+            }
+
+            SubGroups.Add(group);
+            TriggerPropertyChanged();
+        }
+
+        public void TriggerPropertyChanged()
+        {
+            OnPropertyChanged(nameof(SubGroups));
+            OnPropertyChanged(nameof(CanBeCompleted));
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
 }

@@ -10,10 +10,20 @@
         <shared:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Button x:Name="AddNew" Click="AddNew_Click">Add new</Button>
+            <Button x:Name="Remove" Click="Remove_Click">Remove selected</Button>
+        </StackPanel>
         <TreeView
-    ItemsSource="{Binding TreeItems}"
-    MinWidth="220"
-            MinHeight="220">
+            ItemsSource="{Binding Tasks}"
+            MinWidth="220"
+            SelectedItemChanged="TreeView_SelectedItemChanged"
+            MinHeight="220"
+            Grid.Row="1">
             <TreeView.Resources>
                 <Style TargetType="TreeViewItem">
                 </Style>
@@ -21,6 +31,7 @@
                 <HierarchicalDataTemplate DataType="{x:Type local:TaskGroup}" ItemsSource="{Binding SubGroups}">
                     <StackPanel Orientation="Horizontal">
                         <CheckBox IsChecked="{Binding Completed}" 
+                                  Checked="CheckBox_Checked"
                                   Visibility="{Binding Path=CanBeCompleted, Converter={StaticResource BoolToVisibilityConverter}}">
                         </CheckBox>
                         <TextBlock Text="{Binding Title}" Margin="3,2" />
