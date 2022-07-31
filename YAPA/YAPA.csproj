@@ -364,6 +364,9 @@
     </Compile>
     <Compile Include="Plugins\Tasks\LocalTasksProvider.cs" />
     <Compile Include="Plugins\Tasks\TasksMeta.cs" />
+    <Compile Include="Plugins\Tasks\TasksPreview.xaml.cs">
+      <DependentUpon>TasksPreview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Tasks\TasksWindow.xaml.cs">
       <DependentUpon>TasksWindow.xaml</DependentUpon>
     </Compile>
@@ -448,6 +451,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\SoundSettings\SoundSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Tasks\TasksPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
