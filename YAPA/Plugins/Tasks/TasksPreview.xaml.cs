@@ -19,9 +19,12 @@ namespace YAPA.Plugins.Tasks
     /// </summary>
     public partial class TasksPreview : Window
     {
-        public TasksPreview()
+        public TasksSettings Tasks { get; set; }
+
+        public TasksPreview(TasksSettings tasksSettings)
         {
             Topmost = true;
+            Tasks = tasksSettings;
             DataContext = this;
             InitializeComponent();
         }

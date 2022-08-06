@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -7,40 +6,34 @@ namespace YAPA.Plugins.Tasks
 {
     public partial class TasksWindow
     {
-        private LocalTasksProvider _taskProvider;
+        private readonly TasksSettings _tasksSettings;
 
-        private TaskGroup _selected = null;
-
-        public TasksWindow()
+        public TasksWindow(TasksSettings tasksSettings)
         {
-            _taskProvider = new LocalTasksProvider();
-
-            _taskProvider.LoadTasks();
-
-            DataContext = _taskProvider;
+            _tasksSettings = tasksSettings;
+            DataContext = _tasksSettings.TaskProvider;
             InitializeComponent();
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            _selected = (TaskGroup)e.NewValue;
-            _taskProvider.SaveTasks();
+            _tasksSettings.Select((TaskGroup)e.NewValue);
+            _tasksSettings.Save();
         }
-
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            _taskProvider.SaveTasks();
+            _tasksSettings.Save();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            _taskProvider.Remove(_selected);
+            _tasksSettings.Remove();
         }
 
         private void AddNew_Click(object sender, RoutedEventArgs e)
         {
-            _taskProvider.AddNew(_selected, "testas");
+            _tasksSettings.AddNew( "testas");
         }
 
         private void TriggerChanges(ObservableCollection<TaskGroup> group)

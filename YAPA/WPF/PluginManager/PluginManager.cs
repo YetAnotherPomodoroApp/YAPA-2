@@ -105,7 +105,7 @@ namespace YAPA.WPF.PluginManager
         {
             foreach (var plugin in Plugins.Union(BuiltInPlugins).Where(x => x.Settings != null))
             {
-                container.Register(plugin.Settings);
+                container.Register(plugin.Settings, true);
             }
         }
 

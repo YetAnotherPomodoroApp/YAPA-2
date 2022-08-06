@@ -15,19 +15,19 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Task title" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" 
+        <TextBlock Text="{Binding Tasks.Selected.Title}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" 
                    x:Name="TaskTitle" TextAlignment="Left" 
                    Foreground="{Binding TextBrush}" FontSize="10" 
                    Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" 
                    FontStretch="UltraCondensed" />
 
-        <TextBlock Text="Time spent" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" 
+        <TextBlock Text="{Binding Tasks.Selected.WorkTime}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" 
                    x:Name="TimeSpent" TextAlignment="Left" 
                    Foreground="{Binding TextBrush}" FontSize="10" 
                    Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" 
                    FontStretch="UltraCondensed" />
 
-        <TextBlock Text="Locals > Group1 " Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" 
+        <TextBlock Text="{Binding Tasks.Selected.Path}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" 
                    x:Name="TaskPath" TextAlignment="Left" 
                    Foreground="{Binding TextBrush}" FontSize="10" 
                    Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" 

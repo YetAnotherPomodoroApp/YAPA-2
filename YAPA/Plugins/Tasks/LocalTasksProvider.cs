@@ -29,6 +29,7 @@ namespace YAPA.Plugins.Tasks
                 var content = File.ReadAllText(taskLocation);
                 var tasks = JsonConvert.DeserializeObject<ObservableCollection<TaskGroup>>(content);
                 Tasks = tasks;
+                RecalculatePaths(Tasks.First(), tasks.First().Title);
             }
             else
             {
@@ -68,7 +69,27 @@ namespace YAPA.Plugins.Tasks
         internal void AddNew(TaskGroup selected, string title)
         {
             selected.AddSubGroup(new TaskGroup { Title = title });
+            RecalculatePaths(Tasks.First(), Tasks.First().Title);
             OnPropertyChanged(nameof(Tasks));
+        }
+
+        private void RecalculatePaths(TaskGroup root, string path)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            if (root.SubGroups == null)
+            {
+                return;
+            }
+
+            foreach (var item in root.SubGroups)
+            {
+                item.Path = path;
+                RecalculatePaths(item, $"{path} > {item.Title}");
+            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
