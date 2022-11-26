@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -24,11 +21,11 @@ namespace YAPA.Plugins.PomodoroEngine
             settings.DeferChanges();
 
             InitializeComponent();
-            var a = AppDomain.CurrentDomain.BaseDirectory;
             var oneHour = Enumerable.Range(1, 60).Reverse().ToList();
             WorkTimeSelect.ItemsSource = oneHour;
             BreakTimeSelect.ItemsSource = oneHour;
             LongBreakTimeSelect.ItemsSource = oneHour;
+            SessionRounds.ItemsSource = Enumerable.Range(2, 10).ToList();
             Settings = settings;
             Engine = engine;
 

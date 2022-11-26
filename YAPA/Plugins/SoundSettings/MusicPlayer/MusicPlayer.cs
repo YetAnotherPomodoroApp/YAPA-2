@@ -54,7 +54,6 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
 
             var songToPlay = string.Empty;
             var repeat = false;
-
             switch (_engine.Phase)
             {
                 case PomodoroPhase.Work:

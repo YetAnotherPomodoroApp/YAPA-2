@@ -224,11 +224,24 @@ namespace YAPA.Shared.Common
             _threading = threading;
             _timer.Tick += _timer_Tick;
 
-            var pom4 = new Pomodoro(_settings) { Index = 4 };
-            var pom3 = new Pomodoro(_settings) { Index = 3, NextPomodoro = pom4 };
-            var pom2 = new Pomodoro(_settings) { Index = 2, NextPomodoro = pom3 };
-            _pom1 = new Pomodoro(_settings) { Index = 1, NextPomodoro = pom2 };
-            pom4.NextPomodoro = _pom1;
+            var pomodoros = new List<Pomodoro>();
+
+            Pomodoro prev = null;
+            for (int i = 1; i <= _settings.PomodorosBeforeLongBreak; i++)
+            {
+                var current = new Pomodoro(_settings) { Index = i };
+                if (prev != null)
+                {
+                    prev.NextPomodoro = current;
+                }
+
+                pomodoros.Add(current);
+                prev = current;
+            }
+
+            _pom1 = pomodoros.First();
+            var last = pomodoros.Last();
+            last.NextPomodoro = _pom1;
 
             _startDate = _endDate = _dateTime.DateTimeUtc();
 
@@ -289,7 +302,7 @@ namespace YAPA.Shared.Common
                 return;
             }
             await Task.Delay(TimeSpan.FromSeconds(delayBeforeStarting));
-            
+
             Start();
         }
 
@@ -486,6 +499,18 @@ namespace YAPA.Shared.Common
             }
         }
 
+        public int PomodorosBeforeLongBreak
+        {
+            get => Profiles[ActiveProfile].PomodorosBeforeLongBreak;
+            set
+            {
+                var temp = new Dictionary<string, PomodoroProfile>(Profiles);
+                var profile = temp[ActiveProfile];
+                profile.PomodorosBeforeLongBreak = value;
+                Profiles = temp;
+            }
+        }
+
         public string FontFamily
         {
             get => _settings.Get(nameof(FontFamily), "Segoe UI Light.ttf");
@@ -551,7 +576,7 @@ namespace YAPA.Shared.Common
 
         public int WorkTime => _settings.WorkTime;
 
-        public int BreakTime => Index == 4 ? _settings.LongBreakTime : _settings.BreakTime;
+        public int BreakTime => Index == _settings.PomodorosBeforeLongBreak ? _settings.LongBreakTime : _settings.BreakTime;
 
         public Pomodoro NextPomodoro { get; set; }
 
