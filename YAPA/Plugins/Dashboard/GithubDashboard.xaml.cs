@@ -220,11 +220,8 @@ namespace YAPA.Plugins.Dashboard
                     CartesianChart.Series = seriesCollection;
                     CartesianChartTitle.Text = $"Last {daysToShow} days";
                     AxisYLabels.LabelFormatter = x => TimeSpan.FromMinutes(x).ToString("g");
-                    ChartLabels.Labels = Enumerable
-                        .Range(1, daysToShow)
-                        .Reverse()
-                        .Select(x => DateTime.Now.AddDays(-x + 1).ToShortDateString())
-                        .ToArray();
+                    ChartLabels.Labels =
+                    lastPomodoros.Select(_ => _.Pomodoro.DateTime.ToShortDateString()).ToArray();
                 });
             }
             else
