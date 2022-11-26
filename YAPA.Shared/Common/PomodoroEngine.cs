@@ -23,11 +23,11 @@ namespace YAPA.Shared.Common
         private readonly ITimer _timer;
         private readonly IDate _dateTime;
         private readonly IThreading _threading;
+        private readonly IPomodoroRepository _repository;
 
         public int Index => Current.Index;
 
         private int _completedPomodorosThisSession;
-        private int _completedTodayBeforeStarting;
         public int Counter
         {
             get
@@ -39,7 +39,7 @@ namespace YAPA.Shared.Common
                         counter = Index;
                         break;
                     case CounterEnum.CompletedToday:
-                        counter = _completedTodayBeforeStarting + _completedPomodorosThisSession;
+                        counter = _repository.CompletedToday();
                         break;
                     case CounterEnum.CompletedThisSession:
                         counter = _completedPomodorosThisSession;
@@ -222,6 +222,7 @@ namespace YAPA.Shared.Common
             _timer = timer;
             _dateTime = dateTime;
             _threading = threading;
+            _repository = repository;
             _timer.Tick += _timer_Tick;
 
             var pomodoros = new List<Pomodoro>();
@@ -253,7 +254,6 @@ namespace YAPA.Shared.Common
 
             var todayStart = _dateTime.DateTimeUtc().Date;
             var todayEnd = _dateTime.DateTimeUtc().Date.AddDays(1).AddSeconds(-1);
-            _completedTodayBeforeStarting = repository?.Pomodoros?.Count(x => todayStart <= x.DateTime && x.DateTime <= todayEnd) ?? 0;
         }
 
         private void _globalSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -318,6 +318,7 @@ namespace YAPA.Shared.Common
                 _timer.Stop();
                 Phase = PomodoroPhase.WorkEnded;
                 OnPomodoroCompleted?.Invoke();
+                NotifyPropertyChanged(nameof(Counter));
             }
             else if (Phase == PomodoroPhase.Break && Elapsed >= BreakTime)
             {

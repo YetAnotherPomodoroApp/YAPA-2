@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace YAPA.Shared.Contracts
 {
     public interface IPomodoroRepository
     {
-        IQueryable<PomodoroEntity> Pomodoros { get; }
-
         void Delete(int id);
         void Add(PomodoroEntity pomo);
+        int CompletedToday();
+        IEnumerable<PomodoroEntity> After(DateTime date);
     }
 
     public class PomodoroEntity

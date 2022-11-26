@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YAPA.Shared.Contracts;
@@ -30,8 +29,7 @@ namespace YAPA.Shared.Common
 
             var totalDays = (int)Math.Truncate((today - fromDate).TotalDays);
             var emptyPomodoros = Enumerable.Range(0, totalDays).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
-            var capturedPomodoros = _itemRepository.Pomodoros.Where(x => x.DateTime >= fromDate).ToList();
-
+            var capturedPomodoros = _itemRepository.After(fromDate);
 
             var distinctProfiles = capturedPomodoros.Select(_ => _.ProfileName).Distinct().ToList();
 
@@ -64,28 +62,14 @@ namespace YAPA.Shared.Common
             return result;
         }
 
-        public int CompletedToday()
-        {
-            var startDate = DateTime.Now.Date;
-            var endDate = startDate.AddDays(1).AddSeconds(-1);
-            return _itemRepository.Pomodoros
-                .Where(pomodoro => startDate <= pomodoro.DateTime && pomodoro.DateTime <= endDate)
-                .Select(_ => _.Count)
-                .DefaultIfEmpty(0)
-                .Sum();
-        }
-
         private void _engine_OnPomodoroCompleted()
         {
-            Task.Run(() =>
+            _itemRepository.Add(new PomodoroEntity
             {
-                _itemRepository.Add(new PomodoroEntity
-                {
-                    Count = 1,
-                    DateTime = DateTime.UtcNow,
-                    DurationMin = _engine.WorkTime / 60,
-                    ProfileName = _engineSettings.ActiveProfile
-                });
+                Count = 1,
+                DateTime = DateTime.UtcNow,
+                DurationMin = _engine.WorkTime / 60,
+                ProfileName = _engineSettings.ActiveProfile
             });
         }
     }

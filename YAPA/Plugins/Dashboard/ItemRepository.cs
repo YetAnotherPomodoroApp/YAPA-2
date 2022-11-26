@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,53 @@ namespace YAPA.Plugins.Dashboard
 
         public ItemRepository()
         {
-            _context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2","Yapa.db"));
+            _context = new DatabaseContext(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2", "Yapa.db"));
             _context.Database.Migrate();
         }
 
-        public IQueryable<PomodoroEntity> Pomodoros => _context.Pomodoros;
-
         public void Delete(int id)
         {
-            var existing = Pomodoros.FirstOrDefault(x => x.Id == id);
-
-            if (existing != null)
+            lock (_context)
             {
-                _context.Pomodoros.Remove(existing);
-                _context.SaveChanges();
+                var existing = _context.Pomodoros.FirstOrDefault(x => x.Id == id);
+
+                if (existing != null)
+                {
+                    _context.Pomodoros.Remove(existing);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public int CompletedToday()
+        {
+            lock (_context)
+            {
+                var startDate = DateTime.Now.Date;
+                var endDate = startDate.AddDays(1).AddSeconds(-1);
+                return _context.Pomodoros
+                    .Where(pomodoro => startDate <= pomodoro.DateTime && pomodoro.DateTime <= endDate)
+                    .Select(_ => _.Count)
+                    .DefaultIfEmpty(0)
+                    .Sum();
             }
         }
 
         public void Add(PomodoroEntity pomodoroEntity)
         {
-            _context.Pomodoros.Add(pomodoroEntity);
-            _context.SaveChanges();
+            lock (_context)
+            {
+                _context.Pomodoros.Add(pomodoroEntity);
+                _context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<PomodoroEntity> After(DateTime date)
+        {
+            lock (_context)
+            {
+                return _context.Pomodoros.Where(x => x.DateTime >= date).ToList();
+            }
         }
     }
 

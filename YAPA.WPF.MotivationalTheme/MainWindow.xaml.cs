@@ -84,8 +84,7 @@ namespace Motivational
         {
             await Task.Run(() =>
             {
-                var today = DateTime.Today.Date;
-                CurrentPomodoroPeriod = _pomodoroRepository.Pomodoros.Where(x => x.DateTime == today).Select(a => a.Count).DefaultIfEmpty(0).Sum();
+                CurrentPomodoroPeriod = _pomodoroRepository.CompletedToday();
                 RaisePropertyChanged(nameof(CurrentPomodoroPeriod));
             });
         }
