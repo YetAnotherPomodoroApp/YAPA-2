@@ -61,14 +61,27 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
                     repeat = _settings.RepeatWorkSong;
                     break;
                 case PomodoroPhase.Break:
-                    songToPlay = _settings.BreakSong;
-                    repeat = _settings.RepeatBreakSong;
+                    if (_engine.Index == _engineSettings.PomodorosBeforeLongBreak)
+                    {
+                        songToPlay = _settings.SessionBreakSong;
+                        repeat = _settings.RepeatSessionBreakSong;
+                    }
+                    else
+                    {
+                        songToPlay = _settings.BreakSong;
+                        repeat = _settings.RepeatBreakSong;
+                    }
                     break;
                 case PomodoroPhase.BreakEnded:
                 case PomodoroPhase.WorkEnded:
                     break;
             }
 
+            PlaySong(songToPlay, repeat);
+        }
+
+        private void PlaySong(string songToPlay, bool repeat)
+        {
             if (File.Exists(songToPlay))
             {
                 _musicPlayer.Load(songToPlay);
@@ -103,6 +116,18 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
         {
             get => _settings.Get(nameof(RepeatBreakSong), false, true);
             set => _settings.Update(nameof(RepeatBreakSong), value, true);
+        }
+
+        public string SessionBreakSong
+        {
+            get => _settings.Get<string>(nameof(SessionBreakSong), null, true);
+            set => _settings.Update(nameof(SessionBreakSong), value, true);
+        }
+
+        public bool RepeatSessionBreakSong
+        {
+            get => _settings.Get(nameof(RepeatSessionBreakSong), false, true);
+            set => _settings.Update(nameof(RepeatSessionBreakSong), value, true);
         }
 
         public MusicPlayerPluginSettings(ISettings settings)
