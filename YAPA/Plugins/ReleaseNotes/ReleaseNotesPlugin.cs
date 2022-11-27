@@ -21,23 +21,35 @@ namespace YAPA.Plugins.ReleaseNotes
 
     public class ReleaseNotes : IPlugin
     {
-        public ReleaseNotes(IEnvironment environment, ReleaseNotesSettings settings)
+        private readonly IEnvironment _environment;
+        private readonly ReleaseNotesSettings _settings;
+        private readonly IApplication _application;
+
+        public ReleaseNotes(IEnvironment environment, ReleaseNotesSettings settings, IApplication application)
+        {
+            _environment = environment;
+            _settings = settings;
+            _application = application;
+            ShowUpdateWindow();
+        }
+
+        private void ShowUpdateWindow()
         {
             var assembly = Assembly.GetExecutingAssembly();
 
             var currentVersion = assembly.GetName().Version.ToString(3);
 
-            var showDialog = true || !string.IsNullOrEmpty(settings.Version)
-                && currentVersion != settings.Version
-                && settings.ShowNotification;
+            var showDialog = true || !string.IsNullOrEmpty(_settings.Version)
+                && currentVersion != _settings.Version
+                && _settings.ShowNotification;
 
-            settings.Version = currentVersion;
+            _settings.Version = currentVersion;
 
             if (showDialog)
             {
-                var window = new ReleaseNotesWindow(settings, environment.PreRelease());
+                var window = new ReleaseNotesWindow(_settings, _environment.PreRelease());
 
-                window.ShowDialog();
+                window.Show();
             }
         }
     }

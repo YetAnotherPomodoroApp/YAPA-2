@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:YAPA.Plugins.ReleaseNotes"
         mc:Ignorable="d"
         Title="YAPA 2 updated!" Height="150" Width="400"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" Topmost="True">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

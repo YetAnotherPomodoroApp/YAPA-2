@@ -24,7 +24,7 @@ namespace YAPA.Plugins.ReleaseNotes
     {
         public ReleaseNotesSettings ReleaseNotesSettings { get; }
         private string releaseNotes = "https://github.com/YetAnotherPomodoroApp/YAPA-2/releases/latest";
-        private string preReleaseNotes = "";
+        private string preReleaseNotes = "https://github.com/YetAnotherPomodoroApp/YAPA-2/compare/pre-release";
         private readonly bool _preRelease;
 
         public ReleaseNotesWindow(ReleaseNotesSettings releaseNotesSettings, bool preRelease)
@@ -33,8 +33,6 @@ namespace YAPA.Plugins.ReleaseNotes
             ReleaseNotesSettings = releaseNotesSettings;
             _preRelease = preRelease;
             DataContext = this;
-
-  
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
