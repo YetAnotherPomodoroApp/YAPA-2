@@ -1,0 +1,35 @@
+﻿<Window x:Class="YAPA.Plugins.ReleaseNotes.ReleaseNotesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YAPA.Plugins.ReleaseNotes"
+        mc:Ignorable="d"
+        Title="YAPA 2 updated!" Height="150" Width="400"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock TextWrapping="Wrap">Application has been updated to the latest version. Click link below to check changes.</TextBlock>
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center">           
+            <Hyperlink NavigateUri="" RequestNavigate="Hyperlink_RequestNavigate">
+                Changelog
+            </Hyperlink>
+        </TextBlock>
+
+        <Grid  Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0" IsChecked="{Binding ReleaseNotesSettings.ShowNotification, Mode=TwoWay}">Show update notifications</CheckBox>
+            <Button Grid.Column="2" Style="{DynamicResource MaterialDesignFlatButton}" Click="Ok_Click" Grid.Row="2">Ok</Button>
+        </Grid>
+    </Grid>
+</Window>

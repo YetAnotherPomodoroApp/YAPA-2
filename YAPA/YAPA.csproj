@@ -346,6 +346,10 @@
     <Compile Include="Plugins\PomodoroEngine\PomodoroProfileSettings.xaml.cs">
       <DependentUpon>PomodoroProfileSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\ReleaseNotes\ReleaseNotesPlugin.cs" />
+    <Compile Include="Plugins\ReleaseNotes\ReleaseNotesWindow.xaml.cs">
+      <DependentUpon>ReleaseNotesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\SaveApplicationPossitionOnScreen\WindowPlacement.cs" />
     <Compile Include="Plugins\SoundSettings\MusicPlayer\MusicPlayerPluginSettingWindow.xaml.cs">
       <DependentUpon>MusicPlayerPluginSettingWindow.xaml</DependentUpon>
@@ -427,6 +431,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plugins\PomodoroEngine\PomodoroProfileSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\ReleaseNotes\ReleaseNotesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
