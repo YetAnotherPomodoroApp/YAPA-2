@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using YAPA.Plugins.SaveApplicationPossitionOnScreen;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
@@ -24,12 +25,14 @@ namespace YAPA.Plugins.ReleaseNotes
         private readonly IEnvironment _environment;
         private readonly ReleaseNotesSettings _settings;
         private readonly IApplication _application;
+        private readonly SaveApplicationPositionOnScreenSettings _positionSettings;
 
-        public ReleaseNotes(IEnvironment environment, ReleaseNotesSettings settings, IApplication application)
+        public ReleaseNotes(IEnvironment environment, ReleaseNotesSettings settings, IApplication application, SaveApplicationPositionOnScreenSettings positionSettings)
         {
             _environment = environment;
             _settings = settings;
             _application = application;
+            _positionSettings = positionSettings;
             ShowUpdateWindow();
         }
 
@@ -39,7 +42,7 @@ namespace YAPA.Plugins.ReleaseNotes
 
             var currentVersion = assembly.GetName().Version.ToString(3);
 
-            var showDialog = true || !string.IsNullOrEmpty(_settings.Version)
+            var showDialog = !string.IsNullOrEmpty(_settings.Version)
                 && currentVersion != _settings.Version
                 && _settings.ShowNotification;
 
@@ -47,7 +50,7 @@ namespace YAPA.Plugins.ReleaseNotes
 
             if (showDialog)
             {
-                var window = new ReleaseNotesWindow(_settings, _environment.PreRelease());
+                var window = new ReleaseNotesWindow(_settings, _positionSettings, _environment.PreRelease());
 
                 window.Show();
             }

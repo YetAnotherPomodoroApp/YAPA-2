@@ -10,7 +10,7 @@ namespace YAPA.WPF.Specifics
     {
         public string Serialize(object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
 
         public T Deserialize<T>(string obj)

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="YAPA 2 updated!" Height="150" Width="400"
         ResizeMode="NoResize" Topmost="True">
-    <Grid>
+    <Grid  Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
