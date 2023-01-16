@@ -85,19 +85,26 @@ namespace YAPA.WPF.SettingsMananger
 
         private void UpdateNotificationMessage()
         {
-            RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
-
-            var settingsChanged = "Restart application to apply changes";
-            var updatesInstalled = "Restart application to apply updates";
-
-            var message = settingsChanged;
-
-            if (!string.IsNullOrEmpty(_mananger.NewVersion))
+            try
             {
-                message = updatesInstalled;
-            }
+                RestartAppNotification.Visibility = _mananger.RestartNeeded ? Visibility.Visible : Visibility.Collapsed;
 
-            NotificationMessage.Text = message;
+                var settingsChanged = "Restart application to apply changes";
+                var updatesInstalled = "Restart application to apply updates";
+
+                var message = settingsChanged;
+
+                if (!string.IsNullOrEmpty(_mananger.NewVersion))
+                {
+                    message = updatesInstalled;
+                }
+
+                NotificationMessage.Text = message;
+            }
+            catch
+            {
+
+            }
         }
 
         private void Settings_Loaded(object sender, RoutedEventArgs e)
