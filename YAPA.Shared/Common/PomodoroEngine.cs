@@ -228,7 +228,7 @@ namespace YAPA.Shared.Common
             var pomodoros = new List<Pomodoro>();
 
             Pomodoro prev = null;
-            for (int i = 1; i <= _settings.PomodorosBeforeLongBreak; i++)
+            for (int i = 1; i <= Math.Max(_settings.PomodorosBeforeLongBreak, 2); i++)
             {
                 var current = new Pomodoro(_settings) { Index = i };
                 if (prev != null)
