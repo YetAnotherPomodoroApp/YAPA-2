@@ -50,6 +50,27 @@ Features
   - Motivational theme
     - More about theme [here](https://github.com/YetAnotherPomodoroApp/MotivationalTheme).
 
+Windows, macOS and Linux (Avalonia)
+===
+`YAPA.Avalonia` is the same application on [Avalonia](https://avaloniaui.net), so it also runs on macOS and Linux.
+It uses `YAPA.Shared` (the engine, settings and commands) as it is and recreates the WPF windows:
+the YAPA 1.0 timer looks the same (borderless, see-through, Segoe UI Light with the soft shadow), and
+the settings window keeps the WPF layout with [Material.Avalonia](https://github.com/AvaloniaCommunity/Material.Avalonia)
+in place of MaterialDesignInXaml.
+
+Settings, history and the snapshot of an unfinished pomodoro are read from and written to the same
+`Documents/YAPA2` folder as the Windows version (set `YAPA_HOME` to use another folder).
+
+Build and run with the .NET 8 SDK or newer:
+```
+dotnet run --project YAPA.Avalonia
+```
+`YAPA.Avalonia.sln` holds the projects that build on every system (`YAPA.sln` is the WPF version).
+
+Not in the Avalonia version: the Squirrel updater and release notes window, taskbar progress and jump
+lists (Windows only), and loading themes or plugins from DLLs next to the app (they are compiled in).
+System tray balloon tips are shown as system notifications.
+
 Contribution guidelines
 ===
 1. Before doing code refactoring, create issue to discuss it.

@@ -44,6 +44,10 @@ namespace YAPA.Avalonia.Infrastructure
         {
             Title = "YAPA 2";
             ViewModel = viewModel;
+            using (var icon = global::Avalonia.Platform.AssetLoader.Open(new Uri("avares://YAPA/Assets/pomo.ico")))
+            {
+                Icon = new WindowIcon(icon);
+            }
             Opened += AbstractWindow_Opened;
             Closing += AbstractWindow_Closing;
             PropertyChanged += (s, e) =>
