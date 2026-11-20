@@ -225,24 +225,7 @@ namespace YAPA.Shared.Common
             _repository = repository;
             _timer.Tick += _timer_Tick;
 
-            var pomodoros = new List<Pomodoro>();
-
-            Pomodoro prev = null;
-            for (int i = 1; i <= Math.Max(_settings.PomodorosBeforeLongBreak, 2); i++)
-            {
-                var current = new Pomodoro(_settings) { Index = i };
-                if (prev != null)
-                {
-                    prev.NextPomodoro = current;
-                }
-
-                pomodoros.Add(current);
-                prev = current;
-            }
-
-            _pom1 = pomodoros.First();
-            var last = pomodoros.Last();
-            last.NextPomodoro = _pom1;
+            _pom1 = new Pomodoro(_settings, 1);
 
             _startDate = _endDate = _dateTime.DateTimeUtc();
 
@@ -573,17 +556,22 @@ namespace YAPA.Shared.Common
     {
         private readonly PomodoroEngineSettings _settings;
 
-        public int Index { get; set; }
+        public int Index { get; }
 
         public int WorkTime => _settings.WorkTime;
 
         public int BreakTime => Index == _settings.PomodorosBeforeLongBreak ? _settings.LongBreakTime : _settings.BreakTime;
 
-        public Pomodoro NextPomodoro { get; set; }
+        /// <summary>
+        /// The round is as long as the active profile says right now, so changing "Session rounds"
+        /// or the active profile takes effect without a restart. A round has at least two pomodoros.
+        /// </summary>
+        public Pomodoro NextPomodoro => new Pomodoro(_settings, Index >= Math.Max(_settings.PomodorosBeforeLongBreak, 2) ? 1 : Index + 1);
 
-        public Pomodoro(PomodoroEngineSettings settings)
+        public Pomodoro(PomodoroEngineSettings settings, int index)
         {
             _settings = settings;
+            Index = index;
         }
     }
 }
