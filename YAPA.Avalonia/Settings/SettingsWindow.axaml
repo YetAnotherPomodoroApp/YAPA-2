@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
+        x:Class="YAPA.Avalonia.Settings.SettingsWindow"
+        Title="Settings" Height="440" Width="800"
+        CanResize="False"
+        Topmost="True"
+        ShowInTaskbar="False"
+        WindowDecorations="None"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Background="{DynamicResource MaterialPaperBrush}"
+        Foreground="{DynamicResource MaterialBodyBrush}"
+        FontFamily="{x:Static infra:Fonts.Roboto}"
+        FontSize="12">
+    <!-- Same layout as YAPA/WPF/SettingsMananger/SettingsWindow.xaml: no title bar, drag anywhere,
+         the tree of pages on the left, the selected page on the right. -->
+    <Grid Name="SettingGrid" ColumnDefinitions="2*,5*" RowDefinitions="*,Auto">
+        <TreeView Grid.Column="0" Grid.Row="0" Name="SettingsTree" />
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="CloseButton" Command="{Binding CancelCommand}" Margin="5" Content="Close" />
+            <Button Name="SaveButton" Command="{Binding SaveCommand}" IsDefault="True" Margin="5" Content="Save" />
+        </StackPanel>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Name="Version" VerticalAlignment="Bottom" Margin="4" />
+
+        <Border IsVisible="False" Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                Width="300" Height="20" VerticalAlignment="Top" Background="Gold" CornerRadius="8">
+            <TextBlock Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+    </Grid>
+</Window>

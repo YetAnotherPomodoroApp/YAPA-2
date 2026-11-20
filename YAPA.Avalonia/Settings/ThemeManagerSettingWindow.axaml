@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Settings.ThemeManagerSettingWindow">
+    <!-- YAPA/WPF/ThemeManager/ThemeManagerSettingWindow.xaml -->
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+            <ComboBox Grid.Column="1" Grid.Row="0" Name="ThemeList" HorizontalAlignment="Right" Margin="10,5,10,5" />
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Name="SettingPage" />
+        </Grid>
+    </ScrollViewer>
+</UserControl>

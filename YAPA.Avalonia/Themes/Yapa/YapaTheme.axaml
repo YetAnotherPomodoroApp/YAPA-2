@@ -1,0 +1,112 @@
+<infra:AbstractWindow xmlns="https://github.com/avaloniaui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
+                      x:Class="YAPA.Avalonia.Themes.Yapa.YapaTheme"
+                      Width="130" Height="60"
+                      Background="#01000000"
+                      WindowStartupLocation="Manual">
+    <!-- A copy of YAPA.WPF.Themes/YAPA/YapaTheme.xaml. Element sizes, fonts, margins and the
+         Viewbox scaling are the same, so the timer looks the same at every "Application size". -->
+    <infra:AbstractWindow.Template>
+        <ControlTemplate>
+            <Panel Background="{TemplateBinding Background}">
+                <ContentPresenter Content="{TemplateBinding Content}" />
+            </Panel>
+        </ControlTemplate>
+    </infra:AbstractWindow.Template>
+
+    <infra:AbstractWindow.Styles>
+        <!-- WPF themes give each button a template that is only a TextBlock; on hover the
+             TextBlock gets the shadow colour behind it. -->
+        <Style Selector="Button.yapa">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock Name="PART_Text"
+                               Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               FontSize="{TemplateBinding FontSize}"
+                               Foreground="{Binding TextBrush}"
+                               Opacity="{Binding ClockOpacity}"
+                               Effect="{Binding SmallTextEffect}" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.yapa:pointerover /template/ TextBlock#PART_Text">
+            <Setter Property="Background" Value="{Binding MouseOverBackgroundColor}" />
+        </Style>
+        <Style Selector="Button.small">
+            <Setter Property="FontFamily" Value="{x:Static infra:Fonts.SegoeUi}" />
+        </Style>
+        <Style Selector="TextBlock.digit">
+            <Setter Property="Cursor" Value="Arrow" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="FontSize" Value="60" />
+            <Setter Property="Foreground" Value="{Binding TextBrush}" />
+            <Setter Property="Opacity" Value="{Binding ClockOpacity}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Effect" Value="{Binding DigitEffect}" />
+        </Style>
+    </infra:AbstractWindow.Styles>
+
+    <Grid Background="Transparent">
+        <Viewbox Stretch="Uniform">
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
+                <!-- Optional background behind the whole timer; hidden unless a background opacity is set -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                        Background="{Binding BackgroundBrush}" IsVisible="{Binding BackgroundVisible}" CornerRadius="3" />
+
+                <!-- Current time -->
+                <StackPanel Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                            Background="Transparent" Orientation="Horizontal">
+                    <TextBlock Name="CurrentTimeMinutes3" Classes="digit" Text="0" />
+                    <TextBlock Name="CurrentTimeMinutes2" Classes="digit" Text="0" />
+                    <TextBlock Name="CurrentTimeMinutes" Classes="digit" Text="0" />
+                    <TextBlock Name="CurrentTimeSeparator" Classes="digit" Width="NaN" Text=":" />
+                    <TextBlock Name="CurrentTimeSeconds2" Classes="digit" Text="0" />
+                    <TextBlock Name="CurrentTimeSeconds" Classes="digit" Text="0" />
+                </StackPanel>
+
+                <TextBlock Name="StageTextBlock" Text="{Binding Status}" Grid.Column="0" Grid.Row="0"
+                           VerticalAlignment="Center" TextAlignment="Left"
+                           Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}"
+                           Effect="{Binding SmallTextEffect}" FontFamily="{x:Static infra:Fonts.SegoeUi}" />
+
+                <StackPanel Name="MinExitPanel" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
+                            Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Name="Minimize" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Content="_" ToolTip.Tip="Minimize" Height="15" Width="15" FontSize="10"
+                            Click="Minimize_OnClick" />
+                    <Button Name="Exit" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Content="x" ToolTip.Tip="Close" Height="15" Width="15" FontSize="10"
+                            Click="Exit_OnClick" />
+                </StackPanel>
+
+                <StackPanel Name="ButtonPanel" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+                    <Button Name="Skip" Classes="yapa small" Command="{Binding ViewModel.SkipCommand}"
+                            HorizontalAlignment="Right" VerticalAlignment="Top" Content="SKIP"
+                            ToolTip.Tip="Skip break" Height="15" Width="38" FontSize="11" />
+                    <Button Name="Start" Classes="yapa small" Command="{Binding ViewModel.StartCommand}"
+                            HorizontalAlignment="Right" VerticalAlignment="Top" Content="START"
+                            ToolTip.Tip="Start Pomodoro" Height="15" Width="38" FontSize="11" />
+                    <Button Name="Pause" Classes="yapa small" Command="{Binding ViewModel.PauseCommand}"
+                            HorizontalAlignment="Right" VerticalAlignment="Top" Content="PAUSE"
+                            ToolTip.Tip="Pause Pomodoro" Height="15" Width="38" FontSize="11" />
+                    <Button Name="Stop" Classes="yapa small" Command="{Binding ViewModel.StopCommand}"
+                            HorizontalAlignment="Right" VerticalAlignment="Top" Content="STOP"
+                            ToolTip.Tip="Stop Pomodoro" Height="15" Width="38" FontSize="11" />
+                    <TextBlock Name="CurrentPeriod" Cursor="Arrow" FontFamily="{x:Static infra:Fonts.SegoeUi}"
+                               FontSize="8" Foreground="{Binding TextBrush}" Opacity="{Binding ClockOpacity}"
+                               Effect="{Binding SmallTextEffect}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               TextAlignment="Center" Height="10" Width="10" Text="{Binding ViewModel.Engine.Counter}"
+                               ToolTip.Tip="Current period" />
+                </StackPanel>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</infra:AbstractWindow>

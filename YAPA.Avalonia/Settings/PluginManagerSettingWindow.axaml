@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Settings.PluginManagerSettingWindow">
+    <!-- YAPA/WPF/PluginManager/PluginManagerSettingWindow.xaml -->
+    <Grid>
+        <ListBox Name="PluginList">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Content="{Binding Title}"
+                              IsCheckedChanged="PluginChanged" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

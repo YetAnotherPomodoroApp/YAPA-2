@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:YAPA.Avalonia.Plugins.PomodoroEngine"
+             x:Class="YAPA.Avalonia.Plugins.PomodoroEngine.PomodoroProfileSettings">
+    <!-- YAPA/Plugins/PomodoroEngine/PomodoroProfileSettings.xaml -->
+    <UserControl.Resources>
+        <local:SecondsToMinutesConverter x:Key="SecToMinConverter" />
+    </UserControl.Resources>
+    <Grid ColumnDefinitions="*,2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+        <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0" />
+        <ComboBox Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                  IsEnabled="{Binding !Engine.IsRunning}" />
+
+        <Button Grid.Column="2" Grid.Row="0" Margin="5,1,5,1" Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton"
+                HorizontalAlignment="Stretch" />
+        <Button Grid.Column="2" Grid.Row="1" Margin="5,1,5,1" Content="Add" Click="AddProfile_Click" Name="AddButton"
+                HorizontalAlignment="Stretch" IsEnabled="{Binding !Engine.IsRunning}" />
+
+        <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" />
+        <ComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+                  Text="{Binding Settings.WorkTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" />
+        <ComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+                  Text="{Binding Settings.BreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" />
+        <ComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+                  Text="{Binding Settings.PomodorosBeforeLongBreak, Mode=TwoWay}" />
+
+        <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" />
+        <ComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+                  Text="{Binding Settings.LongBreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <CheckBox Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" Content="Auto start break" />
+        <CheckBox Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" Content="Auto start work" />
+    </Grid>
+</UserControl>

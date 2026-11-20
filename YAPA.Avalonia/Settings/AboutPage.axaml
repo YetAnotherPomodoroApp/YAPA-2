@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Settings.AboutPage">
+    <!-- YAPA/WPF/AboutPage.xaml -->
+    <Grid RowDefinitions="*,Auto">
+        <StackPanel Grid.Row="0">
+            <StackPanel>
+                <Image Source="avares://YAPA/Assets/Pomodoro.png" Height="90" />
+                <TextBlock Margin="0,5,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="Yet Another Pomodoro Application 2 follow at:" />
+                <Button Classes="link" HorizontalAlignment="Center" Click="Homepage_Click"
+                        Content="https://github.com/YetAnotherPomodoroApp/YAPA-2" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
+                <Button Classes="link" Click="Mail_Click" Content="pomodoroapp@outlook.com" />
+            </StackPanel>
+        </StackPanel>
+        <Button Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Classes="Flat"
+                Content="Import data from YAPA 1" Click="Import_OnClick" />
+    </Grid>
+
+    <UserControl.Styles>
+        <!-- A WPF Hyperlink: link-coloured text, no button chrome -->
+        <Style Selector="Button.link">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialHyperlinkBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                               Foreground="{TemplateBinding Foreground}" Background="Transparent" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.link:pointerover">
+            <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>
