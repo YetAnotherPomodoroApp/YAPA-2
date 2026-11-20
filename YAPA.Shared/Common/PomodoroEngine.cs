@@ -395,6 +395,7 @@ namespace YAPA.Shared.Common
 
         private static readonly Dictionary<string, PomodoroProfile> DefaultProfile;
         private static string DefaultProfileName = "Pomodoro";
+        public const int DefaultPomodorosBeforeLongBreak = 4;
 
         static PomodoroEngineSettings()
         {
@@ -406,7 +407,7 @@ namespace YAPA.Shared.Common
                     BreakTime = 5 * 60,
                     LongBreakTime = 15 * 60,
                     WorkTime = 25 * 60,
-                    PomodorosBeforeLongBreak = 4
+                    PomodorosBeforeLongBreak = DefaultPomodorosBeforeLongBreak
                 }
             };
         }
@@ -485,7 +486,12 @@ namespace YAPA.Shared.Common
 
         public int PomodorosBeforeLongBreak
         {
-            get => Profiles[ActiveProfile].PomodorosBeforeLongBreak;
+            get
+            {
+                //Profiles added by older versions were saved without session rounds (0); treat them like a new profile
+                var rounds = Profiles[ActiveProfile].PomodorosBeforeLongBreak;
+                return rounds <= 0 ? DefaultPomodorosBeforeLongBreak : rounds;
+            }
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);

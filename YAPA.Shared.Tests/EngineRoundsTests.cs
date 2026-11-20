@@ -163,16 +163,39 @@ namespace YAPA.Shared.Tests
         }
 
         [TestMethod]
-        public void ProfileSavedWithoutRounds_AlternatesTwoPomodorosWithShortBreaks()
+        public void ProfileSavedWithoutRounds_GetsFourRounds()
         {
-            //Profiles created by older versions have 0 rounds; this is how they have always behaved
-            foreach (var rounds in new[] { 0, 1 })
+            //Profiles added by older versions were saved with 0 rounds and never got a long break
+            foreach (var rounds in new[] { 0, -1 })
             {
                 var f = new Fixture(rounds);
 
-                var expected = rounds == 1 ? "1:long 2:short 1:long 2:short" : "1:short 2:short 1:short 2:short";
-                Assert.AreEqual(expected, f.Rounds(4), $"rounds = {rounds}");
+                Assert.AreEqual(4, f.Settings.PomodorosBeforeLongBreak, $"rounds = {rounds}");
+                Assert.AreEqual("1:short 2:short 3:short 4:long 1:short", f.Rounds(5), $"rounds = {rounds}");
+                Assert.AreEqual(rounds, f.Profiles["main"].PomodorosBeforeLongBreak, "the stored value is not rewritten");
             }
+        }
+
+        [TestMethod]
+        public void ProfileSavedWithoutRounds_KeepsARoundsValueTheUserSets()
+        {
+            var f = new Fixture(0);
+            Assert.AreEqual("1:short", f.Rounds(1));
+
+            f.Settings.PomodorosBeforeLongBreak = 2;
+
+            Assert.AreEqual(2, f.Profiles["main"].PomodorosBeforeLongBreak);
+            Assert.AreEqual("2:long 1:short 2:long", f.Rounds(3));
+        }
+
+        [TestMethod]
+        public void OneRound_BehavesAsBefore()
+        {
+            //Not offered in the list but can be typed; unchanged: a long break after the first of two pomodoros
+            var f = new Fixture(1);
+
+            Assert.AreEqual(1, f.Settings.PomodorosBeforeLongBreak);
+            Assert.AreEqual("1:long 2:short 1:long 2:short", f.Rounds(4));
         }
 
         [TestMethod]

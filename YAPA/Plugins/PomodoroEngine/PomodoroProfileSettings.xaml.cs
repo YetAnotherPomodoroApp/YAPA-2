@@ -108,7 +108,7 @@ namespace YAPA.Plugins.PomodoroEngine
 
         private void AddProfile_Click(object sender, RoutedEventArgs e)
         {
-            var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60, PomodorosBeforeLongBreak = 4 };
+            var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60, PomodorosBeforeLongBreak = PomodoroEngineSettings.DefaultPomodorosBeforeLongBreak };
 
             var createWindow = new CreatePomodoroProfile(Settings.Profiles.Select(x => x.Key).ToList());
 
