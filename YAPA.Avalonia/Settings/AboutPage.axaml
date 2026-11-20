@@ -8,7 +8,7 @@
                 <Image Source="avares://YAPA/Assets/Pomodoro.png" Height="90" />
                 <TextBlock Margin="0,5,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="Yet Another Pomodoro Application 2 follow at:" />
                 <Button Classes="link" HorizontalAlignment="Center" Click="Homepage_Click"
-                        Content="https://github.com/YetAnotherPomodoroApp/YAPA-2" />
+                        Content="https://github.com/YetAnotherPomodoroApp/YAPA-2" Tag="plain" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
                 <Button Classes="link" Click="Mail_Click" Content="pomodoroapp@outlook.com" />
@@ -25,13 +25,15 @@
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <ControlTemplate>
-                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
-                               Foreground="{TemplateBinding Foreground}" Background="Transparent" />
+                    <TextBlock Name="PART_Text" Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                               Foreground="{TemplateBinding Foreground}" Background="Transparent"
+                               TextDecorations="Underline" />
                 </ControlTemplate>
             </Setter>
         </Style>
-        <Style Selector="Button.link:pointerover">
-            <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+        <!-- The WPF page turns the underline off for the GitHub link only (TextDecorations="") -->
+        <Style Selector="Button.link[Tag=plain] /template/ TextBlock#PART_Text">
+            <Setter Property="TextDecorations" Value="{x:Null}" />
         </Style>
     </UserControl.Styles>
 </UserControl>

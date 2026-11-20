@@ -7,8 +7,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using Avalonia.VisualTree;
-using Avalonia.Controls.Primitives;
 
 namespace YAPA.Avalonia.Settings
 {
@@ -44,35 +42,6 @@ namespace YAPA.Avalonia.Settings
                 await Task.Delay(700);
                 var name = ((item.Header as TextBlock)?.Text ?? "page").Replace(' ', '-');
                 Save(window, Path.Combine(folder, $"{index++:00}-{name}.png"));
-                if (Environment.GetEnvironmentVariable("YAPA_SNAPSHOT_HIDE") == "1" && index == 2)
-                {
-                    // Close (hide) the window as the Close button does, to test opening it again
-                    ((SettingsWindow)window).CancelCommand.Execute(null);
-                    return;
-                }
-                if (Environment.GetEnvironmentVariable("YAPA_DUMP") == name)
-                {
-                    foreach (var kind in new[] { typeof(ComboBox), typeof(TextBox), typeof(Button), typeof(CheckBox) })
-                    {
-                        var control = window.GetVisualDescendants().FirstOrDefault(x => x.GetType() == kind && !(x.GetVisualAncestors().OfType<TreeView>().Any())) as Control;
-                        if (control != null)
-                        {
-                            Dump(control, 0, Path.Combine(folder, "dump.txt"));
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void Dump(Visual visual, int depth, string file)
-        {
-            var c = visual as Control;
-            var layoutable = visual as global::Avalonia.Layout.Layoutable;
-            var padding = (visual as TemplatedControl)?.Padding.ToString() ?? (visual as Decorator)?.Padding.ToString() ?? (visual as global::Avalonia.Controls.Presenters.ContentPresenter)?.Padding.ToString() ?? "";
-            File.AppendAllText(file, $"{new string(' ', depth * 2)}{visual.GetType().Name}#{c?.Name} classes={string.Join(",", c?.Classes ?? new Classes())} bounds={visual.Bounds} margin={layoutable?.Margin} pad={padding} minH={layoutable?.MinHeight} h={layoutable?.Height} font={(visual as TemplatedControl)?.FontSize}{(visual as TextBlock)?.FontSize}\n");
-            foreach (var child in visual.GetVisualChildren())
-            {
-                Dump(child, depth + 1, file);
             }
         }
 
