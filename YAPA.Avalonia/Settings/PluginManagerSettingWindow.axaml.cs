@@ -51,10 +51,13 @@ namespace YAPA.Avalonia.Settings
 
         private void PluginChanged(object sender, RoutedEventArgs e)
         {
-            if (!(((CheckBox)sender).DataContext is PluginViewModel context) || _enabledPlugins == null)
+            var checkBox = (CheckBox)sender;
+            if (!(checkBox.DataContext is PluginViewModel context) || _enabledPlugins == null)
             {
                 return;
             }
+            // Avalonia raises this before the binding has updated the item, so read the box
+            context.Enabled = checkBox.IsChecked == true;
 
             var existing = _enabledPlugins.FirstOrDefault(x => x == context.Id);
             if (context.Enabled)
