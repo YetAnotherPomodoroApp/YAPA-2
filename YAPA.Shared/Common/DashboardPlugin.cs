@@ -10,26 +10,38 @@ namespace YAPA.Shared.Common
         private readonly IPomodoroRepository _itemRepository;
         private readonly PomodoroEngineSettings _engineSettings;
         private readonly IPomodoroEngine _engine;
+        private readonly IDate _date;
 
-        public Dashboard(IPomodoroEngine engine, IPomodoroRepository itemRepository, PomodoroEngineSettings engineSettings)
+        public Dashboard(IPomodoroEngine engine, IPomodoroRepository itemRepository, PomodoroEngineSettings engineSettings, IDate date)
         {
             _itemRepository = itemRepository;
             _engineSettings = engineSettings;
             _engine = engine;
+            _date = date;
 
             _engine.OnPomodoroCompleted += _engine_OnPomodoroCompleted;
         }
 
         public PomodoroDashboardModel GetPomodoros(int numberOfMonths, string profileFilter)
         {
-            var today = DateTime.Now.Date;
+            return GetPomodoros(numberOfMonths, profileFilter, _date.DateTimeUtc(), TimeZoneInfo.Local);
+        }
 
-            var date = today.Date.AddMonths(numberOfMonths * -1);
-            var fromDate = new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        /// <summary>
+        /// One entry for every calendar day in <paramref name="zone"/>, from the first day of the month
+        /// <paramref name="numberOfMonths"/> months back up to and including today.
+        /// </summary>
+        public PomodoroDashboardModel GetPomodoros(int numberOfMonths, string profileFilter, DateTime utcNow, TimeZoneInfo zone)
+        {
+            var today = LocalDay.ToLocal(utcNow, zone).Date;
 
-            var totalDays = (int)Math.Truncate((today - fromDate).TotalDays);
-            var emptyPomodoros = Enumerable.Range(0, totalDays).Select(x => new PomodoroEntity { Count = 0, DateTime = fromDate.AddDays(x) }).ToList();
-            var capturedPomodoros = _itemRepository.After(fromDate);
+            var firstMonth = today.AddMonths(numberOfMonths * -1);
+            var firstDay = new DateTime(firstMonth.Year, firstMonth.Month, 1);
+
+            var totalDays = (int)(today - firstDay).TotalDays + 1;
+            var emptyDays = Enumerable.Range(0, totalDays).Select(x => new { Day = firstDay.AddDays(x), Count = 0, WorkTime = 0 });
+
+            var capturedPomodoros = _itemRepository.After(LocalDay.StartUtc(firstDay, zone));
 
             var distinctProfiles = capturedPomodoros.Select(_ => _.ProfileName).Distinct().ToList();
 
@@ -38,19 +50,16 @@ namespace YAPA.Shared.Common
                 capturedPomodoros = capturedPomodoros.Where(_ => _.ProfileName == profileFilter).ToList();
             }
 
-            var joinedPomodoros = capturedPomodoros.ToList().Union(emptyPomodoros)
-                .GroupBy(c =>
-                {
-                    var local = c.DateTime.TryToLocalTime();
-                    return new Tuple<int, int, int>(local.Year, local.Month, local.Day);
-                },
-                    c => new { c.Count, WorkTime = c.DurationMin },
-                    (time, ints) =>
+            var joinedPomodoros = capturedPomodoros.ToList()
+                .Select(c => new { Day = LocalDay.ToLocal(c.DateTime, zone).Date, c.Count, WorkTime = c.DurationMin })
+                .Concat(emptyDays)
+                .GroupBy(c => c.Day,
+                    (day, items) =>
                     new PomodoroGithubDashboardModel
                     {
-                        DateTime = new DateTime(time.Item1, time.Item2, time.Item3, 0, 0, 0, DateTimeKind.Local),
-                        Count = ints.Sum(x => x.Count),
-                        DurationMin = ints.Sum(x => x.WorkTime)
+                        DateTime = new DateTime(day.Year, day.Month, day.Day, 0, 0, 0, DateTimeKind.Local),
+                        Count = items.Sum(x => x.Count),
+                        DurationMin = items.Sum(x => x.WorkTime)
                     });
 
             var result = new PomodoroDashboardModel
@@ -67,7 +76,7 @@ namespace YAPA.Shared.Common
             _itemRepository.Add(new PomodoroEntity
             {
                 Count = 1,
-                DateTime = DateTime.UtcNow,
+                DateTime = _date.DateTimeUtc(),
                 DurationMin = _engine.WorkTime / 60,
                 ProfileName = _engineSettings.ActiveProfile
             });
