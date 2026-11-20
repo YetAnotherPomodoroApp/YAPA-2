@@ -178,9 +178,12 @@ namespace YAPA.Avalonia.Plugins.PomodoroEngine
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!int.TryParse(value?.ToString(), out var minutes))
+            // WPF fell back to 1 minute, but WPF never writes that back into the box while you type.
+            // Avalonia does, so clearing the box to type a new number would leave "1" in it:
+            // leave the setting alone until the text is a number.
+            if (!int.TryParse(value?.ToString(), out var minutes) || minutes < 1)
             {
-                minutes = 1;
+                return global::Avalonia.Data.BindingOperations.DoNothing;
             }
             return minutes * 60;
         }

@@ -11,8 +11,8 @@
             <CheckBox IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Show balloon tip when in system tray" />
             <CheckBox IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Show application when clicked on balloon tip" />
             <Label Grid.Row="5" Grid.Column="0" Content="Show balloon tip for (s)" />
-            <ComboBox Name="BalloonTipSelect" Grid.Row="5" Grid.Column="1" MinWidth="72" Margin="16,0,0,0"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+            <infra:EditableComboBox Name="BalloonTipSelect" Grid.Row="5" Grid.Column="1" MinWidth="72" Margin="16,0,0,0"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                       IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
                       Text="{Binding TimeToDisplayBalloontip, Mode=TwoWay}" />
             <Separator Margin="0,10,0,10" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" />

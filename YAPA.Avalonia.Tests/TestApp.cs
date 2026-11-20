@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using Avalonia.Threading;
 using YAPA.Avalonia.Infrastructure;
 using YAPA.Shared.Contracts;
@@ -39,6 +40,7 @@ namespace YAPA.Avalonia.Tests
         public Window Timer => App.MainWindow;
 
         public FakeClock Clock { get; } = new FakeClock();
+        public FakeSound Sound { get; } = new FakeSound();
 
         public Yapa(string settingsJson = null)
         {
@@ -57,6 +59,7 @@ namespace YAPA.Avalonia.Tests
             {
                 di.RegisterInstance(Clock, typeof(IDate));
                 di.RegisterInstance(Clock, typeof(ITimer));
+                di.RegisterInstance(Sound, typeof(IMusicPlayer));
             });
             Timer.Show();
             Pump();
@@ -132,6 +135,23 @@ namespace YAPA.Avalonia.Tests
             Pump();
         }
 
+        /// <summary>Types into a text box or an editable combo box, replacing what is there.</summary>
+        public static void Type(Control control, string text)
+        {
+            var box = control as TextBox ?? control.GetVisualDescendants().OfType<TextBox>().First();
+            control.BringIntoView();
+            box.Focus();
+            box.SelectAll();
+            Pump();
+            var top = (Window)TopLevel.GetTopLevel(box);
+            top.KeyPressQwerty(global::Avalonia.Input.PhysicalKey.Delete, global::Avalonia.Input.RawInputModifiers.None);
+            top.KeyReleaseQwerty(global::Avalonia.Input.PhysicalKey.Delete, global::Avalonia.Input.RawInputModifiers.None);
+            top.KeyTextInput(text);
+            Pump();
+        }
+
+        public bool SaveEnabled => SettingsWindow.Find<Button>("SaveButton").IsEffectivelyEnabled;
+
         /// <summary>The pointer leaving the window, which headless input can't produce by moving.</summary>
         public static void PointerLeaves(Window window)
         {
@@ -158,6 +178,9 @@ namespace YAPA.Avalonia.Tests
             var found = root.GetLogicalDescendants().OfType<T>().FirstOrDefault(x => x.Name == name);
             return found ?? throw new InvalidOperationException($"No {typeof(T).Name} named {name}");
         }
+
+        public static CheckBox CheckBox(this ILogical root, string text) =>
+            root.FindFirst<CheckBox>(x => (x.Content as string) == text);
 
         public static T FindFirst<T>(this ILogical root, Func<T, bool> match = null) where T : Control
         {

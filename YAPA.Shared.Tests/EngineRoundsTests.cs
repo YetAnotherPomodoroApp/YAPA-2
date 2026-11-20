@@ -24,7 +24,21 @@ namespace YAPA.Shared.Tests
 
             public Fixture(int rounds)
             {
-                Settings = new PomodoroEngineSettings(Substitute.For<ISettings>());
+                var store = Substitute.For<ISettings>();
+                //Saving profiles replaces them, as the real settings store does
+                var component = Substitute.For<ISettingsForComponent>();
+                store.GetSettingsForComponent(Arg.Any<string>()).Returns(component);
+                Settings = new PomodoroEngineSettings(store);
+                component.When(x => x.Update("Profiles", Arg.Any<object>(), Arg.Any<bool>()))
+                    .Do(call =>
+                    {
+                        var saved = new Dictionary<string, PomodoroProfile>((Dictionary<string, PomodoroProfile>)call[1]);
+                        Profiles.Clear();
+                        foreach (var profile in saved)
+                        {
+                            Profiles[profile.Key] = profile.Value;
+                        }
+                    });
                 Profiles["main"] = NewProfile(rounds);
                 Settings.Profiles.Returns(Profiles);
                 Settings.ActiveProfile.Returns("main");

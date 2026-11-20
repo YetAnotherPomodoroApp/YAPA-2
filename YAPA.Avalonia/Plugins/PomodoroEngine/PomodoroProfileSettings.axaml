@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
              xmlns:local="clr-namespace:YAPA.Avalonia.Plugins.PomodoroEngine"
              x:Class="YAPA.Avalonia.Plugins.PomodoroEngine.PomodoroProfileSettings">
     <!-- YAPA/Plugins/PomodoroEngine/PomodoroProfileSettings.xaml -->
@@ -18,23 +19,23 @@
                 HorizontalAlignment="Stretch" IsEnabled="{Binding !Engine.IsRunning}" />
 
         <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" />
-        <ComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+        <infra:EditableComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                   Text="{Binding Settings.WorkTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
         <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" />
-        <ComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+        <infra:EditableComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                   Text="{Binding Settings.BreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
         <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" />
-        <ComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+        <infra:EditableComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                   Text="{Binding Settings.PomodorosBeforeLongBreak, Mode=TwoWay}" />
 
         <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" />
-        <ComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEditable="True"
+        <infra:EditableComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72" Margin="16,0,0,0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                   Text="{Binding Settings.LongBreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
         <CheckBox Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" Content="Auto start break" />
