@@ -59,6 +59,29 @@ namespace YAPA.WPF.Themes.YAPA
             set => _settings.Update(nameof(ShadowColor), value.ToString());
         }
 
+        public Color BackgroundColor
+        {
+            get
+            {
+                var color = _settings.Get(nameof(BackgroundColor), "Black");
+                return YapaHelpers.ColorFromString(color, Colors.Black);
+            }
+            set => _settings.Update(nameof(BackgroundColor), value.ToString());
+        }
+
+        //0 means no background at all, which is how the timer has always looked
+        public double BackgroundOpacity
+        {
+            get => _settings.Get(nameof(BackgroundOpacity), 0.0);
+            set => _settings.Update(nameof(BackgroundOpacity), value);
+        }
+
+        public bool ShadowOnSmallText
+        {
+            get => _settings.Get(nameof(ShadowOnSmallText), false);
+            set => _settings.Update(nameof(ShadowOnSmallText), value);
+        }
+
         public bool DisableFlashingAnimation
         {
             get => _settings.Get(nameof(DisableFlashingAnimation), false);

@@ -25,6 +25,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
@@ -49,6 +52,14 @@
         <xctk:ColorPicker  x:Name="ShadowColor" Grid.Column="1" Grid.Row="9"  MinWidth="72"
                                                Margin="16 0 0 0" SelectedColor="{Binding ShadowColor}">
         </xctk:ColorPicker>
+
+        <TextBlock Text="Background color" Grid.Row="10" Grid.Column="0"></TextBlock>
+        <xctk:ColorPicker  x:Name="BackgroundColor" Grid.Column="1" Grid.Row="10"  MinWidth="72"
+                                               Margin="16 0 0 0" SelectedColor="{Binding BackgroundColor}">
+        </xctk:ColorPicker>
+        <TextBlock Text="Background opacity" Grid.Column="0" Grid.Row="11" ToolTip="0 shows no background"></TextBlock>
+        <Slider x:Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="11" Minimum="0" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" ToolTip="0 shows no background" />
+        <CheckBox x:Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2">Shadow on status text and buttons</CheckBox>
 
     </Grid>
 </UserControl>

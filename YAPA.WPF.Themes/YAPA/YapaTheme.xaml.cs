@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using YAPA.Shared;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
@@ -217,6 +218,9 @@ namespace YAPA
                 RaisePropertyChanged(nameof(MouseOverBackgroundColor));
                 RaisePropertyChanged(nameof(Settings.ClockOpacity));
                 RaisePropertyChanged(nameof(Settings.ShadowOpacity));
+                RaisePropertyChanged(nameof(BackgroundBrush));
+                RaisePropertyChanged(nameof(BackgroundVisibility));
+                RaisePropertyChanged(nameof(SmallTextEffect));
 
                 if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.Width)}"))
                 {
@@ -379,6 +383,20 @@ namespace YAPA
         }
 
         public Brush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor);
+
+        /// <summary>
+        /// Optional plate behind the whole timer, to keep it readable on any wallpaper or window. Off by default.
+        /// </summary>
+        public Brush BackgroundBrush => new SolidColorBrush(Settings.BackgroundColor) { Opacity = Settings.BackgroundOpacity };
+
+        public Visibility BackgroundVisibility => Settings.BackgroundOpacity > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+        /// <summary>
+        /// Optional shadow for the status text, the buttons and the counter; the digits always have theirs. Off by default.
+        /// </summary>
+        public Effect SmallTextEffect => Settings.ShadowOnSmallText
+            ? new DropShadowEffect { ShadowDepth = 0, Direction = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 4 }
+            : null;
 
         public double ProgressValue
         {

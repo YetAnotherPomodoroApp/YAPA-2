@@ -26,6 +26,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <!-- Optional background behind the whole timer; collapsed unless a background opacity is set -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{Binding BackgroundBrush}" Visibility="{Binding BackgroundVisibility}" CornerRadius="3" />
                 <!-- Current time -->
                 <StackPanel Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="Transparent" IsHitTestVisible="True" Orientation="Horizontal">
                     <TextBlock x:Name="CurrentTimeMinutes3" Cursor="Arrow" Width="32" FontFamily="Segoe UI Light" FontSize="60" Foreground="{Binding TextBrush}" Opacity="{Binding ClockOpacity}" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Center" FontStretch="UltraCondensed" Text="0">
@@ -59,13 +61,13 @@
                         </TextBlock.Effect>
                     </TextBlock>
                 </StackPanel>
-                <TextBlock Text="{Binding Status}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" x:Name="StageTextBlock" TextAlignment="Left" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
+                <TextBlock Text="{Binding Status}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" x:Name="StageTextBlock" TextAlignment="Left" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
                 <!--<StackPanel Orientation="Vertical" Grid.Column="1">-->
                 <StackPanel VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" x:Name="MinExitPanel">
                     <Button x:Name="Minimize" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="_" IsHitTestVisible="True" ToolTip="Minimize" Height="15" Width="15" Click="Minimize_OnClick">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="MinimizeTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="MinimizeTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="MinimizeTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -77,7 +79,7 @@
                     <Button x:Name="Exit" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="x" IsHitTestVisible="True" ToolTip="Close" Height="15" Width="15" Click="Exit_OnClick">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="ExitTextBlock" Background="{Binding TextShadowColor}" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="ExitTextBlock" Background="{Binding TextShadowColor}" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="10" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="ExitTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -91,7 +93,7 @@
                     <Button x:Name="Skip" Command="{Binding ViewModel.SkipCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="SKIP" ToolTip="Skip break" Height="15" Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="PauseTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="Normal" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="PauseTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="Normal" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="PauseTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -103,7 +105,7 @@
                     <Button x:Name="Start" Command="{Binding ViewModel.StartCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="START" ToolTip="Start Pomodoro" Height="15" Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="StarTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="Normal" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="StarTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="Normal" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="StarTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -115,7 +117,7 @@
                     <Button x:Name="Pause" Command="{Binding ViewModel.PauseCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="PAUSE" ToolTip="Pause Pomodoro" Height="15" Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="PauseTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="Normal" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" x:Name="PauseTextBlock" TextAlignment="Center" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="Normal" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="PauseTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -127,7 +129,7 @@
                     <Button x:Name="Stop" Command="{Binding ViewModel.StopCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Content="STOP" ToolTip="Stop Pomodoro" Height="15" Width="38">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" TextAlignment="Center" x:Name="StopTextBlock" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" TextAlignment="Center" x:Name="StopTextBlock" Foreground="{Binding TextBrush}" FontSize="11" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" FontFamily="Segoe UI" FontStretch="UltraCondensed" />
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter TargetName="StopTextBlock" Property="Background" Value="{Binding MouseOverBackgroundColor}" />
@@ -136,7 +138,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <TextBlock x:Name="CurrentPeriod" Cursor="Arrow" FontFamily="Segoe UI" FontStretch="UltraCondensed" FontSize="8" Foreground="{Binding TextBrush}" Opacity="{Binding ClockOpacity}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="10" Text="{Binding ViewModel.Engine.Counter}" ToolTip="Current period" Width="10" />
+                    <TextBlock x:Name="CurrentPeriod" Cursor="Arrow" FontFamily="Segoe UI" FontStretch="UltraCondensed" FontSize="8" Foreground="{Binding TextBrush}" Opacity="{Binding ClockOpacity}" Effect="{Binding SmallTextEffect}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="10" Text="{Binding ViewModel.Engine.Counter}" ToolTip="Current period" Width="10" />
                 </StackPanel>
                 <!--</StackPanel>-->
             </Grid>
