@@ -11,6 +11,9 @@ namespace YAPA.Avalonia
         [STAThread]
         public static int Main(string[] args)
         {
+            // Velopack's install/update steps run here and exit; a pending update is applied first
+            Velopack.VelopackApp.Build().Run();
+
             using (Instance = new SingleInstance())
             {
                 if (!Instance.TryAcquire(args))

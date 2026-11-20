@@ -76,6 +76,8 @@ namespace YAPA.Avalonia.Infrastructure
             di.Register(typeof(SettingsWindow), true);
 
             di.Register<IFontService, FontService>();
+            // one updater: the download it finds is the one installed at exit
+            di.Register(typeof(Updater), true);
 
             return di;
         }

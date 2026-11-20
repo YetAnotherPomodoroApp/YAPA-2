@@ -28,6 +28,8 @@ namespace YAPA.Avalonia
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                // a downloaded update is installed once YAPA has closed
+                desktop.Exit += (s, e) => Container?.Container.Resolve<Updater>().ApplyOnExit();
 
                 Container = new DependencyContainer();
                 var mainWindow = Container.MainWindow;
@@ -95,6 +97,11 @@ namespace YAPA.Avalonia
         {
             ((Window)sender).Opened -= MainWindow_Loaded;
             LoadSnapshot((Window)sender);
+            if (Updater.ShouldCheck)
+            {
+                // started on the UI thread, so the restart notice is set from it
+                _ = Container.Container.Resolve<Updater>().CheckAsync();
+            }
 #if DEBUG
             Snapshots.RenderMainWindow((Window)sender);
 #endif

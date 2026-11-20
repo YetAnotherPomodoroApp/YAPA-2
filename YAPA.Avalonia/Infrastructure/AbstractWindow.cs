@@ -17,6 +17,7 @@ namespace YAPA.Avalonia.Infrastructure
         public const string Skip = "/skip";
         public const string Settings = "/settings";
         public const string HomePage = "/homepage";
+        public const string Exit = "/exit";
     }
 
     /// <summary>
@@ -192,6 +193,10 @@ namespace YAPA.Avalonia.Infrastructure
                     break;
                 case CommandLineArguments.HomePage:
                     OpenUrl("https://github.com/YetAnotherPomodoroApp/YAPA-2/");
+                    break;
+                case CommandLineArguments.Exit:
+                    // closes as the x button does (asks first if the timer is running)
+                    CloseApp();
                     break;
             }
             return true;
