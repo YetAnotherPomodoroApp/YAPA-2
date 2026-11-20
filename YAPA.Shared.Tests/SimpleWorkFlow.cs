@@ -31,7 +31,8 @@ namespace YAPA.Shared.Tests
                 AutoStartBreak = false,
                 BreakTime = breakTime,
                 WorkTime = workTime,
-                LongBreakTime = longBreakTime
+                LongBreakTime = longBreakTime,
+                PomodorosBeforeLongBreak = 4
             };
 
             var profiles = new Dictionary<string, PomodoroProfile> {[profileName] = profile};
@@ -357,7 +358,8 @@ namespace YAPA.Shared.Tests
                 AutoStartBreak = false,
                 BreakTime = breakTime,
                 WorkTime = workTime,
-                LongBreakTime = longBreakTime
+                LongBreakTime = longBreakTime,
+                PomodorosBeforeLongBreak = 4
             };
 
             var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
@@ -685,7 +687,8 @@ namespace YAPA.Shared.Tests
                 AutoStartBreak = true,
                 BreakTime = breakTime,
                 WorkTime = workTime,
-                LongBreakTime = longBreakTime
+                LongBreakTime = longBreakTime,
+                PomodorosBeforeLongBreak = 4
             };
 
             var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
@@ -1016,7 +1019,8 @@ namespace YAPA.Shared.Tests
                 AutoStartBreak = true,
                 BreakTime = breakTime,
                 WorkTime = workTime,
-                LongBreakTime = longBreakTime
+                LongBreakTime = longBreakTime,
+                PomodorosBeforeLongBreak = 4
             };
 
             var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
@@ -1173,7 +1177,8 @@ namespace YAPA.Shared.Tests
                 AutoStartBreak = false,
                 BreakTime = breakTime,
                 WorkTime = workTime,
-                LongBreakTime = longBreakTime
+                LongBreakTime = longBreakTime,
+                PomodorosBeforeLongBreak = 4
             };
 
             var profiles = new Dictionary<string, PomodoroProfile> { [profileName] = profile };
