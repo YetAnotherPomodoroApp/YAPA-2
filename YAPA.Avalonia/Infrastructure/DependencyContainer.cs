@@ -18,9 +18,11 @@ namespace YAPA.Avalonia.Infrastructure
         public Dashboard Dashboard { get; }
         public Window MainWindow { get; }
 
-        public DependencyContainer()
+        /// <param name="overrides">Lets tests replace registrations (a fake clock) before anything is built.</param>
+        public DependencyContainer(Action<DependencyInjector> overrides = null)
         {
             Container = ConfigureContainer();
+            overrides?.Invoke(Container);
 
             //Themes
             ThemeManager = new ThemeManager(Container, GetTypes<IThemeMeta>(), Container.Resolve<ThemeManagerSettings>());

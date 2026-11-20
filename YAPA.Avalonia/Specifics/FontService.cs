@@ -19,6 +19,7 @@ namespace YAPA.Avalonia.Specifics
 
         private static readonly object Lock = new object();
         private static FileFontCollection _collection;
+        private static FontManager _fontManager;
         private static readonly Dictionary<string, string> Loaded = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         public Dictionary<string, string> GetAllFonts()
@@ -70,14 +71,17 @@ namespace YAPA.Avalonia.Specifics
         {
             lock (Lock)
             {
+                // A new FontManager (a restarted Avalonia, as in the UI tests) knows none of them
+                if (!ReferenceEquals(_fontManager, FontManager.Current))
+                {
+                    _fontManager = FontManager.Current;
+                    _collection = new FileFontCollection();
+                    _fontManager.AddFontCollection(_collection);
+                    Loaded.Clear();
+                }
                 if (Loaded.TryGetValue(file, out var known))
                 {
                     return known;
-                }
-                if (_collection == null)
-                {
-                    _collection = new FileFontCollection();
-                    FontManager.Current.AddFontCollection(_collection);
                 }
                 var familyName = _collection.AddFile(file);
                 var source = familyName == null ? null : $"{FileFontCollection.CollectionKey}#{familyName}";

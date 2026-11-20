@@ -108,7 +108,8 @@ namespace YAPA.Avalonia.Themes.Yapa
         {
             CurrentTimeSeconds.IsVisible = visible;
             CurrentTimeSeparator.IsVisible = visible;
-            // WPF only collapses the last digit and the colon; the tens digit stays
+            // In WPF the tens digit is bound to SecondsVisible in XAML, so it goes too
+            CurrentTimeSeconds2.IsVisible = visible;
             SecondsVisible = visible;
             RaisePropertyChanged(nameof(SecondsVisible));
         }

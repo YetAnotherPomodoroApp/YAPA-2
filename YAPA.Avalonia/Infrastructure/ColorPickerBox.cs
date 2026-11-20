@@ -53,10 +53,14 @@ namespace YAPA.Avalonia.Infrastructure
             };
             Content = box;
 
+            // Like the Xceed drop-down: it opens on a palette of ready colours, and its spectrum
+            // square is saturation x brightness with hue on a separate slider. (Avalonia's default
+            // square is hue x saturation, so from black, where brightness is 0, every click stays black.)
             var view = new ColorView
             {
-                Width = 300,
-                Height = 340,
+                Width = 340,
+                SelectedIndex = 1,
+                ColorSpectrumComponents = ColorSpectrumComponents.SaturationValue,
             };
             view.Bind(ColorView.ColorProperty, new Binding(nameof(Color)) { Source = this, Mode = BindingMode.TwoWay });
             var flyout = new Flyout { Content = view, Placement = PlacementMode.BottomEdgeAlignedLeft };
