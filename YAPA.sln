@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA", "YAPA\YAPA.csproj", "{D6C90A63-BF09-4BD8-B86C-92CBBC1EB917}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3CB19C81-CF0D-466B-9CD6-13FA90CE1329} = {3CB19C81-CF0D-466B-9CD6-13FA90CE1329}
 	EndProjectSection
@@ -15,17 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A521D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Shared", "YAPA.WPF.Shared\YAPA.WPF.Shared.csproj", "{3C26FD01-08D3-4192-BBB3-778D9D7692D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.WPF.Shared", "YAPA.WPF.Shared\YAPA.WPF.Shared.csproj", "{3C26FD01-08D3-4192-BBB3-778D9D7692D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.StarterTheme", "YAPA.WPF.StarterTheme\YAPA.WPF.StarterTheme.csproj", "{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.WPF.StarterTheme", "YAPA.WPF.StarterTheme\YAPA.WPF.StarterTheme.csproj", "{E8A13C9C-F756-4FCE-B6E7-42E9E5D998CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes", "YAPA.WPF.Themes\YAPA.WPF.Themes.csproj", "{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.WPF.Themes", "YAPA.WPF.Themes\YAPA.WPF.Themes.csproj", "{3CB19C81-CF0D-466B-9CD6-13FA90CE1329}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared.Tests", "YAPA.Shared.Tests\YAPA.Shared.Tests.csproj", "{2B573B1F-2850-4535-A264-D30950BB0258}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.Shared", "Yapa.Shared\YAPA.Shared.csproj", "{E7B67CDC-3D67-40DB-8BA8-6B3D0D99EBFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAPA.WPF.Themes.Motivational", "YAPA.WPF.MotivationalTheme\YAPA.WPF.Themes.Motivational.csproj", "{C1FACD37-C92E-4339-9C02-D3A5BE430D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAPA.WPF.Themes.Motivational", "YAPA.WPF.MotivationalTheme\YAPA.WPF.Themes.Motivational.csproj", "{C1FACD37-C92E-4339-9C02-D3A5BE430D02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

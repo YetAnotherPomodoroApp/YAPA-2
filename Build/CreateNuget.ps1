@@ -38,7 +38,11 @@ $lastReleasePath = $baseUri+ $lastRelease
 Invoke-WebRequest -Uri  $lastReleasePath -OutFile "Release\$lastRelease"
 
 
-..\packages\squirrel.windows.1.5.28\tools\Squirrel --releasify YAPA2.$squirrelVersion.nupkg --releaseDir=Release  --no-msi
+#--------------Squirrel now lives in the NuGet global packages folder (PackageReference)
+$nugetPackages = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { Join-Path $env:USERPROFILE ".nuget\packages" }
+$squirrel = Join-Path $nugetPackages "squirrel.windows\1.5.28\tools\Squirrel"
+
+& $squirrel --releasify YAPA2.$squirrelVersion.nupkg --releaseDir=Release  --no-msi
 
 Move-Item -Path Release\Setup.exe -Destination Release\YAPA2.$squirrelVersion.exe -Force
 
