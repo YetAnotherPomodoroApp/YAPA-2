@@ -95,7 +95,7 @@ namespace YAPA.Avalonia.Plugins.Dashboard
 
             var xTitle = Text(AxisXTitle, LabelSize);
             var sampleX = Text("0");
-            var bottom = sampleX.Height + 2 + xTitle.Height;
+            var bottom = sampleX.Height + 6 + xTitle.Height;
             var plotTop = sampleX.Height / 2;
             var right = 10.0;
 
@@ -123,17 +123,20 @@ namespace YAPA.Avalonia.Plugins.Dashboard
             // X labels: as many as fit without overlapping
             if (_labels.Count > 0)
             {
-                var widest = _labels.Max(x => Text(x).Width) + 20;
-                var every = Math.Max(1, (int)Math.Ceiling(widest / Math.Max(1, plot.Width / Math.Max(1, _labels.Count - 1))));
+                // LiveCharts leaves generous room between labels and steps in round numbers
+                var widest = _labels.Max(x => Text(x).Width) * 2.2;
+                var perPoint = Math.Max(1, plot.Width / Math.Max(1, _labels.Count - 1));
+                var every = (int)NiceStep(widest / perPoint, 1);
+                every = Math.Max(1, every);
                 for (var i = 0; i < _labels.Count; i += every)
                 {
                     var x = X(i);
                     context.DrawLine(SeparatorPen, new Point(x, plot.Y), new Point(x, plot.Bottom));
                     var text = Text(_labels[i]);
-                    context.DrawText(text, new Point(Math.Max(0, x - text.Width / 2), plot.Bottom + 2));
+                    context.DrawText(text, new Point(Math.Max(0, x - text.Width / 2), plot.Bottom + 6));
                 }
             }
-            context.DrawText(xTitle, new Point(plot.X + plot.Width / 2 - xTitle.Width / 2, plot.Bottom + 2 + sampleX.Height));
+            context.DrawText(xTitle, new Point(plot.X + plot.Width / 2 - xTitle.Width / 2, plot.Bottom + 6 + sampleX.Height));
 
             // The series: a smoothed line (LiveCharts' LineSmoothness 0.7) and its fill
             var points = _values.Select((v, i) => new Point(X(i), Y(v))).ToList();

@@ -70,6 +70,19 @@ namespace YAPA.Avalonia.Settings
             }
         }
 
+        /// <summary>A picture of the timer window a moment after it opens.</summary>
+        public static async void RenderMainWindow(Window window)
+        {
+            var folder = Environment.GetEnvironmentVariable("YAPA_SNAPSHOTS");
+            if (string.IsNullOrEmpty(folder))
+            {
+                return;
+            }
+            Directory.CreateDirectory(folder);
+            await Task.Delay(1500);
+            Save(window, Path.Combine(folder, "main.png"));
+        }
+
         public static void Save(Control control, string file)
         {
             var scaling = TopLevel.GetTopLevel(control)?.RenderScaling ?? 1;

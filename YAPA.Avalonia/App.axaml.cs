@@ -95,6 +95,9 @@ namespace YAPA.Avalonia
         {
             ((Window)sender).Opened -= MainWindow_Loaded;
             LoadSnapshot((Window)sender);
+#if DEBUG
+            Snapshots.RenderMainWindow((Window)sender);
+#endif
         }
 
         private static async void LoadSnapshot(Window owner)

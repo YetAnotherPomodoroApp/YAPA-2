@@ -12,7 +12,23 @@ namespace YAPA.Avalonia.Infrastructure
     /// </summary>
     public sealed class SingleInstance : IDisposable
     {
-        private readonly string _name = "YAPA2-" + Environment.UserName;
+        // A copy with its own data folder (YAPA_HOME) is a separate YAPA and runs alongside
+        private readonly string _name = "YAPA2-" + Environment.UserName + HomeSuffix();
+
+        private static string HomeSuffix()
+        {
+            var home = Environment.GetEnvironmentVariable("YAPA_HOME");
+            if (string.IsNullOrEmpty(home))
+            {
+                return string.Empty;
+            }
+            var hash = 17;
+            foreach (var c in home)
+            {
+                hash = unchecked(hash * 31 + c);
+            }
+            return "-" + ((uint)hash).ToString("x8");
+        }
         private Mutex _mutex;
         private CancellationTokenSource _cancel;
 
