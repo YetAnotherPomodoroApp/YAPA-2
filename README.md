@@ -8,6 +8,10 @@ Features
 ---------
 
 - Pomodoro™ counter :)
+  - Choose what it shows in Settings → General → "Display count of":
+    - Pomodoro index: position in the current round (1, 2, 3 ...); the last pomodoro of a round is followed by the long break
+    - Completed this session: pomodoros completed since the application was started
+    - Completed today: pomodoros completed today, from the history shown in Dashboard
 - Control app using taskbar jumplist
 - Configurable periods
 - Count time backwards
