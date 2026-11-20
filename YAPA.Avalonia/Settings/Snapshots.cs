@@ -44,6 +44,12 @@ namespace YAPA.Avalonia.Settings
                 await Task.Delay(700);
                 var name = ((item.Header as TextBlock)?.Text ?? "page").Replace(' ', '-');
                 Save(window, Path.Combine(folder, $"{index++:00}-{name}.png"));
+                if (Environment.GetEnvironmentVariable("YAPA_SNAPSHOT_HIDE") == "1" && index == 2)
+                {
+                    // Close (hide) the window as the Close button does, to test opening it again
+                    ((SettingsWindow)window).CancelCommand.Execute(null);
+                    return;
+                }
                 if (Environment.GetEnvironmentVariable("YAPA_DUMP") == name)
                 {
                     foreach (var kind in new[] { typeof(ComboBox), typeof(TextBox), typeof(Button), typeof(CheckBox) })
@@ -81,12 +87,25 @@ namespace YAPA.Avalonia.Settings
             Directory.CreateDirectory(folder);
             await Task.Delay(1500);
             Save(window, Path.Combine(folder, "main.png"));
+            // The same timer over a white and a grey background, to check that it stays readable
+            var background = window.Background;
+            foreach (var (name, color) in new[] { ("white", "#FFFFFF"), ("grey", "#808080"), ("dark", "#1E1E2E") })
+            {
+                window.Background = global::Avalonia.Media.SolidColorBrush.Parse(color);
+                await Task.Delay(200);
+                Save(window, Path.Combine(folder, $"main-{name}.png"));
+            }
+            window.Background = background;
         }
 
         public static void Save(Control control, string file)
         {
             var scaling = TopLevel.GetTopLevel(control)?.RenderScaling ?? 1;
             var size = new PixelSize((int)(control.Bounds.Width * scaling), (int)(control.Bounds.Height * scaling));
+            if (size.Width < 1 || size.Height < 1)
+            {
+                return;
+            }
             using (var bitmap = new RenderTargetBitmap(size, new Vector(96 * scaling, 96 * scaling)))
             {
                 bitmap.Render(control);

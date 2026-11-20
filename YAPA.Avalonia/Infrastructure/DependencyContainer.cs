@@ -121,8 +121,9 @@ namespace YAPA.Avalonia.Infrastructure
                 var scaling = screen.Scaling;
                 var width = (int)(settings.Width * scaling);
                 var height = (int)(settings.Height * scaling);
-                var centerX = owner.Position.X + (int)(owner.Bounds.Width * owner.RenderScaling / 2);
-                var centerY = owner.Position.Y + (int)(owner.Bounds.Height * owner.RenderScaling / 2);
+                var ownerScaling = owner.ScreenScaling();
+                var centerX = owner.Position.X + (int)(owner.Bounds.Width * ownerScaling / 2);
+                var centerY = owner.Position.Y + (int)(owner.Bounds.Height * ownerScaling / 2);
                 var area = screen.WorkingArea;
                 var x = Math.Max(area.X, Math.Min(area.Right - width, centerX - width / 2));
                 var y = Math.Max(area.Y, Math.Min(area.Bottom - height, centerY - height / 2));

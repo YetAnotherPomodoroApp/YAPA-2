@@ -125,9 +125,10 @@ namespace YAPA.Avalonia.Plugins.PomodoroEngine
             if (parent != null)
             {
                 createWindow.WindowStartupLocation = WindowStartupLocation.Manual;
+                var scaling = YAPA.Avalonia.Infrastructure.ScreenHelpers.ScreenScaling(parent);
                 createWindow.Position = new global::Avalonia.PixelPoint(
-                    parent.Position.X + (int)(parent.Bounds.Width / 2.5 * parent.RenderScaling),
-                    parent.Position.Y + (int)(parent.Bounds.Height / 2.5 * parent.RenderScaling));
+                    parent.Position.X + (int)(parent.Bounds.Width / 2.5 * scaling),
+                    parent.Position.Y + (int)(parent.Bounds.Height / 2.5 * scaling));
                 await createWindow.ShowDialog(parent);
             }
             else

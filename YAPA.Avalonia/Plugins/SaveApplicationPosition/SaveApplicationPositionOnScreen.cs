@@ -37,24 +37,30 @@ namespace YAPA.Avalonia.Plugins.SaveApplicationPosition
             _settings = settings;
             app.Closing += App_Closing;
 
+            _window.WindowStartupLocation = WindowStartupLocation.Manual;
+            // Placed once the window exists: on macOS a position set before that leaves the
+            // window without a size
+            _window.Opened += Restore;
+        }
+
+        private void Restore(object sender, EventArgs e)
+        {
+            _window.Opened -= Restore;
             var saved = Parse(_settings.ScreenPosition);
             if (saved.HasValue)
             {
-                _window.WindowStartupLocation = WindowStartupLocation.Manual;
                 _window.Position = saved.Value;
+                KeepOnScreen(sender, e);
             }
             else
             {
                 // First start: top right of the main screen, out of the way
-                _window.WindowStartupLocation = WindowStartupLocation.Manual;
-                _window.Opened += PlaceFirstTime;
+                PlaceFirstTime(sender, e);
             }
-            _window.Opened += KeepOnScreen;
         }
 
         private void PlaceFirstTime(object sender, EventArgs e)
         {
-            _window.Opened -= PlaceFirstTime;
             var screen = _window.Screens.Primary;
             if (screen == null)
             {
