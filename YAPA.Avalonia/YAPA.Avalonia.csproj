@@ -37,6 +37,8 @@
     <AvaloniaResource Include="..\YAPA\Resources\Pomodoro.png" Link="Assets\Pomodoro.png" />
     <AvaloniaResource Include="..\YAPA\Resources\loader.gif" Link="Assets\loader.gif" />
     <AvaloniaResource Include="..\YAPA\Resources\Fonts\Segoe UI Light.ttf" Link="Assets\Fonts\Segoe UI Light.ttf" />
+    <!-- The Motivational theme's own fonts: Roboto Condensed and FontAwesome (icons) -->
+    <AvaloniaResource Include="..\YAPA.WPF.MotivationalTheme\Fonts\*.ttf" Link="Assets\Fonts\Motivational\%(Filename)%(Extension)" />
     <Content Include="..\YAPA\Resources\ding.wav" Link="Resources\ding.wav" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\YAPA\Resources\tick.wav" Link="Resources\tick.wav" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\YAPA\Resources\Fonts\*.ttf" Link="Resources\Fonts\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />

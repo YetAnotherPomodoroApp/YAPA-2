@@ -1,0 +1,248 @@
+<infra:AbstractWindow xmlns="https://github.com/avaloniaui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
+                      xmlns:local="clr-namespace:YAPA.Avalonia.Themes.Motivational"
+                      x:Class="YAPA.Avalonia.Themes.Motivational.MotivationalTheme"
+                      Width="360" Height="240"
+                      Background="Transparent"
+                      WindowStartupLocation="Manual">
+    <!-- A copy of YAPA.WPF.MotivationalTheme/MainWindow.xaml: a small card with a quote and play
+         controls that fades out when the mouse leaves, leaving only the clock in its corner. -->
+    <infra:AbstractWindow.Template>
+        <ControlTemplate>
+            <Panel Background="{TemplateBinding Background}">
+                <ContentPresenter Content="{TemplateBinding Content}" />
+            </Panel>
+        </ControlTemplate>
+    </infra:AbstractWindow.Template>
+
+    <infra:AbstractWindow.Styles>
+        <!-- StyleTextTime and the styles based on it; a later style wins where both match -->
+        <Style Selector="TextBlock.time">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.RobotoCondensedLight}" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{Binding TimerForegroundColor}" />
+            <Setter Property="Opacity" Value="{Binding TimerForegroundOpacity}" />
+            <Setter Property="Cursor" Value="Arrow" />
+            <!-- WPF's LineHeight here is a minimum (LineStackingStrategy MaxHeight); Avalonia's is exact,
+                 so it is only set where it is taller than the font's own line -->
+            <Setter Property="Effect" Value="{Binding TimerEffect}" />
+        </Style>
+        <Style Selector="TextBlock.periodNumber">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.RobotoCondensed}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style Selector="TextBlock.iconPeriod">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.FontAwesome}" />
+            <Setter Property="FontSize" Value="10" />
+        </Style>
+        <Style Selector="TextBlock.inside">
+            <Setter Property="Foreground" Value="{Binding WindowForegroundColor}" />
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
+        <Style Selector="TextBlock.periodText">
+            <Setter Property="Foreground" Value="{Binding WindowForegroundColor}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="LineHeight" Value="22" />
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
+        <Style Selector="TextBlock.periodSource">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.RobotoCondensed}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Opacity" Value="0.6" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="LineHeight" Value="20" />
+            <Setter Property="Foreground" Value="{Binding AccentColor}" />
+        </Style>
+        <Style Selector="TextBlock.icon">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.FontAwesome}" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
+
+        <!-- StyleButtonIcon: a small accent dot that grows into a round button with an icon on hover -->
+        <Style Selector="Button.iconButton">
+            <Setter Property="FontFamily" Value="{x:Static local:MotivationalFonts.FontAwesome}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Margin" Value="5,0,0,0" />
+            <Setter Property="Padding" Value="4,2,4,3" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid Background="Transparent">
+                        <Grid>
+                            <Ellipse Name="LayoutContainer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                     Fill="{Binding AccentColor}" RenderTransformOrigin="0.5,0.5" />
+                            <Viewbox Name="CaptionContainer" StretchDirection="Both" Margin="{TemplateBinding Padding}">
+                                <TextBlock Name="CaptionText" Classes="time icon"
+                                           Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                           TextAlignment="Center" />
+                            </Viewbox>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.iconButton /template/ Ellipse#LayoutContainer">
+            <Setter Property="RenderTransform" Value="scale(0.5)" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="QuinticEaseInOut" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.iconButton:pointerover /template/ Ellipse#LayoutContainer">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="Button.iconButton /template/ Viewbox#CaptionContainer">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="QuinticEaseInOut" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.iconButton:pointerover /template/ Viewbox#CaptionContainer">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+
+        <!-- StyleButtonIconControl: a plain icon that grows a little, with an accent bar underneath on hover -->
+        <Style Selector="Button.controlButton">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="48" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid Background="Transparent">
+                        <Viewbox Name="LayoutContainer" StretchDirection="Both" RenderTransformOrigin="0.5,0.5" Margin="8">
+                            <TextBlock Name="CaptionText" Classes="time icon"
+                                       Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Foreground="{Binding WindowForegroundColor}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" />
+                        </Viewbox>
+                        <Border Name="MouseOverIndicator" Background="{Binding AccentColor}" Height="5" VerticalAlignment="Bottom" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.controlButton /template/ Viewbox#LayoutContainer">
+            <Setter Property="RenderTransform" Value="scale(0.75)" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="QuinticEaseInOut" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.controlButton:pointerover /template/ Viewbox#LayoutContainer">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="Button.controlButton /template/ Border#MouseOverIndicator">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="QuinticEaseInOut" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.controlButton:pointerover /template/ Border#MouseOverIndicator">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </infra:AbstractWindow.Styles>
+
+    <!-- WPF Window BorderThickness="30,2,30,30": room for the card's shadow -->
+    <Panel Margin="30,2,30,30">
+        <StackPanel Name="ClockOutsideWindow" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,2">
+            <!-- Current time -->
+            <Grid Background="Transparent" ColumnDefinitions="30,Auto,30">
+                <TextBlock Name="CurrentTimeMinutes" Grid.Column="0" Classes="time" HorizontalAlignment="Right" VerticalAlignment="Center" Text="00" />
+                <TextBlock Name="CurrentTimeSeparator" Grid.Column="1" Classes="time" HorizontalAlignment="Center" VerticalAlignment="Center" Text=":" />
+                <TextBlock Name="CurrentTimeSeconds" Grid.Column="2" Classes="time" HorizontalAlignment="Left" VerticalAlignment="Center" Text="00" />
+            </Grid>
+
+            <StackPanel Height="12" ToolTip.Tip="Current period" Orientation="Horizontal" HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom" Margin="0,0,0,6">
+                <!-- Session icon -->
+                <TextBlock Name="SessionIcon" Classes="time iconPeriod" VerticalAlignment="Center" HorizontalAlignment="Right"
+                           TextAlignment="Right" Text="{Binding CurrentPeriodIcon}" />
+                <!-- Session counter -->
+                <TextBlock Name="SessionCounter" Classes="time periodNumber" VerticalAlignment="Center" HorizontalAlignment="Right"
+                           TextAlignment="Right" Text="{Binding CurrentPomodoroPeriod}" Margin="4,0,0,0" />
+            </StackPanel>
+
+            <Ellipse Name="PeriodCompletedIndicatorEl" Height="10" Width="10" VerticalAlignment="Bottom"
+                     Fill="{Binding AccentColor}" Opacity="0" Margin="5,0,0,6" />
+        </StackPanel>
+
+        <Grid Name="WindowContentPanel" Opacity="1" Margin="0" Effect="{Binding WindowEffect}">
+            <Border Name="BackgroundBorder" Background="{Binding WindowBackgroundColor}" CornerRadius="4" />
+
+            <!-- System buttons -->
+            <StackPanel Name="ButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+                <!-- Settings button -->
+                <Button Name="ButtonSettings" Classes="iconButton" Content="{x:Static local:Const.ICON_SETTINGS}"
+                        ToolTip.Tip="{x:Static local:Strings.app_button_settings}"
+                        Command="{Binding ViewModel.ShowSettingsCommand}" />
+                <!-- Minimize button; the padding centres FontAwesome's glyph in the dot -->
+                <Button Name="ButtonMinimize" Classes="iconButton" Content="{x:Static local:Const.ICON_WINDOW_MINIMIZE}"
+                        ToolTip.Tip="{x:Static local:Strings.app_button_window_minimize}"
+                        Click="Minimize_OnClick" Padding="4,3,4,3" />
+                <!-- Close button -->
+                <Button Name="ButtonExit" Classes="iconButton" Content="{x:Static local:Const.ICON_WINDOW_CLOSE}"
+                        ToolTip.Tip="{x:Static local:Strings.app_button_window_close}"
+                        Click="ButtonExit_OnClick" />
+            </StackPanel>
+
+            <!-- Session description -->
+            <StackPanel Margin="32,40,32,48" VerticalAlignment="Center">
+                <TextBlock Classes="time periodText" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"
+                           Text="{Binding CurrentPeriodText, FallbackValue='Keep focused!'}" TextWrapping="Wrap" />
+                <TextBlock Classes="time periodText periodSource" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"
+                           Text="{Binding CurrentPeriodTextSource}" TextWrapping="Wrap"
+                           IsVisible="{Binding CurrentPeriodTextSource, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+
+            <Border Name="ControlsPanel" Background="{Binding WindowBackground2Color}" VerticalAlignment="Bottom" CornerRadius="0,0,4,4">
+                <!-- Controls buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="32,-2,32,0">
+                    <Button Name="ButtonStop" Classes="iconButton controlButton" Content="{x:Static local:Const.ICON_STOP}"
+                            ToolTip.Tip="{x:Static local:Strings.app_button_stop_title}"
+                            Command="{Binding ViewModel.StopCommand}" IsVisible="{Binding CanStop}" />
+                    <Button Name="ButtonPause" Classes="iconButton controlButton" Content="{x:Static local:Const.ICON_PAUSE}"
+                            ToolTip.Tip="{x:Static local:Strings.app_button_pause_title}"
+                            Command="{Binding ViewModel.PauseCommand}" IsVisible="{Binding CanPause}" />
+                    <Button Name="ButtonStart" Classes="iconButton controlButton" Content="{x:Static local:Const.ICON_PLAY}"
+                            ToolTip.Tip="{x:Static local:Strings.app_button_start_title}"
+                            Command="{Binding ViewModel.StartCommand}" IsVisible="{Binding CanStart}" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Name="ClockInsideWindow" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,2">
+                <!-- Current time -->
+                <Grid Background="Transparent" ColumnDefinitions="30,Auto,30">
+                    <TextBlock Name="CurrentTimeMinutesInsideWindow" Grid.Column="0" Classes="time inside" HorizontalAlignment="Right" VerticalAlignment="Center" Text="00" />
+                    <TextBlock Grid.Column="1" Classes="time inside" HorizontalAlignment="Center" VerticalAlignment="Center" Text=":" />
+                    <TextBlock Name="CurrentTimeSecondsInsideWindow" Grid.Column="2" Classes="time inside" HorizontalAlignment="Left" VerticalAlignment="Center" Text="00" />
+                </Grid>
+
+                <StackPanel Height="12" ToolTip.Tip="Current period" Orientation="Horizontal" HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom" Margin="0,0,0,6">
+                    <!-- Session icon -->
+                    <TextBlock Name="SessionIconInside" Classes="time iconPeriod inside" VerticalAlignment="Center" HorizontalAlignment="Right"
+                               TextAlignment="Right" Text="{Binding CurrentPeriodIcon}" />
+                    <!-- Session counter -->
+                    <TextBlock Name="SessionCounterInside" Classes="time periodNumber inside" VerticalAlignment="Center" HorizontalAlignment="Right"
+                               TextAlignment="Right" Text="{Binding ViewModel.Engine.Counter}" Margin="4,0,0,0" />
+                </StackPanel>
+
+                <Ellipse Name="PeriodCompletedIndicatorInsideWindowEl" Height="10" Width="10" VerticalAlignment="Bottom"
+                         Fill="{Binding AccentColor}" Opacity="0" Margin="5,0,0,7" />
+            </StackPanel>
+        </Grid>
+    </Panel>
+</infra:AbstractWindow>

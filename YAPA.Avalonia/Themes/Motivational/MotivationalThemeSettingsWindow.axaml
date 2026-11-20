@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Themes.Motivational.MotivationalThemeSettingsWindow">
+    <!-- YAPA.WPF.MotivationalTheme/MotivationalThemeSettingsWindow.xaml -->
+    <Grid>
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto">
+            <CheckBox IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" Content="Use white text" />
+        </Grid>
+    </Grid>
+</UserControl>
