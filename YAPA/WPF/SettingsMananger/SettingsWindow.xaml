@@ -43,7 +43,7 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Command="{Binding CancelCommand}" Margin="5">Close</Button>
-            <Button Command="{Binding SaveCommand}" Margin="5">Save</Button>
+            <Button Command="{Binding SaveCommand}" IsDefault="True" Margin="5">Save</Button>
         </StackPanel>
 
 
