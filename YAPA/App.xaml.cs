@@ -14,6 +14,7 @@ using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
 using YAPA.WPF.SettingsMananger;
+using YAPA.WPF.Specifics;
 using IContainer = Autofac.IContainer;
 
 namespace YAPA
@@ -33,6 +34,7 @@ namespace YAPA
                 var application = new App();
 
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; ;
+                application.DispatcherUnhandledException += TaskbarFailureGuard.Handle;
 
                 var dCont = new DependencyContainer();
                 Container = dCont.Container;
