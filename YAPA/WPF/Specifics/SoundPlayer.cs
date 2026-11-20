@@ -17,8 +17,9 @@ namespace YAPA.WPF.Specifics
         //The file the last Load asked for, null when there is none or it could not be found
         private string _path;
 
-        //Set once the media player reports that Windows Media Player is missing; .wav files then skip it
+        //Set once the media player reports that Windows Media Player is missing; it is then left alone
         private bool _windowsMediaPlayerMissing;
+        private static bool _missingWindowsMediaPlayerLogged;
 
         public SoundPlayer(NLog.ILogger logger)
         {
@@ -56,11 +57,19 @@ namespace YAPA.WPF.Specifics
 
         private void MediaPlayerFailed(Exception error)
         {
-            _logger.Log(LogLevel.Warn, error, $"The media player could not play '{_path}'");
-
             if (error is InvalidWmpVersionException)
             {
+                //Reported by every media player as soon as it is created; once in the log is enough
                 _windowsMediaPlayerMissing = true;
+                if (!_missingWindowsMediaPlayerLogged)
+                {
+                    _missingWindowsMediaPlayerLogged = true;
+                    _logger.Log(LogLevel.Warn, error, "Windows Media Player is not available. Sounds in .wav files are played without it, other formats can't be played");
+                }
+            }
+            else
+            {
+                _logger.Log(LogLevel.Warn, error, $"The media player could not play '{_path}'");
             }
 
             //Nothing is waiting to be heard, for example the sound was stopped before the failure arrived
@@ -110,7 +119,7 @@ namespace YAPA.WPF.Specifics
 
             _path = path;
 
-            if (_windowsMediaPlayerMissing && WavPlayer.CanPlay(path))
+            if (_windowsMediaPlayerMissing)
             {
                 return;
             }
@@ -138,11 +147,17 @@ namespace YAPA.WPF.Specifics
                 return;
             }
 
+            if (_windowsMediaPlayerMissing && !WavPlayer.CanPlay(_path))
+            {
+                _logger.Log(LogLevel.Warn, $"Can't play '{_path}': without Windows Media Player only .wav files can be played");
+                return;
+            }
+
             _repeat = repeat;
             _volume = volume;
             IsPlaying = true;
 
-            if (_windowsMediaPlayerMissing && WavPlayer.CanPlay(_path))
+            if (_windowsMediaPlayerMissing)
             {
                 PlayWithWavPlayer();
                 return;
