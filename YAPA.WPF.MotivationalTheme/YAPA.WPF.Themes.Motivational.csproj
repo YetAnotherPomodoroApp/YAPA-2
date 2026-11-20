@@ -26,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- MainWindow.xaml loads these as /Motivational;component/Fonts/#..., so they must be compiled into the DLL -->
+    <Resource Include="Fonts\*.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Yapa.Shared\YAPA.Shared.csproj" />
     <ProjectReference Include="..\YAPA.WPF.Shared\YAPA.WPF.Shared.csproj" />
   </ItemGroup>

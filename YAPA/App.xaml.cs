@@ -197,14 +197,28 @@ namespace YAPA
                 var releaseUrl = "yapa-2/";
                 var preReleaseUrl = "yapa-2-pre-release/";
 
+                var httpsUrl = "https://app.floatas.net/installers";
                 var httpUrl = "http://app.floatas.net/installers";
 
                 var updateType = environment.PreRelease() ? preReleaseUrl : releaseUrl;
 
-                var httpUpdateUrl = CombineUri(httpUrl, updateType);
-                logger.Info($"Updating from: {httpUpdateUrl}");
+                string newVersion;
+                try
+                {
+                    var httpsUpdateUrl = CombineUri(httpsUrl, updateType);
+                    logger.Info($"Updating from: {httpsUpdateUrl}");
 
-                var newVersion = await UpdateFromUrl(httpUpdateUrl);
+                    newVersion = await UpdateFromUrl(httpsUpdateUrl);
+                }
+                catch (Exception e)
+                {
+                    //Keep updates working where HTTPS can't be used (old TLS setup, missing root certificate, proxy)
+                    var httpUpdateUrl = CombineUri(httpUrl, updateType);
+                    logger.Warn(e, $"Update over HTTPS failed, falling back to: {httpUpdateUrl}");
+
+                    newVersion = await UpdateFromUrl(httpUpdateUrl);
+                }
+
                 UpdateSettingsWithReleaseInfo(newVersion, settings, engineSettings);
             }
             catch (Exception e)
