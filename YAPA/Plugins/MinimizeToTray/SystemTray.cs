@@ -221,25 +221,46 @@ namespace YAPA.Plugins.MinimizeToTray
                 textColor = _settings.WorkTrayIconColor;
             }
 
-            if (_systemTrayIcon != IntPtr.Zero)
-            {
-                DestroyIcon(_systemTrayIcon);
-            }
-
             var minutes = _viewModel.Engine.DisplayValue / 60;
             var seconds = _viewModel.Engine.DisplayValue % 60;
             var displayText = minutes == 0 && seconds > 0 ? "<1" : minutes.ToString();
 
-            System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
+            var previousIcon = _systemTrayIcon;
 
-            var bitmap = new Bitmap(16, 16);
-            var graphics = Graphics.FromImage(bitmap);
-            graphics.DrawString(displayText, new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold), brush, 0, 0);
-
-            _systemTrayIcon = bitmap.GetHicon();
+            //Windows shows tray icons at the small icon size, which grows with display scaling
+            var iconSize = SystemInformation.SmallIconSize.Width;
+            using (var bitmap = TrayIconRenderer.Render(displayText, System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B), iconSize))
+            {
+                _systemTrayIcon = bitmap.GetHicon();
+            }
 
             var icon = Icon.FromHandle(_systemTrayIcon);
             _sysTrayIcon.Icon = icon;
+
+            if (previousIcon != IntPtr.Zero)
+            {
+                DestroyIcon(previousIcon);
+            }
+        }
+    }
+
+    public static class TrayIconRenderer
+    {
+        //The text was designed as an 11 pixel font on a 16 pixel icon; keep that proportion at every size
+        private const float FontToIconRatio = 11f / 16f;
+
+        public static Bitmap Render(string text, System.Drawing.Color color, int iconSize)
+        {
+            var bitmap = new Bitmap(iconSize, iconSize);
+
+            using (var graphics = Graphics.FromImage(bitmap))
+            using (var brush = new SolidBrush(color))
+            using (var font = new Font("Microsoft Sans Serif", iconSize * FontToIconRatio, FontStyle.Bold, GraphicsUnit.Pixel))
+            {
+                graphics.DrawString(text, font, brush, 0, 0);
+            }
+
+            return bitmap;
         }
     }
 
