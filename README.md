@@ -50,6 +50,20 @@ Features
   - Motivational theme
     - More about theme [here](https://github.com/YetAnotherPomodoroApp/MotivationalTheme).
 
+Accessibility
+---------
+
+YAPA 2 is built to work with screen readers such as Narrator and NVDA, and can be used with the keyboard alone.
+
+- The timer speaks when it changes: work started, paused, resumed and finished, break started and finished
+- `Ctrl+T` reads where the timer is
+- `Tab` moves between the timer buttons
+- The `Menu` key or `Shift+F10` opens a menu with every command, including Settings
+- In Settings, `Tab` goes from the list of pages to the page, then to Close and Save; `Enter` saves
+- Every control in Settings has a spoken label, and the dashboard calendar can be read day by day
+- With the System tray plugin, the tooltip of the tray icon tells the remaining time
+- For a timer that is easier to see, give it a background in Settings → Themes
+
 Contribution guidelines
 ===
 1. Before doing code refactoring, create issue to discuss it.

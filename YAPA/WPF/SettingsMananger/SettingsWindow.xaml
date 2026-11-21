@@ -33,7 +33,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TreeView Grid.Column="0" Grid.Row="0" x:Name="SettingsTree">
+        <TreeView Grid.Column="0" Grid.Row="0" x:Name="SettingsTree" AutomationProperties.Name="Settings pages" TabIndex="0">
             <TreeView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock HorizontalAlignment="Left" Text="{Binding Header}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
@@ -41,7 +41,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="2">
             <Button Command="{Binding CancelCommand}" Margin="5">Close</Button>
             <Button Command="{Binding SaveCommand}" IsDefault="True" Margin="5">Save</Button>
         </StackPanel>
@@ -50,7 +50,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" x:Name="Version" VerticalAlignment="Bottom" Margin="4"></TextBlock>
         
         <Border Visibility="Collapsed" x:Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="20" VerticalAlignment="Top" Grid.Row="0" Background="Gold" CornerRadius="8,8,8,8" >
-            <TextBlock x:Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="NotificationMessage" AutomationProperties.LiveSetting="Assertive" Text="" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </Border>
 
     </Grid>

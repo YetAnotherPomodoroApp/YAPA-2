@@ -83,6 +83,12 @@ namespace YAPA.WPF.PluginManager
         public string Title { get; set; }
         public string Id { get; set; }
         public bool Enabled { get; set; }
+
+        //What a screen reader says for the list entry; without it the type name is read out
+        public override string ToString()
+        {
+            return Title ?? string.Empty;
+        }
     }
 
 }

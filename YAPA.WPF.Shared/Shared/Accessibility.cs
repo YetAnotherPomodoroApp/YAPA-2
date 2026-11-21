@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace YAPA.Shared
 {
@@ -70,6 +71,40 @@ namespace YAPA.Shared
                 {
                     AutomationProperties.SetName(part, label);
                 }
+            }
+
+            //The two halves of a slider's track are buttons of their own
+            if (control is Slider && control.Template.FindName("PART_Track", control) is Track track)
+            {
+                if (track.DecreaseRepeatButton != null)
+                {
+                    AutomationProperties.SetName(track.DecreaseRepeatButton, $"Decrease {label}");
+                }
+
+                if (track.IncreaseRepeatButton != null)
+                {
+                    AutomationProperties.SetName(track.IncreaseRepeatButton, $"Increase {label}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Names the small arrow that opens and closes a tree entry; the entry itself already says whether it is open.
+        /// </summary>
+        public static void NameExpander(TreeViewItem item)
+        {
+            void Apply()
+            {
+                if (item.Template?.FindName("Expander", item) is DependencyObject expander)
+                {
+                    AutomationProperties.SetName(expander, $"Expand or collapse {item.Header}");
+                }
+            }
+
+            item.Loaded += (sender, args) => Apply();
+            if (item.IsLoaded)
+            {
+                Apply();
             }
         }
 

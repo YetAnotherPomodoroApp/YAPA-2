@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using YAPA.Shared.Common;
@@ -27,9 +28,9 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
             BrowseWorkSong.Command = new BrowseSong(WorkSong);
             BrowseSessionBreakSong.Command = new BrowseSong(SessionBreakSong);
 
-            PlaySessionBreakSong.Command = new PlaySong(SessionBreakSong, PlaySessionBreakSong, _musicPlayer, _pomodoroEngineSettings);
-            PlayBreakSong.Command = new PlaySong(BreakSong, PlayWorkSong, _musicPlayer, _pomodoroEngineSettings);
-            PlayWorkSong.Command = new PlaySong(WorkSong, PlayWorkSong, _musicPlayer, _pomodoroEngineSettings);
+            PlaySessionBreakSong.Command = new PlaySong(SessionBreakSong, PlaySessionBreakSong, "session break song", _musicPlayer, _pomodoroEngineSettings);
+            PlayBreakSong.Command = new PlaySong(BreakSong, PlayBreakSong, "break song", _musicPlayer, _pomodoroEngineSettings);
+            PlayWorkSong.Command = new PlaySong(WorkSong, PlayWorkSong, "work song", _musicPlayer, _pomodoroEngineSettings);
         }
 
         public class PlaySong : ICommand
@@ -40,10 +41,13 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
             private readonly PomodoroEngineSettings _pomodoroEngineSettings;
             private bool _isPlaying = false;
 
-            public PlaySong(TextBox song, Button playButton, IMusicPlayer musicPlayer, PomodoroEngineSettings pomodoroEngineSettings)
+            private readonly string _songName;
+
+            public PlaySong(TextBox song, Button playButton, string songName, IMusicPlayer musicPlayer, PomodoroEngineSettings pomodoroEngineSettings)
             {
                 _song = song;
                 _playButton = playButton;
+                _songName = songName;
                 _musicPlayer = musicPlayer;
                 _pomodoroEngineSettings = pomodoroEngineSettings;
             }
@@ -62,6 +66,7 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
                         _musicPlayer.Load(_song.Text);
                         _musicPlayer.Play(false, _pomodoroEngineSettings.Volume);
                         _playButton.Content = "Stop";
+                        AutomationProperties.SetName(_playButton, $"Stop {_songName}");
                         _isPlaying = true;
                     }
                 }
@@ -69,6 +74,7 @@ namespace YAPA.Plugins.SoundSettings.MusicPlayer
                 {
                     _musicPlayer.Stop();
                     _playButton.Content = "Play";
+                    AutomationProperties.SetName(_playButton, $"Play {_songName}");
                     _isPlaying = false;
                 }
             }

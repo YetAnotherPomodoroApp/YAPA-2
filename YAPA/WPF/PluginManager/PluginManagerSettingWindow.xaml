@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid>
-        <ListBox x:Name="PluginList">
+        <ListBox x:Name="PluginList" AutomationProperties.Name="Plugins">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox 
