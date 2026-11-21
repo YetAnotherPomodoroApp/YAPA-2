@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF.Shared.Shared;
 
@@ -62,6 +63,8 @@ namespace YAPA.Plugins.MinimizeToTray
             _sysTrayIcon.BalloonTipClicked += _sysTrayIcon_BalloonTipClicked;
 
             _app.Closing += () => _sysTrayIcon.Dispose();
+
+            UpdateTooltip();
         }
 
         private void _sysTrayIcon_BalloonTipClicked(object sender, EventArgs e)
@@ -105,6 +108,8 @@ namespace YAPA.Plugins.MinimizeToTray
             }
             else if (e.PropertyName == nameof(_viewModel.Engine.Phase))
             {
+                UpdateTooltip();
+
                 if (_sysTrayIcon.Visible == false || _settings.ShowBalloonTipWhenInSystemTray == false)
                 {
                     return;
@@ -207,6 +212,24 @@ namespace YAPA.Plugins.MinimizeToTray
             _app.AppState = ApplicationState.Normal;
         }
 
+        //The icon only fits the minutes; the tooltip says the same in words, which is also what a screen reader reads
+        private void UpdateTooltip()
+        {
+            var engine = _viewModel.Engine;
+            var text = "YAPA 2: " + TimerSpeech.Status(engine.Phase, engine.Remaining, engine.WorkTime);
+
+            //Windows allows 63 characters
+            if (text.Length > 63)
+            {
+                text = text.Substring(0, 63);
+            }
+
+            if (_sysTrayIcon.Text != text)
+            {
+                _sysTrayIcon.Text = text;
+            }
+        }
+
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         private void UpdateIcon()
         {
@@ -224,6 +247,8 @@ namespace YAPA.Plugins.MinimizeToTray
             var minutes = _viewModel.Engine.DisplayValue / 60;
             var seconds = _viewModel.Engine.DisplayValue % 60;
             var displayText = minutes == 0 && seconds > 0 ? "<1" : minutes.ToString();
+
+            UpdateTooltip();
 
             var previousIcon = _systemTrayIcon;
 
