@@ -65,6 +65,36 @@ namespace YAPA
             UpdateSecondVisibility();
 
             UpdateFontFamily(_engineSettings.FontFamily);
+
+            CurrentTime.SpokenText = () => TimerSpeech.Display(ViewModel.Engine.Phase, CurrentTimeValue, _engineSettings.CountBackwards);
+
+            //The buttons hide when the mouse leaves; bring them back for someone working with the keyboard
+            PreviewKeyDown += (sender, args) => ShowButtonsForKeyboard();
+            Deactivated += (sender, args) => HideButtonsShownForKeyboard();
+        }
+
+        private bool _buttonsShownForKeyboard;
+
+        private void ShowButtonsForKeyboard()
+        {
+            if (MinExitPanel.Visibility == Visibility.Visible && ButtonPanel.Visibility == Visibility.Visible)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = true;
+            MainWindow_OnMouseEnter(this, null);
+        }
+
+        private void HideButtonsShownForKeyboard()
+        {
+            if (!_buttonsShownForKeyboard || IsMouseOver)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = false;
+            MainWindow_OnMouseLeave(this, null);
         }
 
         private void UpdateDisplayedTime()
@@ -493,6 +523,12 @@ namespace YAPA
 
                     Dispatcher.Invoke(() =>
                    {
+                       //Shown for the keyboard and still in use: they go when the window is left
+                       if (_buttonsShownForKeyboard && IsActive)
+                       {
+                           return;
+                       }
+
                        MinExitPanel.Visibility = Visibility.Hidden;
                        if (Settings.HideButtons)
                        {
