@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Autofac;
 using NLog;
 using SimpleFeedReader;
@@ -29,11 +31,19 @@ namespace YAPA
         [STAThread]
         public static void Main()
         {
+            //Before anything else of the application is loaded, so that a start that fails can be recovered from
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            Start();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void Start()
+        {
             if (SingleInstance<App>.InitializeAsFirstInstance("YAPA2"))
             {
                 var application = new App();
 
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; ;
                 application.DispatcherUnhandledException += TaskbarFailureGuard.Handle;
 
                 var dCont = new DependencyContainer();
@@ -52,6 +62,9 @@ namespace YAPA
 #endif
 
                 Current.MainWindow.Loaded += MainWindow_Loaded;
+                //The window is up and everything queued for its start has run: from here on a crash is not a failed start
+                Current.MainWindow.Loaded += (sender, args) =>
+                    Current.Dispatcher.BeginInvoke(new Action(StartupRecovery.MarkStartupCompleted), DispatcherPriority.ApplicationIdle);
                 Current.MainWindow.Closing += MainWindowOnClosing;
                 Current.MainWindow.Show();
                 Current.MainWindow.Closed += MainWindow_Closed;
@@ -181,8 +194,45 @@ namespace YAPA
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var logger = LogManager.GetLogger("YAPA2");
-            logger.Fatal($"Unhandled exception: {e.ExceptionObject}");
+            //Each step on its own: what made the application crash may also break logging or the single instance check
+            try
+            {
+                LogFatal($"Unhandled exception: {e.ExceptionObject}");
+            }
+            catch (Exception)
+            {
+            }
+
+            if (StartupRecovery.StartupCompleted)
+            {
+                return;
+            }
+
+            try
+            {
+                //Otherwise the previous version would take this dying process for a running copy and exit
+                ReleaseSingleInstance();
+            }
+            catch (Exception)
+            {
+            }
+
+            if (StartupRecovery.TryStartPreviousVersion(e.ExceptionObject as Exception, LogFatal))
+            {
+                Environment.Exit(1);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void LogFatal(string message)
+        {
+            LogManager.GetLogger("YAPA2").Fatal(message);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void ReleaseSingleInstance()
+        {
+            SingleInstance<App>.Cleanup();
         }
 
         private static void MainWindow_Closed(object sender, EventArgs e)
