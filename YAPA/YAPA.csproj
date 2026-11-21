@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0-preview4-final" PrivateAssets="all" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="Sentry" Version="7.0.1" />
     <PackageReference Include="SimpleFeedReader" Version="1.0.7" />
     <PackageReference Include="SQLite" Version="3.13.0" GeneratePathProperty="true" />
     <PackageReference Include="squirrel.windows" Version="1.5.28" />
@@ -40,10 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Pinned above what the old EF Core 1.1 packages ask for, as packages.config did -->
+    <!-- Pinned above what the old EF Core 1.1 packages ask for, as packages.config did;
+         Unsafe and Encodings.Web at what Sentry (crash reports) needs -->
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="4.5.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>

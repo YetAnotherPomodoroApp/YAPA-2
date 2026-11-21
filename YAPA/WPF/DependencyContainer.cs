@@ -86,6 +86,7 @@ namespace YAPA.WPF
             builder.RegisterType(typeof(PluginManagerSettingWindow));
 
             builder.RegisterType(typeof(AboutPage));
+            builder.RegisterType(typeof(CrashReportingSettings));
 
             builder.RegisterType(typeof(GithubDashboard));
             builder.RegisterType(typeof(Dashboard)).SingleInstance();
@@ -155,7 +156,20 @@ namespace YAPA.WPF
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.IsDynamic))
             {
-                foreach (var t in assembly.GetExportedTypes())
+                Type[] exported;
+                try
+                {
+                    exported = assembly.GetExportedTypes();
+                }
+                catch (Exception ex)
+                {
+                    //A library whose dependencies can't be loaded has no themes or plugins for us;
+                    //it must not stop YAPA from starting
+                    LogManager.GetLogger("YAPA2").Warn(ex, $"Skipped {assembly.GetName().Name} while looking for themes and plugins");
+                    continue;
+                }
+
+                foreach (var t in exported)
                 {
                     if (t.GetInterfaces().Contains(typeof(T)))
                     {

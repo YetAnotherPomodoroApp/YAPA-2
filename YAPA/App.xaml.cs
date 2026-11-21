@@ -42,12 +42,18 @@ namespace YAPA
         {
             if (SingleInstance<App>.InitializeAsFirstInstance("YAPA2"))
             {
+                //Only in the copy that runs: a command launch (/start, /stop) just hands over its argument,
+                //and starting crash reporting there doubled its time. A crash before this point (even one in
+                //compiling Start) starts crash reporting from the crash handler to send that report.
+                var crashReporting = StartCrashReporting();
+
                 var application = new App();
 
                 application.DispatcherUnhandledException += TaskbarFailureGuard.Handle;
 
                 var dCont = new DependencyContainer();
                 Container = dCont.Container;
+                FollowCrashReportingSetting();
                 PluginManager = dCont.PluginManager;
                 ThemeManager = dCont.ThemeManager;
                 Dashboard = dCont.Dashboard;
@@ -73,12 +79,29 @@ namespace YAPA
                 logger.Info("Application starting");
 
 
+                if (Environment.GetCommandLineArgs().Any(x => x.Equals(CrashTestArgument, StringComparison.OrdinalIgnoreCase)))
+                {
+                    //Checks crash reporting end to end: a crash on the UI thread two seconds after the start
+                    //has completed, the way a crash while the timer is in use happens
+                    var crashTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                    crashTimer.Tick += (s, e) =>
+                    {
+                        crashTimer.Stop();
+                        throw new InvalidOperationException("Crash test: YAPA was started with /crashtest");
+                    };
+                    //Once the application is idle, i.e. after the window and everything for its start has run
+                    Current.Dispatcher.BeginInvoke(new Action(crashTimer.Start), DispatcherPriority.ApplicationIdle);
+                }
+
                 application.Init();
                 application.Run();
 
                 SingleInstance<App>.Cleanup();
+                StopCrashReporting(crashReporting);
             }
         }
+
+        private const string CrashTestArgument = "/crashtest";
 
         private static void MainWindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
@@ -203,8 +226,19 @@ namespace YAPA
             {
             }
 
+            //Recorded now (saved to disk, sent in the background); waited for only at the end, so that
+            //a failed start hands over to the previous version without waiting on the network
+            try
+            {
+                ReportCrash(e.ExceptionObject as Exception);
+            }
+            catch (Exception)
+            {
+            }
+
             if (StartupRecovery.StartupCompleted)
             {
+                FlushCrashReports();
                 return;
             }
 
@@ -217,9 +251,26 @@ namespace YAPA
             {
             }
 
-            if (StartupRecovery.TryStartPreviousVersion(e.ExceptionObject as Exception, LogFatal))
+            var handedOver = StartupRecovery.TryStartPreviousVersion(e.ExceptionObject as Exception, LogFatal);
+
+            //The previous version is starting meanwhile; a report not sent in time goes at the next start
+            FlushCrashReports();
+
+            if (handedOver)
             {
                 Environment.Exit(1);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void FlushCrashReports()
+        {
+            try
+            {
+                CrashReporting.Flush();
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -227,6 +278,55 @@ namespace YAPA
         private static void LogFatal(string message)
         {
             LogManager.GetLogger("YAPA2").Fatal(message);
+        }
+
+        //Crash reporting in methods of their own: a missing Sentry assembly must not break the start or the crash handler
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static IDisposable StartCrashReporting()
+        {
+            try
+            {
+                return CrashReporting.Start();
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger("YAPA2").Warn(ex, "Crash reporting could not start");
+                return null;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void StopCrashReporting(IDisposable crashReporting)
+        {
+            try
+            {
+                crashReporting?.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void FollowCrashReportingSetting()
+        {
+            try
+            {
+                CrashReporting.Follow(Container.Resolve<ISettings>(), Container.Resolve<CrashReportingSettings>());
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger("YAPA2").Warn(ex, "Crash reporting setting is not available");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void ReportCrash(Exception exception)
+        {
+            if (exception != null)
+            {
+                CrashReporting.ReportFatal(exception);
+            }
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -246,6 +346,22 @@ namespace YAPA
 
             try
             {
+                //Another feed (a web address or a local folder made by Squirrel --releasify), for testing releases
+                var customFeed = Environment.GetEnvironmentVariable("YAPA_UPDATE_URL");
+                if (!string.IsNullOrEmpty(customFeed))
+                {
+                    logger.Info($"Updating from: {customFeed}");
+                    var customVersion = await UpdateFromUrl(customFeed);
+                    logger.Info(string.IsNullOrEmpty(customVersion) ? "Up to date" : $"Installed {customVersion}, it starts next time");
+                    if (!string.IsNullOrEmpty(customVersion))
+                    {
+                        //No release notes: test versions are not on GitHub
+                        settings.RestartNeeded = true;
+                        settings.NewVersion = customVersion;
+                    }
+                    return;
+                }
+
                 var releaseUrl = "yapa-2/";
                 var preReleaseUrl = "yapa-2-pre-release/";
 

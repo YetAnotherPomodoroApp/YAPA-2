@@ -28,7 +28,11 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Grid.Row="1" VerticalAlignment="Bottom"  Content="Import data from YAPA 1" Style="{DynamicResource MaterialDesignFlatButton}" Click="Import_OnClick"></Button>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+            <CheckBox x:Name="SendCrashReports" IsChecked="{Binding SendCrashReports, Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,0,0,10"
+                      ToolTip="When YAPA crashes, send the error, its stack trace and the YAPA and Windows versions, so it can be fixed. Never your name or files.">Send crash reports</CheckBox>
+            <Button Content="Import data from YAPA 1" Style="{DynamicResource MaterialDesignFlatButton}" Click="Import_OnClick"></Button>
+        </StackPanel>
 
     </Grid>
 </UserControl>
