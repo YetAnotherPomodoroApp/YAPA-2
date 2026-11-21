@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Windows;
 using YAPA.Shared.Common;
 
 namespace YAPA.WPF.Specifics
@@ -14,6 +12,8 @@ namespace YAPA.WPF.Specifics
     /// The user keeps a working timer, and the previous version installs the fix as soon as one is published.
     ///
     /// A version that can't start can't update itself either, so without this it stays broken until it is reinstalled.
+    ///
+    /// Nothing is shown: the timer simply appears, as on any other start. What happened is in the log.
     ///
     /// Kept free of everything else in the application on purpose: it has to work when the rest does not.
     /// </summary>
@@ -83,7 +83,6 @@ namespace YAPA.WPF.Specifics
                     UseShellExecute = false
                 });
 
-                TellUserOnce(installFolder, current, previous);
                 return true;
             }
             catch (Exception e)
@@ -96,36 +95,6 @@ namespace YAPA.WPF.Specifics
         private static string ArgumentsOfThisProcess()
         {
             return string.Join(" ", Environment.GetCommandLineArgs().Skip(1).Select(arg => arg.Contains(" ") ? $"\"{arg}\"" : arg));
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void TellUserOnce(string installFolder, string current, string previous)
-        {
-            try
-            {
-                //One message per failed version, not one every time the application is started
-                var marker = Path.Combine(installFolder, $"started-previous-instead-of-{current}.txt");
-                if (File.Exists(marker))
-                {
-                    return;
-                }
-
-                File.WriteAllText(marker, $"{DateTime.Now:u} {current} failed to start, {previous} was started instead.");
-
-                MessageBox.Show(
-                    $"The latest update of YAPA 2 ({Display(current)}) could not start, so the previous version ({Display(previous)}) was started instead.{Environment.NewLine}{Environment.NewLine}" +
-                    "You don't need to do anything: a fixed version will be installed automatically when it is available.",
-                    "YAPA 2", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception)
-            {
-                //The previous version is running; the message is a courtesy
-            }
-        }
-
-        private static string Display(string versionFolder)
-        {
-            return InstalledVersions.TryParse(versionFolder, out var version) ? version.ToString() : versionFolder;
         }
 
         private static void Log(Action<string> log, string message)
