@@ -45,6 +45,9 @@ namespace Motivational
             UpdateCompletedPomodoroCount();
 
             UpdateTime();
+
+            TimeOutsideWindow.SpokenText = TimeInsideWindow.SpokenText =
+                () => YAPA.Shared.Common.TimerSpeech.Display(ViewModel.Engine.Phase, CurrentTimeValue, CountBackwards);
         }
 
         private void EngineOnOnStarted()
