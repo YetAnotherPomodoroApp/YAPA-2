@@ -86,6 +86,8 @@ utmctl exec "$VM" --cmd cmd.exe /c 'C:\yapa-work\release-safety-step.cmd' 2>&1 |
 vm -Action stop >/dev/null
 vm -Action clean >/dev/null
 vm -Action backup >/dev/null
+# scenarios 1-6 check delivery, so reports go without asking; scenario 7 checks the asking
+vm -Action crash-mode -Mode Always >/dev/null
 trap 'echo "== cleaning up"; vm -Action clean >/dev/null; vm -Action restore; docker start "$BUGSINK" >/dev/null 2>&1 || true' EXIT
 
 echo "== 1. a normal install: $A"
@@ -173,6 +175,38 @@ vm -Action start -Arguments /crashtest >/dev/null
 for _ in $(seq 1 30); do REPORTS="$(events $FIX)"; [ -n "$REPORTS" ] && break; sleep 2; done
 grep -q "^System.InvalidOperationException|False|" <<<"$REPORTS" || fail "no unhandled crash report for $FIX"
 pass "the crash in $FIX reached Bugsink, marked unhandled"
+vm -Action stop >/dev/null
+
+echo "== 7. \"Ask before sending\" (the default): the user sees the report and decides"
+vm -Action crash-mode -Mode Ask >/dev/null
+COUNT_BEFORE=$(events $FIX | wc -l | tr -d ' ')
+vm -Action start -Arguments /crashtest >/dev/null
+wait_status 60 "the crash to be saved" "waiting to be sent:.*" ; sleep 15
+vm -Action stop >/dev/null
+status; grep -A1 "crash reports waiting" <<<"$STATUS" | tail -1 | grep -q " 1$" || fail "the crash was not saved for asking"
+[ "$(events $FIX | wc -l | tr -d ' ')" = "$COUNT_BEFORE" ] || fail "a report was sent before the user was asked"
+pass "the crash was saved, and nothing was sent before asking"
+vm -Action start >/dev/null
+ANSWER="$(vm -Action answer -Choice DontSend)"
+grep -q "^WINDOW" <<<"$ANSWER" || { STATUS="$ANSWER"; fail "no crash report window at the next start"; }
+echo "$ANSWER" | sed -n '2,40p' | sed 's/^/   window: /'
+grep -q "InvalidOperationException" <<<"$ANSWER" || fail "the window does not show the error"
+grep -q "YAPA $FIX" <<<"$ANSWER" || fail "the window does not show the version"
+grep -q -i "Dev" <<<"$(grep -v -i "device" <<<"$ANSWER")" && fail "the window shows the Windows user name"
+sleep 5; status
+grep -A1 "crash reports waiting" <<<"$STATUS" | tail -1 | grep -q " 0$" || fail "the declined report was not removed"
+[ "$(events $FIX | wc -l | tr -d ' ')" = "$COUNT_BEFORE" ] || fail "the declined report was sent"
+pass "the window showed what would be sent; \"Don't send\" sent nothing and removed it"
+vm -Action stop >/dev/null
+vm -Action start -Arguments /crashtest >/dev/null
+sleep 20; vm -Action stop >/dev/null
+vm -Action start >/dev/null
+ANSWER="$(vm -Action answer -Choice Send -Remember)"
+grep -q "^WINDOW" <<<"$ANSWER" || { STATUS="$ANSWER"; fail "no crash report window after the second crash"; }
+for _ in $(seq 1 20); do [ "$(events $FIX | wc -l | tr -d ' ')" -gt "$COUNT_BEFORE" ] && break; sleep 2; done
+[ "$(events $FIX | wc -l | tr -d ' ')" -gt "$COUNT_BEFORE" ] || fail "\"Send\" did not send the report"
+status; has "Always" || fail "\"Remember my choice\" did not switch to sending without asking"
+pass "\"Send\" sent it, and \"Remember my choice\" switched to sending without asking"
 vm -Action stop >/dev/null
 
 echo "PASS: a bad release did not brick YAPA, users could update past it, and every crash was reported"

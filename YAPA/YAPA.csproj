@@ -22,6 +22,11 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
+  <!-- Build\release-safety builds test versions with -p:ReleaseSafetyTest=true: only they honour
+       YAPA_UPDATE_URL, YAPA_CRASH_DSN and /crashtest -->
+  <PropertyGroup Condition="'$(ReleaseSafetyTest)' == 'true'">
+    <DefineConstants>$(DefineConstants);RELEASE_SAFETY_TEST</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.1.1" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.8.1" PrivateAssets="all" />

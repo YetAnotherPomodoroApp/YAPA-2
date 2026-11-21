@@ -9,6 +9,8 @@ touched. Each action is one step; Build\release-safety\test-release-safety.sh ru
   release-safety.ps1 stop                                kill every YAPA.exe (and its crash dialog)
   release-safety.ps1 status                              what is installed, running and logged
   release-safety.ps1 measure                             how long a second start (/stop) takes, with and without crash reporting
+  release-safety.ps1 crash-mode -Mode Ask|Always|Never    set "Crash reports" in Documents\YAPA2\settings.json
+  release-safety.ps1 answer -Choice Send|DontSend [-Remember]   answer the crash report window (UI Automation)
   release-safety.ps1 backup | restore                    Documents\YAPA2 before and after
   release-safety.ps1 clean                               uninstall YAPA2Test, remove the feed
 
@@ -17,7 +19,10 @@ starting. YAPA_UPDATE_URL (the feed) and YAPA_CRASH_DSN are passed to the app fr
 of this script (set them before calling start or install).
 #>
 param(
-    [Parameter(Mandatory = $true)][ValidateSet("build", "install", "start", "stop", "status", "measure", "backup", "restore", "clean")][string]$Action,
+    [Parameter(Mandatory = $true)][ValidateSet("build", "install", "start", "stop", "status", "measure", "crash-mode", "answer", "backup", "restore", "clean")][string]$Action,
+    [ValidateSet("Ask", "Always", "Never")][string]$Mode,
+    [ValidateSet("Send", "DontSend")][string]$Choice,
+    [switch]$Remember,
     [string]$Version,
     [switch]$Broken,
     [string]$Arguments = "",
@@ -80,7 +85,7 @@ function Build-Version {
     if (-not $env:NUGET_PACKAGES) { $env:NUGET_PACKAGES = "C:\Users\$User\.nuget\packages" }
     try {
         $msbuild = Find-MSBuild
-        & $msbuild (Join-Path $Repo "YAPA.sln") -restore -nodeReuse:false -p:Configuration=Release -p:DisableGitVersionTask=true -v:minimal -nologo | Out-File (Join-Path $Work "build-$Version.log")
+        & $msbuild (Join-Path $Repo "YAPA.sln") -restore -nodeReuse:false -p:Configuration=Release -p:DisableGitVersionTask=true -p:ReleaseSafetyTest=true -v:minimal -nologo | Out-File (Join-Path $Work "build-$Version.log")
         if ($LASTEXITCODE -ne 0) { throw "build $Version failed, see build-$Version.log" }
     }
     finally {
@@ -128,6 +133,10 @@ function Show-Status {
     $cache = Join-Path $Data "crash-reports"
     $waiting = if (Test-Path $cache) { @(Get-ChildItem $cache -Recurse -File -Filter "*.envelope") } else { @() }
     "  $($waiting.Count)"
+    "crash report setting:"
+    $settingsFile = Join-Path $Data "settings.json"
+    $mode = if (Test-Path $settingsFile) { (Get-Content $settingsFile -Raw | ConvertFrom-Json).CrashReporting.Mode } else { $null }
+    "  $(if ($mode) { $mode } else { 'Ask (default)' })"
     "log:"
     if (Test-Path $Log) {
         Get-Content $Log -Tail 400 | Where-Object { $_ -match "^\d{4}-\d\d-\d\d " } | Select-Object -Last 12 | ForEach-Object { "  " + $_.Substring(0, [Math]::Min(230, $_.Length)) }
@@ -178,6 +187,36 @@ Set-Content '$result' `$lines
 "@
         Invoke-AsLoggedOnUser "powershell -NoProfile -ExecutionPolicy Bypass -File `"$measure`"" -WaitSeconds 180
         Get-Content $result
+    }
+    "crash-mode" {
+        $file = Join-Path $Data "settings.json"
+        $json = if (Test-Path $file) { Get-Content $file -Raw | ConvertFrom-Json } else { New-Object PSObject }
+        if (-not $json.PSObject.Properties["CrashReporting"]) { $json | Add-Member -NotePropertyName CrashReporting -NotePropertyValue (New-Object PSObject) }
+        $json.CrashReporting | Add-Member -NotePropertyName Mode -NotePropertyValue $Mode -Force
+        $json | ConvertTo-Json -Depth 20 -Compress | Set-Content $file -Encoding UTF8
+        "crash reports: $Mode"
+    }
+    "answer" {
+        #UI Automation has to run in the user's session, where the window is
+        $result = Join-Path $Work "answer.txt"
+        Remove-Item $result -ErrorAction SilentlyContinue
+        $script = Join-Path $Work "answer.ps1"
+        Set-Content $script -Encoding UTF8 -Value @"
+Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
+`$A = [Windows.Automation.AutomationElement]
+`$named = New-Object Windows.Automation.PropertyCondition(`$A::NameProperty, 'YAPA 2 crash report')
+`$window = `$null
+foreach (`$i in 1..120) { `$window = `$A::RootElement.FindFirst([Windows.Automation.TreeScope]::Descendants, `$named); if (`$window) { break }; Start-Sleep -Milliseconds 500 }
+if (-not `$window) { Set-Content '$result' 'NO WINDOW'; exit }
+`$texts = `$window.FindAll([Windows.Automation.TreeScope]::Descendants, (New-Object Windows.Automation.PropertyCondition(`$A::ControlTypeProperty, [Windows.Automation.ControlType]::Text))) | ForEach-Object { `$_.Current.Name }
+function Find(`$id) { `$window.FindFirst([Windows.Automation.TreeScope]::Descendants, (New-Object Windows.Automation.PropertyCondition(`$A::AutomationIdProperty, `$id))) }
+if ('$Remember' -eq 'True') { (Find 'RememberChoice').GetCurrentPattern([Windows.Automation.TogglePattern]::Pattern).Toggle() }
+`$button = if ('$Choice' -eq 'Send') { 'SendButton' } else { 'DontSendButton' }
+(Find `$button).GetCurrentPattern([Windows.Automation.InvokePattern]::Pattern).Invoke()
+Set-Content '$result' (@('WINDOW') + `$texts)
+"@
+        Invoke-AsLoggedOnUser "powershell -NoProfile -ExecutionPolicy Bypass -File `"$script`"" -WaitSeconds 90
+        if (Test-Path $result) { Get-Content $result } else { "NO ANSWER" }
     }
     "backup" {
         $backup = Join-Path $Work "YAPA2-backup"

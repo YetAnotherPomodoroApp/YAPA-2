@@ -29,8 +29,16 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
-            <CheckBox x:Name="SendCrashReports" IsChecked="{Binding SendCrashReports, Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,0,0,10"
-                      ToolTip="When YAPA crashes, send the error, its stack trace and the YAPA and Windows versions, so it can be fixed. Never your name or files.">Send crash reports</CheckBox>
+            <StackPanel x:Name="CrashReports" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10"
+                        ToolTip="When YAPA crashes: the error, where in YAPA it happened, the YAPA and Windows versions and the last steps, so it can be fixed. Never your name, files or history.">
+                <TextBlock Text="Crash reports" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox x:Name="CrashReportMode" MinWidth="170" SelectedValuePath="Tag" SelectedValue="{Binding Mode, Mode=TwoWay}"
+                          AutomationProperties.Name="Crash reports">
+                    <ComboBoxItem Tag="{x:Static local:CrashReportMode.Ask}">Ask before sending</ComboBoxItem>
+                    <ComboBoxItem Tag="{x:Static local:CrashReportMode.Always}">Send without asking</ComboBoxItem>
+                    <ComboBoxItem Tag="{x:Static local:CrashReportMode.Never}">Don't send</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <Button Content="Import data from YAPA 1" Style="{DynamicResource MaterialDesignFlatButton}" Click="Import_OnClick"></Button>
         </StackPanel>
 

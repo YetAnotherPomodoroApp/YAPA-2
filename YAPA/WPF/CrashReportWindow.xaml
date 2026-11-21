@@ -1,0 +1,68 @@
+<Window x:Class="YAPA.WPF.CrashReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="YAPA 2 crash report"
+        Width="560" SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        ShowInTaskbar="True"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel Margin="20,16,20,14">
+        <TextBlock x:Name="Heading" FontSize="16" FontWeight="Medium" TextWrapping="Wrap" Text="YAPA closed unexpectedly." />
+        <TextBlock Margin="0,8,0,8" TextWrapping="Wrap"
+                   Text="You can send this report so the problem can be fixed. This is what it contains:" />
+
+        <Grid Margin="8,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Medium" Margin="0,2,12,2" Text="The error" />
+            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="Error" TextWrapping="Wrap" Margin="0,2" />
+            <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="Medium" Margin="0,2,12,2" Text="Where in YAPA" />
+            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="Where" TextWrapping="Wrap" Margin="0,2" />
+            <TextBlock Grid.Row="2" Grid.Column="0" FontWeight="Medium" Margin="0,2,12,2" Text="Versions" />
+            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="Versions" TextWrapping="Wrap" Margin="0,2" />
+            <TextBlock Grid.Row="3" Grid.Column="0" FontWeight="Medium" Margin="0,2,12,2" Text="Last steps" />
+            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="LastSteps" TextWrapping="Wrap" Margin="0,2" />
+        </Grid>
+
+        <TextBlock Margin="0,10,0,0" TextWrapping="Wrap"
+                   Text="It doesn't contain your name, your computer's name, your settings or your pomodoro history." />
+        <TextBlock x:Name="MoreReports" Margin="0,6,0,0" TextWrapping="Wrap" Visibility="Collapsed" />
+
+        <Expander x:Name="ShowEverything" Header="Show everything that would be sent" Margin="0,10,0,0" Padding="0,6,0,0">
+            <TextBox x:Name="FullReport" IsReadOnly="True" Height="220" FontFamily="Consolas" FontSize="11"
+                     VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap"
+                     AutomationProperties.Name="Everything that would be sent" />
+        </Expander>
+
+        <Grid Margin="0,14,0,0">
+            <CheckBox x:Name="RememberChoice" VerticalAlignment="Center" Content="Remember my choice" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="DontSendButton" Content="Don't send" Style="{DynamicResource MaterialDesignFlatButton}"
+                        Margin="0,0,8,0" Click="DontSend_Click" IsCancel="True" />
+                <Button x:Name="SendButton" Content="Send" Click="Send_Click" IsDefault="True" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>

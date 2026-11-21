@@ -79,6 +79,8 @@ namespace YAPA
                 logger.Info("Application starting");
 
 
+#if RELEASE_SAFETY_TEST
+                //Test builds only (Build\release-safety)
                 if (Environment.GetCommandLineArgs().Any(x => x.Equals(CrashTestArgument, StringComparison.OrdinalIgnoreCase)))
                 {
                     //Checks crash reporting end to end: a crash on the UI thread two seconds after the start
@@ -92,6 +94,7 @@ namespace YAPA
                     //Once the application is idle, i.e. after the window and everything for its start has run
                     Current.Dispatcher.BeginInvoke(new Action(crashTimer.Start), DispatcherPriority.ApplicationIdle);
                 }
+#endif
 
                 application.Init();
                 application.Run();
@@ -101,7 +104,9 @@ namespace YAPA
             }
         }
 
+#if RELEASE_SAFETY_TEST
         private const string CrashTestArgument = "/crashtest";
+#endif
 
         private static void MainWindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
@@ -130,6 +135,10 @@ namespace YAPA
         private static void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSnapshot();
+
+            //After the window is up: a crash report from an earlier run, shown before it is sent
+            var window = (Window)sender;
+            Current.Dispatcher.BeginInvoke(new Action(() => AskAboutCrashReports(window)), DispatcherPriority.ApplicationIdle);
 
             var settings = Container.Resolve<PomodoroEngineSettings>();
             if (!string.IsNullOrEmpty(settings.ReleaseNotes))
@@ -308,6 +317,19 @@ namespace YAPA
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void AskAboutCrashReports(Window owner)
+        {
+            try
+            {
+                CrashReportWindow.ShowIfNeeded(owner, () => Container.Resolve<CrashReportingSettings>());
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger("YAPA2").Warn(ex, "Could not ask about crash reports");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void FollowCrashReportingSetting()
         {
             try
@@ -346,6 +368,8 @@ namespace YAPA
 
             try
             {
+#if RELEASE_SAFETY_TEST
+                //Test builds only (Build\release-safety): a release always updates from its own server
                 //Another feed (a web address or a local folder made by Squirrel --releasify), for testing releases
                 var customFeed = Environment.GetEnvironmentVariable("YAPA_UPDATE_URL");
                 if (!string.IsNullOrEmpty(customFeed))
@@ -361,6 +385,7 @@ namespace YAPA
                     }
                     return;
                 }
+#endif
 
                 var releaseUrl = "yapa-2/";
                 var preReleaseUrl = "yapa-2-pre-release/";

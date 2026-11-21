@@ -20,7 +20,7 @@ namespace YAPA.WPF
             InitializeComponent();
             DataContext = crashReportingSettings;
             //Only when there is a server to send to
-            SendCrashReports.Visibility = CrashReporting.IsActive ? Visibility.Visible : Visibility.Collapsed;
+            CrashReports.Visibility = CrashReporting.IsActive ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
