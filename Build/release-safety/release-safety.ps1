@@ -63,6 +63,12 @@ function Invoke-AsLoggedOnUser([string]$CommandLine, [int]$WaitSeconds = 0) {
     }
 }
 
+function Stop-TestCopies {
+    #Only the test install's copies: a real YAPA 2 running on this machine is left alone
+    Get-Process YAPA -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "$InstallDir\*" } | Stop-Process -Force
+    Get-Process WerFault -ErrorAction SilentlyContinue | Stop-Process -Force
+}
+
 function Find-MSBuild {
     $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -find "MSBuild\**\Bin\MSBuild.exe" | Select-Object -First 1
@@ -162,7 +168,7 @@ switch ($Action) {
         "started $Arguments"
     }
     "stop" {
-        Get-Process YAPA, WerFault -ErrorAction SilentlyContinue | Stop-Process -Force
+        Stop-TestCopies
         "stopped"
     }
     "status" { Show-Status }
@@ -233,7 +239,7 @@ Set-Content '$result' (@('WINDOW') + `$texts)
         if (Compare-Object (Get-Content (Join-Path $Work "YAPA2-before.txt")) $after) { "DIFFERENT after restore" } else { "restored: identical" }
     }
     "clean" {
-        Get-Process YAPA, WerFault -ErrorAction SilentlyContinue | Stop-Process -Force
+        Stop-TestCopies
         $update = Join-Path $InstallDir "Update.exe"
         if (Test-Path $update) { Invoke-AsLoggedOnUser "`"$update`" --uninstall" -WaitSeconds 60 }
         Start-Sleep -Seconds 2

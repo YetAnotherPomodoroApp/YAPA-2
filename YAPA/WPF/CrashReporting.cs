@@ -36,8 +36,9 @@ namespace YAPA.WPF
     /// </summary>
     public static class CrashReporting
     {
-        //The server's DSN; empty until the public server is set up, and then nothing is recorded at all
-        private const string DefaultDsn = "";
+        //The project's address on our Bugsink (Oracle server, CapRover app "bugsink"). bugs.floatas.net is
+        //ours, so the server can move without changing installed copies. The key only lets reports in.
+        private const string DefaultDsn = "https://22d64ddfd00f4df8b72f6eb0814a0635@bugs.floatas.net/1";
 
         private static readonly string BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YAPA2");
 
