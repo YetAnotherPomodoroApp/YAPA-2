@@ -72,11 +72,14 @@ namespace YAPA
                 Current.MainWindow.Loaded += (sender, args) =>
                     Current.Dispatcher.BeginInvoke(new Action(StartupRecovery.MarkStartupCompleted), DispatcherPriority.ApplicationIdle);
                 Current.MainWindow.Closing += MainWindowOnClosing;
-                Current.MainWindow.Show();
-                Current.MainWindow.Closed += MainWindow_Closed;
 
+                //Before Show: the window's start can open dialogs (release notes, a crash report to send)
+                //that wait for the user, and the start is logged whether or not they are answered
                 var logger = LogManager.GetLogger("YAPA2");
                 logger.Info("Application starting");
+
+                Current.MainWindow.Show();
+                Current.MainWindow.Closed += MainWindow_Closed;
 
 
 #if RELEASE_SAFETY_TEST

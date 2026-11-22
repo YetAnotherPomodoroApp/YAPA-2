@@ -1,4 +1,4 @@
-<#
+﻿<#
 The last check before a release is uploaded: does the exact release in Build\Release update the
 version users have today, and does it then run?
 
@@ -97,6 +97,10 @@ if (Test-Path $Work) { Remove-Item $Work -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
 $hadData = Test-Path $Data
 if ($hadData) { Copy-Item $Data (Join-Path $Work "Documents-YAPA2") -Recurse }
+#Crash reports waiting on this machine are set aside: the new version would ask about them (or, with
+#"Send without asking", send them) during the test. They come back with the rest of Documents\YAPA2.
+$waiting = Join-Path $Data "crash-reports"
+if (Test-Path $waiting) { Remove-Item $waiting -Recurse -Force; Say "   (crash reports waiting in Documents\YAPA2 are set aside for the test)" }
 $hadLogs = Test-Path (Join-Path $Install "Logs")
 $tracesBefore = Install-Traces
 if ($hadLogs) { Copy-Item (Join-Path $Install "Logs") (Join-Path $Work "Logs") -Recurse }
