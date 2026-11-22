@@ -250,7 +250,6 @@ namespace YAPA
                 RaisePropertyChanged(nameof(Settings.ShadowOpacity));
                 RaisePropertyChanged(nameof(BackgroundBrush));
                 RaisePropertyChanged(nameof(BackgroundVisibility));
-                RaisePropertyChanged(nameof(HoverPlateBrush));
                 RaisePropertyChanged(nameof(SmallTextEffect));
 
                 if (e.PropertyName.StartsWith($"{nameof(YapaTheme)}.{nameof(YapaThemeSettings.Width)}"))
@@ -413,19 +412,9 @@ namespace YAPA
             }
         }
 
-        //Half see-through, so the highlight sits softly on the hover plate instead of a hard block
+        //The button under the mouse gets a background, half see-through rather than a hard block
         public Brush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor) { Opacity = 0.6 };
 
-        /// <summary>
-        /// The plate shown while the mouse is over the timer: the shadow colour, adding only what a
-        /// background the user set doesn't already give.
-        /// </summary>
-        public Brush HoverPlateBrush => new SolidColorBrush(Settings.ShadowColor) { Opacity = Math.Max(0, 0.45 - Settings.BackgroundOpacity) };
-
-        private void FadeHoverPlate(double to)
-        {
-            HoverPlate.BeginAnimation(OpacityProperty, new DoubleAnimation(to, TimeSpan.FromMilliseconds(to > 0 ? 150 : 300)));
-        }
 
         /// <summary>
         /// Optional plate behind the whole timer, to keep it readable on any wallpaper or window. Off by default.
@@ -435,11 +424,10 @@ namespace YAPA
         public Visibility BackgroundVisibility => Settings.BackgroundOpacity > 0 ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
-        /// Optional shadow for the status text, the buttons and the counter; the digits always have theirs. Off by default.
+        /// The digits' shadow, for the status text, the buttons and the counter too, so they read on any
+        /// background the way the digits do (a smaller blur for the smaller text).
         /// </summary>
-        public Effect SmallTextEffect => Settings.ShadowOnSmallText
-            ? new DropShadowEffect { ShadowDepth = 0, Direction = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 4 }
-            : null;
+        public Effect SmallTextEffect => new DropShadowEffect { ShadowDepth = 0, Direction = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 3 };
 
         public double ProgressValue
         {
@@ -518,7 +506,6 @@ namespace YAPA
         {
             MinExitPanel.Visibility = Visibility.Visible;
             ButtonPanel.Visibility = Visibility.Visible;
-            FadeHoverPlate(1);
 
             cancelMinMaxPanelHide.Cancel();
             cancelMinMaxPanelHide = new CancellationTokenSource();
@@ -544,7 +531,6 @@ namespace YAPA
                        }
 
                        MinExitPanel.Visibility = Visibility.Hidden;
-                       FadeHoverPlate(0);
                        if (Settings.HideButtons)
                        {
                            ButtonPanel.Visibility = Visibility.Hidden;

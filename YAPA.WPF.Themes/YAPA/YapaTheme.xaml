@@ -28,9 +28,6 @@
                 </Grid.RowDefinitions>
                 <!-- Optional background behind the whole timer; collapsed unless a background opacity is set -->
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{Binding BackgroundBrush}" Visibility="{Binding BackgroundVisibility}" CornerRadius="3" />
-                <!-- While the mouse is over the timer: a soft plate in the shadow colour, so the title, _ and x
-                     and the buttons can be read on any background. It fades with the buttons. -->
-                <Border x:Name="HoverPlate" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{Binding HoverPlateBrush}" CornerRadius="3" Opacity="0" IsHitTestVisible="False" />
                 <!-- Current time -->
                 <!-- A screen reader reads the digits as one piece of text: see SpokenText in the code behind -->
                 <shared:SpokenStackPanel x:Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="Transparent" IsHitTestVisible="True" Orientation="Horizontal">

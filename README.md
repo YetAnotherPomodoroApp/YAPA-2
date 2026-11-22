@@ -44,7 +44,7 @@ Features
     - Change application size
     - Enable\Disable flashing animation
     - Optional background behind the timer (color and opacity) to keep it readable on any wallpaper or window
-    - Optional shadow on the status text and buttons
+    - The status text and buttons have the same shadow as the digits, so they read on any background
 ![Theme Settings Preview](http://imgur.com/ulwYfix.gif)
 
   - Motivational theme

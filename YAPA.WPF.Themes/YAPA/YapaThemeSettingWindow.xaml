@@ -60,13 +60,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <CheckBox Margin="0,3,8,3" IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Show pomodoro status</CheckBox>
             <CheckBox Margin="0,3,8,3" IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="1" Grid.Row="0">Disable flashing animation</CheckBox>
             <CheckBox Margin="0,3,8,3" IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="1">Hide seconds</CheckBox>
             <CheckBox Margin="0,3,8,3" IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="1" Grid.Row="1">Hide buttons</CheckBox>
-            <CheckBox Margin="0,3,8,3" x:Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">Shadow on status text and buttons</CheckBox>
         </Grid>
     </Grid>
 </UserControl>
