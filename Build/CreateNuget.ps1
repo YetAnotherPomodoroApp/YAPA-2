@@ -5,7 +5,7 @@ param(
 
  #-------Get Version from YAPA.exe
  $fullVersion = if ($Version) { $Version } else { (dir ..\Release\Yapa.exe).VersionInfo.FileVersion }
- $baseUri = 'http://app.floatas.net/installers/YAPA-2/'
+ $baseUri = 'https://app.floatas.net/installers/YAPA-2/'
  #-PRE-RELEASE
  $squirrelVersionRegex = "\d+\.\d+\.\d+"
  $squirrelVersion = [regex]::matches($fullVersion, $squirrelVersionRegex)
