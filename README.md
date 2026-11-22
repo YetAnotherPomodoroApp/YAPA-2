@@ -64,6 +64,18 @@ YAPA 2 is built to work with screen readers such as Narrator and NVDA, and can b
 - With the System tray plugin, the tooltip of the tray icon tells the remaining time
 - For a timer that is easier to see, give it a background in Settings → Themes
 
+Crash reports
+---------
+
+When YAPA 2 closes because of an error, it keeps a crash report on your computer. The next time it starts, it shows you what the report contains and asks whether to send it. Nothing is sent without your say.
+
+- A report contains the error, where in YAPA it happened, the YAPA, Windows and .NET versions, and the last few things YAPA did before the error
+- It does not contain your name, your computer's name, your settings or your pomodoro history
+- "Show everything" in that window shows the whole report, exactly as it would be sent
+- Reports go to our own server, bugs.floatas.net, and are used only to fix the problem
+- Settings → About → Crash reports: *Ask before sending* (the default), *Send without asking*, or *Don't send*
+- Reports waiting to be sent are in `Documents\YAPA2\crash-reports`
+
 Contribution guidelines
 ===
 1. Before doing code refactoring, create issue to discuss it.
