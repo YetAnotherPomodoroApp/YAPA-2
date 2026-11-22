@@ -9,14 +9,14 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="130"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <CheckBox  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Use white text</CheckBox>
+            <CheckBox  IsChecked="{Binding UseWhiteText, Mode=TwoWay}" Grid.Column="1" Grid.Row="0">Use white text</CheckBox>
 
         </Grid>
     </Grid>

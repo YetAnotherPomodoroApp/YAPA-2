@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -26,36 +26,36 @@
 
         <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding WorkSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WorkSong" shared:Accessible.Label="Work song file" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2" Margin="2"></TextBox>
-        <Button HorizontalAlignment="Right" x:Name="BrowseWorkSong" AutomationProperties.Name="Browse for work song" Style="{DynamicResource MaterialDesignFlatButton}"  Grid.Column="2" Grid.Row="2">
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2" Margin="0,0,4,0" VerticalAlignment="Center"></TextBox>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="BrowseWorkSong" AutomationProperties.Name="Browse for work song" Style="{DynamicResource MaterialDesignFlatButton}"  Grid.Column="2" Grid.Row="2">
             Browse
         </Button>
-        <Button HorizontalAlignment="Right" x:Name="PlayWorkSong" AutomationProperties.Name="Play work song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="2">
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="PlayWorkSong" AutomationProperties.Name="Play work song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="2">
             Play
         </Button>
-        <CheckBox  IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" >Repeat work song</CheckBox>
+        <CheckBox  IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="3" Margin="0,4,0,12">Repeat work song</CheckBox>
 
         <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding BreakSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="BreakSong" shared:Accessible.Label="Break song file" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4" Margin="2"></TextBox>
-        <Button HorizontalAlignment="Right" x:Name="BrowseBreakSong" AutomationProperties.Name="Browse for break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="2" Grid.Row="4">
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="4" Margin="0,0,4,0" VerticalAlignment="Center"></TextBox>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="BrowseBreakSong" AutomationProperties.Name="Browse for break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="2" Grid.Row="4">
             Browse
         </Button>
-        <Button HorizontalAlignment="Right" x:Name="PlayBreakSong" AutomationProperties.Name="Play break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="4">
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="PlayBreakSong" AutomationProperties.Name="Play break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="4">
             Play
         </Button>
-        <CheckBox  IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Repeat break song</CheckBox>
+        <CheckBox  IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="5" Margin="0,4,0,12">Repeat break song</CheckBox>
 
         <TextBlock Text="Session break song" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center"></TextBlock>
         <TextBox Text="{Binding SessionBreakSong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="SessionBreakSong" shared:Accessible.Label="Session break song file" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="6" Margin="2"></TextBox>
-        <Button HorizontalAlignment="Right" x:Name="BrowseSessionBreakSong" AutomationProperties.Name="Browse for session break song" CommandParameter="this" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="2" Grid.Row="6">
+                 HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="6" Margin="0,0,4,0" VerticalAlignment="Center"></TextBox>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="BrowseSessionBreakSong" AutomationProperties.Name="Browse for session break song" CommandParameter="this" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="2" Grid.Row="6">
             Browse
         </Button>
-        <Button HorizontalAlignment="Right" x:Name="PlaySessionBreakSong" AutomationProperties.Name="Play session break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="6">
+        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,4" x:Name="PlaySessionBreakSong" AutomationProperties.Name="Play session break song" Style="{DynamicResource MaterialDesignFlatButton}" Grid.Column="3" Grid.Row="6">
             Play
         </Button>
-        <CheckBox  IsChecked="{Binding RepeatSessionBreakSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" >Repeat session break song</CheckBox>
+        <CheckBox  IsChecked="{Binding RepeatSessionBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.Row="7" Margin="0,4,0,12">Repeat session break song</CheckBox>
 
     </Grid>
 </UserControl>

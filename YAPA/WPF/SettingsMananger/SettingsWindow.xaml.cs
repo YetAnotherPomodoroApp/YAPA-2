@@ -52,9 +52,11 @@ namespace YAPA.WPF.SettingsMananger
                 SettingsTree.Items.Add(builtinPlugin);
             }
 
+            //Always open: its pages are listed under it, and there is no expand arrow
             var pluginsTree = new TreeViewItem
             {
                 Header = "Plugins",
+                IsExpanded = true,
                 Tag = _container.Resolve(typeof(PluginManagerSettingWindow))
             };
 
@@ -158,11 +160,7 @@ namespace YAPA.WPF.SettingsMananger
 
         private void RefreshSelectedMenuItem()
         {
-            if (_settingPage != null)
-            {
-                SettingGrid.Children.Remove(_settingPage);
-            }
-
+            PageHost.Content = null;
             _settingPage = null;
 
             if (!(SettingsTree.SelectedItem is TreeViewItem treeItem))
@@ -178,10 +176,10 @@ namespace YAPA.WPF.SettingsMananger
             if (treeItem.Tag is UserControl)
             {
                 _settingPage = (UserControl)treeItem.Tag;
-                SettingGrid.Children.Add(_settingPage);
-                Grid.SetColumn(_settingPage, 1);
-                Grid.SetRow(_settingPage, 0);
-                _settingPage.Margin = new Thickness(10, 20, 10, 10);
+                //The room round the page (MaterialDesign's ScrollViewer has no padding)
+                _settingPage.Margin = new Thickness(26, 22, 24, 12);
+                PageHost.Content = _settingPage;
+                PageHost.ScrollToTop();
 
                 //Tab order: the list of pages, then this page, then Close and Save
                 KeyboardNavigation.SetTabNavigation(_settingPage, KeyboardNavigationMode.Local);

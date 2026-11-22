@@ -8,19 +8,19 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="38"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Text="Unclickable behaviour" Grid.Column="0" Grid.Row="0"></TextBlock>
+        <TextBlock Text="Behaviour" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
 
         <ComboBox x:Name="BehaviourList" shared:Accessible.Label="Unclickable behaviour"
                   Grid.Column="1" Grid.Row="0"
-                  Margin="16 0 0 0"
+                  HorizontalAlignment="Left" MinWidth="200" VerticalAlignment="Center"
                   DisplayMemberPath="Title"
                   SelectedValuePath="Item"
                   SelectedValue="{Binding Settings.UnclickablityType}" >

@@ -7,20 +7,19 @@
              xmlns:local="clr-namespace:YAPA.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <!-- The theme is a row like any other setting; its own settings follow -->
     <Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <ComboBox Grid.Column="1"  Grid.Row="0" x:Name="ThemeList" shared:Accessible.Label="Theme" HorizontalAlignment="Right" Margin="10,5,10,5"></ComboBox>
-            <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="SettingPage">
-                
-            </StackPanel>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Theme" VerticalAlignment="Center"></TextBlock>
+        <ComboBox Grid.Column="1" Grid.Row="0" x:Name="ThemeList" shared:Accessible.Label="Theme" HorizontalAlignment="Left" MinWidth="200" VerticalAlignment="Center"></ComboBox>
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="SettingPage" Margin="0,14,0,0">
+        </StackPanel>
     </Grid>
 </UserControl>

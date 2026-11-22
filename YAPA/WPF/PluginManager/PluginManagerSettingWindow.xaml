@@ -6,15 +6,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Grid>
-        <ListBox x:Name="PluginList" AutomationProperties.Name="Plugins">
-            <ListBox.ItemTemplate>
+    <!-- Plain check boxes under the settings column, and what turning one on does -->
+    <StackPanel Margin="130,0,0,0">
+        <ItemsControl x:Name="PluginList" AutomationProperties.Name="Plugins" Focusable="False">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox 
+                    <CheckBox Margin="0,4"
                         IsChecked="{Binding Enabled, Mode=TwoWay}"
                         Content="{Binding Title}" Checked="PluginChanged" Unchecked="PluginChanged"></CheckBox>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock Margin="0,14,0,0" TextWrapping="Wrap" Opacity="0.6" FontSize="12"
+                   Text="A plugin that is on gets its own page under Plugins. Turning one on or off takes effect after YAPA restarts." />
+    </StackPanel>
 </UserControl>
