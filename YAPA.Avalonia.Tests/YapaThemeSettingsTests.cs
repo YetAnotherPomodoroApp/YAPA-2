@@ -115,7 +115,7 @@ namespace YAPA.Avalonia.Tests
         {
             using var yapa = new Yapa();
             Assert.Equal(200, yapa.Timer.Width);
-            Slider(ThemePage(yapa), 2).Value = 390;
+            Slider(ThemePage(yapa), 3).Value = 390; // clock, shadow, background opacity, size
             Yapa.Pump(400);
 
             Assert.Equal(390, yapa.Timer.Width);

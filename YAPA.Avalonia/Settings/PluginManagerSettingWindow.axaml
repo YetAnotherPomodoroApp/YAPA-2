@@ -2,14 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="YAPA.Avalonia.Settings.PluginManagerSettingWindow">
     <!-- YAPA/WPF/PluginManager/PluginManagerSettingWindow.xaml -->
-    <Grid>
-        <ListBox Name="PluginList">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Content="{Binding Title}"
-                              IsCheckedChanged="PluginChanged" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+    <!-- Plain check boxes (no list selection to show), in the column of the other pages' boxes -->
+    <StackPanel Margin="130,0,0,0">
+    <ItemsControl Name="PluginList">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Content="{Binding Title}"
+                          IsCheckedChanged="PluginChanged" Margin="0,0,0,4" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+        <TextBlock Margin="0,12,0,0" Opacity="0.6" TextWrapping="Wrap" MaxWidth="360" HorizontalAlignment="Left"
+                   Text="A plugin that is on gets its own page under Plugins. Turning one on or off takes effect after YAPA restarts." />
+    </StackPanel>
 </UserControl>

@@ -3,25 +3,25 @@
              xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
              x:Class="YAPA.Avalonia.Plugins.MinimizeToTray.MinimizeToTraySettingWindow">
     <!-- YAPA/Plugins/MinimizeToTray/MinimizeToTraySettingWindow.xaml -->
-    <Grid>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*">
-            <CheckBox IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Minimize to tray" />
-            <CheckBox IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Show in taskbar" />
-            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" />
-            <CheckBox IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Show balloon tip when in system tray" />
-            <CheckBox IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Show application when clicked on balloon tip" />
-            <Label Grid.Row="5" Grid.Column="0" Content="Show balloon tip for (s)" />
-            <infra:EditableComboBox Name="BalloonTipSelect" Grid.Row="5" Grid.Column="1" MinWidth="72" Margin="16,0,0,0"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                      IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
-                      Text="{Binding TimeToDisplayBalloontip, Mode=TwoWay}" />
-            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" />
-            <TextBlock Text="Work icon color" Grid.Column="0" Grid.Row="7" />
-            <infra:ColorPickerBox Name="WorkTrayColor" Grid.Column="1" Grid.Row="7" MinWidth="72" Margin="16,0,0,0"
-                         HorizontalAlignment="Stretch" VerticalAlignment="Top" Color="{Binding WorkTrayIconColor, Mode=TwoWay}" />
-            <TextBlock Text="Break icon color" Grid.Column="0" Grid.Row="8" />
-            <infra:ColorPickerBox Name="BreakTrayColor" Grid.Column="1" Grid.Row="8" MinWidth="72" Margin="16,0,0,0"
-                         HorizontalAlignment="Stretch" VerticalAlignment="Top" Color="{Binding BreakTrayIconColor, Mode=TwoWay}" />
-        </Grid>
+    <!-- Same columns as the other pages; gaps instead of lines; the two icon colours on one row -->
+    <Grid ColumnDefinitions="130,*" RowDefinitions="Auto,Auto,Auto,Auto,34,40">
+        <CheckBox IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Content="Minimize to tray" />
+        <CheckBox IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Content="Show in taskbar" />
+
+        <CheckBox IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Margin="0,16,0,0" Content="Show balloon tip when in system tray" />
+        <CheckBox IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Content="Show application when clicked on balloon tip" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Balloon tip for (s)" VerticalAlignment="Center" TextWrapping="Wrap" />
+        <infra:EditableComboBox Name="BalloonTipSelect" Grid.Row="4" Grid.Column="1" Width="120"
+                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                  IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
+                  Text="{Binding TimeToDisplayBalloontip, Mode=TwoWay}" />
+
+        <TextBlock Text="Icon colors" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="0,12,0,0" />
+        <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="0,12,0,0">
+            <infra:ColorPickerBox Name="WorkTrayColor" Width="44" Color="{Binding WorkTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Work icon color" />
+            <TextBlock Text="Work" VerticalAlignment="Center" Margin="0,0,16,0" />
+            <infra:ColorPickerBox Name="BreakTrayColor" Width="44" Color="{Binding BreakTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Break icon color" />
+            <TextBlock Text="Break" VerticalAlignment="Center" />
+        </StackPanel>
     </Grid>
 </UserControl>

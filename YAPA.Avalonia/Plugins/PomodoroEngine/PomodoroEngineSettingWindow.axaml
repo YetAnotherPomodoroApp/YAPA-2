@@ -6,26 +6,28 @@
     <UserControl.Resources>
         <local:StringToFontFamily x:Key="StringToFontFamily" />
     </UserControl.Resources>
-    <Grid>
-        <Grid ColumnDefinitions="*,2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Name="ProfileSetting" />
+    <!-- Same columns as the profile above: labels 130 wide, centred; gaps instead of lines -->
+    <StackPanel Grid.IsSharedSizeScope="True">
+        <StackPanel Name="ProfileSetting" />
 
-            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" />
+        <!-- the last column matches the profile's Add/Remove column, so the boxes are equally wide -->
+        <Grid RowDefinitions="Auto,34,Auto" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
+            </Grid.ColumnDefinitions>
+            <CheckBox IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Count backwards" />
 
-            <CheckBox IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Content="Count backwards" />
-
-            <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="7" />
-            <ComboBox Name="CounterList" Grid.Column="1" Grid.Row="7" MinWidth="72" Margin="16,0,0,0"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+            <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox Name="CounterList" Grid.Column="1" Grid.Row="1" MinWidth="72"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Center"
                       DisplayMemberBinding="{Binding Title}"
                       SelectedValueBinding="{Binding Item}"
                       SelectedValue="{Binding Settings.Counter, Mode=TwoWay}" />
-
-            <Separator Margin="0,10,0,10" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="8" />
-
-            <TextBlock Text="Font" Grid.Column="0" Grid.Row="9" />
-            <ComboBox Name="FontSelector" Classes="tall" Grid.Column="1" Grid.Row="9" MinWidth="72" Margin="16,0,0,0"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+            <TextBlock Text="Font" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="0,16,0,0" />
+            <ComboBox Name="FontSelector" Classes="tall" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="0,16,0,0"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Center"
                       SelectedValueBinding="{Binding Key}"
                       SelectedValue="{Binding Settings.FontFamily, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
@@ -39,5 +41,5 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </Grid>
-    </Grid>
+    </StackPanel>
 </UserControl>

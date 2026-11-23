@@ -3,43 +3,52 @@
              xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
              x:Class="YAPA.Avalonia.Themes.Yapa.YapaThemeSettingWindow">
     <!-- YAPA.WPF.Themes/YAPA/YapaThemeSettingWindow.xaml -->
-    <Grid Margin="0,20,0,0" ColumnDefinitions="Auto,*"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-        <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1" />
-        <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Minimum="0.1" Maximum="1"
-                Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" Grid.Column="1" Grid.Row="1" />
+    <!-- Sliders together, the three colours on one row, the switches in two columns -->
+    <Grid ColumnDefinitions="130,*" RowDefinitions="34,34,34,34,40,Auto">
+        <Grid.Styles>
+            <Style Selector="Slider">
+                <Setter Property="Margin" Value="0,0,40,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style Selector="TextBlock.label">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </Grid.Styles>
 
-        <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2" />
-        <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="2"
+        <TextBlock Classes="label" Text="Clock opacity" Grid.Column="0" Grid.Row="0" />
+        <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1"
+                Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" Grid.Column="1" Grid.Row="0" />
+
+        <TextBlock Classes="label" Text="Shadow opacity" Grid.Column="0" Grid.Row="1" />
+        <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="1"
                 Minimum="0.1" Maximum="1" Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" />
 
-        <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3" />
-        <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"
-                Minimum="50" Maximum="600" SmallChange="1" />
-
-        <CheckBox IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" Content="Disable flashing animation" />
-        <CheckBox IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" Content="Show pomodoro status" />
-        <CheckBox IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" Content="Hide seconds" />
-        <CheckBox IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="Hide buttons" />
-
-        <TextBlock Text="Text color" Grid.Row="8" Grid.Column="0" />
-        <infra:ColorPickerBox Name="TextColor" Grid.Column="1" Grid.Row="8" MinWidth="72" Margin="16,0,0,0"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Top" Color="{Binding TextColor, Mode=TwoWay}" />
-
-        <TextBlock Text="Shadow color" Grid.Row="9" Grid.Column="0" />
-        <infra:ColorPickerBox Name="ShadowColor" Grid.Column="1" Grid.Row="9" MinWidth="72" Margin="16,0,0,0"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Top" Color="{Binding ShadowColor, Mode=TwoWay}" />
-
-        <TextBlock Text="Background color" Grid.Row="10" Grid.Column="0" />
-        <infra:ColorPickerBox Name="BackgroundColor" Grid.Column="1" Grid.Row="10" MinWidth="72" Margin="16,0,0,0"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Top" Color="{Binding BackgroundColor, Mode=TwoWay}" />
-
-        <TextBlock Text="Background opacity" Grid.Column="0" Grid.Row="11" ToolTip.Tip="0 shows no background" />
-        <Slider Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0"
-                Grid.Column="1" Grid.Row="11" Minimum="0" Maximum="1" Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0"
+        <TextBlock Classes="label" Text="Background opacity" Grid.Column="0" Grid.Row="2" ToolTip.Tip="0 shows no background" />
+        <Slider Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}"
+                Grid.Column="1" Grid.Row="2" Minimum="0" Maximum="1" Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0"
                 ToolTip.Tip="0 shows no background" />
 
-        <CheckBox Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="12"
-                  Grid.ColumnSpan="2" Content="Shadow on status text and buttons" />
+        <TextBlock Classes="label" Text="Application size" Grid.Column="0" Grid.Row="3" />
+        <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"
+                Minimum="50" Maximum="600" SmallChange="1" />
+
+        <TextBlock Classes="label" Text="Colors" Grid.Column="0" Grid.Row="4" />
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <infra:ColorPickerBox Name="TextColor" Width="44" Color="{Binding TextColor, Mode=TwoWay}" ToolTip.Tip="Text color" />
+            <TextBlock Text="Text" VerticalAlignment="Center" Margin="0,0,16,0" />
+            <infra:ColorPickerBox Name="ShadowColor" Width="44" Color="{Binding ShadowColor, Mode=TwoWay}" ToolTip.Tip="Shadow color" />
+            <TextBlock Text="Shadow" VerticalAlignment="Center" Margin="0,0,16,0" />
+            <infra:ColorPickerBox Name="BackgroundColor" Width="44" Color="{Binding BackgroundColor, Mode=TwoWay}" ToolTip.Tip="Background color" />
+            <TextBlock Text="Background" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <Grid Grid.Column="1" Grid.Row="5" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" Margin="0,8,0,0">
+            <CheckBox IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" Content="Show pomodoro status" />
+            <CheckBox IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Disable flashing animation" />
+            <CheckBox IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Content="Hide seconds" />
+            <CheckBox IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Content="Hide buttons" />
+            <CheckBox Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
+                      Grid.ColumnSpan="2" Content="Shadow on status text and buttons" />
+        </Grid>
     </Grid>
 </UserControl>

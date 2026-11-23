@@ -109,7 +109,8 @@ namespace YAPA.Avalonia.Plugins.SoundSettings.SoundNotifications
             settings.DeferChanges();
             DataContext = settings;
             // YAPA/Plugins/SoundSettings/SoundNotifications/SoundNotificationSettingWindow.xaml
-            var checkBox = new CheckBox { Content = "Play period start\\end sounds" };
+            //In the column of the Sound page's boxes
+            var checkBox = new CheckBox { Content = "Play period start\\end sounds", Margin = new global::Avalonia.Thickness(130, 2, 0, 0) };
             checkBox.Bind(CheckBox.IsCheckedProperty, new global::Avalonia.Data.Binding(nameof(SoundNotificationsSettings.PlayPeriodStartEndSounds)) { Mode = global::Avalonia.Data.BindingMode.TwoWay });
             Content = new Grid { Children = { checkBox } };
         }

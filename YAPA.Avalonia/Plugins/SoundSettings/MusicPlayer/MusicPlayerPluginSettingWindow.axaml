@@ -2,26 +2,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="YAPA.Avalonia.Plugins.SoundSettings.MusicPlayer.MusicPlayerPluginSettingWindow">
     <!-- YAPA/Plugins/SoundSettings/MusicPlayer/MusicPlayerPluginSettingWindow.xaml -->
-    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-        <TextBlock Text="Work song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" />
-        <TextBox Text="{Binding WorkSong, Mode=TwoWay}" Name="WorkSong" HorizontalContentAlignment="Stretch"
-                 HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" Margin="2" />
-        <Button HorizontalAlignment="Right" Name="BrowseWorkSong" Classes="Flat" Grid.Column="2" Grid.Row="2" Content="Browse" />
-        <Button HorizontalAlignment="Right" Name="PlayWorkSong" Classes="Flat" Grid.Column="3" Grid.Row="2" Content="Play" />
-        <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Content="Repeat work song" />
+    <!-- Each song: its box with Browse and Play right beside it, Repeat under it; the label and
+         buttons sit on the line the text is typed on -->
+    <Grid ColumnDefinitions="130,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,10,0,0">
+        <TextBlock Text="Work song" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,11" />
+        <TextBox Text="{Binding WorkSong, Mode=TwoWay}" Name="WorkSong" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,4,0,0" />
+        <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,2">
+            <Button Name="BrowseWorkSong" Classes="Flat" Content="Browse" Margin="8,0,0,0" />
+            <Button Name="PlayWorkSong" Classes="Flat" Content="Play" />
+        </StackPanel>
+        <CheckBox IsChecked="{Binding RepeatWorkSong, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Content="Repeat work song" />
 
-        <TextBlock Text="Break song" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
-        <TextBox Text="{Binding BreakSong, Mode=TwoWay}" Name="BreakSong" HorizontalContentAlignment="Stretch"
-                 HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="4" Margin="2" />
-        <Button HorizontalAlignment="Right" Name="BrowseBreakSong" Classes="Flat" Grid.Column="2" Grid.Row="4" Content="Browse" />
-        <Button HorizontalAlignment="Right" Name="PlayBreakSong" Classes="Flat" Grid.Column="3" Grid.Row="4" Content="Play" />
-        <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Content="Repeat break song" />
+        <TextBlock Text="Break song" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,11" />
+        <TextBox Text="{Binding BreakSong, Mode=TwoWay}" Name="BreakSong" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="0,10,0,0" />
+        <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,2">
+            <Button Name="BrowseBreakSong" Classes="Flat" Content="Browse" Margin="8,0,0,0" />
+            <Button Name="PlayBreakSong" Classes="Flat" Content="Play" />
+        </StackPanel>
+        <CheckBox IsChecked="{Binding RepeatBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Content="Repeat break song" />
 
-        <TextBlock Text="Session break song" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" />
-        <TextBox Text="{Binding SessionBreakSong, Mode=TwoWay}" Name="SessionBreakSong" HorizontalContentAlignment="Stretch"
-                 HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="6" Margin="2" />
-        <Button HorizontalAlignment="Right" Name="BrowseSessionBreakSong" Classes="Flat" Grid.Column="2" Grid.Row="6" Content="Browse" />
-        <Button HorizontalAlignment="Right" Name="PlaySessionBreakSong" Classes="Flat" Grid.Column="3" Grid.Row="6" Content="Play" />
-        <CheckBox IsChecked="{Binding RepeatSessionBreakSong, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Content="Repeat session break song" />
+        <TextBlock Text="Session break song" Grid.Column="0" Grid.Row="4" VerticalAlignment="Bottom" Margin="0,0,0,11" />
+        <TextBox Text="{Binding SessionBreakSong, Mode=TwoWay}" Name="SessionBreakSong" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="0,10,0,0" />
+        <StackPanel Grid.Column="2" Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,2">
+            <Button Name="BrowseSessionBreakSong" Classes="Flat" Content="Browse" Margin="8,0,0,0" />
+            <Button Name="PlaySessionBreakSong" Classes="Flat" Content="Play" />
+        </StackPanel>
+        <CheckBox IsChecked="{Binding RepeatSessionBreakSong, Mode=TwoWay}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="5" Content="Repeat session break song" />
     </Grid>
 </UserControl>

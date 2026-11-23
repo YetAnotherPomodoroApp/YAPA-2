@@ -146,14 +146,16 @@ namespace YAPA.Avalonia.Plugins.Unclickable
             // YAPA/Plugins/Unclickable/UnclickableSettingWindow.xaml
             var grid = new Grid
             {
-                ColumnDefinitions = new ColumnDefinitions("Auto,*"),
-                RowDefinitions = new RowDefinitions("Auto,*"),
+                //The columns of the other settings pages
+                ColumnDefinitions = new ColumnDefinitions("130,*"),
+                RowDefinitions = new RowDefinitions("34"),
             };
-            var label = new TextBlock { Text = "Unclickable behaviour" };
+            var label = new TextBlock { Text = "Behaviour", VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Center };
             var list = new ComboBox
             {
-                Margin = new global::Avalonia.Thickness(16, 0, 0, 0),
-                HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch,
+                MinWidth = 200,
+                HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Left,
+                VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Center,
                 ItemsSource = new List<BehaviourListItem> { new BehaviourListItem { Item = UnclickablityType.ClickThrough, Title = "Click through" } },
                 DisplayMemberBinding = new global::Avalonia.Data.Binding(nameof(BehaviourListItem.Title)),
                 SelectedValueBinding = new global::Avalonia.Data.Binding(nameof(BehaviourListItem.Item)),

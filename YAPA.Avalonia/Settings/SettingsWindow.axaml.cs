@@ -59,6 +59,7 @@ namespace YAPA.Avalonia.Settings
             {
                 pluginsTree.Items.Add(MenuItem(customSettings.Title, customSettings.SettingEditWindow));
             }
+            pluginsTree.IsExpanded = true;
             SettingsTree.Items.Add(pluginsTree);
 
             SettingsTree.Items.Add(MenuItem("About", typeof(AboutPage)));
@@ -127,10 +128,7 @@ namespace YAPA.Avalonia.Settings
 
         public void RefreshSelectedMenuItem()
         {
-            if (_settingPage != null)
-            {
-                SettingGrid.Children.Remove(_settingPage);
-            }
+            PageHost.Content = null;
             _settingPage = null;
 
             if (!(SettingsTree.SelectedItem is TreeViewItem treeItem))
@@ -151,10 +149,9 @@ namespace YAPA.Avalonia.Settings
             if (treeItem.Tag is Control page)
             {
                 _settingPage = page;
-                SettingGrid.Children.Add(_settingPage);
-                Grid.SetColumn(_settingPage, 1);
-                Grid.SetRow(_settingPage, 0);
-                _settingPage.Margin = new Thickness(10, 20, 10, 10);
+                //The page scrolls if it is ever taller than the window
+                PageHost.Content = _settingPage;
+                PageHost.Offset = default;
             }
         }
 

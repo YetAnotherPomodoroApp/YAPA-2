@@ -7,38 +7,46 @@
     <UserControl.Resources>
         <local:SecondsToMinutesConverter x:Key="SecToMinConverter" />
     </UserControl.Resources>
-    <Grid ColumnDefinitions="*,2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-        <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0" />
-        <ComboBox Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+    <!-- Labels in a fixed column, centred on their boxes; check boxes under the boxes -->
+    <Grid RowDefinitions="34,34,34,34,34,Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" />
+        <ComboBox Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   IsEnabled="{Binding !Engine.IsRunning}" />
+        <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Spacing="4" Margin="12,0,0,0" VerticalAlignment="Center">
+            <Button Content="Add" Click="AddProfile_Click" Name="AddButton" Classes="Flat"
+                    IsEnabled="{Binding !Engine.IsRunning}" />
+            <Button Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton" Classes="Flat" />
+        </StackPanel>
 
-        <Button Grid.Column="2" Grid.Row="0" Margin="5,1,5,1" Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton"
-                HorizontalAlignment="Stretch" />
-        <Button Grid.Column="2" Grid.Row="1" Margin="5,1,5,1" Content="Add" Click="AddProfile_Click" Name="AddButton"
-                HorizontalAlignment="Stretch" IsEnabled="{Binding !Engine.IsRunning}" />
-
-        <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" />
-        <infra:EditableComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
+        <infra:EditableComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.WorkTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
-        <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" />
-        <infra:EditableComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" />
+        <infra:EditableComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.BreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
-        <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" />
-        <infra:EditableComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" />
+        <infra:EditableComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.PomodorosBeforeLongBreak, Mode=TwoWay}" />
 
-        <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" />
-        <infra:EditableComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72" Margin="16,0,0,0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
+        <infra:EditableComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.LongBreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
-        <CheckBox Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" Content="Auto start break" />
-        <CheckBox Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" Content="Auto start work" />
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="5" Orientation="Horizontal" Spacing="24" Margin="0,6,0,0">
+            <CheckBox Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Content="Auto start break" />
+            <CheckBox Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Content="Auto start work" />
+        </StackPanel>
     </Grid>
 </UserControl>
