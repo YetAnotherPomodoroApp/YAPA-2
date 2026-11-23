@@ -89,6 +89,8 @@ namespace YAPA.Plugins.PomodoroEngine
             BreakTimeSelect.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
             LongBreakTimeSelect.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
             AutoStartBreak.GetBindingExpression(ToggleButton.IsCheckedProperty)?.UpdateTarget();
+            SessionRounds.GetBindingExpression(ComboBox.TextProperty)?.UpdateTarget();
+            AutoStartWork.GetBindingExpression(ToggleButton.IsCheckedProperty)?.UpdateTarget();
         }
 
         private void RemoveProfile_Click(object sender, RoutedEventArgs e)
@@ -106,7 +108,7 @@ namespace YAPA.Plugins.PomodoroEngine
 
         private void AddProfile_Click(object sender, RoutedEventArgs e)
         {
-            var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60 };
+            var newProfile = new PomodoroProfile { BreakTime = 5 * 60, WorkTime = 25 * 60, LongBreakTime = 15 * 60, PomodorosBeforeLongBreak = PomodoroEngineSettings.DefaultPomodorosBeforeLongBreak };
 
             var createWindow = new CreatePomodoroProfile(Settings.Profiles.Select(x => x.Key).ToList());
 

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF.Shared.Shared;
 
@@ -62,6 +63,8 @@ namespace YAPA.Plugins.MinimizeToTray
             _sysTrayIcon.BalloonTipClicked += _sysTrayIcon_BalloonTipClicked;
 
             _app.Closing += () => _sysTrayIcon.Dispose();
+
+            UpdateTooltip();
         }
 
         private void _sysTrayIcon_BalloonTipClicked(object sender, EventArgs e)
@@ -105,6 +108,8 @@ namespace YAPA.Plugins.MinimizeToTray
             }
             else if (e.PropertyName == nameof(_viewModel.Engine.Phase))
             {
+                UpdateTooltip();
+
                 if (_sysTrayIcon.Visible == false || _settings.ShowBalloonTipWhenInSystemTray == false)
                 {
                     return;
@@ -207,6 +212,24 @@ namespace YAPA.Plugins.MinimizeToTray
             _app.AppState = ApplicationState.Normal;
         }
 
+        //The icon only fits the minutes; the tooltip says the same in words, which is also what a screen reader reads
+        private void UpdateTooltip()
+        {
+            var engine = _viewModel.Engine;
+            var text = "YAPA 2: " + TimerSpeech.Status(engine.Phase, engine.Remaining, engine.WorkTime);
+
+            //Windows allows 63 characters
+            if (text.Length > 63)
+            {
+                text = text.Substring(0, 63);
+            }
+
+            if (_sysTrayIcon.Text != text)
+            {
+                _sysTrayIcon.Text = text;
+            }
+        }
+
         //http://blogs.msdn.com/b/abhinaba/archive/2005/09/12/animation-and-text-in-system-tray-using-c.aspx
         private void UpdateIcon()
         {
@@ -221,25 +244,48 @@ namespace YAPA.Plugins.MinimizeToTray
                 textColor = _settings.WorkTrayIconColor;
             }
 
-            if (_systemTrayIcon != IntPtr.Zero)
-            {
-                DestroyIcon(_systemTrayIcon);
-            }
-
             var minutes = _viewModel.Engine.DisplayValue / 60;
             var seconds = _viewModel.Engine.DisplayValue % 60;
             var displayText = minutes == 0 && seconds > 0 ? "<1" : minutes.ToString();
 
-            System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B));
+            UpdateTooltip();
 
-            var bitmap = new Bitmap(16, 16);
-            var graphics = Graphics.FromImage(bitmap);
-            graphics.DrawString(displayText, new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold), brush, 0, 0);
+            var previousIcon = _systemTrayIcon;
 
-            _systemTrayIcon = bitmap.GetHicon();
+            //Windows shows tray icons at the small icon size, which grows with display scaling
+            var iconSize = SystemInformation.SmallIconSize.Width;
+            using (var bitmap = TrayIconRenderer.Render(displayText, System.Drawing.Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B), iconSize))
+            {
+                _systemTrayIcon = bitmap.GetHicon();
+            }
 
             var icon = Icon.FromHandle(_systemTrayIcon);
             _sysTrayIcon.Icon = icon;
+
+            if (previousIcon != IntPtr.Zero)
+            {
+                DestroyIcon(previousIcon);
+            }
+        }
+    }
+
+    public static class TrayIconRenderer
+    {
+        //The text was designed as an 11 pixel font on a 16 pixel icon; keep that proportion at every size
+        private const float FontToIconRatio = 11f / 16f;
+
+        public static Bitmap Render(string text, System.Drawing.Color color, int iconSize)
+        {
+            var bitmap = new Bitmap(iconSize, iconSize);
+
+            using (var graphics = Graphics.FromImage(bitmap))
+            using (var brush = new SolidBrush(color))
+            using (var font = new Font("Microsoft Sans Serif", iconSize * FontToIconRatio, FontStyle.Bold, GraphicsUnit.Pixel))
+            {
+                graphics.DrawString(text, font, brush, 0, 0);
+            }
+
+            return bitmap;
         }
     }
 

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
+// System.Threading also has an ITimer on current .NET
+using ITimer = YAPA.Shared.Contracts.ITimer;
 
 namespace YAPA.Shared.Tests
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Media;
 using YAPA.Shared.Contracts;
@@ -10,13 +10,24 @@ namespace YAPA.WPF.Specifics
     {
         private readonly NLog.ILogger _logger;
         private readonly MediaPlayer _musicPlayer;
+        private readonly WavPlayer _wavPlayer;
         private bool _repeat;
+        private double _volume;
+
+        //The file the last Load asked for, null when there is none or it could not be found
+        private string _path;
+
+        //Set once the media player reports that Windows Media Player is missing; it is then left alone
+        private bool _windowsMediaPlayerMissing;
+        private static bool _missingWindowsMediaPlayerLogged;
 
         public SoundPlayer(NLog.ILogger logger)
         {
             _logger = logger;
             _musicPlayer = new MediaPlayer();
             _musicPlayer.MediaEnded += MusicPlayer_MediaEnded;
+            _musicPlayer.MediaFailed += MusicPlayer_MediaFailed;
+            _wavPlayer = new WavPlayer();
             _repeat = false;
         }
 
@@ -39,17 +50,77 @@ namespace YAPA.WPF.Specifics
             _musicPlayer.Play();
         }
 
+        private void MusicPlayer_MediaFailed(object sender, ExceptionEventArgs e)
+        {
+            MediaPlayerFailed(e.ErrorException);
+        }
+
+        private void MediaPlayerFailed(Exception error)
+        {
+            if (error is InvalidWmpVersionException)
+            {
+                //Reported by every media player as soon as it is created; once in the log is enough
+                _windowsMediaPlayerMissing = true;
+                if (!_missingWindowsMediaPlayerLogged)
+                {
+                    _missingWindowsMediaPlayerLogged = true;
+                    _logger.Log(LogLevel.Warn, error, "Windows Media Player is not available. Sounds in .wav files are played without it, other formats can't be played");
+                }
+            }
+            else
+            {
+                _logger.Log(LogLevel.Warn, error, $"The media player could not play '{_path}'");
+            }
+
+            //Nothing is waiting to be heard, for example the sound was stopped before the failure arrived
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            if (_path != null && WavPlayer.CanPlay(_path))
+            {
+                PlayWithWavPlayer();
+            }
+            else
+            {
+                IsPlaying = false;
+            }
+        }
+
+        private void PlayWithWavPlayer()
+        {
+            try
+            {
+                _wavPlayer.Play(_path, _repeat, _volume);
+                _logger.Log(LogLevel.Info, $"Playing '{_path}' without the media player");
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Warn, e, $"Could not play '{_path}'");
+                IsPlaying = false;
+            }
+        }
+
         public void Load(string path)
         {
             if (IsPlaying)
             {
-                _logger.Log(LogLevel.Info, $"Can't load new song '{path}' while old is playing '{_musicPlayer.Source.LocalPath}'");
+                _logger.Log(LogLevel.Info, $"Can't load new song '{path}' while old is playing '{_path}'");
                 return;
             }
 
             if (!File.Exists(path))
             {
-                _logger.Log(LogLevel.Info, $"Can't load new song '{path}' while old is playing '{_musicPlayer.Source.LocalPath}'");
+                _logger.Log(LogLevel.Warn, $"Audio file not found '{path}'");
+                _path = null;
+                return;
+            }
+
+            _path = path;
+
+            if (_windowsMediaPlayerMissing)
+            {
                 return;
             }
 
@@ -58,34 +129,48 @@ namespace YAPA.WPF.Specifics
 
         public void Play(bool repeat = false, double volume = 0.5)
         {
-            if (_musicPlayer.Source == null)
+            if (_path == null)
             {
                 _logger.Log(LogLevel.Info, "Song not specified");
                 return;
             }
 
-            if (!File.Exists(_musicPlayer.Source.LocalPath))
+            if (!File.Exists(_path))
             {
-                _logger.Log(LogLevel.Info, $"Audio file not found '{_musicPlayer.Source.LocalPath}'");
+                _logger.Log(LogLevel.Warn, $"Audio file not found '{_path}'");
                 return;
             }
 
             if (IsPlaying)
             {
-                _logger.Log(LogLevel.Info, $"Song already playing '{_musicPlayer.Source.LocalPath}'");
+                _logger.Log(LogLevel.Info, $"Song already playing '{_path}'");
+                return;
+            }
+
+            if (_windowsMediaPlayerMissing && !WavPlayer.CanPlay(_path))
+            {
+                _logger.Log(LogLevel.Warn, $"Can't play '{_path}': without Windows Media Player only .wav files can be played");
                 return;
             }
 
             _repeat = repeat;
+            _volume = volume;
+            IsPlaying = true;
+
+            if (_windowsMediaPlayerMissing)
+            {
+                PlayWithWavPlayer();
+                return;
+            }
 
             _musicPlayer.Volume = volume;
             _musicPlayer.Play();
-            IsPlaying = true;
         }
 
         public void Stop()
         {
             _musicPlayer.Stop();
+            _wavPlayer.Stop();
             IsPlaying = false;
         }
 

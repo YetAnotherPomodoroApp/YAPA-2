@@ -447,8 +447,9 @@
             Margin="3,2"
             >
 
-            <!-- Current time -->
-            <Grid
+            <!-- Current time; a screen reader reads the digits as one piece of text, see SpokenText in the code behind -->
+            <shared:SpokenGrid
+                x:Name="TimeOutsideWindow"
                 Background="Transparent"
                 IsHitTestVisible="True"
                 >
@@ -494,7 +495,7 @@
                     Background="{Binding AccentColor}"
                     Visibility="Collapsed"
                     />-->
-            </Grid>
+            </shared:SpokenGrid>
 
             <StackPanel
                 Height="12"
@@ -507,7 +508,7 @@
 
                 <!-- Session icon -->
                 <TextBlock
-                    x:Name="SessionIcon"
+                    x:Name="SessionIcon" AutomationProperties.Name="Current period"
                     Style="{StaticResource StyleTextIconPeriod}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -518,7 +519,7 @@
 
                 <!-- Session counter -->
                 <TextBlock
-                    x:Name="SessionCounter"
+                    x:Name="SessionCounter" AutomationProperties.Name="{Binding CurrentPomodoroPeriod, StringFormat='Pomodoros completed today {0}'}"
                     Style="{StaticResource StyleTextPeriodNumber}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -574,7 +575,7 @@
 
                 <!-- Settings button -->
                 <Button
-                    x:Name="ButtonSettings"
+                    x:Name="ButtonSettings" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_settings}" TabIndex="4"
                     Content=""
                     ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_settings}"
                     Command="{Binding ViewModel.ShowSettingsCommand}"
@@ -587,7 +588,7 @@
                     is vertically centered to an ellipse
                 -->
                 <Button
-                    x:Name="ButtonMinimize"
+                    x:Name="ButtonMinimize" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_window_minimize}" TabIndex="5"
                     Content=""
                     ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_window_minimize}"
                     Click="Minimize_OnClick"
@@ -597,7 +598,7 @@
 
                 <!-- Close button -->
                 <Button
-                    x:Name="ButtonExit"
+                    x:Name="ButtonExit" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_window_close}" TabIndex="6"
                     Content=""
                     ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_window_close}"
                     Click="ButtonExit_OnClick"
@@ -649,7 +650,7 @@
 
                     <!-- Stop button -->
                     <Button
-                        x:Name="ButtonStop"
+                        x:Name="ButtonStop" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_stop_title}" TabIndex="1"
                         Content=""
                         ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_stop_title}"
                         Command="{Binding ViewModel.StopCommand}"
@@ -660,7 +661,7 @@
 
                     <!-- Play button -->
                     <Button
-                        x:Name="ButtonPause"
+                        x:Name="ButtonPause" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_pause_title}" TabIndex="2"
                         Content=""
                         ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_pause_title}"
                         Command="{Binding ViewModel.PauseCommand}"
@@ -670,7 +671,7 @@
 
                     <!-- Play button -->
                     <Button
-                        x:Name="ButtonStart"
+                        x:Name="ButtonStart" AutomationProperties.Name="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_start_title}" TabIndex="3"
                         Content=""
                         ToolTip="{Binding Source={StaticResource LocalizedStrings}, Path=GeneralResources.app_button_start_title}"
                         Command="{Binding ViewModel.StartCommand}"
@@ -690,7 +691,8 @@
                 >
 
                 <!-- Current time -->
-                <Grid
+                <shared:SpokenGrid
+                    x:Name="TimeInsideWindow"
                     Background="Transparent"
                     IsHitTestVisible="True"
                     >
@@ -735,7 +737,7 @@
                         Background="{Binding AccentColor}"
                         Visibility="Collapsed"
                         />-->
-                </Grid>
+                </shared:SpokenGrid>
 
                 <StackPanel
                     Height="12"
@@ -748,7 +750,7 @@
 
                     <!-- Session icon -->
                     <TextBlock
-                        x:Name="SessionIconInside"
+                        x:Name="SessionIconInside" AutomationProperties.Name="Current period"
                         Style="{StaticResource StyleTextIconPeriodInside}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
@@ -759,7 +761,7 @@
 
                     <!-- Session counter -->
                     <TextBlock
-                        x:Name="SessionCounterInside"
+                        x:Name="SessionCounterInside" AutomationProperties.Name="{Binding ViewModel.Engine.Counter, StringFormat='Pomodoro counter {0}'}"
                         Style="{StaticResource StyleTextPeriodNumberInside}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"

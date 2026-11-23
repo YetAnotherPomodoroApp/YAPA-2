@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 using YAPA.WPF;
 
@@ -36,10 +37,12 @@ namespace YAPA.Plugins.Dashboard
         {
             lock (_context)
             {
-                var startDate = DateTime.Now.Date;
-                var endDate = startDate.AddDays(1).AddSeconds(-1);
+                //Pomodoros are stored in UTC, so "today" has to be the UTC range of the local day
+                var today = LocalDay.ToLocal(DateTime.UtcNow, TimeZoneInfo.Local).Date;
+                var startDate = LocalDay.StartUtc(today, TimeZoneInfo.Local);
+                var endDate = LocalDay.StartUtc(today.AddDays(1), TimeZoneInfo.Local);
                 return _context.Pomodoros
-                    .Where(pomodoro => startDate <= pomodoro.DateTime && pomodoro.DateTime <= endDate)
+                    .Where(pomodoro => startDate <= pomodoro.DateTime && pomodoro.DateTime < endDate)
                     .Select(_ => _.Count)
                     .DefaultIfEmpty(0)
                     .Sum();

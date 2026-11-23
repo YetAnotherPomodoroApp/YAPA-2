@@ -23,6 +23,13 @@ namespace YAPA.WPF.Specifics
 
         public void Execute(object parameter)
         {
+            //Already open (say YAPA.exe /settings is run again): bring it to the front, don't show it twice
+            if (_settings.IsVisible)
+            {
+                _settings.Activate();
+                return;
+            }
+
             _settings.Owner = (Window)_container.Resolve(typeof(IApplication));
             _settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             _settings.ShowDialog();

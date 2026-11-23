@@ -13,10 +13,14 @@ namespace YAPA.WPF
     {
         private readonly IPomodoroRepository _pomodoroRepository;
 
-        public AboutPage(IPomodoroRepository pomodoroRepository)
+        public AboutPage(IPomodoroRepository pomodoroRepository, CrashReportingSettings crashReportingSettings)
         {
             _pomodoroRepository = pomodoroRepository;
+            crashReportingSettings.DeferChanges();
             InitializeComponent();
+            DataContext = crashReportingSettings;
+            //Only when there is a server to send to
+            CrashReports.Visibility = CrashReporting.IsActive ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)

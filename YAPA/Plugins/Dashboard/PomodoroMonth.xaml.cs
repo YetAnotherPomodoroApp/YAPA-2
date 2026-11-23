@@ -23,6 +23,9 @@ namespace YAPA.Plugins.Dashboard
 
             MonthName.Text = _month.First().DateTime.ToString("MMMM");
 
+            //Loaded comes again each time the page is shown; without this the weeks pile up unseen and a screen reader reads each day twice
+            PomodorWeeks.Children.Clear();
+
             var weeks = _month.GroupBy(x => x.Week).ToList();
             foreach (var week in weeks)
             {

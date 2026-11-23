@@ -26,7 +26,7 @@ namespace YAPA.Plugins.PomodoroEngine
             var counterValues = new List<CounterListItem>
             {
                 new CounterListItem{ Item = CounterEnum.CompletedThisSession, Title = "Completed this session"},
-                new CounterListItem{ Item = CounterEnum.CompletedToday, Title = "Competed today"},
+                new CounterListItem{ Item = CounterEnum.CompletedToday, Title = "Completed today"},
                 new CounterListItem{ Item = CounterEnum.PomodoroIndex, Title = "Pomodoro index"},
             };
 
