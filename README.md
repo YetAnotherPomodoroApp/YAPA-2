@@ -93,7 +93,11 @@ dotnet run --project YAPA.Avalonia
 ```
 `YAPA.Avalonia.sln` holds the projects that build on every system (`YAPA.sln` is the WPF version).
 
-Not in the Avalonia version: the release notes window, taskbar progress and jump lists (Windows only),
+The screen reader and keyboard support described under Accessibility is in the Avalonia version too
+(on macOS `Cmd+T` reads the timer). It is tested with Avalonia's automation API, not yet with VoiceOver
+or Orca themselves.
+
+Not in the Avalonia version: crash reports, the release notes window, taskbar progress and jump lists (Windows only),
 and loading themes or plugins from DLLs next to the app (they are compiled in). System tray balloon tips
 are shown as system notifications. Besides the WPF command line arguments it understands `/exit`.
 
