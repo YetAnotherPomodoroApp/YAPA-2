@@ -4,7 +4,7 @@
     <!-- YAPA/WPF/PluginManager/PluginManagerSettingWindow.xaml -->
     <!-- Plain check boxes (no list selection to show), in the column of the other pages' boxes -->
     <StackPanel Margin="130,0,0,0">
-    <ItemsControl Name="PluginList">
+    <ItemsControl AutomationProperties.Name="Plugins" Name="PluginList">
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}" Content="{Binding Title}"

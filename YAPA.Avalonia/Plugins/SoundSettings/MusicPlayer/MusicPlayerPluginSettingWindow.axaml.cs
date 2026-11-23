@@ -31,12 +31,12 @@ namespace YAPA.Avalonia.Plugins.SoundSettings.MusicPlayer
             BrowseBreakSong.Click += (s, e) => Browse(BreakSong);
             BrowseSessionBreakSong.Click += (s, e) => Browse(SessionBreakSong);
 
-            WirePlay(PlayWorkSong, WorkSong);
-            WirePlay(PlayBreakSong, BreakSong);
-            WirePlay(PlaySessionBreakSong, SessionBreakSong);
+            WirePlay(PlayWorkSong, WorkSong, "work song");
+            WirePlay(PlayBreakSong, BreakSong, "break song");
+            WirePlay(PlaySessionBreakSong, SessionBreakSong, "session break song");
         }
 
-        private void WirePlay(Button playButton, TextBox song)
+        private void WirePlay(Button playButton, TextBox song, string songName)
         {
             var isPlaying = false;
             playButton.Click += (s, e) =>
@@ -49,6 +49,7 @@ namespace YAPA.Avalonia.Plugins.SoundSettings.MusicPlayer
                         _musicPlayer.Load(path);
                         _musicPlayer.Play(false, _pomodoroEngineSettings.Volume);
                         playButton.Content = "Stop";
+                        global::Avalonia.Automation.AutomationProperties.SetName(playButton, $"Stop {songName}");
                         isPlaying = true;
                     }
                 }
@@ -56,6 +57,7 @@ namespace YAPA.Avalonia.Plugins.SoundSettings.MusicPlayer
                 {
                     _musicPlayer.Stop();
                     playButton.Content = "Play";
+                    global::Avalonia.Automation.AutomationProperties.SetName(playButton, $"Play {songName}");
                     isPlaying = false;
                 }
             };

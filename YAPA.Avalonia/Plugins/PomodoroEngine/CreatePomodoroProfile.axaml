@@ -9,7 +9,7 @@
     <!-- YAPA/Plugins/PomodoroEngine/CreatePomodoroProfile.xaml (a WPF tool window) -->
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="Auto,*">
         <TextBlock Text="Profile name:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Grid.Row="0" Grid.Column="1" Name="ProfileName" VerticalAlignment="Center" />
+        <TextBox AutomationProperties.Name="Profile name" Grid.Row="0" Grid.Column="1" Name="ProfileName" VerticalAlignment="Center" />
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="Save" Content="Save" Click="Save_Click" Margin="2" Classes="Flat" IsDefault="True" />
             <Button Name="Cancel" Content="Cancel" Click="Cancel_Click" Margin="2" Classes="Flat" IsCancel="True" />

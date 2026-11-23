@@ -114,6 +114,9 @@ namespace YAPA.Avalonia.Plugins.Dashboard
                 tip.Inlines.Add(new Run(day.Count == 0 ? "No pomodoros" : $"{day.Count} pomodoros") { FontWeight = FontWeight.Bold });
                 tip.Inlines.Add(new Run($" on {day.DateTime:yyyy-MM-dd}"));
                 ToolTip.SetTip(square, tip);
+                //What a screen reader says for the day
+                var spokenCount = day.Count == 0 ? "No pomodoros" : day.Count == 1 ? "1 pomodoro" : $"{day.Count} pomodoros";
+                global::Avalonia.Automation.AutomationProperties.SetName(square, $"{spokenCount} on {day.DateTime:D}");
                 panel.Children.Add(square);
             }
         }

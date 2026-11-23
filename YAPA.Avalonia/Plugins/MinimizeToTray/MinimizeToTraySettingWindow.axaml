@@ -11,16 +11,16 @@
         <CheckBox IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Margin="0,16,0,0" Content="Show balloon tip when in system tray" />
         <CheckBox IsChecked="{Binding ShowApplicationOnBalloonTipClick, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Content="Show application when clicked on balloon tip" />
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Balloon tip for (s)" VerticalAlignment="Center" TextWrapping="Wrap" />
-        <infra:EditableComboBox Name="BalloonTipSelect" Grid.Row="4" Grid.Column="1" Width="120"
+        <infra:EditableComboBox AutomationProperties.Name="Show balloon tip for, seconds" Name="BalloonTipSelect" Grid.Row="4" Grid.Column="1" Width="120"
                   HorizontalAlignment="Left" VerticalAlignment="Center"
                   IsEnabled="{Binding ShowBalloonTipWhenInSystemTray}"
                   Text="{Binding TimeToDisplayBalloontip, Mode=TwoWay}" />
 
         <TextBlock Text="Icon colors" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="0,12,0,0" />
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="0,12,0,0">
-            <infra:ColorPickerBox Name="WorkTrayColor" Width="44" Color="{Binding WorkTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Work icon color" />
+            <infra:ColorPickerBox AutomationProperties.Name="Work icon color" Name="WorkTrayColor" Width="44" Color="{Binding WorkTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Work icon color" />
             <TextBlock Text="Work" VerticalAlignment="Center" Margin="0,0,16,0" />
-            <infra:ColorPickerBox Name="BreakTrayColor" Width="44" Color="{Binding BreakTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Break icon color" />
+            <infra:ColorPickerBox AutomationProperties.Name="Break icon color" Name="BreakTrayColor" Width="44" Color="{Binding BreakTrayIconColor, Mode=TwoWay}" ToolTip.Tip="Break icon color" />
             <TextBlock Text="Break" VerticalAlignment="Center" />
         </StackPanel>
     </Grid>

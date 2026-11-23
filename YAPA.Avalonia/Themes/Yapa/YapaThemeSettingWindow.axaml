@@ -16,39 +16,37 @@
         </Grid.Styles>
 
         <TextBlock Classes="label" Text="Clock opacity" Grid.Column="0" Grid.Row="0" />
-        <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1"
+        <Slider AutomationProperties.Name="Clock opacity" Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Minimum="0.1" Maximum="1"
                 Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" Grid.Column="1" Grid.Row="0" />
 
         <TextBlock Classes="label" Text="Shadow opacity" Grid.Column="0" Grid.Row="1" />
-        <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="1"
+        <Slider AutomationProperties.Name="Shadow opacity" Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="1"
                 Minimum="0.1" Maximum="1" Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" />
 
         <TextBlock Classes="label" Text="Background opacity" Grid.Column="0" Grid.Row="2" ToolTip.Tip="0 shows no background" />
-        <Slider Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}"
+        <Slider AutomationProperties.Name="Background opacity, 0 shows no background" Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}"
                 Grid.Column="1" Grid.Row="2" Minimum="0" Maximum="1" Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0"
                 ToolTip.Tip="0 shows no background" />
 
         <TextBlock Classes="label" Text="Application size" Grid.Column="0" Grid.Row="3" />
-        <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"
+        <Slider AutomationProperties.Name="Application size" Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="3"
                 Minimum="50" Maximum="600" SmallChange="1" />
 
         <TextBlock Classes="label" Text="Colors" Grid.Column="0" Grid.Row="4" />
         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-            <infra:ColorPickerBox Name="TextColor" Width="44" Color="{Binding TextColor, Mode=TwoWay}" ToolTip.Tip="Text color" />
+            <infra:ColorPickerBox AutomationProperties.Name="Text color" Name="TextColor" Width="44" Color="{Binding TextColor, Mode=TwoWay}" ToolTip.Tip="Text color" />
             <TextBlock Text="Text" VerticalAlignment="Center" Margin="0,0,16,0" />
-            <infra:ColorPickerBox Name="ShadowColor" Width="44" Color="{Binding ShadowColor, Mode=TwoWay}" ToolTip.Tip="Shadow color" />
+            <infra:ColorPickerBox AutomationProperties.Name="Shadow color" Name="ShadowColor" Width="44" Color="{Binding ShadowColor, Mode=TwoWay}" ToolTip.Tip="Shadow color" />
             <TextBlock Text="Shadow" VerticalAlignment="Center" Margin="0,0,16,0" />
-            <infra:ColorPickerBox Name="BackgroundColor" Width="44" Color="{Binding BackgroundColor, Mode=TwoWay}" ToolTip.Tip="Background color" />
+            <infra:ColorPickerBox AutomationProperties.Name="Background color" Name="BackgroundColor" Width="44" Color="{Binding BackgroundColor, Mode=TwoWay}" ToolTip.Tip="Background color" />
             <TextBlock Text="Background" VerticalAlignment="Center" />
         </StackPanel>
 
-        <Grid Grid.Column="1" Grid.Row="5" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" Margin="0,8,0,0">
+        <Grid Grid.Column="1" Grid.Row="5" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" Margin="0,8,0,0">
             <CheckBox IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" Content="Show pomodoro status" />
             <CheckBox IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Disable flashing animation" />
             <CheckBox IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Content="Hide seconds" />
             <CheckBox IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Content="Hide buttons" />
-            <CheckBox Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
-                      Grid.ColumnSpan="2" Content="Shadow on status text and buttons" />
         </Grid>
     </Grid>
 </UserControl>

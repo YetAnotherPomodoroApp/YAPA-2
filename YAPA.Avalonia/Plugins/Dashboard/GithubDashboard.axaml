@@ -11,9 +11,9 @@
                 <ProgressBar Classes="circular" IsIndeterminate="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <ComboBox Name="FilteredProfiles" Classes="hint" MinWidth="200" Margin="16,0,0,10"
+                <ComboBox AutomationProperties.Name="Profile" Name="FilteredProfiles" Classes="hint" MinWidth="200" Margin="16,0,0,10"
                           assists:ComboBoxAssist.Label="Profile" />
-                <ComboBox Name="NumberOfMonths" Classes="hint" MinWidth="200" Margin="16,0,0,10"
+                <ComboBox AutomationProperties.Name="Number of months" Name="NumberOfMonths" Classes="hint" MinWidth="200" Margin="16,0,0,10"
                           assists:ComboBoxAssist.Label="Number of months" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
@@ -35,7 +35,7 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <TextBlock FontWeight="Bold" Name="CartesianChartTitle" />
                 </StackPanel>
-                <local:LineChart Name="CartesianChart" MinHeight="130" Height="130" AxisYTitle="Total time" AxisXTitle="Day" />
+                <local:LineChart AutomationProperties.HelpText="The same numbers are in the calendar above, one entry per day." Name="CartesianChart" MinHeight="130" Height="130" AxisYTitle="Total time" AxisXTitle="Day" />
             </StackPanel>
         </StackPanel>
     </Grid>

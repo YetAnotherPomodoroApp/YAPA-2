@@ -161,6 +161,7 @@ namespace YAPA.Avalonia.Plugins.Unclickable
                 SelectedValueBinding = new global::Avalonia.Data.Binding(nameof(BehaviourListItem.Item)),
             };
             list.Bind(ComboBox.SelectedValueProperty, new global::Avalonia.Data.Binding("Settings.UnclickablityType") { Mode = global::Avalonia.Data.BindingMode.TwoWay });
+            global::Avalonia.Automation.AutomationProperties.SetName(list, "Unclickable behaviour");
             Grid.SetColumn(list, 1);
             grid.Children.Add(label);
             grid.Children.Add(list);

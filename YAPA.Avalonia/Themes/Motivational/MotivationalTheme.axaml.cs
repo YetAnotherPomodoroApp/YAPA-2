@@ -67,6 +67,9 @@ namespace YAPA.Avalonia.Themes.Motivational
 
             WindowContentPanel.Transitions = new Transitions { _contentFade };
 
+            TimeOutsideWindow.SpokenText = TimeInsideWindow.SpokenText =
+                () => YAPA.Shared.Common.TimerSpeech.Display(ViewModel.Engine.Phase, CurrentTimeValue, _baseSettings.CountBackwards);
+
             // Initialize Pomodoro session
             ResetPomodoroPeriod();
 

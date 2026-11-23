@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
 using Avalonia;
+using Avalonia.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -57,7 +58,7 @@ namespace YAPA.Avalonia.Settings
             var pluginsTree = MenuItem("Plugins", typeof(PluginManagerSettingWindow));
             foreach (var customSettings in _pluginManager.ActivePlugins.Where(x => x.SettingEditWindow != null))
             {
-                pluginsTree.Items.Add(MenuItem(customSettings.Title, customSettings.SettingEditWindow));
+                pluginsTree.Items.Add(MenuItem(customSettings.Title, customSettings.SettingEditWindow, child: true));
             }
             pluginsTree.IsExpanded = true;
             SettingsTree.Items.Add(pluginsTree);
@@ -72,9 +73,15 @@ namespace YAPA.Avalonia.Settings
             {
                 Version.Text += " pre-release";
             }
+            global::Avalonia.Automation.AutomationProperties.SetName(Version, "Version " + Version.Text);
 
             PointerPressed += Settings_OnMouseLeftButtonDown;
-            Opened += (s, e) => RefreshSelectedMenuItem();
+            Opened += (s, e) =>
+            {
+                RefreshSelectedMenuItem();
+                //Start on the list of pages, so the keyboard and a screen reader begin at the top
+                Dispatcher.UIThread.Post(() => (SettingsTree.SelectedItem as TreeViewItem)?.Focus(), DispatcherPriority.Input);
+            };
             Closing += SettingsWindow_Closing;
 
             SettingsTree.SelectedItem = first;
@@ -83,11 +90,18 @@ namespace YAPA.Avalonia.Settings
 #endif
         }
 
-        private TreeViewItem MenuItem(string title, Type page)
+        private TreeViewItem MenuItem(string title, Type page, bool child = false)
         {
-            // The page is created when it is first shown, not with the window
-            var header = new TextBlock { Text = title, HorizontalAlignment = HorizontalAlignment.Left };
-            header.Classes.Add("Body1");
+            // The page is created when it is first shown, not with the window.
+            // 13 px text as in the WPF menu; a plugin's page is indented 14 px under Plugins (its row
+            // is moved in by the window's style, this takes back the template's own deeper indent)
+            var header = new TextBlock
+            {
+                Text = title,
+                FontSize = 13,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = child ? new Thickness(-23, 0, 0, 0) : new Thickness(5, 0, 0, 0),
+            };
             return new TreeViewItem { Header = header, Tag = page };
         }
 

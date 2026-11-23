@@ -68,6 +68,7 @@ namespace YAPA.Avalonia.Plugins.MinimizeToTray
             TrayIcon.SetIcons(Application.Current, icons);
 
             _viewModel.Engine.PropertyChanged += _engine_PropertyChanged;
+            UpdateTooltip();
             _app.Closing += () => _sysTrayIcon.Dispose();
         }
 
@@ -91,6 +92,11 @@ namespace YAPA.Avalonia.Plugins.MinimizeToTray
 
         private void _engine_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(_viewModel.Engine.Elapsed) || e.PropertyName == nameof(_viewModel.Engine.Phase))
+            {
+                UpdateTooltip();
+            }
+
             if (e.PropertyName == nameof(_viewModel.Engine.Elapsed))
             {
                 UpdateIcon();
@@ -176,6 +182,24 @@ namespace YAPA.Avalonia.Plugins.MinimizeToTray
         {
             _app.Show();
             _app.AppState = ApplicationState.Normal;
+        }
+
+        //The icon only fits the minutes; the tooltip says the same in words, which is also what a screen reader reads
+        private void UpdateTooltip()
+        {
+            var engine = _viewModel.Engine;
+            var text = "YAPA 2: " + YAPA.Shared.Common.TimerSpeech.Status(engine.Phase, engine.Remaining, engine.WorkTime);
+
+            //Windows allows 63 characters
+            if (text.Length > 63)
+            {
+                text = text.Substring(0, 63);
+            }
+
+            if (_sysTrayIcon.ToolTipText != text)
+            {
+                _sysTrayIcon.ToolTipText = text;
+            }
         }
 
         private void UpdateIcon()

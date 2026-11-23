@@ -179,19 +179,15 @@ namespace YAPA.Avalonia.Tests
         }
 
         [AvaloniaFact]
-        public void Shadow_on_small_text_puts_a_shadow_on_status_buttons_and_counter()
+        public void Status_text_and_counter_have_the_digits_shadow()
         {
             using var yapa = new Yapa();
-            var status = yapa.Timer.Find<TextBlock>("StageTextBlock");
-            Assert.Null(status.Effect);
-
-            var box = CheckBox(ThemePage(yapa), "Shadow on status text and buttons");
-            Yapa.Click(box);
-
-            Assert.True(box.IsChecked, "the click should tick the box");
-            Assert.Contains("\"ShadowOnSmallText\":true", yapa.SettingsFile);
-            Assert.IsType<DropShadowEffect>(status.Effect);
-            Assert.IsType<DropShadowEffect>(yapa.Timer.Find<TextBlock>("CurrentPeriod").Effect);
+            foreach (var name in new[] { "StageTextBlock", "CurrentPeriod" })
+            {
+                var shadow = Assert.IsType<DropShadowEffect>(yapa.Timer.Find<TextBlock>(name).Effect);
+                Assert.Equal(Colors.Black, shadow.Color);
+                Assert.Equal(3, shadow.BlurRadius);
+            }
         }
 
         [AvaloniaFact]

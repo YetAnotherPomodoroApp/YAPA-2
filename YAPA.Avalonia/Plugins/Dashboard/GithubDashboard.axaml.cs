@@ -171,6 +171,14 @@ namespace YAPA.Avalonia.Plugins.Dashboard
             {
                 Summary.Text = string.Empty;
             }
+
+            //The calendar and the chart are pictures; give a screen reader the numbers that matter most
+            var today = DateTime.Now.Date;
+            var completedToday = pomodoros.Where(_ => _.Pomodoro.DateTime.Date == today).Sum(_ => _.Pomodoro.Count);
+            var completedThisWeek = pomodoros.Where(_ => _.Pomodoro.DateTime.Date > today.AddDays(-7) && _.Pomodoro.DateTime.Date <= today).Sum(_ => _.Pomodoro.Count);
+            global::Avalonia.Automation.AutomationProperties.SetName(Summary, count > 0
+                ? $"Total time: {TimeSpan.FromMinutes(totalTime)}, pomodoros: {count}. Today: {completedToday}. Last 7 days: {completedThisWeek}."
+                : "No pomodoros completed in this period.");
         }
 
         private List<PomodorosPerTimeModel> GetPomodoros(int numberOfMonths, string profileFilter)

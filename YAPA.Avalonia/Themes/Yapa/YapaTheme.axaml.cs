@@ -73,6 +73,36 @@ namespace YAPA.Avalonia.Themes.Yapa
             PointerEntered += MainWindow_OnMouseEnter;
             PointerExited += MainWindow_OnMouseLeave;
             DoubleTapped += Window_MouseDoubleClick;
+
+            CurrentTime.SpokenText = () => TimerSpeech.Display(ViewModel.Engine.Phase, CurrentTimeValue, _engineSettings.CountBackwards);
+
+            //The buttons hide when the mouse leaves; bring them back for someone working with the keyboard
+            AddHandler(KeyDownEvent, (s, e) => ShowButtonsForKeyboard(), global::Avalonia.Interactivity.RoutingStrategies.Tunnel);
+            Deactivated += (s, e) => HideButtonsShownForKeyboard();
+        }
+
+        private bool _buttonsShownForKeyboard;
+
+        private void ShowButtonsForKeyboard()
+        {
+            if (MinExitPanel.IsHitTestVisible && ButtonPanel.IsHitTestVisible)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = true;
+            MainWindow_OnMouseEnter(this, null);
+        }
+
+        private void HideButtonsShownForKeyboard()
+        {
+            if (!_buttonsShownForKeyboard || IsPointerOver)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = false;
+            MainWindow_OnMouseLeave(this, null);
         }
 
         private void UpdateDisplayedTime()
@@ -350,7 +380,8 @@ namespace YAPA.Avalonia.Themes.Yapa
 
         public Color TextShadowColor => Settings.ShadowColor;
 
-        public IBrush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor);
+        //The button under the mouse gets a background, half see-through rather than a hard block
+        public IBrush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor, 0.6);
 
         /// <summary>The glow round each digit: WPF DropShadowEffect with ShadowDepth 0 and BlurRadius 10.</summary>
         public IEffect DigitEffect => new DropShadowEffect
@@ -370,11 +401,10 @@ namespace YAPA.Avalonia.Themes.Yapa
         public bool BackgroundVisible => Settings.BackgroundOpacity > 0;
 
         /// <summary>
-        /// Optional shadow for the status text, the buttons and the counter; the digits always have theirs. Off by default.
+        /// The digits' shadow, for the status text, the buttons and the counter too, so they read on any
+        /// background the way the digits do (a smaller blur for the smaller text).
         /// </summary>
-        public IEffect SmallTextEffect => Settings.ShadowOnSmallText
-            ? new DropShadowEffect { OffsetX = 0, OffsetY = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 4 }
-            : null;
+        public IEffect SmallTextEffect => new DropShadowEffect { OffsetX = 0, OffsetY = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 3 };
 
         public double ProgressValue
         {
@@ -449,6 +479,11 @@ namespace YAPA.Avalonia.Themes.Yapa
             }
             Dispatcher.UIThread.Post(() =>
             {
+                //Shown for the keyboard and still in use: they go when the window is left
+                if (_buttonsShownForKeyboard && IsActive)
+                {
+                    return;
+                }
                 SetHidden(MinExitPanel, true);
                 if (Settings.HideButtons)
                 {

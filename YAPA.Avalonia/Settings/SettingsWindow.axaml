@@ -18,7 +18,7 @@
          tinted panel, a margin round the page, and a line above the buttons. -->
     <Window.Styles>
         <Style Selector="TreeView#SettingsTree TreeViewItem">
-            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="MinHeight" Value="36" />
         </Style>
         <!-- Plugins stays open, so no expand arrow -->
         <Style Selector="TreeView#SettingsTree TreeViewItem /template/ ToggleButton#PART_ExpanderButton">
@@ -28,6 +28,10 @@
             <Setter Property="Margin" Value="8,1" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="ClipToBounds" Value="True" />
+        </Style>
+        <!-- A plugin's page sits 14 px in, under Plugins -->
+        <Style Selector="TreeView#SettingsTree TreeViewItem TreeViewItem /template/ Border#PART_RootBorder">
+            <Setter Property="Margin" Value="22,1,8,1" />
         </Style>
         <Style Selector="TreeView#SettingsTree TreeViewItem /template/ Border#PART_BehaviourEffect">
             <Setter Property="CornerRadius" Value="6" />
@@ -47,7 +51,7 @@
 
     <Grid Name="SettingGrid" ColumnDefinitions="170,*" RowDefinitions="*,Auto">
         <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="#F3F0F8" BorderBrush="#E6E1EE" BorderThickness="0,0,1,0" />
-        <TreeView Grid.Column="0" Grid.Row="0" Name="SettingsTree" Margin="0,14,0,0"
+        <TreeView AutomationProperties.Name="Settings pages" Grid.Column="0" Grid.Row="0" Name="SettingsTree" Margin="0,14,0,0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
 
         <ScrollViewer Grid.Column="1" Grid.Row="0" Name="PageHost" Padding="26,22,24,12"
@@ -65,7 +69,7 @@
 
         <Border IsVisible="False" Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
                 Width="300" Height="22" VerticalAlignment="Top" Margin="0,6,0,0" Background="Gold" CornerRadius="11">
-            <TextBlock Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock AutomationProperties.LiveSetting="Assertive" Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
     </Grid>
 </Window>

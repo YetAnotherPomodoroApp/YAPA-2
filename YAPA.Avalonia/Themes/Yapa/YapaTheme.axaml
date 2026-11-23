@@ -62,7 +62,8 @@
                         Background="{Binding BackgroundBrush}" IsVisible="{Binding BackgroundVisible}" CornerRadius="3" />
 
                 <!-- Current time -->
-                <StackPanel Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                <!-- A screen reader reads the digits as one piece of text: see SpokenText in the code behind -->
+                <infra:SpokenStackPanel Name="CurrentTime" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                             Background="Transparent" Orientation="Horizontal">
                     <TextBlock Name="CurrentTimeMinutes3" Classes="digit" Text="0" />
                     <TextBlock Name="CurrentTimeMinutes2" Classes="digit" Text="0" />
@@ -70,7 +71,7 @@
                     <TextBlock Name="CurrentTimeSeparator" Classes="digit" Width="NaN" Text=":" />
                     <TextBlock Name="CurrentTimeSeconds2" Classes="digit" Text="0" />
                     <TextBlock Name="CurrentTimeSeconds" Classes="digit" Text="0" />
-                </StackPanel>
+                </infra:SpokenStackPanel>
 
                 <TextBlock Name="StageTextBlock" Text="{Binding Status}" Grid.Column="0" Grid.Row="0"
                            VerticalAlignment="Center" TextAlignment="Left"
@@ -79,28 +80,28 @@
 
                 <StackPanel Name="MinExitPanel" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
                             Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Name="Minimize" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    <Button Name="Minimize" AutomationProperties.Name="Minimize" TabIndex="5" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Content="_" ToolTip.Tip="Minimize" Height="15" Width="15" FontSize="10"
                             Click="Minimize_OnClick" />
-                    <Button Name="Exit" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    <Button Name="Exit" AutomationProperties.Name="Close" TabIndex="6" Classes="yapa small" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Content="x" ToolTip.Tip="Close" Height="15" Width="15" FontSize="10"
                             Click="Exit_OnClick" />
                 </StackPanel>
 
                 <StackPanel Name="ButtonPanel" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
-                    <Button Name="Skip" Classes="yapa small" Command="{Binding ViewModel.SkipCommand}"
+                    <Button Name="Skip" AutomationProperties.Name="Skip break" TabIndex="1" Classes="yapa small" Command="{Binding ViewModel.SkipCommand}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Content="SKIP"
                             ToolTip.Tip="Skip break" Height="15" Width="38" FontSize="11" />
-                    <Button Name="Start" Classes="yapa small" Command="{Binding ViewModel.StartCommand}"
+                    <Button Name="Start" AutomationProperties.Name="Start" TabIndex="2" Classes="yapa small" Command="{Binding ViewModel.StartCommand}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Content="START"
                             ToolTip.Tip="Start Pomodoro" Height="15" Width="38" FontSize="11" />
-                    <Button Name="Pause" Classes="yapa small" Command="{Binding ViewModel.PauseCommand}"
+                    <Button Name="Pause" AutomationProperties.Name="Pause" TabIndex="3" Classes="yapa small" Command="{Binding ViewModel.PauseCommand}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Content="PAUSE"
                             ToolTip.Tip="Pause Pomodoro" Height="15" Width="38" FontSize="11" />
-                    <Button Name="Stop" Classes="yapa small" Command="{Binding ViewModel.StopCommand}"
+                    <Button Name="Stop" AutomationProperties.Name="Stop" TabIndex="4" Classes="yapa small" Command="{Binding ViewModel.StopCommand}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Content="STOP"
                             ToolTip.Tip="Stop Pomodoro" Height="15" Width="38" FontSize="11" />
-                    <TextBlock Name="CurrentPeriod" Cursor="Arrow" FontFamily="{x:Static infra:Fonts.SegoeUi}"
+                    <TextBlock Name="CurrentPeriod" AutomationProperties.Name="{Binding ViewModel.Engine.Counter, StringFormat='Pomodoro counter {0}'}" Cursor="Arrow" FontFamily="{x:Static infra:Fonts.SegoeUi}"
                                FontSize="8" Foreground="{Binding TextBrush}" Opacity="{Binding ClockOpacity}"
                                Effect="{Binding SmallTextEffect}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                TextAlignment="Center" Height="10" Width="10" Text="{Binding ViewModel.Engine.Counter}"

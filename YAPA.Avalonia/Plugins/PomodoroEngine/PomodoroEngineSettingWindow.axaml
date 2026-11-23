@@ -20,13 +20,13 @@
             <CheckBox IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Count backwards" />
 
             <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
-            <ComboBox Name="CounterList" Grid.Column="1" Grid.Row="1" MinWidth="72"
+            <ComboBox AutomationProperties.Name="Display count of" Name="CounterList" Grid.Column="1" Grid.Row="1" MinWidth="72"
                       HorizontalAlignment="Stretch" VerticalAlignment="Center"
                       DisplayMemberBinding="{Binding Title}"
                       SelectedValueBinding="{Binding Item}"
                       SelectedValue="{Binding Settings.Counter, Mode=TwoWay}" />
             <TextBlock Text="Font" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="0,16,0,0" />
-            <ComboBox Name="FontSelector" Classes="tall" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="0,16,0,0"
+            <ComboBox AutomationProperties.Name="Font" Name="FontSelector" Classes="tall" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="0,16,0,0"
                       HorizontalAlignment="Stretch" VerticalAlignment="Center"
                       SelectedValueBinding="{Binding Key}"
                       SelectedValue="{Binding Settings.FontFamily, Mode=TwoWay}">

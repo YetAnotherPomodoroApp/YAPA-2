@@ -15,32 +15,32 @@
             <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" />
-        <ComboBox Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72"
+        <ComboBox AutomationProperties.Name="Active profile" Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   IsEnabled="{Binding !Engine.IsRunning}" />
         <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Spacing="4" Margin="12,0,0,0" VerticalAlignment="Center">
-            <Button Content="Add" Click="AddProfile_Click" Name="AddButton" Classes="Flat"
+            <Button AutomationProperties.Name="Add profile" Content="Add" Click="AddProfile_Click" Name="AddButton" Classes="Flat"
                     IsEnabled="{Binding !Engine.IsRunning}" />
-            <Button Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton" Classes="Flat" />
+            <Button AutomationProperties.Name="Remove profile" Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton" Classes="Flat" />
         </StackPanel>
 
         <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
-        <infra:EditableComboBox Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72"
+        <infra:EditableComboBox AutomationProperties.Name="Work time, minutes" Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.WorkTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
         <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" />
-        <infra:EditableComboBox Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72"
+        <infra:EditableComboBox AutomationProperties.Name="Break time, minutes" Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.BreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 
         <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" />
-        <infra:EditableComboBox Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72"
+        <infra:EditableComboBox AutomationProperties.Name="Session rounds" Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.PomodorosBeforeLongBreak, Mode=TwoWay}" />
 
         <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
-        <infra:EditableComboBox Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72"
+        <infra:EditableComboBox AutomationProperties.Name="Long break time, minutes" Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                   Text="{Binding Settings.LongBreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
 

@@ -64,12 +64,6 @@ namespace YAPA.Avalonia.Themes.Yapa
             set => _settings.Update(nameof(BackgroundOpacity), value);
         }
 
-        public bool ShadowOnSmallText
-        {
-            get => _settings.Get(nameof(ShadowOnSmallText), false);
-            set => _settings.Update(nameof(ShadowOnSmallText), value);
-        }
-
         public bool DisableFlashingAnimation
         {
             get => _settings.Get(nameof(DisableFlashingAnimation), false);
