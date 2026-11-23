@@ -1,6 +1,11 @@
+param(
+    #A version for the package other than YAPA.exe's (release.ps1 -RollbackTo re-releases an older build under a new number)
+    [string]$Version
+)
+
  #-------Get Version from YAPA.exe
- $fullVersion = (dir ..\Release\Yapa.exe).VersionInfo.FileVersion
- $baseUri = 'http://app.floatas.net/installers/YAPA-2/'
+ $fullVersion = if ($Version) { $Version } else { (dir ..\Release\Yapa.exe).VersionInfo.FileVersion }
+ $baseUri = 'https://app.floatas.net/installers/YAPA-2/'
  #-PRE-RELEASE
  $squirrelVersionRegex = "\d+\.\d+\.\d+"
  $squirrelVersion = [regex]::matches($fullVersion, $squirrelVersionRegex)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -114,13 +115,17 @@ namespace YAPA.Plugins.Dashboard
 
             foreach (var pomodoroViewModel in pomodoroViewModels)
             {
-                var green = new Rectangle
+                //A text block draws the same square a rectangle did and, unlike a rectangle, can be read by a screen reader
+                var green = new TextBlock
                 {
                     Width = 11,
                     Height = 11,
                     Margin = new Thickness(0, 0, 0, 1),
-                    Fill = GreenFill(pomodoroViewModel.Level)
+                    Background = GreenFill(pomodoroViewModel.Level)
                 };
+
+                var spokenCount = pomodoroViewModel.Count == 0 ? "No pomodoros" : pomodoroViewModel.Count == 1 ? "1 pomodoro" : $"{pomodoroViewModel.Count} pomodoros";
+                AutomationProperties.SetName(green, $"{spokenCount} on {pomodoroViewModel.DateTime:D}");
 
                 var toolTip = new ToolTip();
                 var pomodoros = new TextBlock();

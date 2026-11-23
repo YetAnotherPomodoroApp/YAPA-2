@@ -65,6 +65,36 @@ namespace YAPA
             UpdateSecondVisibility();
 
             UpdateFontFamily(_engineSettings.FontFamily);
+
+            CurrentTime.SpokenText = () => TimerSpeech.Display(ViewModel.Engine.Phase, CurrentTimeValue, _engineSettings.CountBackwards);
+
+            //The buttons hide when the mouse leaves; bring them back for someone working with the keyboard
+            PreviewKeyDown += (sender, args) => ShowButtonsForKeyboard();
+            Deactivated += (sender, args) => HideButtonsShownForKeyboard();
+        }
+
+        private bool _buttonsShownForKeyboard;
+
+        private void ShowButtonsForKeyboard()
+        {
+            if (MinExitPanel.Visibility == Visibility.Visible && ButtonPanel.Visibility == Visibility.Visible)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = true;
+            MainWindow_OnMouseEnter(this, null);
+        }
+
+        private void HideButtonsShownForKeyboard()
+        {
+            if (!_buttonsShownForKeyboard || IsMouseOver)
+            {
+                return;
+            }
+
+            _buttonsShownForKeyboard = false;
+            MainWindow_OnMouseLeave(this, null);
         }
 
         private void UpdateDisplayedTime()
@@ -382,7 +412,9 @@ namespace YAPA
             }
         }
 
-        public Brush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor);
+        //The button under the mouse gets a background, half see-through rather than a hard block
+        public Brush MouseOverBackgroundColor => new SolidColorBrush(TextShadowColor) { Opacity = 0.6 };
+
 
         /// <summary>
         /// Optional plate behind the whole timer, to keep it readable on any wallpaper or window. Off by default.
@@ -392,11 +424,10 @@ namespace YAPA
         public Visibility BackgroundVisibility => Settings.BackgroundOpacity > 0 ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
-        /// Optional shadow for the status text, the buttons and the counter; the digits always have theirs. Off by default.
+        /// The digits' shadow, for the status text, the buttons and the counter too, so they read on any
+        /// background the way the digits do (a smaller blur for the smaller text).
         /// </summary>
-        public Effect SmallTextEffect => Settings.ShadowOnSmallText
-            ? new DropShadowEffect { ShadowDepth = 0, Direction = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 4 }
-            : null;
+        public Effect SmallTextEffect => new DropShadowEffect { ShadowDepth = 0, Direction = 0, Color = Settings.ShadowColor, Opacity = Settings.ShadowOpacity, BlurRadius = 3 };
 
         public double ProgressValue
         {
@@ -493,6 +524,12 @@ namespace YAPA
 
                     Dispatcher.Invoke(() =>
                    {
+                       //Shown for the keyboard and still in use: they go when the window is left
+                       if (_buttonsShownForKeyboard && IsActive)
+                       {
+                           return;
+                       }
+
                        MinExitPanel.Visibility = Visibility.Hidden;
                        if (Settings.HideButtons)
                        {

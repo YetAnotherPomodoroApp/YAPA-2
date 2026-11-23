@@ -1,10 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Shell;
+using System.Windows.Threading;
+using YAPA.Shared.Common;
 using YAPA.Shared.Contracts;
 
 namespace YAPA.Shared
@@ -39,7 +45,155 @@ namespace YAPA.Shared
             base.StateChanged += AbstractWindow_StateChanged;
             base.Closing += AbstractWindow_Closing;
             base.Loaded += AbstractWindow_Loaded;
+
+            SetUpScreenReaderSupport();
         }
+
+        #region Screen reader and keyboard support, shared by all themes
+
+        private PomodoroPhase _announcedPhase;
+        private bool _announcementQueued;
+
+        private void SetUpScreenReaderSupport()
+        {
+            AutomationProperties.SetHelpText(this, "Pomodoro timer. Tab moves between the buttons. The Menu key or Shift+F10 opens a menu with every command. Control+T reads the timer.");
+
+            _announcedPhase = ViewModel.Engine.Phase;
+            ViewModel.Engine.PropertyChanged += Engine_PropertyChangedForSpeech;
+
+            InputBindings.Add(new KeyBinding(new ActionCommand(SayStatus), Key.T, ModifierKeys.Control));
+
+            ContextMenu = new ContextMenu();
+            ContextMenuOpening += AbstractWindow_ContextMenuOpening;
+        }
+
+        private void Engine_PropertyChangedForSpeech(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IPomodoroEngine.Phase) || _announcementQueued)
+            {
+                return;
+            }
+
+            //Stopping passes through "ended" on its way to "not started": wait until the phase has settled, then speak once
+            _announcementQueued = true;
+            Dispatcher.BeginInvoke(new Action(AnnouncePhase), DispatcherPriority.ContextIdle);
+        }
+
+        private void AnnouncePhase()
+        {
+            _announcementQueued = false;
+
+            var phase = ViewModel.Engine.Phase;
+            if (phase == _announcedPhase)
+            {
+                return;
+            }
+
+            var text = TimerSpeech.PhaseChanged(_announcedPhase, phase, ViewModel.Engine.Remaining);
+            _announcedPhase = phase;
+
+            Announce(text);
+        }
+
+        private void SayStatus()
+        {
+            Announce(TimerSpeech.Status(ViewModel.Engine.Phase, ViewModel.Engine.Remaining, ViewModel.Engine.WorkTime));
+        }
+
+        private TextBlock _liveRegion;
+
+        /// <summary>
+        /// Has a screen reader speak the text now.
+        /// </summary>
+        protected void Announce(string text)
+        {
+            if (!Accessible.Notify(this, text))
+            {
+                Accessible.SpeakThroughLiveRegion(_liveRegion, text);
+            }
+        }
+
+        private void AddLiveRegionWhereNotificationsAreMissing()
+        {
+            //Only needed on .NET Framework 4.8 without the 4.8.1 update; elsewhere nothing is added to the window
+            if (Accessible.NotificationsSupported || _liveRegion != null || !(Content is Panel root))
+            {
+                return;
+            }
+
+            _liveRegion = Accessible.CreateLiveRegion();
+            root.Children.Add(_liveRegion);
+        }
+
+        private void AbstractWindow_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            //The menu is for the keyboard (Menu key, Shift+F10). A right click keeps doing what the theme decides.
+            var openedWithMouse = e.CursorLeft >= 0 || e.CursorTop >= 0;
+            if (openedWithMouse)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            ContextMenu.Items.Clear();
+            AddMenuItem("_Start", ViewModel.StartCommand);
+            AddMenuItem("_Pause", ViewModel.PauseCommand);
+            AddMenuItem("S_top", ViewModel.StopCommand);
+            AddMenuItem("S_kip", ViewModel.SkipCommand);
+            AddMenuItem("_Reset session", ViewModel.ResetCommand);
+            ContextMenu.Items.Add(new Separator());
+            AddMenuItem("Read the _timer", new ActionCommand(SayStatus), "Ctrl+T");
+            AddMenuItem("S_ettings", ViewModel.ShowSettingsCommand);
+            ContextMenu.Items.Add(new Separator());
+            AddMenuItem("_Minimize", new ActionCommand(() => WindowState = WindowState.Minimized));
+            AddMenuItem("E_xit", new ActionCommand(Close));
+        }
+
+        private void AddMenuItem(string header, ICommand command, string shortcut = null)
+        {
+            var item = new MenuItem
+            {
+                Header = header,
+                IsEnabled = command.CanExecute(null),
+                InputGestureText = shortcut ?? string.Empty
+            };
+            item.Click += (sender, args) =>
+            {
+                if (command.CanExecute(null))
+                {
+                    command.Execute(null);
+                }
+            };
+            ContextMenu.Items.Add(item);
+        }
+
+        private class ActionCommand : ICommand
+        {
+            private readonly Action _action;
+
+            public ActionCommand(Action action)
+            {
+                _action = action;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                _action();
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { }
+                remove { }
+            }
+        }
+
+        #endregion
 
         private void AbstractWindow_StateChanged(object sender, EventArgs e)
         {
@@ -48,6 +202,7 @@ namespace YAPA.Shared
 
         private void AbstractWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            AddLiveRegionWhereNotificationsAreMissing();
             CreateJumpList();
 
             var args = Environment.GetCommandLineArgs();

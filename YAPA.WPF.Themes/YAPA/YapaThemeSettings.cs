@@ -76,12 +76,6 @@ namespace YAPA.WPF.Themes.YAPA
             set => _settings.Update(nameof(BackgroundOpacity), value);
         }
 
-        public bool ShadowOnSmallText
-        {
-            get => _settings.Get(nameof(ShadowOnSmallText), false);
-            set => _settings.Update(nameof(ShadowOnSmallText), value);
-        }
-
         public bool DisableFlashingAnimation
         {
             get => _settings.Get(nameof(DisableFlashingAnimation), false);

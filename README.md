@@ -44,11 +44,37 @@ Features
     - Change application size
     - Enable\Disable flashing animation
     - Optional background behind the timer (color and opacity) to keep it readable on any wallpaper or window
-    - Optional shadow on the status text and buttons
+    - The status text and buttons have the same shadow as the digits, so they read on any background
 ![Theme Settings Preview](http://imgur.com/ulwYfix.gif)
 
   - Motivational theme
     - More about theme [here](https://github.com/YetAnotherPomodoroApp/MotivationalTheme).
+
+Accessibility
+---------
+
+YAPA 2 is built to work with screen readers such as Narrator and NVDA, and can be used with the keyboard alone.
+
+- The timer speaks when it changes: work started, paused, resumed and finished, break started and finished
+- `Ctrl+T` reads where the timer is
+- `Tab` moves between the timer buttons
+- The `Menu` key or `Shift+F10` opens a menu with every command, including Settings
+- In Settings, `Tab` goes from the list of pages to the page, then to Close and Save; `Enter` saves
+- Every control in Settings has a spoken label, and the dashboard calendar can be read day by day
+- With the System tray plugin, the tooltip of the tray icon tells the remaining time
+- For a timer that is easier to see, give it a background in Settings → Themes
+
+Crash reports
+---------
+
+When YAPA 2 closes because of an error, it keeps a crash report on your computer. The next time it starts, it shows you what the report contains and asks whether to send it. Nothing is sent without your say.
+
+- A report contains the error, where in YAPA it happened, the YAPA, Windows and .NET versions, and the last few things YAPA did before the error
+- It does not contain your name, your computer's name, your settings or your pomodoro history
+- "Show everything" in that window shows the whole report, exactly as it would be sent
+- Reports go to our own server, bugs.floatas.net, and are used only to fix the problem
+- Settings → About → Crash reports: *Ask before sending* (the default), *Send without asking*, or *Don't send*
+- Reports waiting to be sent are in `Documents\YAPA2\crash-reports`
 
 Windows, macOS and Linux (Avalonia)
 ===

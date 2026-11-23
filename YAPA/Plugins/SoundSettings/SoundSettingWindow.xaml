@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="YAPA.Plugins.SoundSettings.SoundSettingWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAPA.Plugins.SoundSettings"
@@ -9,20 +10,19 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="38"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" >Disable sound notifications</CheckBox>
-        <TextBlock Text="Volume" Grid.Column="0" Grid.Row="1"></TextBlock>
-        <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" Grid.Column="1" Grid.Row="1" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+        <CheckBox  IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Margin="0,0,0,4">Disable sound notifications</CheckBox>
+        <TextBlock Text="Volume" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
+        <Slider Value="{Binding Volume, Mode=TwoWay, Delay=300}" x:Name="Slider" shared:Accessible.Label="Volume" Margin="0,0,40,0" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
 
-        <StackPanel Grid.Row="2" x:Name="Container" Grid.Column="0" Grid.ColumnSpan="2"></StackPanel>
+        <StackPanel Grid.Row="2" x:Name="Container" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0"></StackPanel>
     </Grid>
 </UserControl>

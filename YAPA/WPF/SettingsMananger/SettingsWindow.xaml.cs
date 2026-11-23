@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using YAPA.Commands;
 using YAPA.Shared.Contracts;
 using YAPA.WPF.PluginManager;
@@ -49,9 +52,11 @@ namespace YAPA.WPF.SettingsMananger
                 SettingsTree.Items.Add(builtinPlugin);
             }
 
+            //Always open: its pages are listed under it, and there is no expand arrow
             var pluginsTree = new TreeViewItem
             {
                 Header = "Plugins",
+                IsExpanded = true,
                 Tag = _container.Resolve(typeof(PluginManagerSettingWindow))
             };
 
@@ -69,6 +74,11 @@ namespace YAPA.WPF.SettingsMananger
             var aboutPage = new TreeViewItem { Header = "About", Tag = _container.Resolve(typeof(AboutPage)) };
             SettingsTree.Items.Add(aboutPage);
 
+            foreach (TreeViewItem page in SettingsTree.Items)
+            {
+                YAPA.Shared.Accessible.NameExpander(page);
+            }
+
             UpdateNotificationMessage();
 
             Loaded += Settings_Loaded;
@@ -80,6 +90,9 @@ namespace YAPA.WPF.SettingsMananger
             if (Visibility == Visibility.Visible)
             {
                 RefreshSelectedMenuItem();
+
+                //Start on the list of pages, so the keyboard and a screen reader begin at the top
+                Dispatcher.BeginInvoke(new System.Action(() => (SettingsTree.SelectedItem as TreeViewItem)?.Focus()), DispatcherPriority.Input);
             }
         }
 
@@ -100,6 +113,16 @@ namespace YAPA.WPF.SettingsMananger
                 }
 
                 NotificationMessage.Text = message;
+
+                if (_mananger.RestartNeeded)
+                {
+                    //The banner is only seen; have a screen reader say it as well, once the banner is on screen
+                    Dispatcher.BeginInvoke(new System.Action(() =>
+                    {
+                        var peer = UIElementAutomationPeer.FromElement(NotificationMessage) ?? UIElementAutomationPeer.CreatePeerForElement(NotificationMessage);
+                        peer?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+                    }), DispatcherPriority.ContextIdle);
+                }
             }
             catch
             {
@@ -117,6 +140,8 @@ namespace YAPA.WPF.SettingsMananger
             {
                 Version.Text += " pre-release";
             }
+
+            AutomationProperties.SetName(Version, $"Version {Version.Text}");
         }
 
         private void _mananger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -135,11 +160,7 @@ namespace YAPA.WPF.SettingsMananger
 
         private void RefreshSelectedMenuItem()
         {
-            if (_settingPage != null)
-            {
-                SettingGrid.Children.Remove(_settingPage);
-            }
-
+            PageHost.Content = null;
             _settingPage = null;
 
             if (!(SettingsTree.SelectedItem is TreeViewItem treeItem))
@@ -155,10 +176,14 @@ namespace YAPA.WPF.SettingsMananger
             if (treeItem.Tag is UserControl)
             {
                 _settingPage = (UserControl)treeItem.Tag;
-                SettingGrid.Children.Add(_settingPage);
-                Grid.SetColumn(_settingPage, 1);
-                Grid.SetRow(_settingPage, 0);
-                _settingPage.Margin = new Thickness(10, 20, 10, 10);
+                //The room round the page (MaterialDesign's ScrollViewer has no padding)
+                _settingPage.Margin = new Thickness(26, 22, 24, 12);
+                PageHost.Content = _settingPage;
+                PageHost.ScrollToTop();
+
+                //Tab order: the list of pages, then this page, then Close and Save
+                KeyboardNavigation.SetTabNavigation(_settingPage, KeyboardNavigationMode.Local);
+                KeyboardNavigation.SetTabIndex(_settingPage, 1);
             }
         }
 

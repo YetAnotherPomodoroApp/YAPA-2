@@ -8,59 +8,64 @@
              xmlns:shared="clr-namespace:YAPA.Shared;assembly=YAPA.WPF.Shared"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="0,20,0,0">
+    <!-- The four sliders together, the three colours as swatches on one row, the switches in two columns -->
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="34"></RowDefinition>
+            <RowDefinition Height="34"></RowDefinition>
+            <RowDefinition Height="34"></RowDefinition>
+            <RowDefinition Height="34"></RowDefinition>
+            <RowDefinition Height="42"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="xctk:ColorPicker">
+                <Setter Property="Width" Value="44" />
+                <Setter Property="Height" Value="24" />
+                <Setter Property="ShowDropDownButton" Value="False" />
+            </Style>
+        </Grid.Resources>
 
-        <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
-        <Slider Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="1"/>
-
-        <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="2"></TextBlock>
-        <Slider Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="2"  Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
-
+        <TextBlock Text="Clock opacity" Grid.Column="0" Grid.Row="0"></TextBlock>
+        <Slider Margin="0,0,40,0" VerticalAlignment="Center" Value="{Binding ClockOpacity, Mode=TwoWay, Delay=300}" shared:Accessible.Label="Clock opacity" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" Grid.Column="1" Grid.Row="0"/>
+        <TextBlock Text="Shadow opacity" Grid.Column="0" Grid.Row="1"></TextBlock>
+        <Slider Margin="0,0,40,0" VerticalAlignment="Center" Value="{Binding ShadowOpacity, Mode=TwoWay, Delay=300}" shared:Accessible.Label="Shadow opacity" Grid.Column="1" Grid.Row="1" Minimum="0.1" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" />
+        <TextBlock Text="Background opacity" Grid.Column="0" Grid.Row="2" ToolTip="0 shows no background"></TextBlock>
+        <Slider Margin="0,0,40,0" VerticalAlignment="Center" x:Name="BackgroundOpacity" shared:Accessible.Label="Background opacity, 0 shows no background" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}" Grid.Column="1" Grid.Row="2" Minimum="0" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" ToolTip="0 shows no background" />
         <TextBlock Text="Application size" Grid.Column="0" Grid.Row="3"></TextBlock>
-        <Slider Value="{Binding Width, Mode=TwoWay, Delay=300}" Grid.Column="1" Margin="5,0,60,0" Grid.Row="3"  Minimum="50" Maximum="600" Interval="1" />
+        <Slider Margin="0,0,40,0" VerticalAlignment="Center" Value="{Binding Width, Mode=TwoWay, Delay=300}" shared:Accessible.Label="Application size" Grid.Column="1" Grid.Row="3" Minimum="50" Maximum="600" Interval="1" />
 
-        <CheckBox  IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="0" Grid.Row="4">Disable flashing animation</CheckBox>
-        <CheckBox  IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="5">Show pomodoro status</CheckBox>
-        <CheckBox  IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="6">Hide seconds</CheckBox>
-        <CheckBox  IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">Hide buttons</CheckBox>
+        <TextBlock Text="Colors" Grid.Column="0" Grid.Row="4"></TextBlock>
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
+            <xctk:ColorPicker x:Name="TextColor" shared:Accessible.Label="Text color" ToolTip="Text color" SelectedColor="{Binding TextColor}" />
+            <TextBlock Text="Text" Margin="8,0,20,0" />
+            <xctk:ColorPicker x:Name="ShadowColor" shared:Accessible.Label="Shadow color" ToolTip="Shadow color" SelectedColor="{Binding ShadowColor}" />
+            <TextBlock Text="Shadow" Margin="8,0,20,0" />
+            <xctk:ColorPicker x:Name="BackgroundColor" shared:Accessible.Label="Background color" ToolTip="Background color" SelectedColor="{Binding BackgroundColor}" />
+            <TextBlock Text="Background" Margin="8,0,0,0" />
+        </StackPanel>
 
-        <TextBlock Text="Text color" Grid.Row="8" Grid.Column="0"></TextBlock>
-        <xctk:ColorPicker  x:Name="TextColor" Grid.Column="1" Grid.Row="8"  MinWidth="72"
-                                               Margin="16 0 0 0"  SelectedColor="{Binding TextColor}">
-        </xctk:ColorPicker>
-        <TextBlock Text="Shadow color" Grid.Row="9" Grid.Column="0"></TextBlock>
-        <xctk:ColorPicker  x:Name="ShadowColor" Grid.Column="1" Grid.Row="9"  MinWidth="72"
-                                               Margin="16 0 0 0" SelectedColor="{Binding ShadowColor}">
-        </xctk:ColorPicker>
-
-        <TextBlock Text="Background color" Grid.Row="10" Grid.Column="0"></TextBlock>
-        <xctk:ColorPicker  x:Name="BackgroundColor" Grid.Column="1" Grid.Row="10"  MinWidth="72"
-                                               Margin="16 0 0 0" SelectedColor="{Binding BackgroundColor}">
-        </xctk:ColorPicker>
-        <TextBlock Text="Background opacity" Grid.Column="0" Grid.Row="11" ToolTip="0 shows no background"></TextBlock>
-        <Slider x:Name="BackgroundOpacity" Value="{Binding BackgroundOpacity, Mode=TwoWay, Delay=300}" Margin="5,0,60,0" Grid.Column="1" Grid.Row="11" Minimum="0" Maximum="1" Ticks=".0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0" ToolTip="0 shows no background" />
-        <CheckBox x:Name="ShadowOnSmallText" IsChecked="{Binding ShadowOnSmallText, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2">Shadow on status text and buttons</CheckBox>
-
+        <Grid Grid.Column="1" Grid.Row="5" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <CheckBox Margin="0,3,8,3" IsChecked="{Binding ShowStatusText, Mode=TwoWay}" Grid.Column="0" Grid.Row="0">Show pomodoro status</CheckBox>
+            <CheckBox Margin="0,3,8,3" IsChecked="{Binding DisableFlashingAnimation, Mode=TwoWay}" Grid.Column="1" Grid.Row="0">Disable flashing animation</CheckBox>
+            <CheckBox Margin="0,3,8,3" IsChecked="{Binding HideSeconds, Mode=TwoWay}" Grid.Column="0" Grid.Row="1">Hide seconds</CheckBox>
+            <CheckBox Margin="0,3,8,3" IsChecked="{Binding HideButtons, Mode=TwoWay}" Grid.Column="1" Grid.Row="1">Hide buttons</CheckBox>
+        </Grid>
     </Grid>
 </UserControl>
 
