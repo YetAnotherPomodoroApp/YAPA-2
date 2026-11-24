@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+             xmlns:local="clr-namespace:YAPA.Avalonia.Plugins.Dashboard"
+             x:Class="YAPA.Avalonia.Plugins.Dashboard.GithubDashboard">
+    <!-- YAPA/Plugins/Dashboard/GithubDashboard.xaml -->
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Height="110" Name="LoadingPanel" IsVisible="True">
+                <ProgressBar Classes="circular" IsIndeterminate="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <ComboBox AutomationProperties.Name="Profile" Name="FilteredProfiles" Classes="hint" MinWidth="200" Margin="16,0,0,10"
+                          assists:ComboBoxAssist.Label="Profile" />
+                <ComboBox AutomationProperties.Name="Number of months" Name="NumberOfMonths" Classes="hint" MinWidth="200" Margin="16,0,0,10"
+                          assists:ComboBoxAssist.Label="Number of months" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Height="120" Name="DayPanel" IsVisible="False">
+                <StackPanel Orientation="Vertical" Margin="0,15,0,0" Width="20">
+                    <TextBlock Height="11" Margin="0,-1,0,12" FontSize="10" VerticalAlignment="Top" Text="Mon" Name="MondayTextBlock" />
+                    <TextBlock Height="11" Margin="0,0,0,12" FontSize="10" VerticalAlignment="Top" Text="Wen" />
+                    <TextBlock Height="11" Margin="0,0,0,1" FontSize="10" VerticalAlignment="Top" Text="Fri" />
+                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Width="500" Name="WeekScroll">
+                    <StackPanel Orientation="Horizontal" Name="WeekStackPanel" />
+                </ScrollViewer>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Name="Summary" />
+            </StackPanel>
+            <Separator Margin="0,10,0,10" />
+            <StackPanel Height="140" Name="CartesianContainer">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Name="CartesianChartTitle" />
+                </StackPanel>
+                <local:LineChart AutomationProperties.HelpText="The same numbers are in the calendar above, one entry per day." Name="CartesianChart" MinHeight="130" Height="130" AxisYTitle="Total time" AxisXTitle="Day" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

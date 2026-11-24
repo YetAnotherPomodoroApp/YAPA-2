@@ -53,16 +53,27 @@ Features
 Accessibility
 ---------
 
-YAPA 2 is built to work with screen readers such as Narrator and NVDA, and can be used with the keyboard alone.
+YAPA 2 is built to work with screen readers such as NVDA, JAWS and Narrator, and can be used with the keyboard alone. In the timer window, `F1` says all of this.
 
-- The timer speaks when it changes: work started, paused, resumed and finished, break started and finished
-- `Ctrl+T` reads where the timer is
+The timer speaks when it changes: work started, paused, resumed and finished, break started and finished. To hear where it is:
+
+| | NVDA | JAWS | Narrator |
+|---|---|---|---|
+| Time left, to the second (YAPA's own key, in the timer window) | `Ctrl+T` | `Ctrl+T` | `Ctrl+T` |
+| Window title: the minutes left | `Insert+T` | `Insert+T` | `Narrator+T` |
+| Status bar: the time left, to the second | `Insert+End` | `Insert+Page Down` | |
+| Tray icon: the minutes left | `Win+B`, then the arrow keys | `Win+B` | `Win+B` |
+
+The screen reader also reads the title when you switch to YAPA with `Alt+Tab`. The tray icon is there only while YAPA is minimized to the tray, unless Settings → System tray → "Always show tray icon" is on. Windows 11 may put it under "Show hidden icons", which `Win+B` and the arrow keys also reach.
+
+In the timer window:
 - `Tab` moves between the timer buttons
 - The `Menu` key or `Shift+F10` opens a menu with every command, including Settings
-- In Settings, `Tab` goes from the list of pages to the page, then to Close and Save; `Enter` saves
-- Every control in Settings has a spoken label, and the dashboard calendar can be read day by day
-- With the System tray plugin, the tooltip of the tray icon tells the remaining time
-- For a timer that is easier to see, give it a background in Settings → Themes
+- `F1` says the keyboard help
+
+In Settings, `Tab` goes from the list of pages to the page, then to Close and Save, and `Enter` saves. Every control has a spoken label, and the dashboard calendar can be read day by day.
+
+For a timer that is easier to see, give it a background in Settings → Themes.
 
 Crash reports
 ---------
@@ -75,6 +86,60 @@ When YAPA 2 closes because of an error, it keeps a crash report on your computer
 - Reports go to our own server, bugs.floatas.net, and are used only to fix the problem
 - Settings → About → Crash reports: *Ask before sending* (the default), *Send without asking*, or *Don't send*
 - Reports waiting to be sent are in `Documents\YAPA2\crash-reports`
+
+Windows, macOS and Linux (Avalonia)
+===
+`YAPA.Avalonia` is the same application on [Avalonia](https://avaloniaui.net), so it also runs on macOS and Linux.
+It uses `YAPA.Shared` (the engine, settings and commands) as it is and recreates the WPF windows:
+the YAPA 1.0 timer looks the same (borderless, see-through, Segoe UI Light with the soft shadow), and
+the settings window keeps the WPF layout with [Material.Avalonia](https://github.com/AvaloniaCommunity/Material.Avalonia)
+in place of MaterialDesignInXaml.
+
+Settings, history and the snapshot of an unfinished pomodoro are read from and written to the same
+`Documents/YAPA2` folder as the Windows version (set `YAPA_HOME` to use another folder).
+
+Build and run with the .NET 8 SDK or newer:
+```
+dotnet run --project YAPA.Avalonia
+```
+`YAPA.Avalonia.sln` holds the projects that build on every system (`YAPA.sln` is the WPF version).
+
+The screen reader and keyboard support described under Accessibility is in the Avalonia version too
+(on macOS `Cmd+T` reads the timer). It is tested with Avalonia's automation API, not yet with VoiceOver
+or Orca themselves.
+
+Not in the Avalonia version: crash reports, the release notes window, taskbar progress and jump lists (Windows only),
+and loading themes or plugins from DLLs next to the app (they are compiled in). System tray balloon tips
+are shown as system notifications. Besides the WPF command line arguments it understands `/exit`.
+
+On Linux the app needs the usual desktop libraries and `libssl` (present on desktop systems).
+
+### Updates
+The Avalonia version updates itself with [Velopack](https://velopack.io), the successor of Squirrel, the
+same way the WPF version does: at start it looks for a new version (GitHub releases of this project;
+pre-releases too with `PreRelease.txt`), downloads it in the background, shows "Restart application to
+apply updates" in the settings window, and installs it when YAPA closes. A downloaded update that was
+not installed (YAPA was killed) is installed at the next start. Each step is written to `update.log`
+in the data folder. `YAPA_UPDATE_URL` points at another feed, a web address or a local folder.
+
+Releases are made with the `vpk` tool (`dotnet tool install -g vpk`):
+```
+dotnet publish YAPA.Avalonia -c Release -r osx-arm64 --self-contained -p:Version=2.1.0 -o publish
+vpk pack -u YAPA2 -v 2.1.0 -p publish -e YAPA --packTitle "YAPA 2" -o releases
+```
+For macOS releases add `--signAppIdentity "Developer ID Application: ..."`, `--signInstallIdentity
+"Developer ID Installer: ..."` and `--notaryProfile <profile saved with xcrun notarytool store-credentials>`;
+without them macOS warns about a downloaded app. Linux AppImages are packed from a Mac or Linux machine
+with `vpk "[linux]" pack -r linux-x64 ...` (needs `mksquashfs`).
+
+`Build/test-updates-macos.sh` and `Build/test-updates-linux.sh` (Docker) test updating end to end on
+this machine: they pack two versions into a local feed, install the older one and check that it
+downloads the newer one, is left alone while it runs, installs the update when closed (or at the next
+start when killed), finds itself up to date afterwards, and only logs an unreachable feed.
+
+### Tests
+`YAPA.Avalonia.Tests` runs the real windows headless and goes through every settings page and the timer
+buttons, checking `settings.json` and what the timer shows: `dotnet test YAPA.Avalonia.Tests`.
 
 Contribution guidelines
 ===

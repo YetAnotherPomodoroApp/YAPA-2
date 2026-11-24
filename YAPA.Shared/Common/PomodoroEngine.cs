@@ -211,6 +211,8 @@ namespace YAPA.Shared.Common
                 }
                 _current = value;
                 NotifyPropertyChanged(nameof(Index));
+                //The "Pomodoro index" counter is the index; it stayed on the old number until the next stop
+                NotifyPropertyChanged(nameof(Counter));
                 NotifyPropertyChanged(nameof(WorkTime));
                 NotifyPropertyChanged(nameof(BreakTime));
             }
@@ -430,7 +432,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.WorkTime = value;
                 Profiles = temp;
             }
@@ -442,7 +448,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.BreakTime = value;
                 Profiles = temp;
             }
@@ -454,7 +464,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.LongBreakTime = value;
                 Profiles = temp;
             }
@@ -466,7 +480,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.AutoStartBreak = value;
                 Profiles = temp;
             }
@@ -478,7 +496,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.AutoStartWork = value;
                 Profiles = temp;
             }
@@ -495,7 +517,11 @@ namespace YAPA.Shared.Common
             set
             {
                 var temp = new Dictionary<string, PomodoroProfile>(Profiles);
-                var profile = temp[ActiveProfile];
+                // A copy: the profile object is shared with the saved settings (and on a fresh
+                // install with the static default), so editing it in place changed the running
+                // timer before Save, and Close could not undo it
+                var profile = temp[ActiveProfile].Copy();
+                temp[ActiveProfile] = profile;
                 profile.PomodorosBeforeLongBreak = value;
                 Profiles = temp;
             }
@@ -556,6 +582,8 @@ namespace YAPA.Shared.Common
         public bool AutoStartBreak { get; set; }
         public bool AutoStartWork { get; set; }
         public int PomodorosBeforeLongBreak { get; set; }
+
+        public PomodoroProfile Copy() => (PomodoroProfile)MemberwiseClone();
     }
 
     internal class Pomodoro

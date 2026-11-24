@@ -229,6 +229,90 @@ namespace YAPA.Shared
         }
     }
 
+    /// <summary>
+    /// A status bar nobody sees, for the screen reader key that reads the status bar.
+    /// NVDA finds a status bar by asking what is at the bottom left corner of the window,
+    /// so this sits in that corner, spans the whole grid and can be hit there.
+    /// Its text is worked out each time it is read, so it never needs updating.
+    /// </summary>
+    public class TimerStatusBar : FrameworkElement
+    {
+        private readonly Func<string> _text;
+
+        public TimerStatusBar(Func<string> text)
+        {
+            _text = text;
+            Width = 3;
+            Height = 3;
+            Focusable = false;
+            HorizontalAlignment = HorizontalAlignment.Left;
+            VerticalAlignment = VerticalAlignment.Bottom;
+            Grid.SetRowSpan(this, 1000);
+            Grid.SetColumnSpan(this, 1000);
+        }
+
+        //Windows looks through fully transparent pixels of a see-through window, so the corner is
+        //almost transparent instead: nobody sees it, but it is found there. A click there still reaches the window.
+        private static readonly System.Windows.Media.Brush AlmostTransparent = CreateAlmostTransparent();
+
+        private static System.Windows.Media.Brush CreateAlmostTransparent()
+        {
+            var brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0));
+            brush.Freeze();
+            return brush;
+        }
+
+        protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
+        {
+            drawingContext.DrawRectangle(AlmostTransparent, null, new Rect(RenderSize));
+        }
+
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new StatusBarPeer(this, _text);
+        }
+
+        private class StatusBarPeer : FrameworkElementAutomationPeer
+        {
+            private readonly Func<string> _text;
+
+            public StatusBarPeer(FrameworkElement owner, Func<string> text) : base(owner)
+            {
+                _text = text;
+            }
+
+            protected override string GetNameCore()
+            {
+                return _text() ?? string.Empty;
+            }
+
+            protected override AutomationControlType GetAutomationControlTypeCore()
+            {
+                return AutomationControlType.StatusBar;
+            }
+
+            protected override string GetClassNameCore()
+            {
+                return "StatusBar";
+            }
+
+            protected override List<AutomationPeer> GetChildrenCore()
+            {
+                return null;
+            }
+
+            protected override bool IsContentElementCore()
+            {
+                return true;
+            }
+
+            protected override bool IsControlElementCore()
+            {
+                return true;
+            }
+        }
+    }
+
     public class SpokenStackPanel : StackPanel
     {
         /// <summary>

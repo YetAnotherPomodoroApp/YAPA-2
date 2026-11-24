@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:YAPA.Avalonia.Plugins.PomodoroEngine"
+             x:Class="YAPA.Avalonia.Plugins.PomodoroEngine.PomodoroEngineSettingWindow">
+    <!-- YAPA/Plugins/PomodoroEngine/PomodoroEngineSettingWindow.xaml -->
+    <UserControl.Resources>
+        <local:StringToFontFamily x:Key="StringToFontFamily" />
+    </UserControl.Resources>
+    <!-- Same columns as the profile above: labels 130 wide, centred; gaps instead of lines -->
+    <StackPanel Grid.IsSharedSizeScope="True">
+        <StackPanel Name="ProfileSetting" />
+
+        <!-- the last column matches the profile's Add/Remove column, so the boxes are equally wide -->
+        <Grid RowDefinitions="Auto,34,Auto" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
+            </Grid.ColumnDefinitions>
+            <CheckBox IsChecked="{Binding Settings.CountBackwards, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Count backwards" />
+
+            <TextBlock Text="Display count of" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
+            <ComboBox AutomationProperties.Name="Display count of" Name="CounterList" Grid.Column="1" Grid.Row="1" MinWidth="72"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                      DisplayMemberBinding="{Binding Title}"
+                      SelectedValueBinding="{Binding Item}"
+                      SelectedValue="{Binding Settings.Counter, Mode=TwoWay}" />
+            <TextBlock Text="Font" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="0,16,0,0" />
+            <ComboBox AutomationProperties.Name="Font" Name="FontSelector" Classes="tall" Grid.Column="1" Grid.Row="2" MinWidth="72" Margin="0,16,0,0"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                      SelectedValueBinding="{Binding Key}"
+                      SelectedValue="{Binding Settings.FontFamily, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid RowDefinitions="Auto,Auto">
+                            <TextBlock Grid.Row="0" Text="{Binding Key}" />
+                            <TextBlock Grid.Row="1" Text="1234567890" FontSize="24"
+                                       FontFamily="{Binding Value, Converter={StaticResource StringToFontFamily}}" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+    </StackPanel>
+</UserControl>

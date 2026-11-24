@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
+             xmlns:local="clr-namespace:YAPA.Avalonia.Plugins.PomodoroEngine"
+             x:Class="YAPA.Avalonia.Plugins.PomodoroEngine.PomodoroProfileSettings">
+    <!-- YAPA/Plugins/PomodoroEngine/PomodoroProfileSettings.xaml -->
+    <UserControl.Resources>
+        <local:SecondsToMinutesConverter x:Key="SecToMinConverter" />
+    </UserControl.Resources>
+    <!-- Labels in a fixed column, centred on their boxes; check boxes under the boxes -->
+    <Grid RowDefinitions="34,34,34,34,34,Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Active profile" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" />
+        <ComboBox AutomationProperties.Name="Active profile" Name="ActiveProfileSelect" Grid.Column="1" Grid.Row="0" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                  IsEnabled="{Binding !Engine.IsRunning}" />
+        <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Spacing="4" Margin="12,0,0,0" VerticalAlignment="Center">
+            <Button AutomationProperties.Name="Add profile" Content="Add" Click="AddProfile_Click" Name="AddButton" Classes="Flat"
+                    IsEnabled="{Binding !Engine.IsRunning}" />
+            <Button AutomationProperties.Name="Remove profile" Content="Remove" Click="RemoveProfile_Click" Name="RemoveButton" Classes="Flat" />
+        </StackPanel>
+
+        <TextBlock Text="Work time" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
+        <infra:EditableComboBox AutomationProperties.Name="Work time, minutes" Name="WorkTimeSelect" Grid.Column="1" Grid.Row="1" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                  Text="{Binding Settings.WorkTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <TextBlock Text="Break time" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" />
+        <infra:EditableComboBox AutomationProperties.Name="Break time, minutes" Name="BreakTimeSelect" Grid.Column="1" Grid.Row="2" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                  Text="{Binding Settings.BreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <TextBlock Text="Session rounds" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" />
+        <infra:EditableComboBox AutomationProperties.Name="Session rounds" Name="SessionRounds" Grid.Column="1" Grid.Row="3" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                  Text="{Binding Settings.PomodorosBeforeLongBreak, Mode=TwoWay}" />
+
+        <TextBlock Text="Long break time" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
+        <infra:EditableComboBox AutomationProperties.Name="Long break time, minutes" Name="LongBreakTimeSelect" Grid.Column="1" Grid.Row="4" MinWidth="72"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                  Text="{Binding Settings.LongBreakTime, Mode=TwoWay, Converter={StaticResource SecToMinConverter}}" />
+
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="5" Orientation="Horizontal" Spacing="24" Margin="0,6,0,0">
+            <CheckBox Name="AutoStartBreak" IsChecked="{Binding Settings.AutoStartBreak, Mode=TwoWay}" Content="Auto start break" />
+            <CheckBox Name="AutoStartWork" IsChecked="{Binding Settings.AutoStartWork, Mode=TwoWay}" Content="Auto start work" />
+        </StackPanel>
+    </Grid>
+</UserControl>

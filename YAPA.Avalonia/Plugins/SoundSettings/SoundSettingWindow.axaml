@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Plugins.SoundSettings.SoundSettingWindow">
+    <!-- YAPA/Plugins/SoundSettings/SoundSettingWindow.xaml -->
+    <StackPanel>
+        <Grid ColumnDefinitions="130,*" RowDefinitions="Auto,34">
+            <CheckBox IsChecked="{Binding DisableSoundNotifications, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Content="Disable sound notifications" />
+            <TextBlock Text="Volume" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" />
+            <Slider AutomationProperties.Name="Volume" Value="{Binding Volume, Mode=TwoWay, Delay=300}" Name="Slider" Grid.Column="1" Grid.Row="1" Minimum="0.1" Maximum="1"
+                    Ticks="0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0" VerticalAlignment="Center" Margin="0,0,40,0" />
+        </Grid>
+        <StackPanel Name="Container" />
+    </StackPanel>
+</UserControl>

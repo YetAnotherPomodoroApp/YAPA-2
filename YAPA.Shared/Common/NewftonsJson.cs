@@ -68,7 +68,13 @@ namespace Yapa.Shared.Common
             else if (valA.GetType().GetTypeInfo().ImplementedInterfaces.FirstOrDefault(x => x == typeof(IEnumerable)) != null)
             {
                 var listA = (IEnumerable)valA;
-                var listB = (IEnumerable)((JObject)valB).ToObject(valA.GetType());
+                //A list read from settings.json is a JArray (it was cast to JObject, which threw);
+                //one set since then is the list itself
+                var listB = valB is JToken token ? (IEnumerable)token.ToObject(valA.GetType()) : valB as IEnumerable;
+                if (listB == null)
+                {
+                    return false;
+                }
 
 
                 if (Count(listA) != Count(listB))

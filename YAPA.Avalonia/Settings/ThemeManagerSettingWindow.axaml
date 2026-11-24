@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YAPA.Avalonia.Settings.ThemeManagerSettingWindow">
+    <!-- YAPA/WPF/ThemeManager/ThemeManagerSettingWindow.xaml -->
+    <!-- The theme is chosen in a row like any other setting; its own settings follow.
+         The settings window scrolls the page, so no ScrollViewer here. -->
+    <Grid ColumnDefinitions="130,*" RowDefinitions="34,Auto">
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Theme" VerticalAlignment="Center" />
+        <ComboBox AutomationProperties.Name="Theme" Grid.Column="1" Grid.Row="0" Name="ThemeList" HorizontalAlignment="Left" MinWidth="200" VerticalAlignment="Center" />
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Name="SettingPage" Margin="0,14,0,0" />
+    </Grid>
+</UserControl>

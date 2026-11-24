@@ -1,0 +1,33 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             x:Class="YAPA.Avalonia.App"
+             Name="YAPA 2"
+             RequestedThemeVariant="Light">
+    <!-- The WPF app merges MaterialDesignTheme.Light with the DeepPurple primary and Lime accent
+         palettes; Material.Avalonia is the same design system for Avalonia. -->
+    <Application.Styles>
+        <themes:MaterialTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+
+        <!-- MaterialDesignInXaml's combo boxes and text boxes are compact; Material.Avalonia's keep
+             room for a floating label. Only the dashboard's two combo boxes have one (class "hint"). -->
+        <Style Selector="ComboBox:not(.hint):not(.tall) /template/ Panel#PART_RootPanel">
+            <Setter Property="Height" Value="30" />
+        </Style>
+        <!-- The font list shows a sample under each name, so it takes the height it needs -->
+        <Style Selector="ComboBox.tall /template/ Panel#PART_RootPanel">
+            <Setter Property="Height" Value="NaN" />
+        </Style>
+        <!-- MaterialDesignFlatButton draws its text in the primary colour -->
+        <Style Selector="Button.Flat">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialPrimaryMidBrush}" />
+        </Style>
+        <Style Selector="TextBox /template/ Panel#PART_TextFieldPanel">
+            <Setter Property="MinHeight" Value="28" />
+        </Style>
+        <Style Selector="TextBox /template/ Panel#PART_TextContainer">
+            <Setter Property="Margin" Value="0,6,4,5" />
+        </Style>
+    </Application.Styles>
+</Application>

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Cross-platform (Windows, macOS, Linux) front end for YAPA 2.
+       Reuses YAPA.Shared (engine, settings, commands) and recreates the WPF windows in Avalonia. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Run on whatever newer .NET runtime is installed -->
+    <RollForward>Major</RollForward>
+    <Nullable>disable</Nullable>
+    <RootNamespace>YAPA.Avalonia</RootNamespace>
+    <AssemblyName>YAPA</AssemblyName>
+    <ApplicationIcon>..\YAPA\Resources\pomo.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    <Product>YAPA 2</Product>
+    <!-- Release builds set the real version: dotnet publish -p:Version=2.1.0 -->
+    <Version>2.0.0</Version>
+    <Description>Yet Another Pomodoro Application 2</Description>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.1.1" />
+    <PackageReference Include="Material.Avalonia" Version="3.21.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Velopack" Version="1.2.161" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YAPA.Shared\YAPA.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The same pictures, sounds and fonts the WPF app ships, taken from the YAPA project -->
+    <AvaloniaResource Include="..\YAPA\Resources\pomo.ico" Link="Assets\pomo.ico" />
+    <AvaloniaResource Include="..\YAPA\Resources\pomoTray.ico" Link="Assets\pomoTray.ico" />
+    <AvaloniaResource Include="..\YAPA\Resources\Pomodoro.png" Link="Assets\Pomodoro.png" />
+    <AvaloniaResource Include="..\YAPA\Resources\loader.gif" Link="Assets\loader.gif" />
+    <AvaloniaResource Include="..\YAPA\Resources\Fonts\Segoe UI Light.ttf" Link="Assets\Fonts\Segoe UI Light.ttf" />
+    <!-- The Motivational theme's own fonts: Roboto Condensed and FontAwesome (icons) -->
+    <AvaloniaResource Include="..\YAPA.WPF.MotivationalTheme\Fonts\*.ttf" Link="Assets\Fonts\Motivational\%(Filename)%(Extension)" />
+    <Content Include="..\YAPA\Resources\ding.wav" Link="Resources\ding.wav" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\YAPA\Resources\tick.wav" Link="Resources\tick.wav" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\YAPA\Resources\Fonts\*.ttf" Link="Resources\Fonts\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

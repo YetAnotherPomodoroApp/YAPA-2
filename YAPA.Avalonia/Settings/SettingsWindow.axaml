@@ -1,0 +1,75 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:infra="clr-namespace:YAPA.Avalonia.Infrastructure"
+        x:Class="YAPA.Avalonia.Settings.SettingsWindow"
+        Title="Settings" Height="440" Width="800"
+        CanResize="False"
+        Topmost="True"
+        ShowInTaskbar="False"
+        WindowDecorations="None"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Background="{DynamicResource MaterialPaperBrush}"
+        Foreground="{DynamicResource MaterialBodyBrush}"
+        FontFamily="{x:Static infra:Fonts.Roboto}"
+        FontSize="12">
+    <!-- The layout of YAPA/WPF/SettingsMananger/SettingsWindow.xaml (no title bar, drag anywhere, the
+         pages on the left, the selected page on the right), with more room: a narrower menu on a
+         tinted panel, a margin round the page, and a line above the buttons. -->
+    <Window.Styles>
+        <Style Selector="TreeView#SettingsTree TreeViewItem">
+            <Setter Property="MinHeight" Value="36" />
+        </Style>
+        <!-- Plugins stays open, so no expand arrow -->
+        <Style Selector="TreeView#SettingsTree TreeViewItem /template/ ToggleButton#PART_ExpanderButton">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="TreeView#SettingsTree TreeViewItem /template/ Border#PART_RootBorder">
+            <Setter Property="Margin" Value="8,1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="ClipToBounds" Value="True" />
+        </Style>
+        <!-- A plugin's page sits 14 px in, under Plugins -->
+        <Style Selector="TreeView#SettingsTree TreeViewItem TreeViewItem /template/ Border#PART_RootBorder">
+            <Setter Property="Margin" Value="22,1,8,1" />
+        </Style>
+        <Style Selector="TreeView#SettingsTree TreeViewItem /template/ Border#PART_BehaviourEffect">
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="TreeView#SettingsTree TreeViewItem /template/ Border#PART_HoverEffect">
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="TreeView#SettingsTree TreeViewItem:selected /template/ Border#PART_BehaviourEffect">
+            <Setter Property="Background" Value="{DynamicResource MaterialPrimaryMidBrush}" />
+            <Setter Property="Opacity" Value="0.14" />
+        </Style>
+        <Style Selector="TreeView#SettingsTree TreeViewItem:selected /template/ ContentPresenter#PART_HeaderPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialPrimaryDarkBrush}" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Name="SettingGrid" ColumnDefinitions="170,*" RowDefinitions="*,Auto">
+        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="#F3F0F8" BorderBrush="#E6E1EE" BorderThickness="0,0,1,0" />
+        <TreeView AutomationProperties.Name="Settings pages" Grid.Column="0" Grid.Row="0" Name="SettingsTree" Margin="0,14,0,0"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Name="PageHost" Padding="26,22,24,12"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="#E6E1EE" BorderThickness="0,1,0,0" Margin="16,0,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,10,8" Spacing="8">
+                <Button Name="CloseButton" Command="{Binding CancelCommand}" Classes="Flat" Content="Close" />
+                <Button Name="SaveButton" Command="{Binding SaveCommand}" IsDefault="True" Content="Save" />
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Name="Version" VerticalAlignment="Center" Margin="18,0,0,0"
+                   Opacity="0.55" FontSize="11" />
+
+        <Border IsVisible="False" Name="RestartAppNotification" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                Width="300" Height="22" VerticalAlignment="Top" Margin="0,6,0,0" Background="Gold" CornerRadius="11">
+            <TextBlock AutomationProperties.LiveSetting="Assertive" Name="NotificationMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+    </Grid>
+</Window>
