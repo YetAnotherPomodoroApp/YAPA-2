@@ -56,12 +56,16 @@ namespace YAPA.Shared
 
         private void SetUpScreenReaderSupport()
         {
-            AutomationProperties.SetHelpText(this, "Pomodoro timer. Tab moves between the buttons. The Menu key or Shift+F10 opens a menu with every command. Control+T reads the timer.");
+            //Read every time the window gets focus, so kept short; F1 has the rest
+            AutomationProperties.SetHelpText(this, "Pomodoro timer. Control+T reads the timer, F1 for keyboard help.");
 
             _announcedPhase = ViewModel.Engine.Phase;
             ViewModel.Engine.PropertyChanged += Engine_PropertyChangedForSpeech;
+            ViewModel.Engine.PropertyChanged += (sender, args) => UpdateTitle();
+            UpdateTitle();
 
             InputBindings.Add(new KeyBinding(new ActionCommand(SayStatus), Key.T, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(new ActionCommand(SayKeyboardHelp), Key.F1, ModifierKeys.None));
 
             ContextMenu = new ContextMenu();
             ContextMenuOpening += AbstractWindow_ContextMenuOpening;
@@ -95,12 +99,46 @@ namespace YAPA.Shared
             Announce(text);
         }
 
+        //The time left is in the title too, in whole minutes, so it changes once a minute
+        private void UpdateTitle()
+        {
+            var title = TimerSpeech.WindowTitle(ViewModel.Engine.Phase, ViewModel.Engine.Remaining);
+            if (Title != title)
+            {
+                Title = title;
+            }
+        }
+
+        private string StatusText()
+        {
+            return TimerSpeech.Status(ViewModel.Engine.Phase, ViewModel.Engine.Remaining, ViewModel.Engine.WorkTime);
+        }
+
+        private void SayKeyboardHelp()
+        {
+            Announce(TimerSpeech.KeyboardHelp);
+        }
+
         private void SayStatus()
         {
-            Announce(TimerSpeech.Status(ViewModel.Engine.Phase, ViewModel.Engine.Remaining, ViewModel.Engine.WorkTime));
+            Announce(StatusText());
         }
 
         private TextBlock _liveRegion;
+        private TimerStatusBar _statusBar;
+
+        //Screen readers have a key for "read the status bar" (NVDA: Insert+End, JAWS: Insert+Page Down).
+        //The themes have no status bar, so add one nobody sees that says where the timer is
+        private void AddStatusBar()
+        {
+            if (_statusBar != null || !(Content is Panel root))
+            {
+                return;
+            }
+
+            _statusBar = new TimerStatusBar(StatusText);
+            root.Children.Add(_statusBar);
+        }
 
         /// <summary>
         /// Has a screen reader speak the text now.
@@ -143,6 +181,7 @@ namespace YAPA.Shared
             AddMenuItem("_Reset session", ViewModel.ResetCommand);
             ContextMenu.Items.Add(new Separator());
             AddMenuItem("Read the _timer", new ActionCommand(SayStatus), "Ctrl+T");
+            AddMenuItem("Keyboard _help", new ActionCommand(SayKeyboardHelp), "F1");
             AddMenuItem("S_ettings", ViewModel.ShowSettingsCommand);
             ContextMenu.Items.Add(new Separator());
             AddMenuItem("_Minimize", new ActionCommand(() => WindowState = WindowState.Minimized));
@@ -203,6 +242,7 @@ namespace YAPA.Shared
         private void AbstractWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AddLiveRegionWhereNotificationsAreMissing();
+            AddStatusBar();
             CreateJumpList();
 
             var args = Environment.GetCommandLineArgs();

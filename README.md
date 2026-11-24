@@ -53,16 +53,27 @@ Features
 Accessibility
 ---------
 
-YAPA 2 is built to work with screen readers such as Narrator and NVDA, and can be used with the keyboard alone.
+YAPA 2 is built to work with screen readers such as NVDA, JAWS and Narrator, and can be used with the keyboard alone. In the timer window, `F1` says all of this.
 
-- The timer speaks when it changes: work started, paused, resumed and finished, break started and finished
-- `Ctrl+T` reads where the timer is
+The timer speaks when it changes: work started, paused, resumed and finished, break started and finished. To hear where it is:
+
+| | NVDA | JAWS | Narrator |
+|---|---|---|---|
+| Time left, to the second (YAPA's own key, in the timer window) | `Ctrl+T` | `Ctrl+T` | `Ctrl+T` |
+| Window title: the minutes left | `Insert+T` | `Insert+T` | `Narrator+T` |
+| Status bar: the time left, to the second | `Insert+End` | `Insert+Page Down` | |
+| Tray icon: the minutes left | `Win+B`, then the arrow keys | `Win+B` | `Win+B` |
+
+The screen reader also reads the title when you switch to YAPA with `Alt+Tab`. The tray icon is there only while YAPA is minimized to the tray, unless Settings → System tray → "Always show tray icon" is on. Windows 11 may put it under "Show hidden icons", which `Win+B` and the arrow keys also reach.
+
+In the timer window:
 - `Tab` moves between the timer buttons
 - The `Menu` key or `Shift+F10` opens a menu with every command, including Settings
-- In Settings, `Tab` goes from the list of pages to the page, then to Close and Save; `Enter` saves
-- Every control in Settings has a spoken label, and the dashboard calendar can be read day by day
-- With the System tray plugin, the tooltip of the tray icon tells the remaining time
-- For a timer that is easier to see, give it a background in Settings → Themes
+- `F1` says the keyboard help
+
+In Settings, `Tab` goes from the list of pages to the page, then to Close and Save, and `Enter` saves. Every control has a spoken label, and the dashboard calendar can be read day by day.
+
+For a timer that is easier to see, give it a background in Settings → Themes.
 
 Crash reports
 ---------
