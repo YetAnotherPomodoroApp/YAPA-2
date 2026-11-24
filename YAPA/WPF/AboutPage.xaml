@@ -17,6 +17,10 @@
                 <TextBlock Margin="0,5,0,0" TextWrapping="Wrap"  TextAlignment="Center"><Run Text="Yet Another Pomodoro Application 2 follow at:"/><LineBreak />
                     <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/YetAnotherPomodoroApp/YAPA-2" TextDecorations=""><Run Text="https://github.com/YetAnotherPomodoroApp/YAPA-2"/></Hyperlink>
                 </TextBlock>
+                <TextBlock Margin="0,10,0,0" TextAlignment="Center">
+                    <Hyperlink Click="Hyperlink_Click" NavigateUri="https://yapa2.app/#accessibility" TextDecorations=""
+                               ToolTip="F1 in the timer window says the same"><Run Text="Keyboard and screen reader help"/></Hyperlink>
+                </TextBlock>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">

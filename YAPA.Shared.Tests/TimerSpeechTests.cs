@@ -51,6 +51,30 @@ namespace YAPA.Shared.Tests
         }
 
         [TestMethod]
+        public void Minutes_ChangesOnlyOnceAMinute()
+        {
+            Assert.AreEqual("Timer is not running", TimerSpeech.Minutes(PomodoroPhase.NotStarted, 1500));
+            Assert.AreEqual("Work, 25 minutes left", TimerSpeech.Minutes(PomodoroPhase.Work, 1500));
+            Assert.AreEqual("Work, 25 minutes left", TimerSpeech.Minutes(PomodoroPhase.Work, 1441));
+            Assert.AreEqual("Break, 1 minute left", TimerSpeech.Minutes(PomodoroPhase.Break, 1));
+            Assert.AreEqual("Work finished", TimerSpeech.Minutes(PomodoroPhase.WorkEnded, 0));
+        }
+
+        [TestMethod]
+        public void WindowTitle_PutsTheMinutesLeftFirst()
+        {
+            Assert.AreEqual("YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.NotStarted, 1500));
+            Assert.AreEqual("Work, 25 minutes left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Work, 1500));
+            Assert.AreEqual("Work, 25 minutes left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Work, 1441));
+            Assert.AreEqual("Work, 24 minutes left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Work, 1440));
+            Assert.AreEqual("Break, 1 minute left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Break, 40));
+            Assert.AreEqual("Paused, 12 minutes left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Pause, 700));
+            Assert.AreEqual("Work, less than a minute left - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.Work, 0));
+            Assert.AreEqual("Work finished - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.WorkEnded, 0));
+            Assert.AreEqual("Break finished - YAPA 2", TimerSpeech.WindowTitle(PomodoroPhase.BreakEnded, 0));
+        }
+
+        [TestMethod]
         public void Display_ReadsTheDigitsWithTheirMeaning()
         {
             Assert.AreEqual("Timer, 0 seconds", TimerSpeech.Display(PomodoroPhase.NotStarted, 0, false));

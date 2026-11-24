@@ -78,7 +78,7 @@ namespace YAPA.Plugins.MinimizeToTray
 
         private bool SystemTrayVisible()
         {
-            return _settings.ShowInTaskbar == false || (_settings.MinimizeToTray && _app.AppState == ApplicationState.Minimized);
+            return _settings.AlwaysShowTrayIcon || _settings.ShowInTaskbar == false || (_settings.MinimizeToTray && _app.AppState == ApplicationState.Minimized);
         }
 
         private void ContextMenu_Popup(object sender, EventArgs e)
@@ -212,11 +212,13 @@ namespace YAPA.Plugins.MinimizeToTray
             _app.AppState = ApplicationState.Normal;
         }
 
-        //The icon only fits the minutes; the tooltip says the same in words, which is also what a screen reader reads
+        //The icon only fits the minutes; the tooltip says the same in words, which is also what a screen reader reads.
+        //Whole minutes, so a screen reader on the icon is not read a new tooltip every second.
+        //No "YAPA 2" in front: Windows 11 already puts the application's name before the tooltip.
         private void UpdateTooltip()
         {
             var engine = _viewModel.Engine;
-            var text = "YAPA 2: " + TimerSpeech.Status(engine.Phase, engine.Remaining, engine.WorkTime);
+            var text = TimerSpeech.Minutes(engine.Phase, engine.Remaining);
 
             //Windows allows 63 characters
             if (text.Length > 63)
@@ -317,6 +319,13 @@ namespace YAPA.Plugins.MinimizeToTray
         {
             get => _settings.Get(nameof(ShowInTaskbar), true);
             set => _settings.Update(nameof(ShowInTaskbar), value);
+        }
+
+        //The icon shows the minutes left and its tooltip says the time in words, also to a screen reader
+        public bool AlwaysShowTrayIcon
+        {
+            get => _settings.Get(nameof(AlwaysShowTrayIcon), false);
+            set => _settings.Update(nameof(AlwaysShowTrayIcon), value);
         }
 
         public bool MinimizeToTray

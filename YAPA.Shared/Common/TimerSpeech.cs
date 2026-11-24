@@ -78,6 +78,61 @@ namespace YAPA.Shared.Common
         }
 
         /// <summary>
+        /// What F1 says: the keys of the timer window, and where a screen reader finds the time.
+        /// </summary>
+        public const string KeyboardHelp =
+            "Keyboard help. Control+T reads the time left. Tab moves between the timer buttons. " +
+            "The Menu key or Shift+F10 opens a menu with every command. " +
+            "The window title tells the minutes left, and so does the status bar: in NVDA, Insert+T and Insert+End. " +
+            "Settings, System tray, Always show tray icon keeps the time in the tray. F1 repeats this help.";
+
+        /// <summary>
+        /// Where the timer is, in whole minutes, so that it changes once a minute: for the tray icon's tooltip and the window title.
+        /// A screen reader reads those again whenever they change while they have its attention.
+        /// </summary>
+        public static string Minutes(PomodoroPhase phase, int remainingSeconds)
+        {
+            switch (phase)
+            {
+                case PomodoroPhase.Work:
+                    return $"Work, {MinutesLeft(remainingSeconds)}";
+                case PomodoroPhase.Break:
+                    return $"Break, {MinutesLeft(remainingSeconds)}";
+                case PomodoroPhase.Pause:
+                    return $"Paused, {MinutesLeft(remainingSeconds)}";
+                case PomodoroPhase.WorkEnded:
+                    return "Work finished";
+                case PomodoroPhase.BreakEnded:
+                    return "Break finished";
+                default:
+                    return "Timer is not running";
+            }
+        }
+
+        /// <summary>
+        /// The window title. A screen reader reads it on request (NVDA: Insert+T) and when switching windows,
+        /// and it shows in the taskbar. The time comes first, so it fits.
+        /// </summary>
+        public static string WindowTitle(PomodoroPhase phase, int remainingSeconds)
+        {
+            const string app = "YAPA 2";
+            return phase == PomodoroPhase.NotStarted ? app : $"{Minutes(phase, remainingSeconds)} - {app}";
+        }
+
+        //Rounded up, the way a countdown is read: 24:30 left is "25 minutes left", 0:40 is "1 minute left"
+        private static string MinutesLeft(int remainingSeconds)
+        {
+            var minutes = (System.Math.Max(remainingSeconds, 0) + 59) / 60;
+
+            if (minutes == 0)
+            {
+                return "less than a minute left";
+            }
+
+            return minutes == 1 ? "1 minute left" : $"{minutes} minutes left";
+        }
+
+        /// <summary>
         /// The digits on screen read as one piece of text.
         /// </summary>
         public static string Display(PomodoroPhase phase, int displayedSeconds, bool countsBackwards)

@@ -25,6 +25,8 @@
         <StackPanel Grid.Row="0" Grid.Column="1">
             <CheckBox Margin="0,3" IsChecked="{Binding MinimizeToTray, Mode=TwoWay}">Minimize to tray</CheckBox>
             <CheckBox Margin="0,3" IsChecked="{Binding ShowInTaskbar, Mode=TwoWay}">Show in taskbar</CheckBox>
+            <CheckBox Margin="0,3" IsChecked="{Binding AlwaysShowTrayIcon, Mode=TwoWay}"
+                      ToolTip="The icon shows the minutes left; its tooltip says the time in words">Always show tray icon</CheckBox>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,12,0,0">
             <CheckBox Margin="0,3" IsChecked="{Binding ShowBalloonTipWhenInSystemTray, Mode=TwoWay}">Show balloon tip when in system tray</CheckBox>
